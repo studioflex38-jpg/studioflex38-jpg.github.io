@@ -1,248 +1,525 @@
 <!DOCTYPE html>
-<html>
+<html lang="sw">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chilagu Legacy Cinema</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            margin: 0; 
-            background: #0d0d2b; 
-            color: white; 
-            font-family: Arial;
-            min-height: 100vh;
-        }
-        .header { 
-            background: #000; 
-            padding: 15px; 
-            text-align: center; 
-            font-size: 26px; 
-            font-weight: bold; 
-            color: #8B5CF6; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100;
-            box-shadow: 0 2px 15px rgba(139, 92, 246, 0.4);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0A0A0F;
+            font-family: 'Poppins', sans-serif;
+            color: #FFFFFF;
         }
         
-        /* CATEGORY KUU - SINGO MOVIE & SERIES */
-        .main-cat { 
-            display: flex; 
-            gap: 10px; 
-            padding: 15px 10px 10px 10px; 
-            background: #0d0d2b;
+        /* HEADER NA LOGO */
+        .header {
+            background: #121212;
+            text-align: center;
+            padding: 16px 16px 10px 16px;
+            border-bottom: 1px solid #1E1E2E;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .main-cat-btn { 
-            flex: 1; 
-            background: #1a1a2e; 
-            border: 2px solid #3B1E6D; 
-            border-radius: 12px; 
-            padding: 15px 10px; 
-            text-align: center; 
-            font-size: 18px; 
-            font-weight: bold;
+        
+        .logo {
+            max-width: 160px;
+            height: auto;
+            filter: drop-shadow(0 0 20px #8A2BE2) drop-shadow(0 0 40px #BF40BF);
+            margin-bottom: 6px;
         }
-        .main-cat-btn.active { 
-            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%); 
-            border-color: #8B5CF6;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
+        
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 11px;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #8A2BE2, #BF40BF, #FF00FF, #8A2BE2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
         }
-        .main-cat-btn span { font-size: 32px; display: block; margin-bottom: 5px; }
+        
+        /* TRAILER SLIDER KUBWA JUU */
+        .trailer-slider {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+        
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(10,10,15,0.9) 70%);
+            padding: 40px 16px 16px 16px;
+        }
+        
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(138, 43, 226, 0.9);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.8);
+        }
+        
+        .slide-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+        
+        .slide-tag {
+            font-size: 12px;
+            color: #E0AAFF;
+            font-weight: 600;
+            background: rgba(138, 43, 226, 0.3);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1px solid #8A2BE2;
+        }
+        
+        .slider-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+        }
+        
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background: #BF40BF;
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        /* CATEGORY KUBWA */
+        .main-categories {
+            background: #121212;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            border-bottom: 1px solid #1E1E2E;
+        }
+        
+        .cat-main {
+            padding: 24px 12px;
+            border-radius: 18px;
+            border: 2px solid transparent;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cat-main.active {
+            background: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 50%, #C77DFF 100%);
+            color: white;
+            box-shadow: 0 0 30px rgba(157, 78, 221, 0.6);
+            border: 2px solid #E0AAFF;
+            transform: scale(1.02);
+        }
+        
+        .cat-main.inactive {
+            background: #1A1A24;
+            color: #E0E0E0;
+            border: 2px solid #2A2A3A;
+        }
+        
+        .cat-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+        
+        /* TRENDING SECTION */
+        .trending-section {
+            background: #0A0A0F;
+            padding: 16px;
+        }
+        
+        .section-header {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: #E0AAFF;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .trending-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        
+        .trending-card {
+            min-width: 140px;
+            background: #1A1A24;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #2A2A3A;
+            cursor: pointer;
+        }
+        
+        .trending-poster {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .trending-title {
+            padding: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-align: center;
+            color: #FFF;
+        }
         
         /* CATEGORY NDOGO */
-        .sub-cat { 
-            background: #1a0d2e; 
-            padding: 10px; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            display: none;
-            border-bottom: 1px solid #3B1E6D;
+        .sub-categories {
+            background: #121212;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            border-bottom: 1px solid #1E1E2E;
         }
-        .sub-cat.show { display: block; }
-        .sub-cat-btn { 
-            background: #2d1b4e; 
-            color: white; 
-            border: 1px solid #4C1D95; 
-            padding: 8px 16px; 
-            margin-right: 8px; 
-            border-radius: 20px; 
-            font-size: 14px;
-        }
-        .sub-cat-btn.active { 
-            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
-            border-color: #8B5CF6;
-        }
-        .sub-cat-btn span { margin-right: 5px; }
         
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 12px; 
-            padding: 15px 10px;
-            background: #0d0d2b;
+        .cat-sub {
+            background: #1A1A24;
+            border: 1px solid #2A2A3A;
+            color: #B0B0B0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            cursor: pointer;
         }
-        .movie { 
-            background: #1a1a2e; 
-            border-radius: 10px; 
+        
+        .cat-sub.active {
+            background: #2D1B4E;
+            border: 1px solid #8A2BE2;
+            color: #E0AAFF;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+        
+        /* MOVIE GRID */
+        .section-title {
+            background: #0A0A0F;
+            padding: 20px 16px 12px 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: #E0AAFF;
+            letter-spacing: 1px;
+        }
+        
+        .movie-grid {
+            background: #0A0A0F;
+            padding: 0 16px 20px 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .movie-card {
+            background: #1A1A24;
+            border-radius: 14px;
             overflow: hidden;
-            border: 1px solid #3B1E6D;
+            border: 1px solid #2A2A3A;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .movie img { 
-            width: 100%; 
-            height: 160px; 
-            object-fit: cover; 
-            background: #2d1b4e;
+        
+        .movie-card:active {
+            transform: scale(0.96);
+            box-shadow: 0 0 25px rgba(138, 43, 226, 0.5);
         }
-        .movie p { 
-            padding: 10px 8px; 
-            margin: 0; 
-            font-size: 13px; 
+        
+        .movie-poster {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        
+        .movie-title {
+            padding: 12px 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
             text-align: center;
-            color: #E0E7FF;
+            color: #FFFFFF;
+            text-transform: uppercase;
         }
-        a { text-decoration: none; color: white; }
-        h2 { 
-            padding: 15px 15px 5px 15px; 
-            margin: 0; 
+        
+        /* TRAILER MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active { display: flex; }
+        
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            background: #1A1A24;
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #8A2BE2;
+        }
+        
+        .close-modal {
+            float: right;
+            font-size: 32px;
+            color: #BF40BF;
+            cursor: pointer;
+            line-height: 20px;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 250px;
+            background: #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8A2BE2;
             font-size: 18px;
-            color: #C4B5FD;
-            background: #0d0d2b;
-        }
-        .empty { 
-            grid-column: 1/3; 
-            text-align: center; 
-            padding: 40px 20px; 
-            color: #A78BFA;
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
-    <div class="header">ChilaguCinema</div>
-    
-    <!-- CATEGORY KUU KUBWA -->
-    <div class="main-cat">
-        <div class="main-cat-btn active" onclick="showMainCat('movie')">
-            <span>🎬</span> Singo Movie
+
+    <!-- HEADER NA LOGO -->
+    <div class="header">
+        <img src="https://i.postimg.cc/hhFPvvfd/In-Shot-20260523-092931092.jpg" 
+             alt="Chilagu Legacy Cinema" 
+             class="logo">
+        <div class="tagline">STREAM • LIKE • A • BOSS</div>
+    </div>
+
+    <!-- TRAILER SLIDER KUBWA JUU -->
+    <div class="trailer-slider">
+        <div class="slider-container" id="slider">
+            <div class="slide" onclick="openTrailer('DAKIKA 90 ZA JOTO')">
+                <img src="https://picsum.photos/800/400?random=10" alt="Trailer">
+                <div class="play-btn">▶</div>
+                <div class="slide-overlay">
+                    <div class="slide-title">DAKIKA 90 ZA JOTO</div>
+                    <div class="slide-tag">🔥 TRENDING SASA</div>
+                </div>
+            </div>
+            <div class="slide" onclick="openTrailer('SHADOW CODE')">
+                <img src="https://picsum.photos/800/400?random=11" alt="Trailer">
+                <div class="play-btn">▶</div>
+                <div class="slide-overlay">
+                    <div class="slide-title">SHADOW CODE</div>
+                    <div class="slide-tag">💥 ACTION MPYA</div>
+                </div>
+            </div>
+            <div class="slide" onclick="openTrailer('ENDLESS LOVE')">
+                <img src="https://picsum.photos/800/400?random=12" alt="Trailer">
+                <div class="play-btn">▶</div>
+                <div class="slide-overlay">
+                    <div class="slide-title">ENDLESS LOVE</div>
+                    <div class="slide-tag">💖 ROMANCE</div>
+                </div>
+            </div>
         </div>
-        <div class="main-cat-btn" onclick="showMainCat('series')">
-            <span>📺</span> Series
+        <div class="slider-dots" id="dots"></div>
+    </div>
+
+    <!-- CATEGORY KUBWA -->
+    <div class="main-categories">
+        <button class="cat-main active">
+            <span class="cat-icon">🎬</span>
+            SINGO MOVIE
+        </button>
+        <button class="cat-main inactive">
+            <span class="cat-icon">📺</span>
+            SERIES
+        </button>
+    </div>
+
+    <!-- TRENDING MOVIES NJE -->
+    <div class="trending-section">
+        <div class="section-header">🔥 TRENDING SASA</div>
+        <div class="trending-scroll">
+            <div class="trending-card">
+                <img src="https://picsum.photos/300/400?random=20" class="trending-poster">
+                <div class="trending-title">MJI WA MAFIA</div>
+            </div>
+            <div class="trending-card">
+                <img src="https://picsum.photos/300/400?random=21" class="trending-poster">
+                <div class="trending-title">USIKU WA GIZA</div>
+            </div>
+            <div class="trending-card">
+                <img src="https://picsum.photos/300/400?random=22" class="trending-poster">
+                <div class="trending-title">SAUTI YA MAPENZI</div>
+            </div>
+            <div class="trending-card">
+                <img src="https://picsum.photos/300/400?random=23" class="trending-poster">
+                <div class="trending-title">OPERATION X</div>
+            </div>
         </div>
     </div>
 
-    <!-- CATEGORY NDOGO ZA MOVIE -->
-    <div class="sub-cat show" id="movie-subcat">
-        <button class="sub-cat-btn active" onclick="filterMovies('All', 'movie')"><span>🔥</span>Zote</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Action', 'movie')"><span>💥</span>Action</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Drama', 'movie')"><span>🎭</span>Drama</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Love Story', 'movie')"><span>💖</span>Love Story</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Horror', 'movie')"><span>👻</span>Horror</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Comedy', 'movie')"><span>😂</span>Comedy</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Clips', 'movie')"><span>🎵</span>Clips</button>
+    <!-- CATEGORY NDOGO -->
+    <div class="sub-categories">
+        <button class="cat-sub active">🔥 Zote</button>
+        <button class="cat-sub">💥 Action</button>
+        <button class="cat-sub">😢 Drama</button>
+        <button class="cat-sub">💖 Love</button>
+        <button class="cat-sub">😂 Comedy</button>
+        <button class="cat-sub">👻 Horror</button>
+        <button class="cat-sub">🌍 Documentary</button>
     </div>
 
-    <!-- CATEGORY NDOGO ZA SERIES -->
-    <div class="sub-cat" id="series-subcat">
-        <button class="sub-cat-btn active" onclick="filterMovies('All', 'series')"><span>🔥</span>Zote</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Drama', 'series')"><span>🎭</span>Drama</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Action', 'series')"><span>💥</span>Action</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Love Story', 'series')"><span>💖</span>Love Story</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Thriller', 'series')"><span>😱</span>Thriller</button>
+    <!-- SECTION TITLE -->
+    <div class="section-title">SINGO MOVIE • ZOTE</div>
+
+    <!-- MOVIE GRID -->
+    <div class="movie-grid">
+        <div class="movie-card">
+            <img src="https://picsum.photos/300/400?random=1" class="movie-poster">
+            <div class="movie-title">DAKIKA 90 ZA JOTO</div>
+        </div>
+        <div class="movie-card">
+            <img src="https://picsum.photos/300/400?random=2" class="movie-poster">
+            <div class="movie-title">ENDLESS LOVE</div>
+        </div>
+        <div class="movie-card">
+            <img src="https://picsum.photos/300/400?random=3" class="movie-poster">
+            <div class="movie-title">SHADOW CODE</div>
+        </div>
+        <div class="movie-card">
+            <img src="https://picsum.photos/300/400?random=4" class="movie-poster">
+            <div class="movie-title">MJI WA MAFIA</div>
+        </div>
     </div>
 
-    <h2 id="categoryTitle">Singo Movie - Zote</h2>
-    <div class="grid" id="movieList"></div>
+    <!-- TRAILER MODAL -->
+    <div class="modal" id="trailerModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTrailer()">&times;</span>
+            <h3 id="modalTitle" style="color: #E0AAFF; font-family: 'Orbitron', sans-serif;">TRAILER</h3>
+            <div class="video-placeholder">
+                ▶ TRAILER ITAONEKANA HAPA<br>
+                <small style="color: #888;">Weka link ya YouTube hapa</small>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // WEKA MOVIE ZAKO HAPA. ONGEZA 'type: "movie"' AU 'type: "series"'
-        const movies = [
-            {
-                jina: "DAKIKA 90 ZA JOTO",
-                picha: "https://i.imgur.com/8RKXAIV.jpg",
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                category: "Action",
-                type: "movie"
-            },
-            {
-                jina: "ENDLESS LOVE",
-                picha: "https://i.imgur.com/7bJJKJ2.jpg",
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-                category: "Love Story",
-                type: "movie"
-            },
-            {
-                jina: "SHADOW CODE",
-                picha: "https://i.imgur.com/kLZqQXq.jpg",
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-                category: "Thriller",
-                type: "movie"
-            },
-            {
-                jina: "JOHARI EP 1",
-                picha: "https://i.imgur.com/QWxvQXj.jpg",
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                category: "Drama",
-                type: "series"
-            }
-        ];
-
-        let currentMainCat = 'movie';
-        let currentSubCat = 'All';
-
-        function showMainCat(type) {
-            currentMainCat = type;
-            currentSubCat = 'All';
-            
-            document.querySelectorAll('.main-cat-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            document.getElementById('movie-subcat').classList.remove('show');
-            document.getElementById('series-subcat').classList.remove('show');
-            document.getElementById(type + '-subcat').classList.add('show');
-            
-            document.querySelectorAll('#' + type + '-subcat .sub-cat-btn').forEach((btn, i) => {
-                btn.classList.remove('active');
-                if(i === 0) btn.classList.add('active');
-            });
-            
-            filterMovies('All', type);
-        }
-
-        function filterMovies(cat, mainType) {
-            currentSubCat = cat;
-            if(mainType) currentMainCat = mainType;
-            
-            const subCatDiv = document.getElementById(currentMainCat + '-subcat');
-            subCatDiv.querySelectorAll('.sub-cat-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            const mainTitle = currentMainCat === 'movie' ? 'Singo Movie' : 'Series';
-            document.getElementById('categoryTitle').textContent = mainTitle + ' - ' + (cat === 'All' ? 'Zote' : cat);
-            
-            let filtered = movies.filter(movie => movie.type === currentMainCat);
-            if(cat !== 'All') {
-                filtered = filtered.filter(movie => movie.category === cat);
-            }
-            displayMovies(filtered);
-        }
-
-        function displayMovies(movieArray) {
-            const container = document.getElementById('movieList');
-            container.innerHTML = '';
-            if(movieArray.length === 0) {
-                container.innerHTML = '<p class="empty">Hakuna movie kwenye category hii</p>';
-                return;
-            }
-            movieArray.forEach(movie => {
-                container.innerHTML += `
-                    <a href="${movie.video}" class="movie">
-                        <img src="${movie.picha}" onerror="this.src='https://via.placeholder.com/200x300/1a0d2e/8B5CF6?text=CHILAGU'">
-                        <p>${movie.jina}</p>
-                    </a>
-                `;
+        // SLIDER AUTO-SLIDE
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dots');
+        
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if(i === 0) dot.classList.add('active');
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        });
+        
+        function goToSlide(n) {
+            currentSlide = n;
+            document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
             });
         }
-
-        filterMovies('All', 'movie');
+        
+        // Auto slide kila sekunde 5
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            goToSlide(currentSlide);
+        }, 5000);
+        
+        // TRAILER MODAL
+        function openTrailer(title) {
+            document.getElementById('modalTitle').textContent = title + ' - TRAILER';
+            document.getElementById('trailerModal').classList.add('active');
+        }
+        
+        function closeTrailer() {
+            document.getElementById('trailerModal').classList.remove('active');
+        }
     </script>
+
 </body>
 </html>
