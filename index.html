@@ -14,7 +14,7 @@
             color: #FFFFFF;
         }
         
-        /* HEADER NA LOGO SAFI 100% */
+        /* HEADER NA LOGO TRANSPARENT */
         .header {
             background: #0A0A0F;
             text-align: center;
@@ -31,6 +31,8 @@
             margin-bottom: 8px;
             filter: drop-shadow(0 0 25px #8A2BE2) 
                     drop-shadow(0 0 50px #BF40BF);
+            background: none;
+            border: none;
         }
         
         .tagline {
@@ -317,7 +319,7 @@
             text-transform: uppercase;
         }
         
-        /* TRAILER MODAL SAFI - HAKUNA MAANDISHI */
+        /* TRAILER MODAL - SAFI KABISA */
         .modal {
             display: none;
             position: fixed;
@@ -464,7 +466,7 @@
         </div>
     </div>
 
-    <!-- TRAILER MODAL SAFI -->
+    <!-- TRAILER MODAL -->
     <div class="modal" id="trailerModal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeTrailer()">&times;</span>
@@ -500,7 +502,7 @@
             goToSlide(currentSlide);
         }, 5000);
         
-        // TRAILER - HAKUNA MAANDISHI
+        // TRAILER
         function openTrailer(title, youtubeId) {
             document.getElementById('modalTitle').textContent = title + ' - TRAILER';
             document.getElementById('trailerFrame').src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
