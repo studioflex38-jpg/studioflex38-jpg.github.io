@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chilagu Cinema</title>
+    <style>
+        body { margin: 0; background: #141414; color: white; font-family: Arial; }
+        .header { background: #000; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; color: #E50914; position: sticky; top: 0; }
+        .slider { width: 100%; height: 200px; background: #333; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
+        .movie { background: #222; border-radius: 8px; overflow: hidden; }
+        .movie img { width: 100%; height: 150px; object-fit: cover; }
+        .movie p { padding: 8px; margin: 0; font-size: 14px; text-align: center; }
+        a { text-decoration: none; color: white; }
+        h2 { padding: 0 10px; margin: 15px 0 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">CHILAGU CINEMA</div>
+    
+    <div class="slider">
+        <img src="https://via.placeholder.com/400x200/E50914/FFFFFF?text=CHILAGU+CINEMA" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+
+    <h2>Latest Movies</h2>
+    <div class="grid" id="movieList"></div>
+
+    <script>
+        // HAPA NDIPO UTAWEKA MOVIE ZAKO BAADAYE MJOMBA
+        const movies = [
+            {
+                jina: "Big Buck Bunny",
+                picha: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Big_buck_bunny_poster_big.jpg/200px-Big_buck_bunny_poster_big.jpg",
+                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            },
+            {
+                jina: "Elephants Dream", 
+                picha: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Elephants_Dream_poster.jpg/200px-Elephants_Dream_poster.jpg",
+                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+            },
+            {
+                jina: "Sintel",
+                picha: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Sintel_poster.jpg/200px-Sintel_poster.jpg", 
+                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+            }
+        ];
+
+        const container = document.getElementById('movieList');
+        movies.forEach(movie => {
+            container.innerHTML += `
+                <a href="${movie.video}" class="movie">
+                    <img src="${movie.picha}">
+                    <p>${movie.jina}</p>
+                </a>
+            `;
+        });
+    </script>
+</body>
+</html>
