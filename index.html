@@ -3,36 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chilagu Cinema</title>
+    <title>Chilagu Legacy Cinema</title>
     <style>
-        body { margin: 0; background: #0f0f0f; color: white; font-family: Arial; }
-        .header { background: #000; padding: 15px; text-align: center; font-size: 26px; font-weight: bold; color: #E50914; position: sticky; top: 0; z-index: 100; }
+        body { 
+            margin: 0; 
+            background: #0d0d2b; 
+            color: white; 
+            font-family: Arial;
+            min-height: 100vh;
+        }
+        .header { 
+            background: #000; 
+            padding: 15px; 
+            text-align: center; 
+            font-size: 26px; 
+            font-weight: bold; 
+            color: #8B5CF6; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 2px 15px rgba(139, 92, 246, 0.4);
+        }
         
         /* CATEGORY KUU - SINGO MOVIE & SERIES */
-        .main-cat { display: flex; gap: 10px; padding: 15px 10px 5px 10px; background: #141414; }
-        .main-cat-btn { flex: 1; background: #222; border: 2px solid #333; border-radius: 12px; padding: 15px 10px; text-align: center; font-size: 18px; font-weight: bold; }
-        .main-cat-btn.active { background: #E50914; border-color: #E50914; }
-        .main-cat-btn span { font-size: 30px; display: block; margin-bottom: 5px; }
+        .main-cat { 
+            display: flex; 
+            gap: 10px; 
+            padding: 15px 10px 10px 10px; 
+            background: #0d0d2b;
+        }
+        .main-cat-btn { 
+            flex: 1; 
+            background: #1a1a2e; 
+            border: 2px solid #3B1E6D; 
+            border-radius: 12px; 
+            padding: 15px 10px; 
+            text-align: center; 
+            font-size: 18px; 
+            font-weight: bold;
+        }
+        .main-cat-btn.active { 
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%); 
+            border-color: #8B5CF6;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
+        }
+        .main-cat-btn span { font-size: 32px; display: block; margin-bottom: 5px; }
         
         /* CATEGORY NDOGO */
-        .sub-cat { background: #1a1a1a; padding: 10px; overflow-x: auto; white-space: nowrap; display: none; }
+        .sub-cat { 
+            background: #1a0d2e; 
+            padding: 10px; 
+            overflow-x: auto; 
+            white-space: nowrap; 
+            display: none;
+            border-bottom: 1px solid #3B1E6D;
+        }
         .sub-cat.show { display: block; }
-        .sub-cat-btn { background: #333; color: white; border: none; padding: 8px 14px; margin-right: 8px; border-radius: 20px; font-size: 13px; }
-        .sub-cat-btn.active { background: #E50914; }
-        .sub-cat-btn span { margin-right: 4px; }
+        .sub-cat-btn { 
+            background: #2d1b4e; 
+            color: white; 
+            border: 1px solid #4C1D95; 
+            padding: 8px 16px; 
+            margin-right: 8px; 
+            border-radius: 20px; 
+            font-size: 14px;
+        }
+        .sub-cat-btn.active { 
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            border-color: #8B5CF6;
+        }
+        .sub-cat-btn span { margin-right: 5px; }
         
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
-        .movie { background: #222; border-radius: 8px; overflow: hidden; }
-        .movie img { width: 100%; height: 160px; object-fit: cover; background: #333; }
-        .movie p { padding: 8px; margin: 0; font-size: 13px; text-align: center; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+            padding: 15px 10px;
+            background: #0d0d2b;
+        }
+        .movie { 
+            background: #1a1a2e; 
+            border-radius: 10px; 
+            overflow: hidden;
+            border: 1px solid #3B1E6D;
+        }
+        .movie img { 
+            width: 100%; 
+            height: 160px; 
+            object-fit: cover; 
+            background: #2d1b4e;
+        }
+        .movie p { 
+            padding: 10px 8px; 
+            margin: 0; 
+            font-size: 13px; 
+            text-align: center;
+            color: #E0E7FF;
+        }
         a { text-decoration: none; color: white; }
-        h2 { padding: 0 10px; margin: 15px 0 5px 0; font-size: 18px; }
+        h2 { 
+            padding: 15px 15px 5px 15px; 
+            margin: 0; 
+            font-size: 18px;
+            color: #C4B5FD;
+            background: #0d0d2b;
+        }
+        .empty { 
+            grid-column: 1/3; 
+            text-align: center; 
+            padding: 40px 20px; 
+            color: #A78BFA;
+        }
     </style>
 </head>
 <body>
-    <div class="header">CHILAGU CINEMA</div>
+    <div class="header">CHILAGU LEGACY CINEMA</div>
     
-    <!-- CATEGORY KUU -->
+    <!-- CATEGORY KUU KUBWA -->
     <div class="main-cat">
         <div class="main-cat-btn active" onclick="showMainCat('movie')">
             <span>🎬</span> Singo Movie
@@ -46,8 +133,9 @@
     <div class="sub-cat show" id="movie-subcat">
         <button class="sub-cat-btn active" onclick="filterMovies('All', 'movie')"><span>🔥</span>Zote</button>
         <button class="sub-cat-btn" onclick="filterMovies('Action', 'movie')"><span>💥</span>Action</button>
-        <button class="sub-cat-btn" onclick="filterMovies('Horror', 'movie')"><span>👻</span>Horror</button>
+        <button class="sub-cat-btn" onclick="filterMovies('Drama', 'movie')"><span>🎭</span>Drama</button>
         <button class="sub-cat-btn" onclick="filterMovies('Love Story', 'movie')"><span>💖</span>Love Story</button>
+        <button class="sub-cat-btn" onclick="filterMovies('Horror', 'movie')"><span>👻</span>Horror</button>
         <button class="sub-cat-btn" onclick="filterMovies('Comedy', 'movie')"><span>😂</span>Comedy</button>
         <button class="sub-cat-btn" onclick="filterMovies('Clips', 'movie')"><span>🎵</span>Clips</button>
     </div>
@@ -58,6 +146,7 @@
         <button class="sub-cat-btn" onclick="filterMovies('Drama', 'series')"><span>🎭</span>Drama</button>
         <button class="sub-cat-btn" onclick="filterMovies('Action', 'series')"><span>💥</span>Action</button>
         <button class="sub-cat-btn" onclick="filterMovies('Love Story', 'series')"><span>💖</span>Love Story</button>
+        <button class="sub-cat-btn" onclick="filterMovies('Thriller', 'series')"><span>😱</span>Thriller</button>
     </div>
 
     <h2 id="categoryTitle">Singo Movie - Zote</h2>
@@ -67,32 +156,32 @@
         // WEKA MOVIE ZAKO HAPA. ONGEZA 'type: "movie"' AU 'type: "series"'
         const movies = [
             {
-                jina: "JOHARI EP 1",
+                jina: "DAKIKA 90 ZA JOTO",
                 picha: "https://i.imgur.com/8RKXAIV.jpg",
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                category: "Love Story",
-                type: "series"
-            },
-            {
-                jina: "RAMBO BONGO",
-                picha: "https://i.imgur.com/7bJJKJ2.jpg",
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
                 category: "Action",
                 type: "movie"
             },
             {
-                jina: "MAITI KUZIMU",
-                picha: "https://i.imgur.com/kLZqQXq.jpg",
-                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-                category: "Horror",
+                jina: "ENDLESS LOVE",
+                picha: "https://i.imgur.com/7bJJKJ2.jpg",
+                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                category: "Love Story",
                 type: "movie"
             },
             {
-                jina: "DJ CHILAGU MIX",
+                jina: "SHADOW CODE",
+                picha: "https://i.imgur.com/kLZqQXq.jpg",
+                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+                category: "Thriller",
+                type: "movie"
+            },
+            {
+                jina: "JOHARI EP 1",
                 picha: "https://i.imgur.com/QWxvQXj.jpg",
                 video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-                category: "Clips",
-                type: "movie"
+                category: "Drama",
+                type: "series"
             }
         ];
 
@@ -103,16 +192,13 @@
             currentMainCat = type;
             currentSubCat = 'All';
             
-            // Badilisha button kuu
             document.querySelectorAll('.main-cat-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
             
-            // Onyesha sub-category sahihi
             document.getElementById('movie-subcat').classList.remove('show');
             document.getElementById('series-subcat').classList.remove('show');
             document.getElementById(type + '-subcat').classList.add('show');
             
-            // Reset active ya sub-cat
             document.querySelectorAll('#' + type + '-subcat .sub-cat-btn').forEach((btn, i) => {
                 btn.classList.remove('active');
                 if(i === 0) btn.classList.add('active');
@@ -125,16 +211,13 @@
             currentSubCat = cat;
             if(mainType) currentMainCat = mainType;
             
-            // Badilisha button active
             const subCatDiv = document.getElementById(currentMainCat + '-subcat');
             subCatDiv.querySelectorAll('.sub-cat-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
             
-            // Badilisha title
             const mainTitle = currentMainCat === 'movie' ? 'Singo Movie' : 'Series';
             document.getElementById('categoryTitle').textContent = mainTitle + ' - ' + (cat === 'All' ? 'Zote' : cat);
             
-            // Filter movie
             let filtered = movies.filter(movie => movie.type === currentMainCat);
             if(cat !== 'All') {
                 filtered = filtered.filter(movie => movie.category === cat);
@@ -146,20 +229,19 @@
             const container = document.getElementById('movieList');
             container.innerHTML = '';
             if(movieArray.length === 0) {
-                container.innerHTML = '<p style="grid-column: 1/3; text-align: center; padding: 20px;">Hakuna movie kwenye category hii</p>';
+                container.innerHTML = '<p class="empty">Hakuna movie kwenye category hii</p>';
                 return;
             }
             movieArray.forEach(movie => {
                 container.innerHTML += `
                     <a href="${movie.video}" class="movie">
-                        <img src="${movie.picha}" onerror="this.src='https://via.placeholder.com/200x300/333/fff?text=No+Image'">
+                        <img src="${movie.picha}" onerror="this.src='https://via.placeholder.com/200x300/1a0d2e/8B5CF6?text=CHILAGU'">
                         <p>${movie.jina}</p>
                     </a>
                 `;
             });
         }
 
-        // Onyesha movie mwanzoni
         filterMovies('All', 'movie');
     </script>
 </body>
