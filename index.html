@@ -14,7 +14,6 @@
             color: #FFFFFF;
         }
         
-        /* HEADER NA LOGO TRANSPARENT */
         .header {
             background: #0A0A0F;
             text-align: center;
@@ -47,7 +46,6 @@
             text-transform: uppercase;
         }
         
-        /* TRAILER SLIDER */
         .trailer-slider {
             position: relative;
             width: 100%;
@@ -145,7 +143,6 @@
             border-radius: 4px;
         }
         
-        /* CATEGORY KUBWA */
         .main-categories {
             background: #121212;
             padding: 16px;
@@ -190,7 +187,6 @@
             filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
         }
         
-        /* TRENDING */
         .trending-section {
             background: #0A0A0F;
             padding: 16px;
@@ -240,7 +236,6 @@
             color: #FFF;
         }
         
-        /* CATEGORY NDOGO */
         .sub-categories {
             background: #121212;
             padding: 12px 16px;
@@ -270,7 +265,6 @@
             box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
         }
         
-        /* MOVIE GRID */
         .section-title {
             background: #0A0A0F;
             padding: 20px 16px 12px 16px;
@@ -295,31 +289,69 @@
             overflow: hidden;
             border: 1px solid #2A2A3A;
             transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .movie-card:active {
-            transform: scale(0.96);
-            box-shadow: 0 0 25px rgba(138, 43, 226, 0.5);
         }
         
         .movie-poster {
             width: 100%;
             height: 220px;
             object-fit: cover;
+            cursor: pointer;
+        }
+        
+        .movie-info {
+            padding: 10px;
         }
         
         .movie-title {
-            padding: 12px 10px;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
             font-size: 12px;
             text-align: center;
             color: #FFFFFF;
             text-transform: uppercase;
+            margin-bottom: 8px;
         }
         
-        /* TRAILER MODAL - SAFI KABISA */
+        .movie-price {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #E0AAFF;
+            margin-bottom: 8px;
+        }
+        
+        .btn-watch {
+            width: 100%;
+            background: linear-gradient(135deg, #06FFA5, #00D9FF);
+            color: #0A0A0F;
+            border: none;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+        
+        .btn-buy {
+            width: 100%;
+            background: linear-gradient(135deg, #FF006E, #FB5607);
+            color: white;
+            border: none;
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+        
+        .btn-watch:active, .btn-buy:active {
+            transform: scale(0.95);
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -327,53 +359,146 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.97);
+            background: rgba(0,0,0,0.95);
             z-index: 999;
             align-items: center;
             justify-content: center;
+            padding: 16px;
         }
         
         .modal.active { display: flex; }
         
         .modal-content {
-            width: 92%;
-            max-width: 500px;
-            background: #1A1A24;
-            border-radius: 18px;
-            padding: 16px;
+            width: 100%;
+            max-width: 900px;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
             border: 2px solid #8A2BE2;
             box-shadow: 0 0 50px rgba(138, 43, 226, 0.7);
+            position: relative;
         }
         
-        .close-modal {
-            float: right;
-            font-size: 36px;
-            color: #BF40BF;
-            cursor: pointer;
-            line-height: 20px;
-            font-weight: 300;
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #1A1A24;
+            border-bottom: 1px solid #2A2A3A;
         }
         
         #modalTitle {
             color: #E0AAFF;
             font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            margin-bottom: 12px;
+            font-size: 16px;
             font-weight: 800;
+            margin: 0;
+        }
+        
+        .close-modal {
+            font-size: 32px;
+            color: #BF40BF;
+            cursor: pointer;
+            line-height: 1;
+            font-weight: 300;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
         }
         
         #trailerFrame {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 260px;
-            border-radius: 12px;
+            height: 100%;
             border: none;
-            background: #000;
+        }
+        
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .payment-modal.active { display: flex; }
+        
+        .payment-content {
+            background: #1A1A24;
+            border: 2px solid #8A2BE2;
+            border-radius: 20px;
+            padding: 30px 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .payment-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: #E0AAFF;
+            margin-bottom: 10px;
+        }
+        
+        .payment-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: #FF006E;
+            margin: 15px 0;
+        }
+        
+        .payment-text {
+            color: #B0B0B0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .payment-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FF006E, #FB5607);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .close-payment {
+            width: 100%;
+            background: #2A2A3A;
+            color: #B0B0B0;
+            border: none;
+            padding: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 12px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER NA LOGO TRANSPARENT -->
     <div class="header">
         <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" 
              alt="Chilagu Legacy Cinema" 
@@ -381,10 +506,10 @@
         <div class="tagline">STREAM • LIKE • A • BOSS</div>
     </div>
 
-    <!-- TRAILER SLIDER -->
+    <!-- SLIDER - WEKA LINK ZA TRAILER ZAKO HAPA -->
     <div class="trailer-slider">
         <div class="slider-container" id="slider">
-            <div class="slide" onclick="openTrailer('SHADOW CODE', 'dQw4w9WgXcQ')">
+            <div class="slide" onclick="openTrailer('SHADOW CODE', 'WEKA_LINK_YA_TRAILER_HAPA')">
                 <img src="https://picsum.photos/800/400?random=11" alt="Trailer">
                 <div class="play-btn">▶</div>
                 <div class="slide-overlay">
@@ -392,7 +517,7 @@
                     <div class="slide-tag">💥 ACTION MPYA</div>
                 </div>
             </div>
-            <div class="slide" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'dQw4w9WgXcQ')">
+            <div class="slide" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'WEKA_LINK_YA_TRAILER_HAPA')">
                 <img src="https://picsum.photos/800/400?random=10" alt="Trailer">
                 <div class="play-btn">▶</div>
                 <div class="slide-overlay">
@@ -404,7 +529,6 @@
         <div class="slider-dots" id="dots"></div>
     </div>
 
-    <!-- CATEGORY KUBWA -->
     <div class="main-categories">
         <button class="cat-main active">
             <span class="cat-icon">🎬</span>
@@ -416,7 +540,6 @@
         </button>
     </div>
 
-    <!-- TRENDING -->
     <div class="trending-section">
         <div class="section-header">🔥 TRENDING SASA</div>
         <div class="trending-scroll">
@@ -435,7 +558,6 @@
         </div>
     </div>
 
-    <!-- CATEGORY NDOGO -->
     <div class="sub-categories">
         <button class="cat-sub active">🔥 Zote</button>
         <button class="cat-sub">💥 Action</button>
@@ -445,38 +567,89 @@
         <button class="cat-sub">👻 Horror</button>
     </div>
 
-    <!-- MOVIE GRID -->
+    <!-- MOVIE GRID - HAPA UNAONGEZA MOVIE ZAKO -->
     <div class="section-title">SINGO MOVIE • ZOTE</div>
     <div class="movie-grid">
+        
+        <!-- MOVIE 1: BURE -->
         <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=1" class="movie-poster">
-            <div class="movie-title">DAKIKA 90 ZA JOTO</div>
+            <img src="https://picsum.photos/300/400?random=1" class="movie-poster" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'WEKA_LINK_YA_MOVIE_BURE')">
+            <div class="movie-info">
+                <div class="movie-title">DAKIKA 90 ZA JOTO</div>
+                <div class="movie-price">BURE</div>
+                <button class="btn-watch" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'WEKA_LINK_YA_MOVIE_BURE')">
+                    ▶ TAZAMA BURE
+                </button>
+            </div>
         </div>
+        
+        <!-- MOVIE 2: KUUZA -->
         <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=2" class="movie-poster">
-            <div class="movie-title">ENDLESS LOVE</div>
+            <img src="https://picsum.photos/300/400?random=2" class="movie-poster" onclick="openPayment('SHADOW CODE', 3000, 'WEKA_LINK_YA_MALIPO')">
+            <div class="movie-info">
+                <div class="movie-title">SHADOW CODE</div>
+                <div class="movie-price">TSh 3,000</div>
+                <button class="btn-buy" onclick="openPayment('SHADOW CODE', 3000, 'WEKA_LINK_YA_MALIPO')">
+                    🔒 NUNUA SASA
+                </button>
+            </div>
         </div>
+        
+        <!-- MOVIE 3: KUUZA -->
         <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=3" class="movie-poster">
-            <div class="movie-title">SHADOW CODE</div>
+            <img src="https://picsum.photos/300/400?random=3" class="movie-poster" onclick="openPayment('ENDLESS LOVE', 2500, 'WEKA_LINK_YA_MALIPO')">
+            <div class="movie-info">
+                <div class="movie-title">ENDLESS LOVE</div>
+                <div class="movie-price">TSh 2,500</div>
+                <button class="btn-buy" onclick="openPayment('ENDLESS LOVE', 2500, 'WEKA_LINK_YA_MALIPO')">
+                    🔒 NUNUA SASA
+                </button>
+            </div>
         </div>
+        
+        <!-- MOVIE 4: BURE -->
         <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=4" class="movie-poster">
-            <div class="movie-title">MJI WA MAFIA</div>
+            <img src="https://picsum.photos/300/400?random=4" class="movie-poster" onclick="openTrailer('MJI WA MAFIA', 'WEKA_LINK_YA_MOVIE_BURE')">
+            <div class="movie-info">
+                <div class="movie-title">MJI WA MAFIA</div>
+                <div class="movie-price">BURE</div>
+                <button class="btn-watch" onclick="openTrailer('MJI WA MAFIA', 'WEKA_LINK_YA_MOVIE_BURE')">
+                    ▶ TAZAMA BURE
+                </button>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- VIDEO MODAL -->
+    <div class="modal" id="trailerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">TRAILER</h3>
+                <button class="close-modal" onclick="closeTrailer()">&times;</button>
+            </div>
+            <div class="video-wrapper">
+                <iframe id="trailerFrame" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
-    <!-- TRAILER MODAL -->
-    <div class="modal" id="trailerModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeTrailer()">&times;</span>
-            <h3 id="modalTitle">TRAILER</h3>
-            <iframe id="trailerFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <!-- PAYMENT MODAL -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-content">
+            <div class="payment-title" id="paymentMovieTitle">SHADOW CODE</div>
+            <div class="payment-price" id="paymentPrice">TSh 3,000</div>
+            <div class="payment-text">
+                Lipa sasa upate access ya movie hii. Baada ya malipo utapata link ya kutazama moja kwa moja kwenye WhatsApp.
+            </div>
+            <button class="payment-btn" id="paymentBtn" onclick="processPayment()">
+                💳 LIPA SASA
+            </button>
+            <button class="close-payment" onclick="closePayment()">GHAIRI</button>
         </div>
     </div>
 
     <script>
-        // SLIDER
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const dotsContainer = document.getElementById('dots');
@@ -502,16 +675,33 @@
             goToSlide(currentSlide);
         }, 5000);
         
-        // TRAILER
-        function openTrailer(title, youtubeId) {
-            document.getElementById('modalTitle').textContent = title + ' - TRAILER';
-            document.getElementById('trailerFrame').src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
+        function openTrailer(title, embedUrl) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('trailerFrame').src = embedUrl;
             document.getElementById('trailerModal').classList.add('active');
         }
         
         function closeTrailer() {
             document.getElementById('trailerFrame').src = '';
             document.getElementById('trailerModal').classList.remove('active');
+        }
+        
+        let currentPaymentLink = '';
+        
+        function openPayment(movieName, price, paymentLink) {
+            document.getElementById('paymentMovieTitle').textContent = movieName;
+            document.getElementById('paymentPrice').textContent = 'TSh ' + price.toLocaleString();
+            currentPaymentLink = paymentLink;
+            document.getElementById('paymentModal').classList.add('active');
+        }
+        
+        function closePayment() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+        
+        function processPayment() {
+            window.open(currentPaymentLink, '_blank');
+            closePayment();
         }
     </script>
 
