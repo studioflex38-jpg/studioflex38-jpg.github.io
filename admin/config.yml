@@ -2,32 +2,30 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "images/uploads"
-public_folder: "/images/uploads"
+media_folder: "static/images"
+public_folder: "/images"
 
 collections:
     - name: "content"
     label: "Movies & Series"
     folder: "_content"
     create: true
-    slug: "{{slug}}"
     fields:
             - {label: "Title", name: "title", widget: "string"}
-            - label: "Category"
-        name: "category"
-        widget: "select"
-        options: ["series", "singo"]
-            - label: "Genre"
-        name: "genre"
-        widget: "select"
-        options: ["Drama", "Action", "Love", "Comedy"]
-            - label: "Type"
-        name: "type"
-        widget: "select"
-        options: ["Series", "Comedy", "Action", "Drama"]
-            - {label: "Video Link", name: "video_url", widget: "string"}
             - {label: "Thumbnail", name: "thumbnail", widget: "image"}
-            - {label: "Duration", name: "duration", widget: "string"}
-            - {label: "Ni Bure?", name: "is_free", widget: "boolean", default: true}
-            - {label: "Bei", name: "price", widget: "number", default: 0}
-            - {label: "Payment Link", name: "payment_link", widget: "string", required: false}
+            - {label: "Category Kubwa", name: "category", widget: "select", options: ["series", "singo"]}
+            - {label: "Genre", name: "genre", widget: "select", options: ["Action", "Love Story", "Drama", "Horror", "Comedy"]}
+            - {label: "Type", name: "type", widget: "select", options: ["series", "singo"]}
+            - {label: "Weka Kwenye Slide?", name: "featured", widget: "boolean", default: false}
+            - {label: "Ni BURE?", name: "is_free", widget: "boolean", default: true}
+            - {label: "Bei TSh", name: "price", widget: "number", default: 0, value_type: "int"}
+            - {label: "Video Link", name: "video", widget: "string", required: false, hint: "Kwa Singo Movie tu"}
+            - {label: "Idadi ya Episodes", name: "episodes", widget: "number", required: false, hint: "Kwa Series tu"}
+            - label: "List ya Episodes"
+        name: "episodeList"
+        widget: "list"
+        required: false
+        hint: "Kwa Series tu"
+        fields:
+                    - {label: "Jina la Episode", name: "title", widget: "string"}
+                    - {label: "Video Link", name: "video", widget: "string"}
