@@ -8,26 +8,6 @@
     "featured": true,
     "is_free": true,
     "price": 0,
-    : [
-      {
-        "title": "Episode 1: Mwanzo",
-        "video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-      },
-      {
-        "title": "Episode 2: Shida",
-        "video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-      }
-    ]
-  },
-  {
-    "title": "LOVE STORY TZ",
-    "thumbnail": "https://i.imgur.com/q7g5W8D.jpg",
-    "category": "singo",
-    "genre": "Love Story",
-    "type": "singo",
-    "featured": true,
-    "is_free": false,
-    "price": 3000,
-    "video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    
   }
 ]
