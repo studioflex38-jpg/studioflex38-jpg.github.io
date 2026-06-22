@@ -19,14 +19,13 @@ collections:
             - {label: "Type", name: "type", widget: "select", options: ["series", "singo"]}
             - {label: "Weka Kwenye Slide?", name: "featured", widget: "boolean", default: false}
             - {label: "Ni BURE?", name: "is_free", widget: "boolean", default: true}
-            - {label: "Bei TSh", name: "price", widget: "number", default: 0, value_type: "int"}
-            - {label: "Video Link", name: "video", widget: "string", required: false, hint: "Kwa Singo Movie tu"}
-            - {label: "Idadi ya Episodes", name: "episodes", widget: "number", required: false, hint: "Kwa Series tu"}
+            - {label: "Bei TSh", name: "price", widget: "number", default: 0}
+            - {label: "Video Link", name: "video", widget: "string", required: false}
+            - {label: "Idadi ya Episodes", name: "episodes", widget: "number", required: false}
             - label: "List ya Episodes"
         name: "episodeList"
         widget: "list"
         required: false
-        hint: "Kwa Series tu"
         fields:
                     - {label: "Jina la Episode", name: "title", widget: "string"}
                     - {label: "Video Link", name: "video", widget: "string"}
