@@ -14,7 +14,7 @@
       color: #fff;
     }
 
-    /* HEADER KAMA PICHA YA 3 */
+    /* HEADER */
 .header {
       background: #000;
       padding: 14px 16px;
@@ -50,7 +50,7 @@
       line-height: 1.3;
     }
 
-    /* HERO AUTO SLIDE + THUMBNAIL KUBWA */
+    /* HERO AUTO SLIDE + THUMBNAIL */
 .hero {
       position: relative;
       height: 420px;
@@ -113,7 +113,6 @@
       font-weight: 700;
       display: inline-block;
     }
-    /* THUMBNAIL ZA SLIDE - ZINAZOBONYEZEKA */
 .slide-thumbs {
       position: absolute;
       bottom: 10px;
@@ -252,8 +251,30 @@
       border-radius: 4px;
       font-weight: 700;
     }
+.card-price {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: #0f0;
+      color: #000;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 900;
+    }
+.card-free {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: #a855f7;
+      color: #fff;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 900;
+    }
 
-    /* MODAL YA ALBUM/PLAYLIST KAMA PICHA YA 2 */
+    /* MODAL YA ALBUM */
 .modal {
       display: none;
       position: fixed;
@@ -380,7 +401,7 @@
         const res = await fetch('/.netlify/functions/content');
         allContent = await res.json();
       } catch (e) {
-        allContent = []; // HAKUNA SAMPLE DATA - APP SAFI
+        allContent = [];
       }
       initHeroSlider();
       renderContent();
@@ -388,10 +409,10 @@
 
     function initHeroSlider() {
       const hero = document.getElementById('hero');
-      const featured = allContent.filter(item => item.featured || item.episodes >= 5).slice(0, 6);
+      const featured = allContent.filter(item => item.featured).slice(0, 6);
 
       if (featured.length === 0) {
-        hero.innerHTML = `<div class="hero-content"><div style="padding:100px 20px;text-align:center;color:#444;">Hakuna Featured Content.<br>Post kwenye /admin/</div></div>`;
+        hero.innerHTML = `<div class="hero-content"><div style="padding:100px 20px;text-align:center;color:#444;">Hakuna Featured Content.<br>Post kwenye /admin/ na uweke Featured = Yes</div></div>`;
         return;
       }
 
@@ -442,12 +463,12 @@
     }
 
     function playFeatured() {
-      const featured = allContent.filter(item => item.featured || item.episodes >= 5);
+      const featured = allContent.filter(item => item.featured);
       const item = featured[currentSlide];
       if (item.episodes) {
         openAlbum(item);
       } else {
-        window.open(item.video, '_blank');
+        checkPayment(item.video, item.is_free, item.price, item.title);
       }
     }
 
@@ -463,10 +484,11 @@
         currentCat === 'series'? 'SERIES ZOTE' : 'SINGO MOVIE ZOTE';
 
       grid.innerHTML = filtered.map(item => `
-        <div class="card" onclick="${item.episodes? `openAlbum(${JSON.stringify(item).replace(/"/g, '&quot;')})` : `window.open('${item.video}', '_blank')`}">
+        <div class="card" onclick="${item.episodes? `openAlbum(${JSON.stringify(item).replace(/"/g, '&quot;')})` : `checkPayment('${item.video}', ${item.is_free}, ${item.price}, '${item.title.replace(/'/g, "\\'")}')`}">
           <img src="${item.thumbnail}" alt="${item.title}">
           ${item.episodes? `<div class="card-episode">EP ${item.episodes}</div>` : ''}
           <div class="card-tag">${item.type.toUpperCase()}</div>
+          ${!item.is_free? `<div class="card-price">TSh ${item.price}</div>` : `<div class="card-free">BURE</div>`}
           <div class="card-body">
             <div class="card-title">${item.title}</div>
           </div>
@@ -474,11 +496,19 @@
       `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#444;padding:40px 0;">Hakuna content bado.<br>Ingia /admin/ post kazi zako</p>';
     }
 
+    function checkPayment(video, isFree, price, title) {
+      if (isFree) {
+        window.open(video, '_blank');
+      } else {
+        alert(`LIPA TSh ${price} KUTAZAMA:\n${title}\n\nWasiliana: +255 XXX XXX XXX`);
+      }
+    }
+
     function openAlbum(item) {
       document.getElementById('modal-title').textContent = item.title;
       const list = document.getElementById('episode-list');
       list.innerHTML = item.episodeList.map((ep, i) => `
-        <div class="episode" onclick="window.open('${ep.video}', '_blank')">
+        <div class="episode" onclick="checkPayment('${ep.video}', ${item.is_free}, ${item.price}, '${ep.title.replace(/'/g, "\\'")}')">
           <div class="episode-num">${i + 1}</div>
           <div class="episode-info">
             <div class="episode-title">${ep.title}</div>
