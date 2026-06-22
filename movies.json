@@ -2,12 +2,12 @@
   {
     "title": "MPANDA MNAZI KWA MKONO MMOJA",
     "thumbnail": "https://i.postimg.cc/HLJg2GPL/file-0000000001e471f481a5cc83ddc746bd.png",
-    "category": "singo movie",
+    "video": "https://link-ya-video-yako.mp4",
+    "category": "singo",
     "genre": "Drama",
-    "type": "Singo movie",
+    "type": "singo",
     "featured": true,
     "is_free": true,
-    "price": 0,
-    
+    "price": 0
   }
 ]
