@@ -10,72 +10,88 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #0a0a0a; color: #fff;
         }
-    .header {
+ .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; background: #000; position: sticky; top: 0; z-index: 100;
+            padding: 12px 20px; background: #000; position: sticky; top: 0; z-index: 100;
+            gap: 15px;
         }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo img { width: 30px; height: 30px; object-fit: contain; }
-    .logo h1 { color: #a855f7; font-size: 20px; letter-spacing: 1px; }
+ .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+ .logo img { width: 30px; height: 30px; object-fit: contain; }
+ .logo h1 { color: #a855f7; font-size: 18px; letter-spacing: 1px; }
       
-    .banner {
-            position: relative; width: 100%; height: 320px; overflow: hidden;
+ .search-box {
+            flex: 1; max-width: 400px; position: relative;
         }
-    .banner-slide {
+ .search-box input {
+            width: 100%; padding: 10px 40px 10px 15px; border-radius: 25px;
+            border: 1px solid #333; background: #1a1a1a; color: #fff;
+            font-size: 14px; outline: none;
+        }
+ .search-box input:focus { border-color: #a855f7; }
+ .search-icon {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            color: #888; pointer-events: none;
+        }
+      
+ .banner {
+            position: relative; width: 100%; height: 320px; overflow: hidden; background: #111;
+        }
+ .banner-slide {
             position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s;
             background-size: cover; background-position: center;
             display: flex; align-items: flex-end; padding: 20px;
         }
-    .banner-slide.active { opacity: 1; }
-    .banner-slide::after {
+ .banner-slide.active { opacity: 1; }
+ .banner-slide::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(to top, #0a0a0a 0%, transparent 60%);
         }
-    .banner-content { position: relative; z-index: 2; }
-    .play-icon {
+ .banner-content { position: relative; z-index: 2; }
+ .play-icon {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 60px; height: 60px; background: #a855f7; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; font-size: 24px;
             cursor: pointer; z-index: 3;
         }
-    .banner-badge { background: #a855f7; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-    .dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; cursor: pointer; }
-    .dot.active { background: #a855f7; }
+ .banner-badge { background: #a855f7; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+ .dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+ .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; cursor: pointer; }
+ .dot.active { background: #a855f7; }
       
-    .tabs { display: flex; gap: 15px; padding: 20px; }
-    .tab {
+ .tabs { display: flex; gap: 15px; padding: 20px; }
+ .tab {
             flex: 1; padding: 20px; border-radius: 12px; text-align: center;
             background: #1a1a1a; cursor: pointer; transition: 0.3s;
         }
-    .tab.active { background: #a855f7; }
-    .filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
-    .filter {
+ .tab.active { background: #a855f7; }
+ .filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
+ .filter {
             padding: 8px 16px; background: #1a1a1a; border-radius: 20px;
             white-space: nowrap; cursor: pointer; border: none; color: #fff;
         }
-    .filter.active { background: #a855f7; }
-    .section-title { padding: 20px; font-size: 18px; font-weight: 600; color: #a855f7; }
-    .movies-grid {
+ .filter.active { background: #a855f7; }
+ .section-title { padding: 20px; font-size: 18px; font-weight: 600; color: #a855f7; }
+ .movies-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px; padding: 0 20px 40px;
         }
-    .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
-    .movie-card img { width: 100%; height: 220px; object-fit: cover; }
-    .movie-info { padding: 10px; }
-    .movie-title { font-size: 14px; margin-bottom: 8px; height: 40px; overflow: hidden; }
-    .price { color: #a855f7; font-weight: bold; font-size: 14px; }
-    .price.free { color: #22c55e; }
-    .btn-lipia {
+ .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
+ .movie-card img { width: 100%; height: 220px; object-fit: cover; }
+ .movie-info { padding: 10px; }
+ .movie-title { font-size: 14px; margin-bottom: 8px; height: 40px; overflow: hidden; }
+ .price { color: #a855f7; font-weight: bold; font-size: 14px; }
+ .price.free { color: #22c55e; }
+ .btn-lipia {
             display: block; width: 100%; padding: 8px; margin-top: 8px;
             background: #a855f7; color: white; text-align: center;
             border-radius: 6px; text-decoration: none; font-weight: 600;
         }
-    .btn-bure { background: #22c55e; }
-    .badge {
+ .btn-bure { background: #22c55e; }
+ .badge {
             position: absolute; top: 8px; left: 8px; background: #a855f7;
             padding: 4px 8px; border-radius: 4px; font-size: 11px;
         }
+ .no-results { text-align: center; padding: 40px 20px; color: #888; }
     </style>
 </head>
 <body>
@@ -84,7 +100,10 @@
             <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu Logo">
             <h1>CHILAGU LEGACY</h1>
         </div>
-        <div style="font-size:12px; color:#888;">STREAM • LIKE • A • BOSS</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Tafuta movie...">
+            <span class="search-icon">🔍</span>
+        </div>
     </div>
 
     <div class="banner" id="banner-slider">
@@ -104,21 +123,21 @@
         <button class="filter" data-genre="Love">💖 Love</button>
     </div>
 
-    <h3 class="section-title" id="section-title">SERIES ZOTE</h3>
+    <h3 class="section-title" id="section-title">MOVIES ZOTE</h3>
     <div class="movies-grid" id="movies-container"></div>
 
     <script>
         let allMovies = [];
-        let currentType = 'series';
+        let currentType = 'all';
         let currentGenre = 'all';
+        let searchQuery = '';
         let slideIndex = 0;
         let slideInterval;
 
         fetch('movie.json')
-        .then(res => res.json())
-        .then(movies => {
+     .then(res => res.json())
+     .then(movies => {
                 allMovies = movies;
-                // WEKA TAB SAHI AUTOMATIC
                 if(movies.length > 0) {
                     currentType = movies[0].type;
                     document.querySelector(`.tab[data-type="${currentType}"]`).classList.add('active');
@@ -126,9 +145,9 @@
                 createBannerSlider(movies);
                 displayMovies();
             })
-        .catch(err => {
+     .catch(err => {
                 document.getElementById('movies-container').innerHTML = 
-                '<p style="text-align:center; padding:20px;">Hakikisha file inaitwa movie.json</p>';
+                '<div class="no-results">Hakikisha file inaitwa movie.json na iko folder moja na index.html</div>';
             });
 
         function createBannerSlider(movies) {
@@ -136,7 +155,10 @@
             const dotsContainer = document.getElementById('banner-dots');
             const sliderMovies = movies.slice(0, 5);
             
-            if(sliderMovies.length === 0) return;
+            if(sliderMovies.length === 0) {
+                slider.style.display = 'none';
+                return;
+            }
             
             sliderMovies.forEach((movie, index) => {
                 const slide = document.createElement('div');
@@ -198,17 +220,29 @@
 
         function displayMovies() {
             const container = document.getElementById('movies-container');
-            const filtered = allMovies.filter(movie => {
-                const typeMatch = movie.type === currentType;
-                const genreMatch = currentGenre === 'all' || movie.genre === currentGenre;
-                return typeMatch && genreMatch;
-            });
+            let filtered = allMovies;
+
+            if(currentType!== 'all') {
+                filtered = filtered.filter(movie => movie.type === currentType);
+            }
+
+            if(currentGenre!== 'all') {
+                filtered = filtered.filter(movie => movie.genre === currentGenre);
+            }
+
+            if(searchQuery) {
+                filtered = filtered.filter(movie => 
+                    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
 
             document.getElementById('section-title').textContent = 
-                currentType === 'series'? 'SERIES ZOTE' : 'SINGO ZOTE';
+                searchQuery? `Matokeo: "${searchQuery}"` : 
+                currentType === 'series'? 'SERIES ZOTE' : 
+                currentType === 'singo'? 'SINGO ZOTE' : 'MOVIES ZOTE';
 
             if(filtered.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">Hakuna movie kwenye category hii</p>';
+                container.innerHTML = '<div class="no-results">Hakuna movie iliyopatikana</div>';
                 return;
             }
 
@@ -235,6 +269,11 @@
                 `;
             }).join('');
         }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            searchQuery = e.target.value;
+            displayMovies();
+        });
 
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
