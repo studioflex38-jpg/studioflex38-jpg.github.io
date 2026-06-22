@@ -3,502 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chilagu Legacy Cinema</title>
+    <title>Chilagu Legacy Cinema - Mfumo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0A0A0F; font-family: 'Poppins', sans-serif; color: #FFFFFF; }
         
-        body {
-            background: #0A0A0F;
-            font-family: 'Poppins', sans-serif;
-            color: #FFFFFF;
-        }
+        /* HEADER */
+       .header { background: #0A0A0F; text-align: center; padding: 20px 16px 12px 16px; border-bottom: 1px solid #1E1E2E; position: sticky; top: 0; z-index: 100; }
+       .logo { max-width: 180px; height: auto; margin-bottom: 8px; filter: drop-shadow(0 0 25px #8A2BE2) drop-shadow(0 0 50px #BF40BF); }
+       .tagline { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 11px; letter-spacing: 4px; background: linear-gradient(90deg, #8A2BE2, #BF40BF, #FF00FF, #8A2BE2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; }
         
-        .header {
-            background: #0A0A0F;
-            text-align: center;
-            padding: 20px 16px 12px 16px;
-            border-bottom: 1px solid #1E1E2E;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+        /* TRAILER SLIDER */
+       .trailer-slider { position: relative; width: 100%; height: 230px; overflow: hidden; background: #000; }
+       .slider-container { display: flex; transition: transform 0.5s ease; height: 100%; }
+       .slide { min-width: 100%; height: 100%; position: relative; cursor: pointer; }
+       .slide img { width: 100%; height: 100%; object-fit: cover; }
+       .slide-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,10,15,0.95) 70%); padding: 40px 16px 16px 16px; }
+       .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 65px; height: 65px; background: rgba(138, 43, 226, 0.95); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; backdrop-filter: blur(10px); box-shadow: 0 0 35px rgba(138, 43, 226, 0.9); }
+       .slide-title { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 22px; margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
+       .slide-tag { font-size: 12px; color: #E0AAFF; font-weight: 700; background: rgba(138, 43, 226, 0.4); display: inline-block; padding: 5px 14px; border-radius: 12px; border: 1px solid #BF40BF; }
+       .slider-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+       .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s; }
+       .dot.active { background: #BF40BF; width: 24px; border-radius: 4px; }
         
-        .logo {
-            max-width: 180px;
-            height: auto;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 0 25px #8A2BE2) 
-                    drop-shadow(0 0 50px #BF40BF);
-            background: none;
-            border: none;
-        }
+        /* MAIN CATEGORIES */
+       .main-categories { background: #121212; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid #1E1E2E; }
+       .cat-main { padding: 24px 12px; border-radius: 18px; border: 2px solid transparent; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+       .cat-main.active { background: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 50%, #C77DFF 100%); color: white; box-shadow: 0 0 30px rgba(157, 78, 221, 0.6); border: 2px solid #E0AAFF; transform: scale(1.02); }
+       .cat-main.inactive { background: #1A1A24; color: #E0E0E0; border: 2px solid #2A2A3A; }
+       .cat-icon { font-size: 34px; display: block; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
         
-        .tagline {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 11px;
-            letter-spacing: 4px;
-            background: linear-gradient(90deg, #8A2BE2, #BF40BF, #FF00FF, #8A2BE2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-        }
+        /* TRENDING */
+       .trending-section { background: #0A0A0F; padding: 16px; }
+       .section-header { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 16px; color: #E0AAFF; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+       .trending-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+       .trending-card { min-width: 140px; background: #1A1A24; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A3A; cursor: pointer; transition: all 0.3s; }
+       .trending-card:active { transform: scale(0.95); }
+       .trending-poster { width: 100%; height: 180px; object-fit: cover; }
+       .trending-title { padding: 10px 8px; font-size: 11px; font-weight: 700; text-align: center; color: #FFF; }
         
-        .trailer-slider {
-            position: relative;
-            width: 100%;
-            height: 230px;
-            overflow: hidden;
-            background: #000;
-        }
+        /* SUB CATEGORIES */
+       .sub-categories { background: #121212; padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid #1E1E2E; }
+       .cat-sub { background: #1A1A24; border: 1px solid #2A2A3A; color: #B0B0B0; padding: 8px 16px; border-radius: 20px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 13px; white-space: nowrap; cursor: pointer; }
+       .cat-sub.active { background: #2D1B4E; border: 1px solid #8A2BE2; color: #E0AAFF; box-shadow: 0 0 15px rgba(138, 43, 226, 0.3); }
         
-        .slider-container {
-            display: flex;
-            transition: transform 0.5s ease;
-            height: 100%;
-        }
+        /* SECTIONS */
+       .content-section { display: none; }
+       .content-section.active { display: block; }
+       .section-title { background: #0A0A0F; padding: 20px 16px 12px 16px; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 16px; color: #E0AAFF; letter-spacing: 1px; }
         
-        .slide {
-            min-width: 100%;
-            height: 100%;
-            position: relative;
-            cursor: pointer;
-        }
+        /* MOVIE GRID */
+       .movie-grid { background: #0A0A0F; padding: 0 16px 20px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+       .movie-card { background: #1A1A24; border-radius: 14px; overflow: hidden; border: 1px solid #2A2A3A; transition: all 0.3s ease; position: relative; }
+       .movie-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; font-family: 'Orbitron', sans-serif; z-index: 2; }
+       .badge-free { color: #06FFA5; border: 1px solid #06FFA5; }
+       .badge-singo { color: #FFD60A; border: 1px solid #FFD60A; }
+       .badge-episode { color: #00D9FF; border: 1px solid #00D9FF; }
+       .movie-poster { width: 100%; height: 220px; object-fit: cover; cursor: pointer; }
+       .movie-info { padding: 10px; }
+       .movie-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; text-align: center; color: #FFFFFF; text-transform: uppercase; margin-bottom: 8px; }
+       .movie-price { text-align: center; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+       .price-free { color: #06FFA5; }
+       .price-paid { color: #FF006E; }
+       .btn-watch { width: 100%; background: linear-gradient(135deg, #06FFA5, #00D9FF); color: #0A0A0F; border: none; padding: 10px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 12px; cursor: pointer; border-radius: 8px; text-transform: uppercase; }
+       .btn-buy { width: 100%; background: linear-gradient(135deg, #FF006E, #FB5607); color: white; border: none; padding: 10px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 12px; cursor: pointer; border-radius: 8px; text-transform: uppercase; }
+       .btn-watch:active,.btn-buy:active { transform: scale(0.95); }
         
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        /* EMPTY STATE */
+       .empty-state { text-align: center; padding: 60px 20px; color: #666; }
+       .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: 0.3; }
+       .empty-text { font-size: 14px; color: #888; }
         
-        .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(10,10,15,0.95) 70%);
-            padding: 40px 16px 16px 16px;
-        }
-        
-        .play-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 65px;
-            height: 65px;
-            background: rgba(138, 43, 226, 0.95);
-            border: 3px solid #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 35px rgba(138, 43, 226, 0.9);
-        }
-        
-        .slide-title {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 22px;
-            margin-bottom: 6px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
-        }
-        
-        .slide-tag {
-            font-size: 12px;
-            color: #E0AAFF;
-            font-weight: 700;
-            background: rgba(138, 43, 226, 0.4);
-            display: inline-block;
-            padding: 5px 14px;
-            border-radius: 12px;
-            border: 1px solid #BF40BF;
-        }
-        
-        .slider-dots {
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 6px;
-        }
-        
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .dot.active {
-            background: #BF40BF;
-            width: 24px;
-            border-radius: 4px;
-        }
-        
-        .main-categories {
-            background: #121212;
-            padding: 16px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            border-bottom: 1px solid #1E1E2E;
-        }
-        
-        .cat-main {
-            padding: 24px 12px;
-            border-radius: 18px;
-            border: 2px solid transparent;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .cat-main.active {
-            background: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 50%, #C77DFF 100%);
-            color: white;
-            box-shadow: 0 0 30px rgba(157, 78, 221, 0.6);
-            border: 2px solid #E0AAFF;
-            transform: scale(1.02);
-        }
-        
-        .cat-main.inactive {
-            background: #1A1A24;
-            color: #E0E0E0;
-            border: 2px solid #2A2A3A;
-        }
-        
-        .cat-icon {
-            font-size: 34px;
-            display: block;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
-        }
-        
-        .trending-section {
-            background: #0A0A0F;
-            padding: 16px;
-        }
-        
-        .section-header {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 16px;
-            color: #E0AAFF;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .trending-scroll {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-        }
-        
-        .trending-card {
-            min-width: 140px;
-            background: #1A1A24;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #2A2A3A;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .trending-card:active { transform: scale(0.95); }
-        
-        .trending-poster {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        
-        .trending-title {
-            padding: 10px 8px;
-            font-size: 11px;
-            font-weight: 700;
-            text-align: center;
-            color: #FFF;
-        }
-        
-        .sub-categories {
-            background: #121212;
-            padding: 12px 16px;
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            border-bottom: 1px solid #1E1E2E;
-        }
-        
-        .cat-sub {
-            background: #1A1A24;
-            border: 1px solid #2A2A3A;
-            color: #B0B0B0;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        
-        .cat-sub.active {
-            background: #2D1B4E;
-            border: 1px solid #8A2BE2;
-            color: #E0AAFF;
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
-        }
-        
-        .section-title {
-            background: #0A0A0F;
-            padding: 20px 16px 12px 16px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 16px;
-            color: #E0AAFF;
-            letter-spacing: 1px;
-        }
-        
-        .movie-grid {
-            background: #0A0A0F;
-            padding: 0 16px 20px 16px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        
-        .movie-card {
-            background: #1A1A24;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid #2A2A3A;
-            transition: all 0.3s ease;
-        }
-        
-        .movie-poster {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            cursor: pointer;
-        }
-        
-        .movie-info {
-            padding: 10px;
-        }
-        
-        .movie-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 12px;
-            text-align: center;
-            color: #FFFFFF;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-        
-        .movie-price {
-            text-align: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #E0AAFF;
-            margin-bottom: 8px;
-        }
-        
-        .btn-watch {
-            width: 100%;
-            background: linear-gradient(135deg, #06FFA5, #00D9FF);
-            color: #0A0A0F;
-            border: none;
-            padding: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 12px;
-            cursor: pointer;
-            border-radius: 8px;
-            text-transform: uppercase;
-        }
-        
-        .btn-buy {
-            width: 100%;
-            background: linear-gradient(135deg, #FF006E, #FB5607);
-            color: white;
-            border: none;
-            padding: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 12px;
-            cursor: pointer;
-            border-radius: 8px;
-            text-transform: uppercase;
-        }
-        
-        .btn-watch:active, .btn-buy:active {
-            transform: scale(0.95);
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        
-        .modal.active { display: flex; }
-        
-        .modal-content {
-            width: 100%;
-            max-width: 900px;
-            background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid #8A2BE2;
-            box-shadow: 0 0 50px rgba(138, 43, 226, 0.7);
-            position: relative;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: #1A1A24;
-            border-bottom: 1px solid #2A2A3A;
-        }
-        
-        #modalTitle {
-            color: #E0AAFF;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            font-weight: 800;
-            margin: 0;
-        }
-        
-        .close-modal {
-            font-size: 32px;
-            color: #BF40BF;
-            cursor: pointer;
-            line-height: 1;
-            font-weight: 300;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%;
-            background: #000;
-        }
-        
-        #trailerFrame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .payment-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        
-        .payment-modal.active { display: flex; }
-        
-        .payment-content {
-            background: #1A1A24;
-            border: 2px solid #8A2BE2;
-            border-radius: 20px;
-            padding: 30px 20px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .payment-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            color: #E0AAFF;
-            margin-bottom: 10px;
-        }
-        
-        .payment-price {
-            font-size: 32px;
-            font-weight: 900;
-            color: #FF006E;
-            margin: 15px 0;
-        }
-        
-        .payment-text {
-            color: #B0B0B0;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .payment-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #FF006E, #FB5607);
-            color: white;
-            border: none;
-            padding: 15px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        
-        .close-payment {
-            width: 100%;
-            background: #2A2A3A;
-            color: #B0B0B0;
-            border: none;
-            padding: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            border-radius: 12px;
-            cursor: pointer;
-        }
+        /* MODAL */
+       .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; align-items: center; justify-content: center; padding: 16px; }
+       .modal.active { display: flex; }
+       .modal-content { width: 100%; max-width: 900px; background: #000; border-radius: 16px; overflow: hidden; border: 2px solid #8A2BE2; box-shadow: 0 0 50px rgba(138, 43, 226, 0.7); position: relative; }
+       .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #1A1A24; border-bottom: 1px solid #2A2A3A; }
+        #modalTitle { color: #E0AAFF; font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 800; margin: 0; }
+       .close-modal { font-size: 32px; color: #BF40BF; cursor: pointer; line-height: 1; font-weight: 300; background: none; border: none; padding: 0; }
+       .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+        #trailerFrame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <div class="header">
         <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" 
              alt="Chilagu Legacy Cinema" 
@@ -506,58 +96,66 @@
         <div class="tagline">STREAM • LIKE • A • BOSS</div>
     </div>
 
-    <!-- SLIDER - WEKA LINK ZA TRAILER ZAKO HAPA -->
+    <!-- TRAILER SLIDER - WEKA TRAILER 3-4 HAPA -->
     <div class="trailer-slider">
         <div class="slider-container" id="slider">
-            <div class="slide" onclick="openTrailer('SHADOW CODE', 'WEKA_LINK_YA_TRAILER_HAPA')">
-                <img src="https://picsum.photos/800/400?random=11" alt="Trailer">
+            <!-- SLIDE 1: MFANO -->
+            <div class="slide" onclick="openTrailer('TRAILER 1', 'WEKA_LINK_YA_TRAILER_1')">
+                <img src="https://picsum.photos/800/400?random=1" alt="Trailer">
                 <div class="play-btn">▶</div>
                 <div class="slide-overlay">
-                    <div class="slide-title">SHADOW CODE</div>
-                    <div class="slide-tag">💥 ACTION MPYA</div>
+                    <div class="slide-title">JINA LA TRAILER 1</div>
+                    <div class="slide-tag">💥 COMING SOON</div>
                 </div>
             </div>
-            <div class="slide" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'WEKA_LINK_YA_TRAILER_HAPA')">
-                <img src="https://picsum.photos/800/400?random=10" alt="Trailer">
+            <!-- SLIDE 2: MFANO -->
+            <div class="slide" onclick="openTrailer('TRAILER 2', 'WEKA_LINK_YA_TRAILER_2')">
+                <img src="https://picsum.photos/800/400?random=2" alt="Trailer">
                 <div class="play-btn">▶</div>
                 <div class="slide-overlay">
-                    <div class="slide-title">DAKIKA 90 ZA JOTO</div>
-                    <div class="slide-tag">🔥 TRENDING SASA</div>
+                    <div class="slide-title">JINA LA TRAILER 2</div>
+                    <div class="slide-tag">🔥 TRENDING</div>
                 </div>
             </div>
         </div>
         <div class="slider-dots" id="dots"></div>
     </div>
 
+    <!-- MAIN CATEGORIES: SINGO MOVIE vs SERIES -->
     <div class="main-categories">
-        <button class="cat-main active">
+        <button class="cat-main active" onclick="showCategory('movie')">
             <span class="cat-icon">🎬</span>
             SINGO MOVIE
         </button>
-        <button class="cat-main inactive">
+        <button class="cat-main inactive" onclick="showCategory('series')">
             <span class="cat-icon">📺</span>
             SERIES
         </button>
     </div>
 
+    <!-- TRENDING SECTION -->
     <div class="trending-section">
         <div class="section-header">🔥 TRENDING SASA</div>
         <div class="trending-scroll">
+            <!-- TRENDING CARD 1 -->
             <div class="trending-card">
                 <img src="https://picsum.photos/300/400?random=20" class="trending-poster">
-                <div class="trending-title">MJI WA MAFIA</div>
+                <div class="trending-title">JINA TRENDING 1</div>
             </div>
+            <!-- TRENDING CARD 2 -->
             <div class="trending-card">
                 <img src="https://picsum.photos/300/400?random=21" class="trending-poster">
-                <div class="trending-title">USIKU WA GIZA</div>
+                <div class="trending-title">JINA TRENDING 2</div>
             </div>
+            <!-- TRENDING CARD 3 -->
             <div class="trending-card">
                 <img src="https://picsum.photos/300/400?random=22" class="trending-poster">
-                <div class="trending-title">SAUTI YA MAPENZI</div>
+                <div class="trending-title">JINA TRENDING 3</div>
             </div>
         </div>
     </div>
 
+    <!-- SUB CATEGORIES: ACTION, DRAMA, LOVE, etc -->
     <div class="sub-categories">
         <button class="cat-sub active">🔥 Zote</button>
         <button class="cat-sub">💥 Action</button>
@@ -565,63 +163,94 @@
         <button class="cat-sub">💖 Love</button>
         <button class="cat-sub">😂 Comedy</button>
         <button class="cat-sub">👻 Horror</button>
+        <button class="cat-sub">🎭 Bongo</button>
     </div>
 
-    <!-- MOVIE GRID - HAPA UNAONGEZA MOVIE ZAKO -->
-    <div class="section-title">SINGO MOVIE • ZOTE</div>
-    <div class="movie-grid">
-        
-        <!-- MOVIE 1: BURE -->
-        <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=1" class="movie-poster" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'WEKA_LINK_YA_MOVIE_BURE')">
-            <div class="movie-info">
-                <div class="movie-title">DAKIKA 90 ZA JOTO</div>
-                <div class="movie-price">BURE</div>
-                <button class="btn-watch" onclick="openTrailer('DAKIKA 90 ZA JOTO', 'WEKA_LINK_YA_MOVIE_BURE')">
-                    ▶ TAZAMA BURE
-                </button>
+    <!-- SECTION 1: SINGO MOVIE -->
+    <div class="content-section active" id="movieSection">
+        <div class="section-title">SINGO MOVIE • TSh 2,000</div>
+        <div class="movie-grid">
+            
+            <!-- TEMPLATE: MOVIE BURE -->
+            <div class="movie-card">
+                <div class="movie-badge badge-free">BURE</div>
+                <img src="https://picsum.photos/300/400?random=30" class="movie-poster">
+                <div class="movie-info">
+                    <div class="movie-title">JINA MOVIE BURE</div>
+                    <div class="movie-price price-free">BURE</div>
+                    <button class="btn-watch" onclick="openTrailer('JINA MOVIE BURE', 'WEKA_LINK_STREAMABLE_BURE')">
+                        ▶ TAZAMA BURE
+                    </button>
+                </div>
             </div>
-        </div>
-        
-        <!-- MOVIE 2: KUUZA -->
-        <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=2" class="movie-poster" onclick="openPayment('SHADOW CODE', 3000, 'WEKA_LINK_YA_MALIPO')">
-            <div class="movie-info">
-                <div class="movie-title">SHADOW CODE</div>
-                <div class="movie-price">TSh 3,000</div>
-                <button class="btn-buy" onclick="openPayment('SHADOW CODE', 3000, 'WEKA_LINK_YA_MALIPO')">
-                    🔒 NUNUA SASA
-                </button>
+            
+            <!-- TEMPLATE: MOVIE YA KUUZA 2000 -->
+            <div class="movie-card">
+                <div class="movie-badge badge-singo">SINGO</div>
+                <img src="https://picsum.photos/300/400?random=31" class="movie-poster">
+                <div class="movie-info">
+                    <div class="movie-title">JINA MOVIE KUUZA</div>
+                    <div class="movie-price price-paid">TSh 2,000</div>
+                    <button class="btn-buy" onclick="window.open('WEKA_LINK_YA_PAYHIP_2000', '_blank')">
+                        🔒 NUNUA SASA
+                    </button>
+                </div>
             </div>
-        </div>
-        
-        <!-- MOVIE 3: KUUZA -->
-        <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=3" class="movie-poster" onclick="openPayment('ENDLESS LOVE', 2500, 'WEKA_LINK_YA_MALIPO')">
-            <div class="movie-info">
-                <div class="movie-title">ENDLESS LOVE</div>
-                <div class="movie-price">TSh 2,500</div>
-                <button class="btn-buy" onclick="openPayment('ENDLESS LOVE', 2500, 'WEKA_LINK_YA_MALIPO')">
-                    🔒 NUNUA SASA
-                </button>
+            
+            <!-- EMPTY STATE: ONESHA HII KAMA HAKUNA MOVIE -->
+            <!-- 
+            <div class="empty-state">
+                <div class="empty-icon">🎬</div>
+                <div class="empty-text">Singo Movie zinakuja hivi karibuni...</div>
             </div>
+            -->
+            
         </div>
-        
-        <!-- MOVIE 4: BURE -->
-        <div class="movie-card">
-            <img src="https://picsum.photos/300/400?random=4" class="movie-poster" onclick="openTrailer('MJI WA MAFIA', 'WEKA_LINK_YA_MOVIE_BURE')">
-            <div class="movie-info">
-                <div class="movie-title">MJI WA MAFIA</div>
-                <div class="movie-price">BURE</div>
-                <button class="btn-watch" onclick="openTrailer('MJI WA MAFIA', 'WEKA_LINK_YA_MOVIE_BURE')">
-                    ▶ TAZAMA BURE
-                </button>
-            </div>
-        </div>
-        
     </div>
 
-    <!-- VIDEO MODAL -->
+    <!-- SECTION 2: SERIES -->
+    <div class="content-section" id="seriesSection">
+        <div class="section-title">SERIES • EPISODE TSh 500</div>
+        <div class="movie-grid">
+            
+            <!-- TEMPLATE: EPISODE BURE -->
+            <div class="movie-card">
+                <div class="movie-badge badge-free">EP 1 BURE</div>
+                <img src="https://picsum.photos/300/400?random=40" class="movie-poster">
+                <div class="movie-info">
+                    <div class="movie-title">JINA SERIES S1E1</div>
+                    <div class="movie-price price-free">BURE</div>
+                    <button class="btn-watch" onclick="openTrailer('JINA SERIES S1E1', 'WEKA_LINK_STREAMABLE_BURE')">
+                        ▶ TAZAMA BURE
+                    </button>
+                </div>
+            </div>
+            
+            <!-- TEMPLATE: EPISODE YA KUUZA 500 -->
+            <div class="movie-card">
+                <div class="movie-badge badge-episode">EP 2</div>
+                <img src="https://picsum.photos/300/400?random=41" class="movie-poster">
+                <div class="movie-info">
+                    <div class="movie-title">JINA SERIES S1E2</div>
+                    <div class="movie-price price-paid">TSh 500</div>
+                    <button class="btn-buy" onclick="window.open('WEKA_LINK_YA_PAYHIP_500', '_blank')">
+                        🔒 NUNUA EPISODE
+                    </button>
+                </div>
+            </div>
+            
+            <!-- EMPTY STATE: ONESHA HII KAMA HAKUNA SERIES -->
+            <!-- 
+            <div class="empty-state">
+                <div class="empty-icon">📺</div>
+                <div class="empty-text">Series zinakuja hivi karibuni...</div>
+            </div>
+            -->
+            
+        </div>
+    </div>
+
+    <!-- VIDEO MODAL - KWA KUTAZAMA TRAILER/MOVIE BURE -->
     <div class="modal" id="trailerModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -634,22 +263,8 @@
         </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
-    <div class="payment-modal" id="paymentModal">
-        <div class="payment-content">
-            <div class="payment-title" id="paymentMovieTitle">SHADOW CODE</div>
-            <div class="payment-price" id="paymentPrice">TSh 3,000</div>
-            <div class="payment-text">
-                Lipa sasa upate access ya movie hii. Baada ya malipo utapata link ya kutazama moja kwa moja kwenye WhatsApp.
-            </div>
-            <button class="payment-btn" id="paymentBtn" onclick="processPayment()">
-                💳 LIPA SASA
-            </button>
-            <button class="close-payment" onclick="closePayment()">GHAIRI</button>
-        </div>
-    </div>
-
     <script>
+        // SLIDER LOGIC
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const dotsContainer = document.getElementById('dots');
@@ -675,6 +290,7 @@
             goToSlide(currentSlide);
         }, 5000);
         
+        // VIDEO MODAL LOGIC - KWA BURE
         function openTrailer(title, embedUrl) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('trailerFrame').src = embedUrl;
@@ -686,22 +302,28 @@
             document.getElementById('trailerModal').classList.remove('active');
         }
         
-        let currentPaymentLink = '';
-        
-        function openPayment(movieName, price, paymentLink) {
-            document.getElementById('paymentMovieTitle').textContent = movieName;
-            document.getElementById('paymentPrice').textContent = 'TSh ' + price.toLocaleString();
-            currentPaymentLink = paymentLink;
-            document.getElementById('paymentModal').classList.add('active');
-        }
-        
-        function closePayment() {
-            document.getElementById('paymentModal').classList.remove('active');
-        }
-        
-        function processPayment() {
-            window.open(currentPaymentLink, '_blank');
-            closePayment();
+        // CATEGORY SWITCH LOGIC
+        function showCategory(type) {
+            const movieBtn = document.querySelectorAll('.cat-main')[0];
+            const seriesBtn = document.querySelectorAll('.cat-main')[1];
+            const movieSection = document.getElementById('movieSection');
+            const seriesSection = document.getElementById('seriesSection');
+            
+            if(type === 'movie') {
+                movieBtn.classList.add('active');
+                movieBtn.classList.remove('inactive');
+                seriesBtn.classList.add('inactive');
+                seriesBtn.classList.remove('active');
+                movieSection.classList.add('active');
+                seriesSection.classList.remove('active');
+            } else {
+                seriesBtn.classList.add('active');
+                seriesBtn.classList.remove('inactive');
+                movieBtn.classList.add('inactive');
+                movieBtn.classList.remove('active');
+                seriesSection.classList.add('active');
+                movieSection.classList.remove('active');
+            }
         }
     </script>
 
