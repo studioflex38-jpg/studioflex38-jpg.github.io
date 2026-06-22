@@ -1,372 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sw">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chilagu Legacy Cinema</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0A0A0F;
-            color: #FFFFFF;
-        }
-       .header {
-            background: #0A0A0F;
-            padding: 15px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1A1A2E;
-        }
-       .header-left { display: flex; align-items: center; gap: 10px; }
-       .logo-img {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(135deg, #8A2BE2, #4B0082);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-       .logo-text { font-size: 18px; font-weight: 800; color: #A855F7; line-height: 1.1; }
-       .logo-text span { display: block; }
-       .tagline { font-size: 11px; color: #9CA3AF; text-align: right; font-weight: 500; }
-       .hero {
-            position: relative;
-            height: 220px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, #0A0A0F 100%), 
-                        url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=450&fit=crop') center/cover;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 20px 16px;
-        }
-       .hero-play {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px; height: 60px;
-            background: rgba(168, 85, 247, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-        }
-       .hero-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-       .hero-badge {
-            background: #A855F7;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            display: inline-block;
-            width: fit-content;
-        }
-       .category-tabs {
-            display: flex;
-            gap: 12px;
-            padding: 20px 16px 16px 16px;
-        }
-       .tab-btn {
-            flex: 1;
-            background: #1A1A2E;
-            border: 2px solid #2A2A3E;
-            border-radius: 16px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-       .tab-btn.active {
-            background: linear-gradient(135deg, #A855F7 0%, #8B5CF6 100%);
-            border-color: #A855F7;
-        }
-       .tab-icon { font-size: 32px; margin-bottom: 8px; }
-       .tab-text { font-size: 15px; font-weight: 700; }
-       .filters {
-            display: flex;
-            gap: 10px;
-            padding: 0 16px 20px 16px;
-            overflow-x: auto;
-        }
-       .filter-btn {
-            background: #1A1A2E;
-            border: 1px solid #2A2A3E;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-       .filter-btn.active {
-            background: #A855F7;
-            border-color: #A855F7;
-        }
-       .section-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: #A855F7;
-            padding: 0 16px 16px 16px;
-        }
-       .content-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            padding: 0 16px 80px 16px;
-        }
-       .content-card {
-            background: #1A1A2E;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 1px solid #2A2A3E;
-        }
-       .card-thumb {
-            width: 100%;
-            height: 110px;
-            object-fit: cover;
-            background: #2A2A3E;
-        }
-       .card-info { padding: 10px; }
-       .card-badge {
-            background: #A855F7;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 6px;
-        }
-       .card-title { font-size: 14px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-       .card-meta { font-size: 12px; color: #9CA3AF; }
-       .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 1000; align-items: center; justify-content: center; }
-       .modal.active { display: flex; }
-       .modal-content { width: 95%; max-width: 900px; background: #1A1A2E; border-radius: 16px; overflow: hidden; }
-       .modal-header { padding: 18px; background: #0A0A0F; display: flex; justify-content: space-between; align-items: center; }
-       .close-btn { background: #FF4444; border: none; color: white; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 22px; }
-       .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-       .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-       .paywall { text-align: center; padding: 40px 30px; }
-       .paywall-price { font-size: 36px; color: #00FF88; margin: 20px 0; font-weight: 800; }
-       .pay-btn { background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); color: #0A0A0F; border: none; padding: 16px 45px; border-radius: 12px; font-size: 19px; font-weight: 800; cursor: pointer; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHILAGU LEGACY</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    /* HEADER */
+   .header {
+      background: linear-gradient(135deg, #1a0b2e 0%, #000 100%);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2d1b4e;
+    }
+   .logo {
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(45deg, #a855f7, #d946ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+   .logo-sub {
+      font-size: 10px;
+      color: #888;
+      letter-spacing: 2px;
+    }
+
+    /* HERO */
+   .hero {
+      background: #000;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+    }
+   .play-btn {
+      width: 70px;
+      height: 70px;
+      background: #a855f7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 30px #a855f7;
+    }
+   .hero-title {
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+   .badge {
+      background: #a855f7;
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    /* CATEGORY BUTTONS */
+   .categories {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      padding: 20px;
+    }
+   .cat-btn {
+      background: #1a1a1a;
+      border: 2px solid #2d1b4e;
+      border-radius: 15px;
+      padding: 25px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+   .cat-btn.active {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      border-color: #a855f7;
+      box-shadow: 0 0 20px #a855f733;
+    }
+   .cat-btn.icon { font-size: 30px; margin-bottom: 8px; }
+   .cat-btn.text { font-weight: bold; font-size: 14px; }
+
+    /* FILTER TAGS */
+   .filters {
+      padding: 0 20px 20px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+    }
+   .filter {
+      background: #1a1a1a;
+      border: 1px solid #2d1b4e;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+   .filter.active { background: #a855f7; border-color: #a855f7; }
+
+    /* CONTENT GRID */
+   .section-title {
+      color: #a855f7;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 0 20px 15px;
+    }
+   .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 0 20px 40px;
+    }
+   .card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2d1b4e;
+    }
+   .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+   .card-body { padding: 10px; }
+   .card-tag {
+      background: transparent;
+      border: 1px solid #a855f7;
+      color: #a855f7;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+   .card-title { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+   .card-price { color: #0f0; font-size: 12px; font-weight: bold; }
+  </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <div class="header">
-        <div class="header-left">
-            <div class="logo-img">C</div>
-            <div class="logo-text">
-                <span>CHILAGU</span>
-                <span>LEGACY</span>
-            </div>
-        <div class="tagline">STREAM • LIKE • A •<br>BOSS</div>
+  <div class="header">
+    <div>
+      <div class="logo">CHILAGU<br>LEGACY</div>
     </div>
+    <div class="logo-sub">STREAM • LIKE • A • BOSS</div>
+  </div>
 
-    <!-- HERO BANNER -->
-    <div class="hero" onclick="playHero()">
-        <div class="hero-play">▶️</div>
-        <div class="hero-title">LOVE AND DESTINY</div>
-        <div class="hero-badge">💥 SERIES MPYA</div>
+  <div class="hero">
+    <div class="play-btn">▶</div>
+    <div class="hero-title" id="hero-title">LOVE AND DESTINY</div>
+    <div class="badge">🔥 SERIES MPYA</div>
+  </div>
+
+  <div class="categories">
+    <div class="cat-btn active" data-cat="series">
+      <div class="icon">📺</div>
+      <div class="text">SERIES</div>
     </div>
+    <div class="cat-btn" data-cat="singo">
+      <div class="icon">🎬</div>
+      <div class="text">SINGO MOVIE</div>
+    </div>
+  </div>
 
-    <!-- CATEGORY TABS -->
-    <div class="category-tabs">
-        <div class="tab-btn active" onclick="switchTab('series')">
-            <div class="tab-icon">📺</div>
-            <div class="tab-text">SERIES</div>
+  <div class="filters">
+    <div class="filter active" data-genre="zote">🔥 Zote</div>
+    <div class="filter" data-genre="Drama">😢 Drama</div>
+    <div class="filter" data-genre="Action">💥 Action</div>
+    <div class="filter" data-genre="Love">💖 Love</div>
+    <div class="filter" data-genre="Comedy">😂 Comedy</div>
+  </div>
+
+  <div class="section-title" id="section-title">SERIES ZOTE</div>
+  <div class="grid" id="content-grid"></div>
+
+  <script>
+    let allContent = [];
+    let currentCat = 'series';
+    let currentGenre = 'zote';
+
+    async function loadContent() {
+      try {
+        // Hii inasoma files zote kwenye _content
+        const res = await fetch('/.netlify/functions/content');
+        if (!res.ok) throw new Error('Function bado');
+        allContent = await res.json();
+      } catch (e) {
+        // Fallback: jaribu kusoma moja kwa moja
+        console.log('Tumia sample data');
+        allContent = [];
+      }
+      renderContent();
+    }
+
+    function renderContent() {
+      const grid = document.getElementById('content-grid');
+      let filtered = allContent.filter(item => item.category === currentCat);
+
+      if (currentGenre!== 'zote') {
+        filtered = filtered.filter(item => item.genre === currentGenre);
+      }
+
+      if (filtered.length > 0) {
+        document.getElementById('hero-title').textContent = filtered[0].title;
+      }
+
+      document.getElementById('section-title').textContent =
+        currentCat === 'series'? 'SERIES ZOTE' : 'SINGO MOVIE ZOTE';
+
+      grid.innerHTML = filtered.map(item => `
+        <div class="card">
+          <img src="${item.thumbnail}" alt="${item.title}">
+          <div class="card-body">
+            <div class="card-tag">${item.type.toUpperCase()}</div>
+            <div class="card-title">${item.title}</div>
+            <div class="card-price">${item.is_free? 'BURE' : 'TSh ' + item.price}</div>
+          </div>
         </div>
-        <div class="tab-btn" onclick="switchTab('singo')">
-            <div class="tab-icon">🎬</div>
-            <div class="tab-text">SINGO MOVIE</div>
-        </div>
-    </div>
+      `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#666;">Hakuna content bado. Ingia /admin</p>';
+    }
 
-    <!-- FILTERS -->
-    <div class="filters">
-        <div class="filter-btn active" onclick="filterContent('all')">🔥 Zote</div>
-        <div class="filter-btn" onclick="filterContent('Drama')">😢 Drama</div>
-        <div class="filter-btn" onclick="filterContent('Action')">💥 Action</div>
-        <div class="filter-btn" onclick="filterContent('Love')">💗 Love</div>
-        <div class="filter-btn" onclick="filterContent('Comedy')">😂 Comedy</div>
-    </div>
-
-    <!-- CONTENT SECTION -->
-    <div class="section-title" id="sectionTitle">SERIES ZOTE</div>
-    <div class="content-grid" id="contentGrid"></div>
-
-    <!-- PLAYER MODAL -->
-    <div class="modal" id="playerModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div id="videoTitle" style="font-weight: 700;">Inacheza...</div>
-                <button class="close-btn" onclick="closePlayer()">×</button>
-            </div>
-            <div class="video-container">
-                <iframe id="videoFrame" src="" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAYWALL MODAL -->
-    <div class="modal" id="paywallModal">
-        <div class="modal-content">
-            <div class="paywall">
-                <div style="font-size: 24px; margin-bottom: 12px; color: #FFD700; font-weight: 700;" id="paywallTitle">Imefungwa 🔒</div>
-                <div style="color: #9CA3AF;">Unahitaji kulipia ili kutazama</div>
-                <div class="paywall-price" id="paywallPrice">TSh 500</div>
-                <button class="pay-btn" onclick="goToPayment()">LIPA SASA</button>
-                <br><br>
-                <button onclick="closePaywall()" style="background: #8A2BE2; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer;">Ghairi</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ============================================
-        // BADILISHA HAPA TU - ONGEZA JOB ZAKO
-        // ============================================
-        const CONTENT_DATABASE = [
-            {
-                id: 1,
-                title: "Episode 1: Mwanzo",
-                category: "series", // series au singo
-                type: "Series",
-                genre: "Drama",
-                video_url: "https://streamable.com/e/8326lw",
-                thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=225&fit=crop&q=80",
-                duration: "45 min",
-                is_free: true,
-                price: 0,
-                payment_link: ""
-            },
-            {
-                id: 2,
-                title: "Episode 2: Majonzi",
-                category: "series",
-                type: "Series",
-                genre: "Drama",
-                video_url: "https://streamable.com/e/8326lw",
-                thumbnail: "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=400&h=225&fit=crop&q=80",
-                duration: "48 min",
-                is_free: false,
-                price: 500,
-                payment_link: "https://payhip.com/b/example"
-            },
-            {
-                id: 3,
-                title: "MPANDA MNAZI KWA MKONO MMOJA",
-                category: "singo",
-                type: "Comedy",
-                genre: "Comedy",
-                video_url: "https://streamable.com/e/8326lw",
-                thumbnail: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=400&h=225&fit=crop&q=80",
-                duration: "7 min",
-                is_free: true,
-                price: 0,
-                payment_link: ""
-            }
-        ];
-
-        // ============================================
-        // SYSTEM - USIGUSE
-        // ============================================
-        let currentTab = 'series';
-        let currentFilter = 'all';
-        let currentPaymentUrl = '';
-
-        function renderContent() {
-            const grid = document.getElementById('contentGrid');
-            const title = document.getElementById('sectionTitle');
-            
-            let filtered = CONTENT_DATABASE.filter(item => {
-                const matchTab = item.category === currentTab;
-                const matchFilter = currentFilter === 'all' || item.genre === currentFilter;
-                return matchTab && matchFilter;
-            });
-
-            title.textContent = currentTab === 'series' ? 'SERIES ZOTE' : 'SINGO MOVIE ZOTE';
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">Hakuna content bado</div>';
-                return;
-            }
-
-            grid.innerHTML = filtered.map(item => `
-                <div class="content-card" onclick="playContent(${item.id})">
-                    <img src="${item.thumbnail}" class="card-thumb" onerror="this.src='https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=225&fit=crop&q=80'">
-                    <div class="card-info">
-                        <div class="card-badge">${item.type.toUpperCase()}</div>
-                        <div class="card-title">${item.title}</div>
-                        <div class="card-meta">${item.is_free ? '🆓 BURE' : '🔒 TSh ' + item.price} • ${item.duration}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function switchTab(tab) {
-            currentTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
-            renderContent();
-        }
-
-        function filterContent(genre) {
-            currentFilter = genre;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderContent();
-        }
-
-        function playContent(id) {
-            const item = CONTENT_DATABASE.find(x => x.id === id);
-            if (!item) return;
-
-            if (!item.is_free) {
-                showPaywall(item.title, item.price, item.payment_link);
-                return;
-            }
-
-            document.getElementById('playerModal').classList.add('active');
-            document.getElementById('videoTitle').textContent = item.title;
-            document.getElementById('videoFrame').src = item.video_url + '?autoplay=1';
-        }
-
-        function playHero() {
-            const heroItem = CONTENT_DATABASE.find(x => x.category === 'series' && x.is_free);
-            if (heroItem) playContent(heroItem.id);
-        }
-
-        function showPaywall(title, price, paymentUrl) {
-            currentPaymentUrl = paymentUrl;
-            document.getElementById('paywallModal').classList.add('active');
-            document.getElementById('paywallTitle').textContent = title;
-            document.getElementById('paywallPrice').textContent = 'TSh ' + price;
-        }
-
-        function goToPayment() {
-            window.open(currentPaymentUrl, '_blank');
-            closePaywall();
-        }
-
-        function closePaywall() {
-            document.getElementById('paywallModal').classList.remove('active');
-        }
-
-        function closePlayer() {
-            document.getElementById('playerModal').classList.remove('active');
-            document.getElementById('videoFrame').src = '';
-        }
-
+    // Category buttons
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCat = btn.dataset.cat;
         renderContent();
-    </script>
+      }
+    });
+
+    // Genre filters
+    document.querySelectorAll('.filter').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentGenre = btn.dataset.genre;
+        renderContent();
+      }
+    });
+
+    // Netlify Identity
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+
+    loadContent();
+  </script>
 </body>
 </html>
