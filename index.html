@@ -4,379 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chilagu Legacy Cinema</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0A0A0F; font-family: 'Poppins', sans-serif; color: #FFFFFF; }
-        
-        /* HEADER MPYA - KAMA YOUTUBE/MOVIE BOX */
-       .header { background: #0A0A0F; padding: 12px 16px; border-bottom: 1px solid #1E1E2E; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; }
-       .app-icon { width: 36px; height: 36px; filter: drop-shadow(0 0 15px #8A2BE2); }
-       .app-name { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; background: linear-gradient(90deg, #8A2BE2, #BF40BF, #FF00FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-       .tagline { font-size: 9px; color: #888; margin-left: auto; letter-spacing: 2px; }
-        
-        /* TRAILER SLIDER */
-       .trailer-slider { position: relative; width: 100%; height: 220px; overflow: hidden; background: #000; }
-       .slider-container { display: flex; transition: transform 0.5s ease; height: 100%; }
-       .slide { min-width: 100%; height: 100%; position: relative; cursor: pointer; }
-       .slide img { width: 100%; height: 100%; object-fit: cover; }
-       .slide-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,10,15,0.95) 70%); padding: 40px 16px 16px 16px; }
-       .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(138, 43, 226, 0.95); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; backdrop-filter: blur(10px); box-shadow: 0 0 35px rgba(138, 43, 226, 0.9); }
-       .slide-title { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
-       .slide-tag { font-size: 11px; color: #E0AAFF; font-weight: 700; background: rgba(138, 43, 226, 0.4); display: inline-block; padding: 4px 12px; border-radius: 12px; border: 1px solid #BF40BF; }
-       .slider-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
-       .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s; }
-       .dot.active { background: #BF40BF; width: 20px; border-radius: 4px; }
-        
-        /* MAIN CATEGORIES */
-       .main-categories { background: #121212; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid #1E1E2E; }
-       .cat-main { padding: 20px 12px; border-radius: 16px; border: 2px solid transparent; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; text-align: center; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
-       .cat-main.active { background: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 50%, #C77DFF 100%); color: white; box-shadow: 0 0 30px rgba(157, 78, 221, 0.6); border: 2px solid #E0AAFF; }
-       .cat-main.inactive { background: #1A1A24; color: #E0E0E0; border: 2px solid #2A2A3A; }
-       .cat-icon { font-size: 30px; display: block; margin-bottom: 6px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-        
-        /* SUB CATEGORIES */
-       .sub-categories { background: #121212; padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid #1E1E2E; }
-       .cat-sub { background: #1A1A24; border: 1px solid #2A2A3A; color: #B0B0B0; padding: 8px 16px; border-radius: 20px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px; white-space: nowrap; cursor: pointer; }
-       .cat-sub.active { background: #2D1B4E; border: 1px solid #8A2BE2; color: #E0AAFF; box-shadow: 0 0 15px rgba(138, 43, 226, 0.3); }
-        
-        /* CONTENT SECTIONS */
-       .content-section { display: none; }
-       .content-section.active { display: block; }
-       .section-title { background: #0A0A0F; padding: 20px 16px 12px 16px; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 15px; color: #E0AAFF; letter-spacing: 1px; }
-        
-        /* MOVIE/SERIES GRID */
-       .content-grid { background: #0A0A0F; padding: 0 16px 20px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-       .content-card { background: #1A1A24; border-radius: 14px; overflow: hidden; border: 1px solid #2A2A3A; transition: all 0.3s ease; position: relative; cursor: pointer; }
-       .content-card:active { transform: scale(0.97); }
-       .content-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 8px; font-size: 9px; font-weight: 800; font-family: 'Orbitron', sans-serif; z-index: 2; }
-       .badge-series { color: #00D9FF; border: 1px solid #00D9FF; }
-       .badge-singo { color: #FFD60A; border: 1px solid #FFD60A; }
-       .badge-free { color: #06FFA5; border: 1px solid #06FFA5; }
-       .content-poster { width: 100%; height: 220px; object-fit: cover; }
-       .content-info { padding: 10px; }
-       .content-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; text-align: center; color: #FFFFFF; text-transform: uppercase; margin-bottom: 4px; }
-       .episode-count { text-align: center; font-size: 10px; color: #888; }
-        
-        /* SERIES DETAIL PAGE - PLAYLIST */
-       .series-detail { display: none; background: #0A0A0F; min-height: 100vh; }
-       .series-detail.active { display: block; }
-       .series-header { position: relative; height: 280px; }
-       .series-header img { width: 100%; height: 100%; object-fit: cover; }
-       .series-header-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,10,15,1) 90%); padding: 60px 16px 16px 16px; }
-       .series-detail-title { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 24px; margin-bottom: 8px; }
-       .series-meta { font-size: 12px; color: #E0AAFF; }
-       .back-btn { position: absolute; top: 16px; left: 16px; background: rgba(0,0,0,0.6); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; backdrop-filter: blur(10px); }
-       .episode-list { padding: 16px; }
-       .episode-item { background: #1A1A24; border: 1px solid #2A2A3A; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-       .episode-item:active { background: #2A2A3A; }
-       .episode-thumb { width: 120px; height: 70px; border-radius: 8px; object-fit: cover; }
-       .episode-info { flex: 1; }
-       .episode-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
-       .episode-desc { font-size: 11px; color: #888; }
-       .play-icon { font-size: 24px; color: #BF40BF; }
-        
-        /* PAYWALL MODAL */
-       .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; align-items: center; justify-content: center; padding: 16px; }
-       .modal.active { display: flex; }
-       .modal-content { width: 100%; max-width: 400px; background: #1A1A24; border-radius: 16px; overflow: hidden; border: 2px solid #8A2BE2; box-shadow: 0 0 50px rgba(138, 43, 226, 0.7); }
-       .modal-header { padding: 20px; text-align: center; border-bottom: 1px solid #2A2A3A; }
-       .modal-title { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 800; color: #E0AAFF; margin-bottom: 8px; }
-       .modal-body { padding: 20px; text-align: center; }
-       .price-tag { font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900; color: #FF006E; margin: 16px 0; }
-       .pay-btn { width: 100%; background: linear-gradient(135deg, #FF006E, #FB5607); color: white; border: none; padding: 14px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; cursor: pointer; border-radius: 10px; text-transform: uppercase; margin-top: 16px; }
-       .close-modal { font-size: 28px; color: #BF40BF; cursor: pointer; position: absolute; top: 12px; right: 16px; background: none; border: none; }
-        
-        /* VIDEO PLAYER MODAL */
-       .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
-        #videoFrame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        
-        /* EMPTY STATE */
-       .empty-state { text-align: center; padding: 60px 20px; color: #666; grid-column: 1 / -1; }
-       .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: 0.3; }
-       .empty-text { font-size: 14px; color: #888; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0A0A0F; color: #FFFFFF; padding-bottom: 80px; }
+      .header { background: linear-gradient(135deg, #1A1A2E 0%, #8A2BE2 100%); padding: 20px; text-align: center; }
+      .logo { font-size: 24px; font-weight: bold; color: #FFD700; }
+      .tagline { font-size: 14px; color: #B0B0C3; margin-top: 5px; }
+      .container { padding: 15px; }
+      .category { margin-bottom: 30px; }
+      .category-title { font-size: 20px; margin-bottom: 15px; color: #FFD700; border-left: 4px solid #8A2BE2; padding-left: 10px; }
+      .subcategory-title { color: #B0B0C3; font-size: 16px; margin: 20px 0 10px 15px; }
+      .episode-list { display: flex; flex-direction: column; gap: 12px; }
+      .episode-item { background: #1A1A2E; border-radius: 12px; overflow: hidden; display: flex; cursor: pointer; border: 1px solid #2A2A3E; }
+      .episode-thumb { width: 120px; height: 70px; object-fit: cover; }
+      .episode-info { padding: 10px; flex: 1; }
+      .episode-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+      .episode-desc { font-size: 13px; color: #B0B0C3; }
+      .play-icon { display: flex; align-items: center; padding: 0 15px; font-size: 20px; }
+      .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
+      .modal.active { display: flex; }
+      .modal-content { width: 95%; max-width: 900px; background: #1A1A2E; border-radius: 15px; overflow: hidden; }
+      .modal-header { padding: 15px; background: #0A0A0F; display: flex; justify-content: space-between; align-items: center; }
+      .close-btn { background: #FF4444; border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 20px; }
+      .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
+      .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+      .video-controls { padding: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      .control-btn { background: #8A2BE2; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+      .paywall-modal.modal-content { text-align: center; padding: 30px; }
+      .paywall-price { font-size: 32px; color: #00FF88; margin: 15px 0; }
+      .pay-btn { background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); color: #0A0A0F; border: none; padding: 15px 40px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <!-- HEADER MPYA KAMA YOUTUBE -->
     <div class="header">
-        <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" 
-             alt="Logo" 
-             class="app-icon">
-        <div class="app-name">CHILAGU LEGACY</div>
-        <div class="tagline">STREAM • LIKE • A • BOSS</div>
+        <div class="logo">🎬 CHILAGU LEGACY</div>
+        <div class="tagline">Bongo Series & Movies</div>
     </div>
 
-    <!-- TRAILER SLIDER - WEKA TRAILER HAPA -->
-    <div class="trailer-slider">
-        <div class="slider-container" id="slider">
-            <!-- SLIDE 1: LOVE AND DESTINY TRAILER -->
-            <div class="slide" onclick="openSeriesDetail('love-and-destiny')">
-                <img src="https://picsum.photos/800/400?random=100" alt="Love and Destiny">
-                <div class="play-btn">▶</div>
-                <div class="slide-overlay">
-                    <div class="slide-title">LOVE AND DESTINY</div>
-                    <div class="slide-tag">💥 SERIES MPYA</div>
-                </div>
-            </div>
-        </div>
-        <div class="slider-dots" id="dots"></div>
-    </div>
+    <!-- HAPA NDIO APP INAJIJENGA AUTOMATIC -->
+    <div class="container" id="app-container"></div>
 
-    <!-- MAIN CATEGORIES -->
-    <div class="main-categories">
-        <button class="cat-main active" onclick="showCategory('series')">
-            <span class="cat-icon">📺</span>
-            SERIES
-        </button>
-        <button class="cat-main inactive" onclick="showCategory('movie')">
-            <span class="cat-icon">🎬</span>
-            SINGO MOVIE
-        </button>
-    </div>
-
-    <!-- SUB CATEGORIES -->
-    <div class="sub-categories">
-        <button class="cat-sub active" onclick="filterCategory('all')">🔥 Zote</button>
-        <button class="cat-sub" onclick="filterCategory('drama')">😢 Drama</button>
-        <button class="cat-sub" onclick="filterCategory('action')">💥 Action</button>
-        <button class="cat-sub" onclick="filterCategory('love')">💖 Love</button>
-        <button class="cat-sub" onclick="filterCategory('comedy')">😂 Comedy</button>
-        <button class="cat-sub" onclick="filterCategory('horror')">👻 Horror</button>
-        <button class="cat-sub" onclick="filterCategory('bongo')">🎭 Bongo</button>
-    </div>
-
-    <!-- SECTION 1: SERIES -->
-    <div class="content-section active" id="seriesSection">
-        <div class="section-title">SERIES ZOTE</div>
-        <div class="content-grid">
-            
-            <!-- ====== LOVE AND DESTINY - SERIES YAKO ====== -->
-            <div class="content-card" data-category="drama series" onclick="openSeriesDetail('love-and-destiny')">
-                <div class="content-badge badge-series">SERIES</div>
-                <img src="https://picsum.photos/300/400?random=101" class="content-poster">
-                <div class="content-info">
-                    <div class="content-title">LOVE AND DESTINY</div>
-                    <div class="episode-count">Episodes 3 • Drama</div>
-                </div>
-            </div>
-            
-            <!-- ====== ANZA KUONGEZA SERIES NYINGINE HAPA ====== -->
-            <!-- Copy card ya juu, badilisha jina, picha, category -->
-            
-            <!-- EMPTY STATE UKIONDOA -->
-            <!-- 
-            <div class="empty-state">
-                <div class="empty-icon">📺</div>
-                <div class="empty-text">Series zinakuja hivi karibuni...</div>
-            </div>
-            -->
-            
-        </div>
-    </div>
-
-    <!-- SECTION 2: SINGO MOVIE -->
-    <div class="content-section" id="movieSection">
-        <div class="section-title">SINGO MOVIE ZOTE</div>
-        <div class="content-grid">
-            
-            <!-- ====== ANZA KUONGEZA SINGO MOVIE HAPA ====== -->
-            
-            <!-- MFANO: SINGO MOVIE -->
-            <!-- 
-            <div class="content-card" data-category="action movie" onclick="showPaywall('SHADOW CODE', 2000, 'WEKA_LINK_PAYHIP')">
-                <div class="content-badge badge-singo">SINGO</div>
-                <img src="https://picsum.photos/300/400?random=200" class="content-poster">
-                <div class="content-info">
-                    <div class="content-title">SHADOW CODE</div>
-                    <div class="episode-count">Action • 120 min</div>
-                </div>
-            </div>
-            -->
-            
-            <!-- EMPTY STATE -->
-            <div class="empty-state">
-                <div class="empty-icon">🎬</div>
-                <div class="empty-text">Singo Movie zinakuja hivi karibuni...</div>
-            </div>
-            
-        </div>
-    </div>
-
-    <!-- SERIES DETAIL PAGE - LOVE AND DESTINY PLAYLIST -->
-    <div class="series-detail" id="love-and-destiny">
-        <div class="series-header">
-            <button class="back-btn" onclick="closeSeriesDetail()">←</button>
-            <img src="https://picsum.photos/800/400?random=101" alt="Love and Destiny">
-            <div class="series-header-overlay">
-                <div class="series-detail-title">LOVE AND DESTINY</div>
-                <div class="series-meta">Drama • Series • 3 Episodes</div>
-            </div>
-        </div>
-        
-        <div class="episode-list">
-            <!-- EPISODE 1 - BURE -->
-            <div class="episode-item" onclick="playEpisode('Love and Destiny S1E1', 'WEKA_LINK_STREAMABLE_EP1', true)">
-                <img src="https://picsum.photos/300/200?random=110" class="episode-thumb">
-                <div class="episode-info">
-                    <div class="episode-title">Episode 1: Mwanzo wa Safari</div>
-                    <div class="episode-desc">BURE • 45 min</div>
-                </div>
-                <div class="play-icon">▶</div>
-            </div>
-            
-            <!-- EPISODE 2 - LIPIA 500 -->
-            <div class="episode-item" onclick="showPaywall('Love and Destiny S1E2', 500, 'WEKA_LINK_PAYHIP_500')">
-                <img src="https://picsum.photos/300/200?random=111" class="episode-thumb">
-                <div class="episode-info">
-                    <div class="episode-title">Episode 2: Majonzi</div>
-                    <div class="episode-desc">🔒 TSh 500 • 48 min</div>
-                </div>
-                <div class="play-icon">🔒</div>
-            </div>
-            
-            <!-- EPISODE 3 - LIPIA 500 -->
-            <div class="episode-item" onclick="showPaywall('Love and Destiny S1E3', 500, 'WEKA_LINK_PAYHIP_500')">
-                <img src="https://picsum.photos/300/200?random=112" class="episode-thumb">
-                <div class="episode-info">
-                    <div class="episode-title">Episode 3: Hatima</div>
-                    <div class="episode-desc">🔒 TSh 500 • 50 min</div>
-                </div>
-                <div class="play-icon">🔒</div>
-            </div>
-            
-            <!-- ====== ANZA KUONGEZA EPISODE NYINGINE HAPA ====== -->
-            
-        </div>
-    </div>
-
-    <!-- PAYWALL MODAL - INATOKEA AKIGUSA EPISODE/MOVIE YA KULIPIA -->
-    <div class="modal" id="paywallModal">
+    <!-- VIDEO PLAYER MODAL -->
+    <div class="modal" id="playerModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closePaywall()">&times;</button>
             <div class="modal-header">
-                <div class="modal-title" id="paywallTitle">NUNUA SASA</div>
+                <div class="modal-title" id="videoTitle">Inacheza...</div>
+                <button class="close-btn" onclick="closePlayer()">×</button>
             </div>
-            <div class="modal-body">
-                <p>Lipia kutazama bila kikomo</p>
-                <div class="price-tag" id="paywallPrice">TSh 500</div>
-                <button class="pay-btn" id="paywallBtn" onclick="">
-                    🔒 LIPA SASA
-                </button>
+            <div class="video-container">
+                <iframe id="videoFrame" src="" allowfullscreen></iframe>
+            </div>
+            <div class="video-controls" id="videoControls">
+                <button class="control-btn" id="nextEpisodeBtn" onclick="playNext()">⏭️ Endelea</button>
+                <button class="control-btn" onclick="closePlayer()">✖️ Funga</button>
             </div>
         </div>
     </div>
 
-    <!-- VIDEO PLAYER MODAL - KWA BURE -->
-    <div class="modal" id="videoModal">
-        <div class="modal-content" style="max-width: 900px; background: #000;">
-            <button class="close-modal" onclick="closeVideo()">&times;</button>
-            <div class="video-wrapper">
-                <iframe id="videoFrame" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-            </div>
+    <!-- PAYWALL MODAL -->
+    <div class="modal paywall-modal" id="paywallModal">
+        <div class="modal-content">
+            <div style="font-size: 22px; margin-bottom: 10px; color: #FFD700;" id="paywallTitle">Episode Imefungwa 🔒</div>
+            <div>Unahitaji kulipia ili kutazama</div>
+            <div class="paywall-price" id="paywallPrice">TSh 500</div>
+            <button class="pay-btn" id="payNowBtn" onclick="goToPayment()">LIPA SASA</button>
+            <br><br>
+            <button class="control-btn" onclick="closePaywall()">Ghairi</button>
         </div>
     </div>
 
     <script>
-        // SLIDER LOGIC
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dotsContainer = document.getElementById('dots');
-        
-        slides.forEach((_, i) => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if(i === 0) dot.classList.add('active');
-            dot.onclick = () => goToSlide(i);
-            dotsContainer.appendChild(dot);
-        });
-        
-        function goToSlide(n) {
-            currentSlide = n;
-            document.getElementById('slider').style.transform = `translateX(-${currentSlide * 100}%)`;
-            document.querySelectorAll('.dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
+        // ============================================
+        // SEHEMU YA WEWE KUBADILISHA TU - ANZA HAPA
+        // ============================================
+
+        const CONTENT_DATABASE = [
+            // LOVE AND DESTINY SERIES
+            {
+                id: 1,
+                title: "Episode 1: Mwanzo",
+                category: "Love and Destiny Series",
+                subcategory: "Series",
+                video_url: "https://streamable.com/e/WEKA_LINK_YAKO_HAPA",
+                thumbnail: "https://i.postimg.cc/WEKA_PICHA.jpg",
+                duration: "45 min",
+                is_free: true,
+                price: 0,
+                payment_link: "",
+                has_continuation: true,
+                series_id: "love_destiny"
+            },
+            {
+                id: 2,
+                title: "Episode 2: Majonzi",
+                category: "Love and Destiny Series",
+                subcategory: "Series",
+                video_url: "https://streamable.com/e/WEKA_LINK_YAKO_HAPA",
+                thumbnail: "https://i.postimg.cc/WEKA_PICHA.jpg",
+                duration: "48 min",
+                is_free: false,
+                price: 500,
+                payment_link: "https://payhip.com/b/WEKA_LINK_YAKO",
+                has_continuation: true,
+                series_id: "love_destiny"
+            },
+
+            // SINGO MOVIE - COMEDY
+            {
+                id: 3,
+                title: "MPANDA MNAZI KWA MKONO MMOJA",
+                category: "Singo Movie",
+                subcategory: "Comedy",
+                video_url: "https://streamable.com/e/8326lw",
+                thumbnail: "https://i.postimg.cc/1z9J8w3N/comedy-default.jpg",
+                duration: "7 min",
+                is_free: true,
+                price: 0,
+                payment_link: "",
+                has_continuation: false,
+                series_id: null
+            }
+
+            // ONGEZA JOB MPYA HAPA CHINI KAMA HIVI:
+            /*
+           ,{
+                id: 4,
+                title: "JINA LA MOVIE/COMEDY YAKO",
+                category: "Singo Movie", // Au "Love and Destiny Series" au jipya
+                subcategory: "Comedy", // Au "Action" au "Drama"
+                video_url: "https://streamable.com/e/LINK_YAKO",
+                thumbnail: "https://i.postimg.cc/PICHA_YAKO.jpg",
+                duration: "10 min",
+                is_free: true, // true = bure, false = lipia
+                price: 0, // Weka 500, 2000 etc kama sio bure
+                payment_link: "", // Weka link ya Payhip kama sio bure
+                has_continuation: false, // true = ina miendelezo, false = imesimama
+                series_id: null // Weka "love_destiny" kama ni series
+            }
+            */
+        ];
+
+        // ============================================
+        // ISHA - USIGUSE CHINI YA HAPA
+        // ============================================
+
+        let currentPaymentUrl = '';
+        let currentPlaylist = [];
+        let currentIndex = 0;
+
+        // JENGA APP AUTOMATIC
+        function buildApp() {
+            const container = document.getElementById('app-container');
+            const categories = {};
+
+            // Panga content kwa category
+            CONTENT_DATABASE.forEach(item => {
+                if (!categories[item.category]) {
+                    categories[item.category] = {};
+                }
+                if (!categories[item.category][item.subcategory]) {
+                    categories[item.category][item.subcategory] = [];
+                }
+                categories[item.category][item.subcategory].push(item);
             });
+
+            // Tengeneza HTML
+            let html = '';
+            for (let catName in categories) {
+                html += `<div class="category"><h2 class="category-title">${catName}</h2>`;
+
+                for (let subName in categories[catName]) {
+                    html += `<h3 class="subcategory-title">😂 ${subName}</h3><div class="episode-list">`;
+
+                    categories[catName][subName].forEach(item => {
+                        const icon = item.is_free? '▶️' : '🔒';
+                        const priceText = item.is_free? '🆓 BURE' : `🔒 TSh ${item.price}`;
+                        const clickAction = item.is_free
+                           ? `playContent(${item.id})`
+                            : `showPaywall('${item.title}', ${item.price}, '${item.payment_link}')`;
+
+                        html += `
+                            <div class="episode-item" onclick="${clickAction}">
+                                <img src="${item.thumbnail}" class="episode-thumb">
+                                <div class="episode-info">
+                                    <div class="episode-title">${item.title}</div>
+                                    <div class="episode-desc">${priceText} • ${item.duration}</div>
+                                </div>
+                                <div class="play-icon">${icon}</div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+                html += `</div>`;
+            }
+            container.innerHTML = html;
         }
-        
-        setInterval(() => {
-            currentSlide = (currentSlide + 1) % slides.length;
-            goToSlide(currentSlide);
-        }, 5000);
-        
-        // CATEGORY SWITCH
-        function showCategory(type) {
-            const seriesBtn = document.querySelectorAll('.cat-main')[0];
-            const movieBtn = document.querySelectorAll('.cat-main')[1];
-            const seriesSection = document.getElementById('seriesSection');
-            const movieSection = document.getElementById('movieSection');
-            
-            if(type === 'series') {
-                seriesBtn.classList.add('active');
-                seriesBtn.classList.remove('inactive');
-                movieBtn.classList.add('inactive');
-                movieBtn.classList.remove('active');
-                seriesSection.classList.add('active');
-                movieSection.classList.remove('active');
+
+        // CHEZA CONTENT
+        function playContent(id) {
+            const item = CONTENT_DATABASE.find(x => x.id === id);
+            if (!item) return;
+
+            document.getElementById('playerModal').classList.add('active');
+            document.getElementById('videoTitle').textContent = item.title;
+            document.getElementById('videoFrame').src = item.video_url + '?autoplay=1';
+
+            // Tengeneza playlist kama ni series
+            if (item.series_id && item.has_continuation) {
+                currentPlaylist = CONTENT_DATABASE.filter(x => x.series_id === item.series_id);
+                currentIndex = currentPlaylist.findIndex(x => x.id === id);
+                document.getElementById('nextEpisodeBtn').style.display = 'inline-block';
+                updateNextBtn();
             } else {
-                movieBtn.classList.add('active');
-                movieBtn.classList.remove('inactive');
-                seriesBtn.classList.add('inactive');
-                seriesBtn.classList.remove('active');
-                movieSection.classList.add('active');
-                seriesSection.classList.remove('active');
+                currentPlaylist = [];
+                document.getElementById('nextEpisodeBtn').style.display = 'none';
             }
         }
-        
-        // FILTER BY SUB CATEGORY
-        function filterCategory(cat) {
-            document.querySelectorAll('.cat-sub').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const cards = document.querySelectorAll('.content-card');
-            cards.forEach(card => {
-                if(cat === 'all' || card.dataset.category.includes(cat)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-        
-        // OPEN SERIES DETAIL
-        function openSeriesDetail(id) {
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-        
-        function closeSeriesDetail() {
-            document.querySelectorAll('.series-detail').forEach(el => el.classList.remove('active'));
-        }
-        
-        // PLAY FREE EPISODE
-        function playEpisode(title, url, isFree) {
-            document.getElementById('videoFrame').src = url;
-            document.getElementById('videoModal').classList.add('active');
-        }
-        
-        function closeVideo() {
-            document.getElementById('videoFrame').src = '';
-            document.getElementById('videoModal').classList.remove('active');
-        }
-        
-        // PAYWALL - BEI INAONEKANA HAPA TU
-        function showPaywall(title, price, payhipUrl) {
-            document.getElementById('paywallTitle').textContent = title;
-            document.getElementById('paywallPrice').textContent = `TSh ${price.toLocaleString()}`;
-            document.getElementById('paywallBtn').onclick = () => window.open(payhipUrl, '_blank');
+
+        // PAYWALL
+        function showPaywall(title, price, paymentUrl) {
+            currentPaymentUrl = paymentUrl;
             document.getElementById('paywallModal').classList.add('active');
+            document.getElementById('paywallTitle').textContent = title;
+            document.getElementById('paywallPrice').textContent = 'TSh ' + price;
         }
-        
+
+        function goToPayment() {
+            window.open(currentPaymentUrl, '_blank');
+            closePaywall();
+        }
+
         function closePaywall() {
             document.getElementById('paywallModal').classList.remove('active');
         }
-    </script>
 
+        // PLAYER CONTROLS
+        function closePlayer() {
+            document.getElementById('playerModal').classList.remove('active');
+            document.getElementById('videoFrame').src = '';
+        }
+
+        function playNext() {
+            if (currentPlaylist.length === 0) return;
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= currentPlaylist.length) {
+                alert('Umemaliza series yote!');
+                return;
+            }
+            let nextItem = currentPlaylist[nextIndex];
+            if (!nextItem.is_free) {
+                showPaywall(nextItem.title, nextItem.price, nextItem.payment_link);
+                return;
+            }
+            playContent(nextItem.id);
+        }
+
+        function updateNextBtn() {
+            let btn = document.getElementById('nextEpisodeBtn');
+            if (currentIndex >= currentPlaylist.length - 1) {
+                btn.textContent = '✅ Umemaliza';
+                btn.disabled = true;
+            } else {
+                btn.textContent = '⏭️ Endelea';
+                btn.disabled = false;
+            }
+        }
+
+        // ANZISHA APP
+        buildApp();
+    </script>
 </body>
 </html>
