@@ -3,102 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chilagu Legacy</title>
+    <title>Chilagu Cinema</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #0a0a0a; color: #fff;
         }
 .header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 20px; background: #000; position: sticky; top: 0; z-index: 100;
-            gap: 15px;
+            padding: 14px 20px; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100; gap: 15px;
         }
 .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.logo img { width: 30px; height: 30px; object-fit: contain; }
-.logo h1 { color: #a855f7; font-size: 18px; letter-spacing: 1px; }
+.logo img { width: 32px; height: 32px; object-fit: contain; }
+.logo h1 { 
+            color: #a855f7; font-size: 20px; font-weight: 800; letter-spacing: 0.5px;
+            text-shadow: 0 0 20px rgba(168,85,247,0.3);
+        }
 
 .search-box {
             flex: 1; max-width: 400px; position: relative;
         }
 .search-box input {
-            width: 100%; padding: 10px 40px 10px 15px; border-radius: 25px;
-            border: 1px solid #333; background: #1a1a1a; color: #fff;
-            font-size: 14px; outline: none;
+            width: 100%; padding: 11px 45px 11px 18px; border-radius: 25px;
+            border: 1px solid #2a2a2a; background: #141414; color: #fff;
+            font-size: 15px; outline: none; font-weight: 500;
         }
-.search-box input:focus { border-color: #a855f7; }
+.search-box input:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.1); }
 .search-icon {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            color: #888; pointer-events: none;
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            color: #888; pointer-events: none; font-size: 18px;
         }
 
 .banner {
-            position: relative; width: 100%; height: 320px; overflow: hidden; background: #111;
+            position: relative; width: 100%; height: 380px; overflow: hidden; background: #111;
         }
 .banner-slide {
-            position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s;
+            position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s;
             background-size: cover; background-position: center;
-            display: flex; align-items: flex-end; padding: 20px;
+            display: flex; align-items: flex-end; padding: 25px;
         }
 .banner-slide.active { opacity: 1; }
 .banner-slide::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, #0a0a0a 0%, transparent 60%);
+            background: linear-gradient(to top, #0a0a0a 10%, transparent 70%);
         }
 .banner-content { position: relative; z-index: 2; }
+.banner-content h2 { font-size: 28px; font-weight: 800; margin-top: 10px; }
 .play-icon {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 60px; height: 60px; background: #a855f7; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 24px;
-            cursor: pointer; z-index: 3;
+            width: 70px; height: 70px; background: #a855f7; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 28px;
+            cursor: pointer; z-index: 3; box-shadow: 0 8px 25px rgba(168,85,247,0.5);
+            transition: 0.3s;
         }
-.banner-badge { background: #a855f7; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
-.dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: #555; cursor: pointer; }
-.dot.active { background: #a855f7; }
+.play-icon:hover { transform: translate(-50%, -50%) scale(1.1); }
+.banner-badge { 
+            background: #a855f7; padding: 6px 14px; border-radius: 20px; 
+            font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+.dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 3; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s; }
+.dot.active { background: #a855f7; width: 30px; border-radius: 5px; }
 
-.tabs { display: flex; gap: 15px; padding: 20px; }
+.tabs { display: flex; gap: 15px; padding: 25px 20px; }
 .tab {
-            flex: 1; padding: 20px; border-radius: 12px; text-align: center;
-            background: #1a1a1a; cursor: pointer; transition: 0.3s;
+            flex: 1; padding: 22px; border-radius: 14px; text-align: center;
+            background: #141414; cursor: pointer; transition: 0.3s;
+            font-weight: 700; font-size: 16px; border: 1px solid #222;
         }
-.tab.active { background: #a855f7; }
+.tab.active { 
+            background: linear-gradient(135deg, #a855f7, #7e22ce); 
+            border-color: #a855f7;
+            box-shadow: 0 8px 25px rgba(168,85,247,0.3);
+        }
 .filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
 .filter {
-            padding: 8px 16px; background: #1a1a1a; border-radius: 20px;
-            white-space: nowrap; cursor: pointer; border: none; color: #fff;
+            padding: 10px 18px; background: #141414; border-radius: 25px;
+            white-space: nowrap; cursor: pointer; border: 1px solid #222; 
+            color: #fff; font-weight: 600; font-size: 14px; transition: 0.3s;
         }
-.filter.active { background: #a855f7; }
-.section-title { padding: 20px; font-size: 18px; font-weight: 600; color: #a855f7; }
+.filter.active { 
+            background: #a855f7; border-color: #a855f7;
+            box-shadow: 0 4px 15px rgba(168,85,247,0.3);
+        }
+.section-title { 
+            padding: 25px 20px 15px; font-size: 20px; font-weight: 800; 
+            color: #a855f7; text-transform: uppercase; letter-spacing: 1px;
+        }
 .movies-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px; padding: 0 20px 40px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 18px; padding: 0 20px 40px;
         }
-.movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
-.movie-card img { width: 100%; height: 220px; object-fit: cover; }
-.movie-info { padding: 10px; }
-.movie-title { font-size: 14px; margin-bottom: 8px; height: 40px; overflow: hidden; }
-.price { color: #a855f7; font-weight: bold; font-size: 14px; }
+.movie-card { 
+            background: #141414; border-radius: 14px; overflow: hidden; 
+            border: 1px solid #222; transition: 0.3s;
+        }
+.movie-card:hover { transform: translateY(-5px); border-color: #a855f7; }
+.movie-card img { width: 100%; height: 240px; object-fit: cover; }
+.movie-info { padding: 12px; }
+.movie-title { 
+            font-size: 15px; font-weight: 600; margin-bottom: 10px; 
+            height: 42px; overflow: hidden; line-height: 1.3;
+        }
+.price { color: #a855f7; font-weight: 700; font-size: 15px; }
 .price.free { color: #22c55e; }
 .btn-lipia {
-            display: block; width: 100%; padding: 8px; margin-top: 8px;
-            background: #a855f7; color: white; text-align: center;
-            border-radius: 6px; text-decoration: none; font-weight: 600;
+            display: block; width: 100%; padding: 10px; margin-top: 10px;
+            background: linear-gradient(135deg, #a855f7, #7e22ce); 
+            color: white; text-align: center; font-weight: 700;
+            border-radius: 8px; text-decoration: none; transition: 0.3s;
         }
-.btn-bure { background: #22c55e; }
+.btn-lipia:hover { opacity: 0.9; }
+.btn-bure { background: linear-gradient(135deg, #22c55e, #16a34a); }
 .badge {
-            position: absolute; top: 8px; left: 8px; background: #a855f7;
-            padding: 4px 8px; border-radius: 4px; font-size: 11px;
+            position: absolute; top: 10px; left: 10px; background: #a855f7;
+            padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
         }
-.no-results { text-align: center; padding: 40px 20px; color: #888; }
+.no-results { text-align: center; padding: 50px 20px; color: #888; font-weight: 600; }
+
+/* VIDEO PLAYER MODAL */
+.modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 999; align-items: center; justify-content: center;
+        }
+.modal.active { display: flex; }
+.modal-content {
+            width: 95%; max-width: 900px; background: #000; border-radius: 12px; overflow: hidden;
+        }
+.modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: #141414;
+        }
+.modal-title { font-weight: 700; font-size: 18px; }
+.close-btn {
+            background: #a855f7; border: none; color: white; width: 35px; height: 35px;
+            border-radius: 50%; cursor: pointer; font-size: 20px; font-weight: 700;
+        }
+.video-frame { width: 100%; aspect-ratio: 16/9; border: none; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">
             <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu Logo">
-            <h1>CHILAGU LEGACY</h1>
+            <h1>Chilagu Cinema</h1>
         </div>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Tafuta movie...">
@@ -126,8 +177,19 @@
     <h3 class="section-title" id="section-title">MOVIES ZOTE</h3>
     <div class="movies-grid" id="movies-container"></div>
 
+    <!-- VIDEO PLAYER MODAL -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Inacheza...</div>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <iframe class="video-frame" id="videoFrame" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <script>
-        // HAPA NDIO UNAWEKA MOVIE ZAKO ZOTE - HAKUNA JSON INAHITAJIKA
+        // WEKA MOVIE ZAKO HAPA - BADILISHA HIZI
         const allMovies = [
             {
                 id: 1,
@@ -137,7 +199,7 @@
                 price: 0,
                 poster: "https://i.ibb.co/zWN0Jr9d/file-0000000001e471f481a5cc83ddc746bd.png",
                 payhip_link: "FREE",
-                trailer: "https://streamable.com/8326lw"
+                video_link: "https://streamable.com/8326lw" // BADILISHA HII IWE EMBED LINK
             },
             {
                 id: 2,
@@ -147,17 +209,7 @@
                 price: 2000,
                 poster: "https://i.ibb.co/placeholder.jpg",
                 payhip_link: "https://payhip.com/b/XXXXX",
-                trailer: "https://youtube.com/watch?v=XXXXX"
-            },
-            {
-                id: 3,
-                title: "JAMII YANGU S1",
-                type: "series",
-                genre: "Drama",
-                price: 5000,
-                poster: "https://i.ibb.co/placeholder.jpg",
-                payhip_link: "https://payhip.com/b/YYYYY",
-                trailer: "https://youtube.com/watch?v=YYYYY"
+                video_link: "https://youtube.com/embed/XXXXX"
             }
         ];
 
@@ -167,7 +219,6 @@
         let slideIndex = 0;
         let slideInterval;
 
-        // INAANZA PAPO HAPO - HAKUNA KUSUBIRI JSON
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelector(`.tab[data-type="${currentType}"]`).classList.add('active');
@@ -193,7 +244,7 @@
                 slide.innerHTML = `
                     <div class="banner-content">
                         <span class="banner-badge">${movie.type === 'series'? '🔥 SERIES MPYA' : '🎬 SINGO MPYA'}</span>
-                        <h2 style="margin-top:8px;">${movie.title}</h2>
+                        <h2>${movie.title}</h2>
                     </div>
                     <div class="play-icon" onclick="handleMovieClick('${movie.id}')">▶</div>
                 `;
@@ -238,10 +289,35 @@
             if(!movie) return;
 
             if(movie.price === 0 || movie.payhip_link === 'FREE') {
-                window.open(movie.trailer || movie.video_link, '_blank');
+                // FUNGUA VIDEO NDANI YA SITE
+                openVideoModal(movie);
             } else {
                 window.open(movie.payhip_link, '_blank');
             }
+        }
+
+        function openVideoModal(movie) {
+            const modal = document.getElementById('videoModal');
+            const frame = document.getElementById('videoFrame');
+            const title = document.getElementById('modalTitle');
+            
+            title.textContent = movie.title;
+            
+            // BADILISHA STREAMABLE LINK IWE EMBED
+            let videoUrl = movie.video_link;
+            if(videoUrl.includes('streamable.com/')) {
+                videoUrl = videoUrl.replace('streamable.com/', 'streamable.com/e/');
+            }
+            
+            frame.src = videoUrl;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const frame = document.getElementById('videoFrame');
+            frame.src = '';
+            modal.classList.remove('active');
         }
 
         function displayMovies() {
