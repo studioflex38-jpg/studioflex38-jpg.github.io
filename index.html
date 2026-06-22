@@ -7,80 +7,42 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0a0a0a; color: white; font-family: Arial, sans-serif; }
-      .header {
-            background: #000; padding: 15px 20px; display: flex;
-            justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #1a1a1a;
-        }
-      .logo { display: flex; align-items: center; gap: 10px; }
-      .logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-      .logo-text { color: #a855f7; font-size: 24px; font-weight: bold; line-height: 1.1; }
-      .tagline { color: #666; font-size: 12px; text-align: right; }
-
-      .featured-slide {
-            position: relative; height: 300px; background: #000;
-            display: flex; align-items: center; justify-content: center;
-        }
-      .play-btn {
-            width: 80px; height: 80px; background: #a855f7;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; cursor: pointer;
-        }
-      .play-icon {
-            width: 0; height: 0; border-left: 25px solid white;
-            border-top: 15px solid transparent; border-bottom: 15px solid transparent;
-            margin-left: 5px;
-        }
-      .featured-info { position: absolute; bottom: 20px; left: 20px; }
-      .featured-title { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
-      .featured-badge {
-            background: #a855f7; padding: 6px 15px; border-radius: 20px;
-            font-size: 12px; display: inline-block; margin-bottom: 10px;
-        }
-      .slide-dots { display: flex; gap: 8px; }
-      .dot { width: 30px; height: 4px; background: #a855f7; border-radius: 2px; }
-
-      .categories { padding: 20px; display: flex; gap: 15px; }
-      .cat-btn {
-            flex: 1; padding: 25px; border-radius: 15px; text-align: center;
-            cursor: pointer; border: 2px solid transparent;
-        }
-      .cat-btn.active { border-color: #a855f7; background: #a855f7; }
-      .cat-btn:not(.active) { background: #1a1a1a; }
-      .cat-icon { font-size: 30px; margin-bottom: 10px; }
-      .cat-text { font-weight: bold; }
-
-      .filters { padding: 0 20px 20px; display: flex; gap: 10px; overflow-x: auto; }
-      .filter-btn {
-            padding: 8px 16px; border-radius: 20px; background: #1a1a1a;
-            border: 1px solid #333; white-space: nowrap; cursor: pointer;
-        }
-      .filter-btn.active { background: #a855f7; border-color: #a855f7; }
-
-      .section-title {
-            padding: 0 20px 15px; color: #a855f7; font-size: 18px; font-weight: bold;
-        }
-      .movies-grid {
-            padding: 0 20px 20px; display: grid;
-            grid-template-columns: repeat(2, 1fr); gap: 15px;
-        }
-      .movie-card {
-            background: #1a1a1a; border-radius: 10px; overflow: hidden;
-            cursor: pointer; border: 2px solid #a855f7;
-        }
-      .movie-thumb { width: 100%; height: 200px; background: #000; position: relative; }
-      .movie-thumb img { width: 100%; height: 100%; object-fit: cover; }
-      .movie-badge {
-            position: absolute; top: 10px; left: 10px; background: #a855f7;
-            padding: 4px 10px; border-radius: 15px; font-size: 11px;
-        }
-      .movie-info { padding: 10px; }
-      .movie-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
-      .movie-price { color: #a855f7; font-size: 12px; }
+       .header { background: #000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; }
+       .logo { display: flex; align-items: center; gap: 10px; }
+       .logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+       .logo-text { color: #a855f7; font-size: 24px; font-weight: bold; line-height: 1.1; }
+       .tagline { color: #666; font-size: 12px; text-align: right; }
+       .featured-slide { position: relative; height: 300px; background: #000; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; transition: background-image 0.5s ease-in-out; }
+       .play-btn { width: 80px; height: 80px; background: #a855f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; }
+       .play-icon { width: 0; height: 0; border-left: 25px solid white; border-top: 15px solid transparent; border-bottom: 15px solid transparent; margin-left: 5px; }
+       .featured-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); }
+       .featured-info { position: absolute; bottom: 20px; left: 20px; z-index: 2; }
+       .featured-title { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+       .featured-badge { background: #a855f7; padding: 6px 15px; border-radius: 20px; font-size: 12px; display: inline-block; margin-bottom: 10px; }
+       .slide-dots { display: flex; gap: 8px; }
+       .dot { width: 30px; height: 4px; background: #333; border-radius: 2px; cursor: pointer; }
+       .dot.active { background: #a855f7; }
+       .categories { padding: 20px; display: flex; gap: 15px; }
+       .cat-btn { flex: 1; padding: 25px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid transparent; }
+       .cat-btn.active { border-color: #a855f7; background: #a855f7; }
+       .cat-btn:not(.active) { background: #1a1a1a; }
+       .cat-icon { font-size: 30px; margin-bottom: 10px; }
+       .cat-text { font-weight: bold; }
+       .filters { padding: 0 20px 20px; display: flex; gap: 10px; overflow-x: auto; }
+       .filter-btn { padding: 8px 16px; border-radius: 20px; background: #1a1a1a; border: 1px solid #333; white-space: nowrap; cursor: pointer; }
+       .filter-btn.active { background: #a855f7; border-color: #a855f7; }
+       .section-title { padding: 0 20px 15px; color: #a855f7; font-size: 18px; font-weight: bold; }
+       .movies-grid { padding: 0 20px 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+       .movie-card { background: #1a1a1a; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid #a855f7; }
+       .movie-thumb { width: 100%; height: 200px; background: #1a1a1a; position: relative; }
+       .movie-thumb img { width: 100%; height: 100%; object-fit: cover; }
+       .movie-badge { position: absolute; top: 10px; left: 10px; background: #a855f7; padding: 4px 10px; border-radius: 15px; font-size: 11px; }
+       .movie-info { padding: 10px; }
+       .movie-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+       .movie-price { color: #a855f7; font-size: 12px; }
     </style>
 </head>
 <body>
-    <!-- HEADER - LOGO YAKO HII HAPA -->
     <div class="header">
         <div class="logo">
             <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
@@ -89,33 +51,27 @@
         <div class="tagline">STREAM • LIKE • A •<br>BOSS</div>
     </div>
 
-    <!-- FEATURED SLIDE -->
     <div class="featured-slide" id="featuredSlide">
+        <div class="featured-overlay"></div>
         <div class="play-btn" onclick="playFeatured()">
             <div class="play-icon"></div>
         </div>
         <div class="featured-info">
-            <div class="featured-title" id="featuredTitle">LOVE AND DESTINY</div>
-            <div class="featured-badge">✨ SERIES MPYA</div>
-            <div class="slide-dots">
-                <div class="dot"></div>
-            </div>
+            <div class="featured-title" id="featuredTitle">Inapakia...</div>
+            <div class="featured-badge" id="featuredBadge">🎬 SINGO MPYA</div>
+            <div class="slide-dots" id="slideDots"></div>
         </div>
     </div>
 
-    <!-- CATEGORIES -->
     <div class="categories">
-        <div class="cat-btn active" onclick="filterType('all')">
-            <div class="cat-icon">📺</div>
-            <div class="cat-text">SERIES</div>
+        <div class="cat-btn" onclick="filterType('all')">
+            <div class="cat-icon">📺</div><div class="cat-text">SERIES</div>
         </div>
-        <div class="cat-btn" onclick="filterType('singo')">
-            <div class="cat-icon">🎬</div>
-            <div class="cat-text">SINGO MOVIE</div>
+        <div class="cat-btn active" onclick="filterType('singo')">
+            <div class="cat-icon">🎬</div><div class="cat-text">SINGO MOVIE</div>
         </div>
     </div>
 
-    <!-- FILTERS -->
     <div class="filters">
         <div class="filter-btn active" onclick="filterGenre('all')">🔥 Zote</div>
         <div class="filter-btn" onclick="filterGenre('Drama')">😢 Drama</div>
@@ -123,63 +79,78 @@
         <div class="filter-btn" onclick="filterGenre('Love Story')">💕 Love</div>
     </div>
 
-    <!-- MOVIES SECTION -->
-    <div class="section-title">SERIES ZOTE</div>
+    <div class="section-title">SINGO ZOTE</div>
     <div class="movies-grid" id="moviesGrid"></div>
 
 <script>
 let movies = [];
-let currentType = 'all';
+let currentType = 'singo';
 let currentGenre = 'all';
-let featuredMovie = null;
+let featuredMovies = [];
+let currentSlide = 0;
+let slideInterval;
 
-// SOMA MOVIES KUTOKA movies.json
-fetch('movies.json')
+fetch('./movies.json')
 .then(res => res.json())
 .then(data => {
     movies = data;
-    loadFeaturedSlide();
+    featuredMovies = movies.filter(m => m.featured);
+    if(featuredMovies.length === 0) featuredMovies = movies;
+    startSlideshow();
     loadMovies();
-  })
+})
 .catch(err => {
-    console.log('movies.json haipatikani');
-    movies = [];
-    loadMovies();
-  });
+    document.getElementById('featuredTitle').textContent = 'Hakuna Movies';
+    console.error('Kosa:', err);
+});
 
-function loadFeaturedSlide() {
-    const featured = movies.find(m => m.featured) || movies[0];
-    if(featured) {
-        featuredMovie = featured;
-        document.getElementById('featuredTitle').textContent = featured.title;
-        document.getElementById('featuredSlide').style.backgroundImage = `url(${featured.thumbnail})`;
-        document.getElementById('featuredSlide').style.backgroundSize = 'cover';
-        document.getElementById('featuredSlide').style.backgroundPosition = 'center';
-    }
+function startSlideshow() {
+    if(featuredMovies.length === 0) return;
+    loadSlide(0);
+    const dotsContainer = document.getElementById('slideDots');
+    dotsContainer.innerHTML = '';
+    featuredMovies.forEach((_, i) => {
+        dotsContainer.innerHTML += `<div class="dot ${i === 0? 'active' : ''}" onclick="loadSlide(${i})"></div>`;
+    });
+    clearInterval(slideInterval);
+    slideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % featuredMovies.length;
+        loadSlide(currentSlide);
+    }, 5000);
+}
+
+function loadSlide(index) {
+    currentSlide = index;
+    const movie = featuredMovies[index];
+    if(!movie) return;
+    document.getElementById('featuredSlide').style.backgroundImage = `url(${movie.thumbnail})`;
+    document.getElementById('featuredTitle').textContent = movie.title;
+    document.getElementById('featuredBadge').textContent = movie.type === 'series'? '✨ SERIES MPYA' : '🎬 SINGO MPYA';
+    document.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
 }
 
 function playFeatured() {
-    if(featuredMovie) playMovie(featuredMovie);
+    if(featuredMovies[currentSlide]) window.open(featuredMovies[currentSlide].video, '_blank');
 }
 
 function loadMovies() {
     const grid = document.getElementById('moviesGrid');
     let filtered = movies;
-
-    if(currentType!== 'all') {
-        filtered = filtered.filter(m => m.type === currentType);
+    if(currentType!== 'all') filtered = filtered.filter(m => m.type === currentType);
+    if(currentGenre!== 'all') filtered = filtered.filter(m => m.genre === currentGenre);
+    if(filtered.length === 0) {
+        grid.innerHTML = '<p style="color:#666;padding:20px;text-align:center">Hakuna movie za kuonyesha</p>';
+        return;
     }
-    if(currentGenre!== 'all') {
-        filtered = filtered.filter(m => m.genre === currentGenre);
-    }
-
     grid.innerHTML = '';
     filtered.forEach(movie => {
         const priceText = movie.is_free? 'BURE' : `TSh ${movie.price}`;
         grid.innerHTML += `
-            <div class="movie-card" onclick='playMovie(${JSON.stringify(movie).replace(/'/g, "&apos;")})'>
+            <div class="movie-card" onclick="window.open('${movie.video}', '_blank')">
                 <div class="movie-thumb">
-                    <img src="${movie.thumbnail}" alt="${movie.title}">
+                    <img src="${movie.thumbnail}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/a855f7?text=Picha+Haipo'">
                     <div class="movie-badge">${movie.type.toUpperCase()}</div>
                 </div>
                 <div class="movie-info">
@@ -194,9 +165,7 @@ function loadMovies() {
 function filterType(type) {
     currentType = type;
     document.querySelectorAll('.cat-btn').forEach((btn, i) => {
-        btn.classList.toggle('active',
-            (type === 'all' && i === 0) || (type === 'singo' && i === 1)
-        );
+        btn.classList.toggle('active', (type === 'all' && i === 0) || (type === 'singo' && i === 1));
     });
     document.querySelector('.section-title').textContent = type === 'singo'? 'SINGO ZOTE' : 'SERIES ZOTE';
     loadMovies();
@@ -208,23 +177,6 @@ function filterGenre(genre) {
         btn.classList.toggle('active', btn.textContent.includes(genre) || (genre === 'all' && btn.textContent.includes('Zote')));
     });
     loadMovies();
-}
-
-// MFUMO WA MALIPO - HAUJAGUSWA
-function playMovie(movie) {
-    if (movie.is_free || movie.price == 0) {
-        if(movie.type === 'series' && movie.episodeList) {
-            alert('Series: ' + movie.title + '\nEpisodes: ' + movie.episodes + '\n\nFungua episode ya kwanza');
-            window.open(movie.episodeList[0].video, '_blank');
-        } else {
-            window.open(movie.video, '_blank');
-        }
-    } else {
-        const lipa = confirm(`KULIPIA: ${movie.title}\nBei: TSh ${movie.price}\n\nBonyeza OK kulipia`);
-        if(lipa) {
-            alert('Unaunganishwa na payment gateway...\n\nWEKA CODE YAKO YA MALIPO HAPA');
-        }
-    }
 }
 </script>
 </body>
