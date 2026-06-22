@@ -10,57 +10,73 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #0a0a0a; color: #fff;
         }
-      .header {
+     .header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: #000; position: sticky; top: 0; z-index: 100;
         }
-      .logo { display: flex; align-items: center; gap: 10px; }
-      .logo img { width: 30px; height: 30px; object-fit: contain; }
-      .logo h1 { color: #a855f7; font-size: 20px; letter-spacing: 1px; }
-      .banner {
-            position: relative; width: 100%; height: 300px;
-            background: linear-gradient(to top, #0a0a0a 0%, transparent 60%), url('https://i.ibb.co/zWN0Jr9d/file-0000000001e471f481a5cc83ddc746bd.png');
+     .logo { display: flex; align-items: center; gap: 10px; }
+     .logo img { width: 30px; height: 30px; object-fit: contain; }
+     .logo h1 { color: #a855f7; font-size: 20px; letter-spacing: 1px; }
+      
+      /* BANNER SLIDER */
+     .banner {
+            position: relative; width: 100%; height: 320px; overflow: hidden;
+        }
+     .banner-slide {
+            position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s;
             background-size: cover; background-position: center;
             display: flex; align-items: flex-end; padding: 20px;
         }
-      .play-icon {
+     .banner-slide.active { opacity: 1; }
+     .banner-slide::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, #0a0a0a 0%, transparent 60%);
+        }
+     .banner-content { position: relative; z-index: 2; }
+     .play-icon {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 60px; height: 60px; background: #a855f7; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; font-size: 24px;
-            cursor: pointer;
+            cursor: pointer; z-index: 3;
         }
-      .tabs { display: flex; gap: 15px; padding: 20px; }
-      .tab {
+     .banner-badge { background: #a855f7; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+     .dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+     .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; cursor: pointer; }
+     .dot.active { background: #a855f7; }
+      
+     .tabs { display: flex; gap: 15px; padding: 20px; }
+     .tab {
             flex: 1; padding: 20px; border-radius: 12px; text-align: center;
             background: #1a1a1a; cursor: pointer; transition: 0.3s;
         }
-      .tab.active { background: #a855f7; }
-      .filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
-      .filter {
+     .tab.active { background: #a855f7; }
+     .filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
+     .filter {
             padding: 8px 16px; background: #1a1a1a; border-radius: 20px;
             white-space: nowrap; cursor: pointer; border: none; color: #fff;
         }
-      .filter.active { background: #a855f7; }
-      .section-title { padding: 20px; font-size: 18px; font-weight: 600; color: #a855f7; }
-      .movies-grid {
+     .filter.active { background: #a855f7; }
+     .section-title { padding: 20px; font-size: 18px; font-weight: 600; color: #a855f7; }
+     .movies-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px; padding: 0 20px 40px;
         }
-      .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
-      .movie-card img { width: 100%; height: 220px; object-fit: cover; }
-      .movie-info { padding: 10px; }
-      .movie-title { font-size: 14px; margin-bottom: 8px; height: 40px; overflow: hidden; }
-      .price { color: #a855f7; font-weight: bold; font-size: 14px; }
-      .btn-lipia {
+     .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
+     .movie-card img { width: 100%; height: 220px; object-fit: cover; }
+     .movie-info { padding: 10px; }
+     .movie-title { font-size: 14px; margin-bottom: 8px; height: 40px; overflow: hidden; }
+     .price { color: #a855f7; font-weight: bold; font-size: 14px; }
+     .price.free { color: #22c55e; }
+     .btn-lipia {
             display: block; width: 100%; padding: 8px; margin-top: 8px;
             background: #a855f7; color: white; text-align: center;
             border-radius: 6px; text-decoration: none; font-weight: 600;
         }
-      .badge {
+     .btn-bure { background: #22c55e; }
+     .badge {
             position: absolute; top: 8px; left: 8px; background: #a855f7;
             padding: 4px 8px; border-radius: 4px; font-size: 11px;
         }
-      .banner-badge { background: #a855f7; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -72,12 +88,9 @@
         <div style="font-size:12px; color:#888;">STREAM • LIKE • A • BOSS</div>
     </div>
 
-    <div class="banner" id="main-banner">
-        <div>
-            <span class="banner-badge">🔥 SERIES MPYA</span>
-            <h2 id="banner-title">LOVE AND DESTINY</h2>
-        </div>
-        <div class="play-icon" id="banner-play">▶</div>
+    <!-- BANNER SLIDER INAJAA AUTOMATIC KUTOKA movie.json -->
+    <div class="banner" id="banner-slider">
+        <div class="dots" id="banner-dots"></div>
     </div>
 
     <div class="tabs">
@@ -89,6 +102,7 @@
         <button class="filter active" data-genre="all">🔥 Zote</button>
         <button class="filter" data-genre="Drama">😢 Drama</button>
         <button class="filter" data-genre="Action">💥 Action</button>
+        <button class="filter" data-genre="Comedy">😂 Comedy</button>
         <button class="filter" data-genre="Love">💖 Love</button>
     </div>
 
@@ -99,19 +113,89 @@
         let allMovies = [];
         let currentType = 'series';
         let currentGenre = 'all';
+        let slideIndex = 0;
+        let slideInterval;
 
+        // 1. SOMA movie.json - HII NDIO INAONGOZA YOTE
         fetch('movie.json')
-          .then(res => res.json())
-          .then(movies => {
+         .then(res => res.json())
+         .then(movies => {
                 allMovies = movies;
+                createBannerSlider(movies);
                 displayMovies();
-                setBanner(movies[0]);
             })
-          .catch(err => {
+         .catch(err => {
                 document.getElementById('movies-container').innerHTML = 
-                '<p style="text-align:center; padding:20px;">Samahani, movies hazijapatikana.</p>';
+                '<p style="text-align:center; padding:20px;">Hakuna movies. Weka kwenye movie.json</p>';
             });
 
+        // 2. TENGENEZA SLIDER AUTOMATIC KUTOKA movie.json
+        function createBannerSlider(movies) {
+            const slider = document.getElementById('banner-slider');
+            const dotsContainer = document.getElementById('banner-dots');
+            
+            // Chukua movie 5 za kwanza kwa slider
+            const sliderMovies = movies.slice(0, 5);
+            
+            sliderMovies.forEach((movie, index) => {
+                const slide = document.createElement('div');
+                slide.className = `banner-slide ${index === 0? 'active' : ''}`;
+                slide.style.backgroundImage = `url('${movie.poster}')`;
+                slide.innerHTML = `
+                    <div class="banner-content">
+                        <span class="banner-badge">${movie.type === 'series'? '🔥 SERIES MPYA' : '🎬 SINGO MPYA'}</span>
+                        <h2 style="margin-top:8px;">${movie.title}</h2>
+                    </div>
+                    <div class="play-icon" onclick="handleMovieClick('${movie.id}')">▶</div>
+                `;
+                slider.insertBefore(slide, dotsContainer);
+
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0? 'active' : ''}`;
+                dot.onclick = () => goToSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+
+            if(sliderMovies.length > 1) {
+                slideInterval = setInterval(nextSlide, 4000);
+            }
+        }
+
+        function nextSlide() {
+            const slides = document.querySelectorAll('.banner-slide');
+            const dots = document.querySelectorAll('.dot');
+            slides[slideIndex].classList.remove('active');
+            dots[slideIndex].classList.remove('active');
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+        }
+
+        function goToSlide(index) {
+            clearInterval(slideInterval);
+            const slides = document.querySelectorAll('.banner-slide');
+            const dots = document.querySelectorAll('.dot');
+            slides[slideIndex].classList.remove('active');
+            dots[slideIndex].classList.remove('active');
+            slideIndex = index;
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+            slideInterval = setInterval(nextSlide, 4000);
+        }
+
+        // 3. LOGIC YA KULIPA AU KUTAZAMA BURE
+        function handleMovieClick(movieId) {
+            const movie = allMovies.find(m => m.id == movieId);
+            if(!movie) return;
+            
+            if(movie.price === 0 || movie.payhip_link === 'FREE') {
+                window.open(movie.trailer || movie.video_link, '_blank');
+            } else {
+                window.open(movie.payhip_link, '_blank');
+            }
+        }
+
+        // 4. ONYESHA MOVIES KULINGANA NA FILTER
         function displayMovies() {
             const container = document.getElementById('movies-container');
             const filtered = allMovies.filter(movie => {
@@ -128,7 +212,13 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(movie => `
+            container.innerHTML = filtered.map(movie => {
+                const isFree = movie.price === 0 || movie.payhip_link === 'FREE';
+                const buttonText = isFree? 'Tazama Bure' : `Lipia Tsh ${movie.price.toLocaleString()}`;
+                const buttonClass = isFree? 'btn-lipia btn-bure' : 'btn-lipia';
+                const priceText = isFree? '<span class="price free">BURE</span>' : `<span class="price">Tsh ${movie.price.toLocaleString()}</span>`;
+
+                return `
                 <div class="movie-card">
                     <div style="position:relative">
                         <img src="${movie.poster}" alt="${movie.title}">
@@ -136,23 +226,17 @@
                     </div>
                     <div class="movie-info">
                         <div class="movie-title">${movie.title}</div>
-                        <div class="price">Tsh ${movie.price.toLocaleString()}</div>
-                        <a href="${movie.payhip_link}" target="_blank" class="btn-lipia">
-                            Lipia Sasa
+                        ${priceText}
+                        <a href="javascript:void(0)" onclick="handleMovieClick('${movie.id}')" class="${buttonClass}">
+                            ${buttonText}
                         </a>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function setBanner(movie) {
-            if(!movie) return;
-            document.getElementById('banner-title').textContent = movie.title;
-            document.getElementById('banner-play').onclick = () => {
-                window.open(movie.payhip_link, '_blank');
-            };
-        }
-
+        // 5. FILTER BUTTONS
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
