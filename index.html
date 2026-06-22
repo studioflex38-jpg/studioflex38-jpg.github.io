@@ -12,37 +12,49 @@
       background: #0a0a0a;
       color: #fff;
     }
-    /* HEADER */
-   .header {
+    /* HEADER NA LOGO */
+  .header {
       background: linear-gradient(135deg, #1a0b2e 0%, #000 100%);
-      padding: 15px 20px;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #2d1b4e;
     }
-   .logo {
-      font-size: 24px;
+  .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  .logo-img {
+      width: 45px;
+      height: 45px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+  .logo {
+      font-size: 20px;
       font-weight: 900;
       background: linear-gradient(45deg, #a855f7, #d946ef);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       line-height: 1;
     }
-   .logo-sub {
+  .logo-sub {
       font-size: 10px;
       color: #888;
       letter-spacing: 2px;
+      text-align: right;
     }
 
     /* HERO */
-   .hero {
+  .hero {
       background: #000;
       padding: 30px 20px;
       text-align: center;
       position: relative;
     }
-   .play-btn {
+  .play-btn {
       width: 70px;
       height: 70px;
       background: #a855f7;
@@ -52,13 +64,14 @@
       justify-content: center;
       margin: 0 auto 20px;
       box-shadow: 0 0 30px #a855f7;
+      font-size: 30px;
     }
-   .hero-title {
+  .hero-title {
       font-size: 28px;
       font-weight: 900;
       margin-bottom: 10px;
     }
-   .badge {
+  .badge {
       background: #a855f7;
       color: #fff;
       padding: 5px 15px;
@@ -69,13 +82,13 @@
     }
 
     /* CATEGORY BUTTONS */
-   .categories {
+  .categories {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
       padding: 20px;
     }
-   .cat-btn {
+  .cat-btn {
       background: #1a1a1a;
       border: 2px solid #2d1b4e;
       border-radius: 15px;
@@ -84,22 +97,22 @@
       cursor: pointer;
       transition: 0.3s;
     }
-   .cat-btn.active {
+  .cat-btn.active {
       background: linear-gradient(135deg, #a855f7, #7c3aed);
       border-color: #a855f7;
       box-shadow: 0 0 20px #a855f733;
     }
-   .cat-btn.icon { font-size: 30px; margin-bottom: 8px; }
-   .cat-btn.text { font-weight: bold; font-size: 14px; }
+  .cat-btn.icon { font-size: 30px; margin-bottom: 8px; }
+  .cat-btn.text { font-weight: bold; font-size: 14px; }
 
     /* FILTER TAGS */
-   .filters {
+  .filters {
       padding: 0 20px 20px;
       display: flex;
       gap: 10px;
       overflow-x: auto;
     }
-   .filter {
+  .filter {
       background: #1a1a1a;
       border: 1px solid #2d1b4e;
       padding: 8px 16px;
@@ -108,34 +121,34 @@
       white-space: nowrap;
       cursor: pointer;
     }
-   .filter.active { background: #a855f7; border-color: #a855f7; }
+  .filter.active { background: #a855f7; border-color: #a855f7; }
 
     /* CONTENT GRID */
-   .section-title {
+  .section-title {
       color: #a855f7;
       font-size: 18px;
       font-weight: 900;
       padding: 0 20px 15px;
     }
-   .grid {
+  .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 15px;
       padding: 0 20px 40px;
     }
-   .card {
+  .card {
       background: #1a1a1a;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid #2d1b4e;
     }
-   .card img {
+  .card img {
       width: 100%;
       height: 220px;
       object-fit: cover;
     }
-   .card-body { padding: 10px; }
-   .card-tag {
+  .card-body { padding: 10px; }
+  .card-tag {
       background: transparent;
       border: 1px solid #a855f7;
       color: #a855f7;
@@ -145,15 +158,17 @@
       display: inline-block;
       margin-bottom: 5px;
     }
-   .card-title { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
-   .card-price { color: #0f0; font-size: 12px; font-weight: bold; }
+  .card-title { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+  .card-price { color: #0f0; font-size: 12px; font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="header">
-    <div>
-      <div class="logo">CHILAGU<br>LEGACY</div>
-    </div>
+    <div class="header-left">
+      <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu Logo" class="logo-img">
+      <div>
+        <div class="logo">CHILAGU<br>LEGACY</div>
+      </div>
     <div class="logo-sub">STREAM • LIKE • A • BOSS</div>
   </div>
 
@@ -192,12 +207,10 @@
 
     async function loadContent() {
       try {
-        // Hii inasoma files zote kwenye _content
         const res = await fetch('/.netlify/functions/content');
         if (!res.ok) throw new Error('Function bado');
         allContent = await res.json();
       } catch (e) {
-        // Fallback: jaribu kusoma moja kwa moja
         console.log('Tumia sample data');
         allContent = [];
       }
