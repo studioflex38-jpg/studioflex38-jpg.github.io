@@ -12,161 +12,218 @@
       background: #0a0a0a;
       color: #fff;
     }
-    /* HEADER SAHI KAMA PICHA */
- .header {
-      background: linear-gradient(180deg, #1a0b2e 0%, #0a0a0a 100%);
-      padding: 15px 20px;
+
+    /* HEADER */
+.header {
+      background: #0a0a0a;
+      padding: 16px 20px 12px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #2d1b4e;
+      align-items: flex-start;
+      border-bottom: 1px solid #1a1a1a;
+      position: relative;
+      z-index: 10;
     }
- .header-left {
+.header-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
- .logo-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+.logo-img {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
     }
- .logo-text {
+.logo-text {
       color: #a855f7;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 900;
-      line-height: 1;
-      letter-spacing: 1px;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
     }
- .logo-sub {
-      font-size: 10px;
-      color: #888;
-      letter-spacing: 1px;
+.logo-sub {
+      font-size: 9px;
+      color: #666;
+      letter-spacing: 1.5px;
       text-align: right;
+      line-height: 1.4;
+      padding-top: 2px;
     }
 
-    /* HERO SECTION KUBWA */
- .hero {
+    /* HERO + AUTO SLIDE COVER */
+.hero {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
       background: #000;
-      padding: 40px 20px 30px;
-      text-align: center;
     }
- .play-btn {
-      width: 80px;
-      height: 80px;
+.hero-slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-size: cover;
+      background-position: center;
+    }
+.hero-slide.active { opacity: 1; }
+.hero-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%);
+    }
+.hero-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 50px 20px 35px;
+      text-align: center;
+      z-index: 5;
+    }
+.play-btn {
+      width: 90px;
+      height: 90px;
       background: #a855f7;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      box-shadow: 0 0 40px #a855f7;
-      font-size: 35px;
+      margin: 0 auto 25px;
+      box-shadow: 0 0 50px #a855f7, 0 0 80px #a855f733;
+      font-size: 38px;
       cursor: pointer;
     }
- .hero-title {
-      font-size: 32px;
+.hero-title {
+      font-size: 34px;
       font-weight: 900;
-      margin-bottom: 15px;
-      letter-spacing: 1px;
+      margin-bottom: 18px;
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 10px #000;
     }
- .badge {
+.badge {
       background: #a855f7;
       color: #fff;
-      padding: 8px 20px;
-      border-radius: 25px;
-      font-size: 13px;
+      padding: 9px 22px;
+      border-radius: 30px;
+      font-size: 14px;
       font-weight: bold;
       display: inline-block;
     }
+    /* DOTS ZA SLIDE */
+.slide-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 6;
+    }
+.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: 0.3s;
+    }
+.dot.active { background: #a855f7; width: 24px; border-radius: 4px; }
 
     /* CATEGORY BUTTONS */
- .categories {
+.categories {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      padding: 25px 20px 20px;
+      gap: 16px;
+      padding: 30px 20px 22px;
     }
- .cat-btn {
-      background: #1a1a1a;
-      border: 2px solid #2d1b4e;
-      border-radius: 15px;
-      padding: 30px 10px;
+.cat-btn {
+      background: #141414;
+      border: 2px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 32px 10px;
       text-align: center;
       cursor: pointer;
       transition: 0.3s;
     }
- .cat-btn.active {
+.cat-btn.active {
       background: linear-gradient(135deg, #a855f7, #7c3aed);
       border-color: #a855f7;
-      box-shadow: 0 0 25px #a855f733;
+      box-shadow: 0 0 30px #a855f744;
     }
- .cat-btn.icon { font-size: 35px; margin-bottom: 10px; }
- .cat-btn.text { font-weight: 900; font-size: 16px; letter-spacing: 1px; }
+.cat-btn.icon { font-size: 36px; margin-bottom: 12px; }
+.cat-btn.text { font-weight: 900; font-size: 17px; letter-spacing: 1.2px; }
 
     /* FILTER TAGS */
- .filters {
-      padding: 0 20px 25px;
+.filters {
+      padding: 0 20px 28px;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       overflow-x: auto;
     }
- .filters::-webkit-scrollbar { display: none; }
- .filter {
-      background: #1a1a1a;
-      border: 1px solid #2d1b4e;
-      padding: 10px 18px;
-      border-radius: 25px;
+.filters::-webkit-scrollbar { display: none; }
+.filter {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      padding: 11px 20px;
+      border-radius: 30px;
       font-size: 14px;
       white-space: nowrap;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
     }
- .filter.active { background: #a855f7; border-color: #a855f7; }
+.filter.active {
+      background: #a855f7;
+      border-color: #a855f7;
+      box-shadow: 0 0 15px #a855f733;
+    }
 
     /* CONTENT GRID */
- .section-title {
+.section-title {
       color: #a855f7;
-      font-size: 20px;
+      font-size: 21px;
       font-weight: 900;
-      padding: 0 20px 15px;
-      letter-spacing: 1px;
+      padding: 0 20px 18px;
+      letter-spacing: 1.2px;
     }
- .grid {
+.grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 15px;
-      padding: 0 20px 40px;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 16px;
+      padding: 0 20px 50px;
     }
- .card {
-      background: #1a1a1a;
-      border-radius: 12px;
+.card {
+      background: #141414;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid #2d1b4e;
+      border: 1px solid #2a2a2a;
+      cursor: pointer;
+      transition: 0.3s;
     }
- .card img {
+.card:hover { transform: scale(1.05); border-color: #a855f7; }
+.card img {
       width: 100%;
-      height: 230px;
+      height: 240px;
       object-fit: cover;
     }
- .card-body { padding: 12px; }
- .card-tag {
+.card-body { padding: 14px; }
+.card-tag {
       background: transparent;
       border: 1px solid #a855f7;
       color: #a855f7;
       font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 5px 11px;
+      border-radius: 7px;
       display: inline-block;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
       font-weight: bold;
     }
- .card-title { font-size: 14px; font-weight: bold; margin-bottom: 6px; }
- .card-price { color: #0f0; font-size: 13px; font-weight: bold; }
+.card-title { font-size: 15px; font-weight: bold; margin-bottom: 7px; }
+.card-price { color: #0f0; font-size: 14px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <!-- HEADER KAMILI -->
+  <!-- HEADER -->
   <div class="header">
     <div class="header-left">
       <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo" class="logo-img">
@@ -175,11 +232,15 @@
     <div class="logo-sub">STREAM • LIKE • A •<br>BOSS</div>
   </div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="play-btn">▶</div>
-    <div class="hero-title" id="hero-title">LOVE AND DESTINY</div>
-    <div class="badge">🔥 SERIES MPYA</div>
+  <!-- HERO AUTO SLIDE + THUMBNAIL COVER -->
+  <div class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="play-btn" id="play-btn">▶</div>
+      <div class="hero-title" id="hero-title">LOVE AND DESTINY</div>
+      <div class="badge" id="hero-badge">🔥 SERIES MPYA</div>
+    </div>
+    <div class="slide-dots" id="slide-dots"></div>
   </div>
 
   <!-- CATEGORIES -->
@@ -211,6 +272,8 @@
     let allContent = [];
     let currentCat = 'series';
     let currentGenre = 'zote';
+    let currentSlide = 0;
+    let slideInterval;
 
     async function loadContent() {
       try {
@@ -218,9 +281,75 @@
         if (!res.ok) throw new Error('Function bado');
         allContent = await res.json();
       } catch (e) {
-        allContent = [];
+        // Sample data kama hakuna backend
+        allContent = [
+          {title: "LOVE AND DESTINY", thumbnail: "https://i.postimg.cc/placeholder1.jpg", category: "series", genre: "Love", type: "series", is_free: false, price: 2000},
+          {title: "WARRIOR KING", thumbnail: "https://i.postimg.cc/placeholder2.jpg", category: "singo", genre: "Action", type: "singo", is_free: false, price: 1500},
+          {title: "CHEKA TU", thumbnail: "https://i.postimg.cc/placeholder3.jpg", category: "series", genre: "Comedy", type: "series", is_free: true, price: 0}
+        ];
       }
+      initHeroSlider();
       renderContent();
+    }
+
+    function initHeroSlider() {
+      const hero = document.getElementById('hero');
+      const featured = allContent.filter(item => item.featured || item.type === 'series').slice(0, 5);
+
+      if (featured.length === 0) return;
+
+      // Tengeneza slides
+      hero.innerHTML = `
+        <div class="hero-overlay"></div>
+        ${featured.map((item, i) => `
+          <div class="hero-slide ${i === 0? 'active' : ''}" style="background-image: url('${item.thumbnail}')"></div>
+        `).join('')}
+        <div class="hero-content">
+          <div class="play-btn" id="play-btn">▶</div>
+          <div class="hero-title" id="hero-title">${featured[0].title}</div>
+          <div class="badge" id="hero-badge">🔥 ${featured[0].type.toUpperCase()} MPYA</div>
+        </div>
+        <div class="slide-dots" id="slide-dots">
+          ${featured.map((_, i) => `<div class="dot ${i === 0? 'active' : ''}" data-slide="${i}"></div>`).join('')}
+        </div>
+      `;
+
+      // Auto slide kila sekunde 4
+      slideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % featured.length;
+        showSlide(currentSlide, featured);
+      }, 4000);
+
+      // Click dots
+      document.querySelectorAll('.dot').forEach(dot => {
+        dot.onclick = () => {
+          clearInterval(slideInterval);
+          currentSlide = parseInt(dot.dataset.slide);
+          showSlide(currentSlide, featured);
+          // Anza tena auto slide
+          slideInterval = setInterval(() => {
+            currentSlide = (currentSlide + 1) % featured.length;
+            showSlide(currentSlide, featured);
+          }, 4000);
+        }
+      });
+
+      // Click play button
+      document.getElementById('play-btn').onclick = () => {
+        const item = featured[currentSlide];
+        alert(`Inacheza: ${item.title}`);
+      }
+    }
+
+    function showSlide(index, items) {
+      document.querySelectorAll('.hero-slide').forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+      document.getElementById('hero-title').textContent = items[index].title;
+      document.getElementById('hero-badge').textContent = `🔥 ${items[index].type.toUpperCase()} MPYA`;
     }
 
     function renderContent() {
@@ -231,15 +360,11 @@
         filtered = filtered.filter(item => item.genre === currentGenre);
       }
 
-      if (filtered.length > 0) {
-        document.getElementById('hero-title').textContent = filtered[0].title;
-      }
-
       document.getElementById('section-title').textContent =
         currentCat === 'series'? 'SERIES ZOTE' : 'SINGO MOVIE ZOTE';
 
       grid.innerHTML = filtered.map(item => `
-        <div class="card">
+        <div class="card" onclick="alert('Inacheza: ${item.title}')">
           <img src="${item.thumbnail}" alt="${item.title}">
           <div class="card-body">
             <div class="card-tag">${item.type.toUpperCase()}</div>
@@ -247,7 +372,7 @@
             <div class="card-price">${item.is_free? 'BURE' : 'TSh ' + item.price}</div>
           </div>
         </div>
-      `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#666;padding:40px 0;">Hakuna content bado. Ingia /admin post movie</p>';
+      `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#555;padding:50px 0;">Hakuna content bado. Ingia /admin post movie</p>';
     }
 
     document.querySelectorAll('.cat-btn').forEach(btn => {
