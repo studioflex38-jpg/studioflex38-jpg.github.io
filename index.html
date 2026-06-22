@@ -3,228 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHILAGU LEGACY</title>
+    <title>Chilagu Legacy</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0a0a0a; color: white; font-family: Arial, sans-serif; }
-      .header { background: #000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0a; color: #fff;
+        }
+      .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: #000; position: sticky; top: 0; z-index: 100;
+        }
       .logo { display: flex; align-items: center; gap: 10px; }
-      .logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-      .logo-text { color: #a855f7; font-size: 24px; font-weight: bold; line-height: 1.1; }
-      .tagline { color: #666; font-size: 12px; text-align: right; }
-
-       /* SLIDE MPYA - HAKUNA MAANDISHI MAKUBWA */
-      .featured-slide { position: relative; height: 250px; background: #000; background-size: cover; background-position: center; }
-      .featured-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0,0,0,0.9)); }
-      .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; background: rgba(168,85,247,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; backdrop-filter: blur(5px); }
-      .play-icon { width: 0; height: 0; border-left: 20px solid white; border-top: 12px solid transparent; border-bottom: 12px solid transparent; margin-left: 4px; }
-      .featured-info { position: absolute; bottom: 15px; left: 15px; right: 15px; z-index: 2; }
-      .featured-badge { background: #a855f7; padding: 4px 12px; border-radius: 15px; font-size: 11px; display: inline-block; margin-bottom: 8px; }
-      .featured-title { font-size: 16px; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-      .slide-dots { display: flex; gap: 6px; margin-top: 8px; }
-      .dot { width: 25px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; cursor: pointer; }
-      .dot.active { background: #a855f7; }
-
-      .categories { padding: 20px; display: flex; gap: 15px; }
-      .cat-btn { flex: 1; padding: 25px; border-radius: 15px; text-align: center; cursor: pointer; border: 2px solid transparent; }
-      .cat-btn.active { border-color: #a855f7; background: #a855f7; }
-      .cat-btn:not(.active) { background: #1a1a1a; }
-      .cat-icon { font-size: 30px; margin-bottom: 10px; }
-      .cat-text { font-weight: bold; }
-      .filters { padding: 0 20px 20px; display: flex; gap: 10px; overflow-x: auto; }
-      .filter-btn { padding: 8px 16px; border-radius: 20px; background: #1a1a1a; border: 1px solid #333; white-space: nowrap; cursor: pointer; }
-      .filter-btn.active { background: #a855f7; border-color: #a855f7; }
-      .section-title { padding: 0 20px 15px; color: #a855f7; font-size: 18px; font-weight: bold; }
-      .movies-grid { padding: 0 20px 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-      .movie-card { background: #1a1a1a; border-radius: 10px; overflow: hidden; cursor: pointer; border: 2px solid #a855f7; }
-      .movie-thumb { width: 100%; height: 200px; background: #1a1a1a; position: relative; }
-      .movie-thumb img { width: 100%; height: 100%; object-fit: cover; }
-      .movie-badge { position: absolute; top: 10px; left: 10px; background: #a855f7; padding: 4px 10px; border-radius: 15px; font-size: 11px; }
+      .logo img { width: 30px; height: 30px; object-fit: contain; }
+      .logo h1 { color: #a855f7; font-size: 20px; letter-spacing: 1px; }
+      .banner {
+            position: relative; width: 100%; height: 300px;
+            background: linear-gradient(to top, #0a0a0a 0%, transparent 60%), url('https://i.ibb.co/zWN0Jr9d/file-0000000001e471f481a5cc83ddc746bd.png');
+            background-size: cover; background-position: center;
+            display: flex; align-items: flex-end; padding: 20px;
+        }
+      .play-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60px; height: 60px; background: #a855f7; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+            cursor: pointer;
+        }
+      .tabs { display: flex; gap: 15px; padding: 20px; }
+      .tab {
+            flex: 1; padding: 20px; border-radius: 12px; text-align: center;
+            background: #1a1a1a; cursor: pointer; transition: 0.3s;
+        }
+      .tab.active { background: #a855f7; }
+      .filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
+      .filter {
+            padding: 8px 16px; background: #1a1a1a; border-radius: 20px;
+            white-space: nowrap; cursor: pointer; border: none; color: #fff;
+        }
+      .filter.active { background: #a855f7; }
+      .section-title { padding: 20px; font-size: 18px; font-weight: 600; color: #a855f7; }
+      .movies-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px; padding: 0 20px 40px;
+        }
+      .movie-card { background: #1a1a1a; border-radius: 12px; overflow: hidden; }
+      .movie-card img { width: 100%; height: 220px; object-fit: cover; }
       .movie-info { padding: 10px; }
-      .movie-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; line-height: 1.2; }
-      .movie-price { color: #a855f7; font-size: 12px; }
-
-       /* VIDEO PLAYER MODAL */
-      .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; }
-      .modal-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 95%; max-width: 800px; }
-      .close-btn { position: absolute; top: -40px; right: 0; color: white; font-size: 35px; cursor: pointer; }
-      .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
-      .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 8px; }
+      .movie-title { font-size: 14px; margin-bottom: 8px; height: 40px; overflow: hidden; }
+      .price { color: #a855f7; font-weight: bold; font-size: 14px; }
+      .btn-lipia {
+            display: block; width: 100%; padding: 8px; margin-top: 8px;
+            background: #a855f7; color: white; text-align: center;
+            border-radius: 6px; text-decoration: none; font-weight: 600;
+        }
+      .badge {
+            position: absolute; top: 8px; left: 8px; background: #a855f7;
+            padding: 4px 8px; border-radius: 4px; font-size: 11px;
+        }
+      .banner-badge { background: #a855f7; padding: 4px 12px; border-radius: 20px; font-size: 12px; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">
-            <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
-            <div class="logo-text">CHILAGU<br>LEGACY</div>
+            <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu Logo">
+            <h1>CHILAGU LEGACY</h1>
         </div>
-        <div class="tagline">STREAM • LIKE • A •<br>BOSS</div>
+        <div style="font-size:12px; color:#888;">STREAM • LIKE • A • BOSS</div>
     </div>
 
-    <div class="featured-slide" id="featuredSlide">
-        <div class="featured-overlay"></div>
-        <div class="play-btn" onclick="playFeatured()">
-            <div class="play-icon"></div>
+    <div class="banner" id="main-banner">
+        <div>
+            <span class="banner-badge">🔥 SERIES MPYA</span>
+            <h2 id="banner-title">LOVE AND DESTINY</h2>
         </div>
-        <div class="featured-info">
-            <div class="featured-badge" id="featuredBadge">🎬 SINGO MPYA</div>
-            <div class="featured-title" id="featuredTitle"></div>
-            <div class="slide-dots" id="slideDots"></div>
-        </div>
+        <div class="play-icon" id="banner-play">▶</div>
     </div>
 
-    <div class="categories">
-        <div class="cat-btn" onclick="filterType('all')">
-            <div class="cat-icon">📺</div><div class="cat-text">SERIES</div>
-        </div>
-        <div class="cat-btn active" onclick="filterType('singo')">
-            <div class="cat-icon">🎬</div><div class="cat-text">SINGO MOVIE</div>
-        </div>
+    <div class="tabs">
+        <div class="tab active" data-type="series">📺 SERIES</div>
+        <div class="tab" data-type="singo">🎬 SINGO MOVIE</div>
     </div>
 
     <div class="filters">
-        <div class="filter-btn active" onclick="filterGenre('all')">🔥 Zote</div>
-        <div class="filter-btn" onclick="filterGenre('Drama')">😢 Drama</div>
-        <div class="filter-btn" onclick="filterGenre('Action')">💥 Action</div>
-        <div class="filter-btn" onclick="filterGenre('Love Story')">💕 Love</div>
+        <button class="filter active" data-genre="all">🔥 Zote</button>
+        <button class="filter" data-genre="Drama">😢 Drama</button>
+        <button class="filter" data-genre="Action">💥 Action</button>
+        <button class="filter" data-genre="Love">💖 Love</button>
     </div>
 
-    <div class="section-title">SINGO ZOTE</div>
-    <div class="movies-grid" id="moviesGrid"></div>
+    <h3 class="section-title" id="section-title">SERIES ZOTE</h3>
+    <div class="movies-grid" id="movies-container"></div>
 
-    <!-- VIDEO PLAYER MODAL -->
-    <div id="videoModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="video-wrapper">
-                <iframe id="videoFrame" src="" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
+    <script>
+        let allMovies = [];
+        let currentType = 'series';
+        let currentGenre = 'all';
 
-<script>
-let movies = [];
-let currentType = 'singo';
-let currentGenre = 'all';
-let featuredMovies = [];
-let currentSlide = 0;
-let slideInterval;
+        fetch('movie.json')
+          .then(res => res.json())
+          .then(movies => {
+                allMovies = movies;
+                displayMovies();
+                setBanner(movies[0]);
+            })
+          .catch(err => {
+                document.getElementById('movies-container').innerHTML = 
+                '<p style="text-align:center; padding:20px;">Samahani, movies hazijapatikana.</p>';
+            });
 
-fetch('./movies.json')
-.then(res => res.json())
-.then(data => {
-    movies = data;
-    featuredMovies = movies.filter(m => m.featured);
-    if(featuredMovies.length === 0) featuredMovies = movies;
-    startSlideshow();
-    loadMovies();
-});
+        function displayMovies() {
+            const container = document.getElementById('movies-container');
+            const filtered = allMovies.filter(movie => {
+                const typeMatch = movie.type === currentType;
+                const genreMatch = currentGenre === 'all' || movie.genre === currentGenre;
+                return typeMatch && genreMatch;
+            });
 
-function startSlideshow() {
-    if(featuredMovies.length === 0) return;
-    loadSlide(0);
-    const dotsContainer = document.getElementById('slideDots');
-    dotsContainer.innerHTML = '';
-    featuredMovies.forEach((_, i) => {
-        dotsContainer.innerHTML += `<div class="dot ${i === 0? 'active' : ''}" onclick="loadSlide(${i})"></div>`;
-    });
-    clearInterval(slideInterval);
-    slideInterval = setInterval(() => {
-        currentSlide = (currentSlide + 1) % featuredMovies.length;
-        loadSlide(currentSlide);
-    }, 5000);
-}
+            document.getElementById('section-title').textContent = 
+                currentType === 'series'? 'SERIES ZOTE' : 'SINGO ZOTE';
 
-function loadSlide(index) {
-    currentSlide = index;
-    const movie = featuredMovies[index];
-    if(!movie) return;
-    document.getElementById('featuredSlide').style.backgroundImage = `url(${movie.thumbnail})`;
-    document.getElementById('featuredTitle').textContent = movie.title;
-    document.getElementById('featuredBadge').textContent = movie.type === 'series'? '✨ SERIES MPYA' : '🎬 SINGO MPYA';
-    document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-    });
-}
+            if(filtered.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:20px;">Hakuna movie kwenye category hii</p>';
+                return;
+            }
 
-function playFeatured() {
-    if(featuredMovies[currentSlide]) playMovie(featuredMovies[currentSlide]);
-}
-
-function loadMovies() {
-    const grid = document.getElementById('moviesGrid');
-    let filtered = movies;
-    if(currentType!== 'all') filtered = filtered.filter(m => m.type === currentType);
-    if(currentGenre!== 'all') filtered = filtered.filter(m => m.genre === currentGenre);
-    if(filtered.length === 0) {
-        grid.innerHTML = '<p style="color:#666;padding:20px;text-align:center">Hakuna movie za kuonyesha</p>';
-        return;
-    }
-    grid.innerHTML = '';
-    filtered.forEach(movie => {
-        const priceText = movie.is_free? 'BURE' : `TSh ${movie.price}`;
-        grid.innerHTML += `
-            <div class="movie-card" onclick='playMovie(${JSON.stringify(movie).replace(/'/g, "&apos;")})'>
-                <div class="movie-thumb">
-                    <img src="${movie.thumbnail}" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/a855f7?text=Picha+Haipo'">
-                    <div class="movie-badge">${movie.type.toUpperCase()}</div>
+            container.innerHTML = filtered.map(movie => `
+                <div class="movie-card">
+                    <div style="position:relative">
+                        <img src="${movie.poster}" alt="${movie.title}">
+                        <span class="badge">${movie.type.toUpperCase()}</span>
+                    </div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="price">Tsh ${movie.price.toLocaleString()}</div>
+                        <a href="${movie.payhip_link}" target="_blank" class="btn-lipia">
+                            Lipia Sasa
+                        </a>
+                    </div>
                 </div>
-                <div class="movie-info">
-                    <div class="movie-title">${movie.title}</div>
-                    <div class="movie-price">${priceText}</div>
-                </div>
-            </div>
-        `;
-    });
-}
-
-function filterType(type) {
-    currentType = type;
-    document.querySelectorAll('.cat-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', (type === 'all' && i === 0) || (type === 'singo' && i === 1));
-    });
-    document.querySelector('.section-title').textContent = type === 'singo'? 'SINGO ZOTE' : 'SERIES ZOTE';
-    loadMovies();
-}
-
-function filterGenre(genre) {
-    currentGenre = genre;
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent.includes(genre) || (genre === 'all' && btn.textContent.includes('Zote')));
-    });
-    loadMovies();
-}
-
-// CHEZA VIDEO NDANI YA APP
-function playMovie(movie) {
-    if (movie.is_free || movie.price == 0) {
-        let videoUrl = movie.video;
-
-        // Convert Streamable link to embed
-        if(videoUrl.includes('streamable.com')) {
-            const videoId = videoUrl.split('/').pop();
-            videoUrl = `https://streamable.com/e/${videoId}`;
+            `).join('');
         }
 
-        document.getElementById('videoFrame').src = videoUrl;
-        document.getElementById('videoModal').style.display = 'block';
-    } else {
-        const lipa = confirm(`KULIPIA: ${movie.title}\nBei: TSh ${movie.price}\n\nBonyeza OK kulipia`);
-        if(lipa) alert('Unaunganishwa na payment gateway...');
-    }
-}
+        function setBanner(movie) {
+            if(!movie) return;
+            document.getElementById('banner-title').textContent = movie.title;
+            document.getElementById('banner-play').onclick = () => {
+                window.open(movie.payhip_link, '_blank');
+            };
+        }
 
-function closeModal() {
-    document.getElementById('videoModal').style.display = 'none';
-    document.getElementById('videoFrame').src = ''; // Stop video
-}
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentType = this.dataset.type;
+                displayMovies();
+            });
+        });
 
-// Close modal ukibonyeza nje
-window.onclick = function(event) {
-    if (event.target == document.getElementById('videoModal')) {
-        closeModal();
-    }
-}
-</script>
+        document.querySelectorAll('.filter').forEach(filter => {
+            filter.addEventListener('click', function() {
+                document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+                currentGenre = this.dataset.genre;
+                displayMovies();
+            });
+        });
+    </script>
 </body>
 </html>
