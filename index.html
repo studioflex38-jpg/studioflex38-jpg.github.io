@@ -3,243 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chilagu Legacy Cinema - Mfumo</title>
+    <title>Chilagu Legacy Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0A0A0F; font-family: 'Poppins', sans-serif; color: #FFFFFF; }
         
-        /* HEADER */
-       .header { background: #0A0A0F; text-align: center; padding: 20px 16px 12px 16px; border-bottom: 1px solid #1E1E2E; position: sticky; top: 0; z-index: 100; }
-       .logo { max-width: 180px; height: auto; margin-bottom: 8px; filter: drop-shadow(0 0 25px #8A2BE2) drop-shadow(0 0 50px #BF40BF); }
-       .tagline { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 11px; letter-spacing: 4px; background: linear-gradient(90deg, #8A2BE2, #BF40BF, #FF00FF, #8A2BE2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; }
+        /* HEADER MPYA - KAMA YOUTUBE/MOVIE BOX */
+       .header { background: #0A0A0F; padding: 12px 16px; border-bottom: 1px solid #1E1E2E; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; }
+       .app-icon { width: 36px; height: 36px; filter: drop-shadow(0 0 15px #8A2BE2); }
+       .app-name { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; background: linear-gradient(90deg, #8A2BE2, #BF40BF, #FF00FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+       .tagline { font-size: 9px; color: #888; margin-left: auto; letter-spacing: 2px; }
         
         /* TRAILER SLIDER */
-       .trailer-slider { position: relative; width: 100%; height: 230px; overflow: hidden; background: #000; }
+       .trailer-slider { position: relative; width: 100%; height: 220px; overflow: hidden; background: #000; }
        .slider-container { display: flex; transition: transform 0.5s ease; height: 100%; }
        .slide { min-width: 100%; height: 100%; position: relative; cursor: pointer; }
        .slide img { width: 100%; height: 100%; object-fit: cover; }
        .slide-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,10,15,0.95) 70%); padding: 40px 16px 16px 16px; }
-       .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 65px; height: 65px; background: rgba(138, 43, 226, 0.95); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; backdrop-filter: blur(10px); box-shadow: 0 0 35px rgba(138, 43, 226, 0.9); }
-       .slide-title { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 22px; margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
-       .slide-tag { font-size: 12px; color: #E0AAFF; font-weight: 700; background: rgba(138, 43, 226, 0.4); display: inline-block; padding: 5px 14px; border-radius: 12px; border: 1px solid #BF40BF; }
-       .slider-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
-       .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s; }
-       .dot.active { background: #BF40BF; width: 24px; border-radius: 4px; }
+       .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(138, 43, 226, 0.95); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; backdrop-filter: blur(10px); box-shadow: 0 0 35px rgba(138, 43, 226, 0.9); }
+       .slide-title { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
+       .slide-tag { font-size: 11px; color: #E0AAFF; font-weight: 700; background: rgba(138, 43, 226, 0.4); display: inline-block; padding: 4px 12px; border-radius: 12px; border: 1px solid #BF40BF; }
+       .slider-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+       .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s; }
+       .dot.active { background: #BF40BF; width: 20px; border-radius: 4px; }
         
         /* MAIN CATEGORIES */
        .main-categories { background: #121212; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid #1E1E2E; }
-       .cat-main { padding: 24px 12px; border-radius: 18px; border: 2px solid transparent; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
-       .cat-main.active { background: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 50%, #C77DFF 100%); color: white; box-shadow: 0 0 30px rgba(157, 78, 221, 0.6); border: 2px solid #E0AAFF; transform: scale(1.02); }
+       .cat-main { padding: 20px 12px; border-radius: 16px; border: 2px solid transparent; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; text-align: center; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+       .cat-main.active { background: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 50%, #C77DFF 100%); color: white; box-shadow: 0 0 30px rgba(157, 78, 221, 0.6); border: 2px solid #E0AAFF; }
        .cat-main.inactive { background: #1A1A24; color: #E0E0E0; border: 2px solid #2A2A3A; }
-       .cat-icon { font-size: 34px; display: block; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-        
-        /* TRENDING */
-       .trending-section { background: #0A0A0F; padding: 16px; }
-       .section-header { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 16px; color: #E0AAFF; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-       .trending-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
-       .trending-card { min-width: 140px; background: #1A1A24; border-radius: 12px; overflow: hidden; border: 1px solid #2A2A3A; cursor: pointer; transition: all 0.3s; }
-       .trending-card:active { transform: scale(0.95); }
-       .trending-poster { width: 100%; height: 180px; object-fit: cover; }
-       .trending-title { padding: 10px 8px; font-size: 11px; font-weight: 700; text-align: center; color: #FFF; }
+       .cat-icon { font-size: 30px; display: block; margin-bottom: 6px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
         
         /* SUB CATEGORIES */
        .sub-categories { background: #121212; padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid #1E1E2E; }
-       .cat-sub { background: #1A1A24; border: 1px solid #2A2A3A; color: #B0B0B0; padding: 8px 16px; border-radius: 20px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 13px; white-space: nowrap; cursor: pointer; }
+       .cat-sub { background: #1A1A24; border: 1px solid #2A2A3A; color: #B0B0B0; padding: 8px 16px; border-radius: 20px; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 12px; white-space: nowrap; cursor: pointer; }
        .cat-sub.active { background: #2D1B4E; border: 1px solid #8A2BE2; color: #E0AAFF; box-shadow: 0 0 15px rgba(138, 43, 226, 0.3); }
         
-        /* SECTIONS */
+        /* CONTENT SECTIONS */
        .content-section { display: none; }
        .content-section.active { display: block; }
-       .section-title { background: #0A0A0F; padding: 20px 16px 12px 16px; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 16px; color: #E0AAFF; letter-spacing: 1px; }
+       .section-title { background: #0A0A0F; padding: 20px 16px 12px 16px; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 15px; color: #E0AAFF; letter-spacing: 1px; }
         
-        /* MOVIE GRID */
-       .movie-grid { background: #0A0A0F; padding: 0 16px 20px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-       .movie-card { background: #1A1A24; border-radius: 14px; overflow: hidden; border: 1px solid #2A2A3A; transition: all 0.3s ease; position: relative; }
-       .movie-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; font-family: 'Orbitron', sans-serif; z-index: 2; }
-       .badge-free { color: #06FFA5; border: 1px solid #06FFA5; }
+        /* MOVIE/SERIES GRID */
+       .content-grid { background: #0A0A0F; padding: 0 16px 20px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+       .content-card { background: #1A1A24; border-radius: 14px; overflow: hidden; border: 1px solid #2A2A3A; transition: all 0.3s ease; position: relative; cursor: pointer; }
+       .content-card:active { transform: scale(0.97); }
+       .content-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); padding: 4px 10px; border-radius: 8px; font-size: 9px; font-weight: 800; font-family: 'Orbitron', sans-serif; z-index: 2; }
+       .badge-series { color: #00D9FF; border: 1px solid #00D9FF; }
        .badge-singo { color: #FFD60A; border: 1px solid #FFD60A; }
-       .badge-episode { color: #00D9FF; border: 1px solid #00D9FF; }
-       .movie-poster { width: 100%; height: 220px; object-fit: cover; cursor: pointer; }
-       .movie-info { padding: 10px; }
-       .movie-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; text-align: center; color: #FFFFFF; text-transform: uppercase; margin-bottom: 8px; }
-       .movie-price { text-align: center; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-       .price-free { color: #06FFA5; }
-       .price-paid { color: #FF006E; }
-       .btn-watch { width: 100%; background: linear-gradient(135deg, #06FFA5, #00D9FF); color: #0A0A0F; border: none; padding: 10px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 12px; cursor: pointer; border-radius: 8px; text-transform: uppercase; }
-       .btn-buy { width: 100%; background: linear-gradient(135deg, #FF006E, #FB5607); color: white; border: none; padding: 10px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 12px; cursor: pointer; border-radius: 8px; text-transform: uppercase; }
-       .btn-watch:active,.btn-buy:active { transform: scale(0.95); }
+       .badge-free { color: #06FFA5; border: 1px solid #06FFA5; }
+       .content-poster { width: 100%; height: 220px; object-fit: cover; }
+       .content-info { padding: 10px; }
+       .content-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; text-align: center; color: #FFFFFF; text-transform: uppercase; margin-bottom: 4px; }
+       .episode-count { text-align: center; font-size: 10px; color: #888; }
         
-        /* EMPTY STATE */
-       .empty-state { text-align: center; padding: 60px 20px; color: #666; }
-       .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: 0.3; }
-       .empty-text { font-size: 14px; color: #888; }
+        /* SERIES DETAIL PAGE - PLAYLIST */
+       .series-detail { display: none; background: #0A0A0F; min-height: 100vh; }
+       .series-detail.active { display: block; }
+       .series-header { position: relative; height: 280px; }
+       .series-header img { width: 100%; height: 100%; object-fit: cover; }
+       .series-header-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,10,15,1) 90%); padding: 60px 16px 16px 16px; }
+       .series-detail-title { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 24px; margin-bottom: 8px; }
+       .series-meta { font-size: 12px; color: #E0AAFF; }
+       .back-btn { position: absolute; top: 16px; left: 16px; background: rgba(0,0,0,0.6); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; backdrop-filter: blur(10px); }
+       .episode-list { padding: 16px; }
+       .episode-item { background: #1A1A24; border: 1px solid #2A2A3A; border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+       .episode-item:active { background: #2A2A3A; }
+       .episode-thumb { width: 120px; height: 70px; border-radius: 8px; object-fit: cover; }
+       .episode-info { flex: 1; }
+       .episode-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+       .episode-desc { font-size: 11px; color: #888; }
+       .play-icon { font-size: 24px; color: #BF40BF; }
         
-        /* MODAL */
+        /* PAYWALL MODAL */
        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; align-items: center; justify-content: center; padding: 16px; }
        .modal.active { display: flex; }
-       .modal-content { width: 100%; max-width: 900px; background: #000; border-radius: 16px; overflow: hidden; border: 2px solid #8A2BE2; box-shadow: 0 0 50px rgba(138, 43, 226, 0.7); position: relative; }
-       .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #1A1A24; border-bottom: 1px solid #2A2A3A; }
-        #modalTitle { color: #E0AAFF; font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 800; margin: 0; }
-       .close-modal { font-size: 32px; color: #BF40BF; cursor: pointer; line-height: 1; font-weight: 300; background: none; border: none; padding: 0; }
+       .modal-content { width: 100%; max-width: 400px; background: #1A1A24; border-radius: 16px; overflow: hidden; border: 2px solid #8A2BE2; box-shadow: 0 0 50px rgba(138, 43, 226, 0.7); }
+       .modal-header { padding: 20px; text-align: center; border-bottom: 1px solid #2A2A3A; }
+       .modal-title { font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 800; color: #E0AAFF; margin-bottom: 8px; }
+       .modal-body { padding: 20px; text-align: center; }
+       .price-tag { font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900; color: #FF006E; margin: 16px 0; }
+       .pay-btn { width: 100%; background: linear-gradient(135deg, #FF006E, #FB5607); color: white; border: none; padding: 14px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 14px; cursor: pointer; border-radius: 10px; text-transform: uppercase; margin-top: 16px; }
+       .close-modal { font-size: 28px; color: #BF40BF; cursor: pointer; position: absolute; top: 12px; right: 16px; background: none; border: none; }
+        
+        /* VIDEO PLAYER MODAL */
        .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
-        #trailerFrame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        #videoFrame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        
+        /* EMPTY STATE */
+       .empty-state { text-align: center; padding: 60px 20px; color: #666; grid-column: 1 / -1; }
+       .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: 0.3; }
+       .empty-text { font-size: 14px; color: #888; }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- HEADER MPYA KAMA YOUTUBE -->
     <div class="header">
         <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" 
-             alt="Chilagu Legacy Cinema" 
-             class="logo">
+             alt="Logo" 
+             class="app-icon">
+        <div class="app-name">CHILAGU LEGACY</div>
         <div class="tagline">STREAM • LIKE • A • BOSS</div>
     </div>
 
-    <!-- TRAILER SLIDER - WEKA TRAILER 3-4 HAPA -->
+    <!-- TRAILER SLIDER - WEKA TRAILER HAPA -->
     <div class="trailer-slider">
         <div class="slider-container" id="slider">
-            <!-- SLIDE 1: MFANO -->
-            <div class="slide" onclick="openTrailer('TRAILER 1', 'WEKA_LINK_YA_TRAILER_1')">
-                <img src="https://picsum.photos/800/400?random=1" alt="Trailer">
+            <!-- SLIDE 1: LOVE AND DESTINY TRAILER -->
+            <div class="slide" onclick="openSeriesDetail('love-and-destiny')">
+                <img src="https://picsum.photos/800/400?random=100" alt="Love and Destiny">
                 <div class="play-btn">▶</div>
                 <div class="slide-overlay">
-                    <div class="slide-title">JINA LA TRAILER 1</div>
-                    <div class="slide-tag">💥 COMING SOON</div>
-                </div>
-            </div>
-            <!-- SLIDE 2: MFANO -->
-            <div class="slide" onclick="openTrailer('TRAILER 2', 'WEKA_LINK_YA_TRAILER_2')">
-                <img src="https://picsum.photos/800/400?random=2" alt="Trailer">
-                <div class="play-btn">▶</div>
-                <div class="slide-overlay">
-                    <div class="slide-title">JINA LA TRAILER 2</div>
-                    <div class="slide-tag">🔥 TRENDING</div>
+                    <div class="slide-title">LOVE AND DESTINY</div>
+                    <div class="slide-tag">💥 SERIES MPYA</div>
                 </div>
             </div>
         </div>
         <div class="slider-dots" id="dots"></div>
     </div>
 
-    <!-- MAIN CATEGORIES: SINGO MOVIE vs SERIES -->
+    <!-- MAIN CATEGORIES -->
     <div class="main-categories">
-        <button class="cat-main active" onclick="showCategory('movie')">
-            <span class="cat-icon">🎬</span>
-            SINGO MOVIE
-        </button>
-        <button class="cat-main inactive" onclick="showCategory('series')">
+        <button class="cat-main active" onclick="showCategory('series')">
             <span class="cat-icon">📺</span>
             SERIES
         </button>
+        <button class="cat-main inactive" onclick="showCategory('movie')">
+            <span class="cat-icon">🎬</span>
+            SINGO MOVIE
+        </button>
     </div>
 
-    <!-- TRENDING SECTION -->
-    <div class="trending-section">
-        <div class="section-header">🔥 TRENDING SASA</div>
-        <div class="trending-scroll">
-            <!-- TRENDING CARD 1 -->
-            <div class="trending-card">
-                <img src="https://picsum.photos/300/400?random=20" class="trending-poster">
-                <div class="trending-title">Love And Destiny</div>
-            </div>
-            <!-- TRENDING CARD 2 -->
-            <div class="trending-card">
-                <img src="https://picsum.photos/300/400?random=21" class="trending-poster">
-                <div class="trending-title">Invetable</div>
-            </div>
-            <!-- TRENDING CARD 3 -->
-            <div class="trending-card">
-                <img src="https://picsum.photos/300/400?random=22" class="trending-poster">
-                <div class="trending-title">Dakika 90 Za Joto</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SUB CATEGORIES: ACTION, DRAMA, LOVE, etc -->
+    <!-- SUB CATEGORIES -->
     <div class="sub-categories">
-        <button class="cat-sub active">🔥 Zote</button>
-        <button class="cat-sub">💥 Action</button>
-        <button class="cat-sub">😢 Drama</button>
-        <button class="cat-sub">💖 Love</button>
-        <button class="cat-sub">😂 Comedy</button>
-        <button class="cat-sub">👻 Horror</button>
-        <button class="cat-sub">🎭 Bongo</button>
+        <button class="cat-sub active" onclick="filterCategory('all')">🔥 Zote</button>
+        <button class="cat-sub" onclick="filterCategory('drama')">😢 Drama</button>
+        <button class="cat-sub" onclick="filterCategory('action')">💥 Action</button>
+        <button class="cat-sub" onclick="filterCategory('love')">💖 Love</button>
+        <button class="cat-sub" onclick="filterCategory('comedy')">😂 Comedy</button>
+        <button class="cat-sub" onclick="filterCategory('horror')">👻 Horror</button>
+        <button class="cat-sub" onclick="filterCategory('bongo')">🎭 Bongo</button>
     </div>
 
-    <!-- SECTION 1: SINGO MOVIE -->
-    <div class="content-section active" id="movieSection">
-        <div class="section-title">SINGO MOVIE • TSh 2,000</div>
-        <div class="movie-grid">
+    <!-- SECTION 1: SERIES -->
+    <div class="content-section active" id="seriesSection">
+        <div class="section-title">SERIES ZOTE</div>
+        <div class="content-grid">
             
-            <!-- TEMPLATE: MOVIE BURE -->
-            <div class="movie-card">
-                <div class="movie-badge badge-free">BURE</div>
-                <img src="https://picsum.photos/300/400?random=30" class="movie-poster">
-                <div class="movie-info">
-                    <div class="movie-title">JINA MOVIE BURE</div>
-                    <div class="movie-price price-free">BURE</div>
-                    <button class="btn-watch" onclick="openTrailer('JINA MOVIE BURE', 'WEKA_LINK_STREAMABLE_BURE')">
-                        ▶ TAZAMA BURE
-                    </button>
+            <!-- ====== LOVE AND DESTINY - SERIES YAKO ====== -->
+            <div class="content-card" data-category="drama series" onclick="openSeriesDetail('love-and-destiny')">
+                <div class="content-badge badge-series">SERIES</div>
+                <img src="https://picsum.photos/300/400?random=101" class="content-poster">
+                <div class="content-info">
+                    <div class="content-title">LOVE AND DESTINY</div>
+                    <div class="episode-count">Episodes 3 • Drama</div>
                 </div>
             </div>
             
-            <!-- TEMPLATE: MOVIE YA KUUZA 2000 -->
-            <div class="movie-card">
-                <div class="movie-badge badge-singo">SINGO</div>
-                <img src="https://picsum.photos/300/400?random=31" class="movie-poster">
-                <div class="movie-info">
-                    <div class="movie-title">JINA MOVIE KUUZA</div>
-                    <div class="movie-price price-paid">TSh 2,000</div>
-                    <button class="btn-buy" onclick="window.open('WEKA_LINK_YA_PAYHIP_2000', '_blank')">
-                        🔒 NUNUA SASA
-                    </button>
-                </div>
-            </div>
+            <!-- ====== ANZA KUONGEZA SERIES NYINGINE HAPA ====== -->
+            <!-- Copy card ya juu, badilisha jina, picha, category -->
             
-            <!-- EMPTY STATE: ONESHA HII KAMA HAKUNA MOVIE -->
-            <!-- 
-            <div class="empty-state">
-                <div class="empty-icon">🎬</div>
-                <div class="empty-text">Singo Movie zinakuja hivi karibuni...</div>
-            </div>
-            -->
-            
-        </div>
-    </div>
-
-    <!-- SECTION 2: SERIES -->
-    <div class="content-section" id="seriesSection">
-        <div class="section-title">SERIES • EPISODE TSh 500</div>
-        <div class="movie-grid">
-            
-            <!-- TEMPLATE: EPISODE BURE -->
-            <div class="movie-card">
-                <div class="movie-badge badge-free">EP 1 BURE</div>
-                <img src="https://picsum.photos/300/400?random=40" class="movie-poster">
-                <div class="movie-info">
-                    <div class="movie-title">JINA SERIES S1E1</div>
-                    <div class="movie-price price-free">BURE</div>
-                    <button class="btn-watch" onclick="openTrailer('JINA SERIES S1E1', 'WEKA_LINK_STREAMABLE_BURE')">
-                        ▶ TAZAMA BURE
-                    </button>
-                </div>
-            </div>
-            
-            <!-- TEMPLATE: EPISODE YA KUUZA 500 -->
-            <div class="movie-card">
-                <div class="movie-badge badge-episode">EP 2</div>
-                <img src="https://picsum.photos/300/400?random=41" class="movie-poster">
-                <div class="movie-info">
-                    <div class="movie-title">JINA SERIES S1E2</div>
-                    <div class="movie-price price-paid">TSh 500</div>
-                    <button class="btn-buy" onclick="window.open('WEKA_LINK_YA_PAYHIP_500', '_blank')">
-                        🔒 NUNUA EPISODE
-                    </button>
-                </div>
-            </div>
-            
-            <!-- EMPTY STATE: ONESHA HII KAMA HAKUNA SERIES -->
+            <!-- EMPTY STATE UKIONDOA -->
             <!-- 
             <div class="empty-state">
                 <div class="empty-icon">📺</div>
@@ -250,15 +176,104 @@
         </div>
     </div>
 
-    <!-- VIDEO MODAL - KWA KUTAZAMA TRAILER/MOVIE BURE -->
-    <div class="modal" id="trailerModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">TRAILER</h3>
-                <button class="close-modal" onclick="closeTrailer()">&times;</button>
+    <!-- SECTION 2: SINGO MOVIE -->
+    <div class="content-section" id="movieSection">
+        <div class="section-title">SINGO MOVIE ZOTE</div>
+        <div class="content-grid">
+            
+            <!-- ====== ANZA KUONGEZA SINGO MOVIE HAPA ====== -->
+            
+            <!-- MFANO: SINGO MOVIE -->
+            <!-- 
+            <div class="content-card" data-category="action movie" onclick="showPaywall('SHADOW CODE', 2000, 'WEKA_LINK_PAYHIP')">
+                <div class="content-badge badge-singo">SINGO</div>
+                <img src="https://picsum.photos/300/400?random=200" class="content-poster">
+                <div class="content-info">
+                    <div class="content-title">SHADOW CODE</div>
+                    <div class="episode-count">Action • 120 min</div>
+                </div>
             </div>
+            -->
+            
+            <!-- EMPTY STATE -->
+            <div class="empty-state">
+                <div class="empty-icon">🎬</div>
+                <div class="empty-text">Singo Movie zinakuja hivi karibuni...</div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- SERIES DETAIL PAGE - LOVE AND DESTINY PLAYLIST -->
+    <div class="series-detail" id="love-and-destiny">
+        <div class="series-header">
+            <button class="back-btn" onclick="closeSeriesDetail()">←</button>
+            <img src="https://picsum.photos/800/400?random=101" alt="Love and Destiny">
+            <div class="series-header-overlay">
+                <div class="series-detail-title">LOVE AND DESTINY</div>
+                <div class="series-meta">Drama • Series • 3 Episodes</div>
+            </div>
+        </div>
+        
+        <div class="episode-list">
+            <!-- EPISODE 1 - BURE -->
+            <div class="episode-item" onclick="playEpisode('Love and Destiny S1E1', 'WEKA_LINK_STREAMABLE_EP1', true)">
+                <img src="https://picsum.photos/300/200?random=110" class="episode-thumb">
+                <div class="episode-info">
+                    <div class="episode-title">Episode 1: Mwanzo wa Safari</div>
+                    <div class="episode-desc">BURE • 45 min</div>
+                </div>
+                <div class="play-icon">▶</div>
+            </div>
+            
+            <!-- EPISODE 2 - LIPIA 500 -->
+            <div class="episode-item" onclick="showPaywall('Love and Destiny S1E2', 500, 'WEKA_LINK_PAYHIP_500')">
+                <img src="https://picsum.photos/300/200?random=111" class="episode-thumb">
+                <div class="episode-info">
+                    <div class="episode-title">Episode 2: Majonzi</div>
+                    <div class="episode-desc">🔒 TSh 500 • 48 min</div>
+                </div>
+                <div class="play-icon">🔒</div>
+            </div>
+            
+            <!-- EPISODE 3 - LIPIA 500 -->
+            <div class="episode-item" onclick="showPaywall('Love and Destiny S1E3', 500, 'WEKA_LINK_PAYHIP_500')">
+                <img src="https://picsum.photos/300/200?random=112" class="episode-thumb">
+                <div class="episode-info">
+                    <div class="episode-title">Episode 3: Hatima</div>
+                    <div class="episode-desc">🔒 TSh 500 • 50 min</div>
+                </div>
+                <div class="play-icon">🔒</div>
+            </div>
+            
+            <!-- ====== ANZA KUONGEZA EPISODE NYINGINE HAPA ====== -->
+            
+        </div>
+    </div>
+
+    <!-- PAYWALL MODAL - INATOKEA AKIGUSA EPISODE/MOVIE YA KULIPIA -->
+    <div class="modal" id="paywallModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closePaywall()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-title" id="paywallTitle">NUNUA SASA</div>
+            </div>
+            <div class="modal-body">
+                <p>Lipia kutazama bila kikomo</p>
+                <div class="price-tag" id="paywallPrice">TSh 500</div>
+                <button class="pay-btn" id="paywallBtn" onclick="">
+                    🔒 LIPA SASA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIDEO PLAYER MODAL - KWA BURE -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content" style="max-width: 900px; background: #000;">
+            <button class="close-modal" onclick="closeVideo()">&times;</button>
             <div class="video-wrapper">
-                <iframe id="trailerFrame" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="videoFrame" src="" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -290,40 +305,76 @@
             goToSlide(currentSlide);
         }, 5000);
         
-        // VIDEO MODAL LOGIC - KWA BURE
-        function openTrailer(title, embedUrl) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('trailerFrame').src = embedUrl;
-            document.getElementById('trailerModal').classList.add('active');
-        }
-        
-        function closeTrailer() {
-            document.getElementById('trailerFrame').src = '';
-            document.getElementById('trailerModal').classList.remove('active');
-        }
-        
-        // CATEGORY SWITCH LOGIC
+        // CATEGORY SWITCH
         function showCategory(type) {
-            const movieBtn = document.querySelectorAll('.cat-main')[0];
-            const seriesBtn = document.querySelectorAll('.cat-main')[1];
-            const movieSection = document.getElementById('movieSection');
+            const seriesBtn = document.querySelectorAll('.cat-main')[0];
+            const movieBtn = document.querySelectorAll('.cat-main')[1];
             const seriesSection = document.getElementById('seriesSection');
+            const movieSection = document.getElementById('movieSection');
             
-            if(type === 'movie') {
-                movieBtn.classList.add('active');
-                movieBtn.classList.remove('inactive');
-                seriesBtn.classList.add('inactive');
-                seriesBtn.classList.remove('active');
-                movieSection.classList.add('active');
-                seriesSection.classList.remove('active');
-            } else {
+            if(type === 'series') {
                 seriesBtn.classList.add('active');
                 seriesBtn.classList.remove('inactive');
                 movieBtn.classList.add('inactive');
                 movieBtn.classList.remove('active');
                 seriesSection.classList.add('active');
                 movieSection.classList.remove('active');
+            } else {
+                movieBtn.classList.add('active');
+                movieBtn.classList.remove('inactive');
+                seriesBtn.classList.add('inactive');
+                seriesBtn.classList.remove('active');
+                movieSection.classList.add('active');
+                seriesSection.classList.remove('active');
             }
+        }
+        
+        // FILTER BY SUB CATEGORY
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-sub').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const cards = document.querySelectorAll('.content-card');
+            cards.forEach(card => {
+                if(cat === 'all' || card.dataset.category.includes(cat)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // OPEN SERIES DETAIL
+        function openSeriesDetail(id) {
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function closeSeriesDetail() {
+            document.querySelectorAll('.series-detail').forEach(el => el.classList.remove('active'));
+        }
+        
+        // PLAY FREE EPISODE
+        function playEpisode(title, url, isFree) {
+            document.getElementById('videoFrame').src = url;
+            document.getElementById('videoModal').classList.add('active');
+        }
+        
+        function closeVideo() {
+            document.getElementById('videoFrame').src = '';
+            document.getElementById('videoModal').classList.remove('active');
+        }
+        
+        // PAYWALL - BEI INAONEKANA HAPA TU
+        function showPaywall(title, price, payhipUrl) {
+            document.getElementById('paywallTitle').textContent = title;
+            document.getElementById('paywallPrice').textContent = `TSh ${price.toLocaleString()}`;
+            document.getElementById('paywallBtn').onclick = () => window.open(payhipUrl, '_blank');
+            document.getElementById('paywallModal').classList.add('active');
+        }
+        
+        function closePaywall() {
+            document.getElementById('paywallModal').classList.remove('active');
         }
     </script>
 
