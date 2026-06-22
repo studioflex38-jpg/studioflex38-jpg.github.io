@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chilagu Legacy</title>
+    <title>Chilagu Legacy Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,41 +39,47 @@
         }
 
 .banner {
-            position: relative; width: 100%; height: 400px; overflow: hidden; background: #111;
+            position: relative; width: 100%; height: 450px; overflow: hidden; background: #111;
         }
 .banner-slide {
             position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s;
             background-size: cover; background-position: center;
-            display: flex; align-items: flex-end; padding: 30px;
+            display: flex; align-items: flex-end; padding: 40px 30px;
         }
 .banner-slide.active { opacity: 1; }
 .banner-slide::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, #0a0a0a 15%, transparent 70%);
+            background: linear-gradient(to top, #0a0a0a 20%, transparent 70%);
         }
-.banner-content { position: relative; z-index: 2; }
+.banner-content { position: relative; z-index: 2; max-width: 600px; }
 .banner-content h2 { 
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 42px; margin-top: 12px; letter-spacing: 1px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            font-size: 52px; margin: 12px 0; letter-spacing: 2px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8); line-height: 1;
         }
-.play-icon {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80px; height: 80px; background: #a855f7; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 32px;
-            cursor: pointer; z-index: 3; box-shadow: 0 10px 30px rgba(168,85,247,0.6);
-            transition: 0.3s;
+.banner-content p { 
+            font-size: 16px; opacity: 0.9; margin-bottom: 20px; 
+            line-height: 1.5; font-weight: 500;
         }
-.play-icon:hover { transform: translate(-50%, -50%) scale(1.15); }
+.banner-btns { display: flex; gap: 12px; }
+.banner-btn {
+            padding: 14px 28px; border-radius: 8px; font-weight: 800;
+            border: none; cursor: pointer; font-size: 16px; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+.btn-play { background: #fff; color: #000; }
+.btn-play:hover { opacity: 0.8; }
+.btn-info { background: rgba(109,109,110,0.7); color: #fff; }
+.btn-info:hover { background: rgba(109,109,110,0.5); }
 .banner-badge { 
-            background: #a855f7; padding: 7px 16px; border-radius: 20px; 
-            font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            background: #a855f7; padding: 8px 18px; border-radius: 20px; 
+            font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
         }
-.dots { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 3; }
+.dots { position: absolute; bottom: 25px; right: 30px; display: flex; gap: 12px; z-index: 3; }
 .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s; }
 .dot.active { background: #a855f7; width: 35px; border-radius: 5px; }
 
-.tabs { display: flex; gap: 15px; padding: 25px 20px; }
+.tabs { display: flex; gap: 15px; padding: 25px 20px 10px; }
 .tab {
             flex: 1; padding: 24px; border-radius: 16px; text-align: center;
             background: #141414; cursor: pointer; transition: 0.3s;
@@ -85,7 +91,7 @@
             border-color: #a855f7;
             box-shadow: 0 10px 30px rgba(168,85,247,0.4);
         }
-.filters { display: flex; gap: 10px; padding: 0 20px; overflow-x: auto; }
+.filters { display: flex; gap: 10px; padding: 0 20px 15px; overflow-x: auto; }
 .filter {
             padding: 11px 20px; background: #141414; border-radius: 25px;
             white-space: nowrap; cursor: pointer; border: 1px solid #222; 
@@ -95,40 +101,41 @@
             background: #a855f7; border-color: #a855f7;
             box-shadow: 0 4px 15px rgba(168,85,247,0.3);
         }
-.section-title { 
-            padding: 30px 20px 15px; font-size: 24px; font-weight: 900; 
-            color: #a855f7; text-transform: uppercase; letter-spacing: 2px;
+
+/* STYLE MPYA: HORIZONTAL ROWS KAMA NETFLIX */
+.category-row {
+            padding: 20px 0 10px;
+        }
+.category-title { 
+            padding: 0 20px 15px; font-size: 22px; font-weight: 900; 
+            color: #fff; text-transform: uppercase; letter-spacing: 1.5px;
             font-family: 'Bebas Neue', sans-serif;
         }
-.movies-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-            gap: 20px; padding: 0 20px 40px;
+.movies-row {
+            display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 20px;
+            scroll-behavior: smooth;
         }
-.movie-card { 
-            background: #141414; border-radius: 16px; overflow: hidden; 
-            border: 1px solid #222; transition: 0.3s;
+.movies-row::-webkit-scrollbar { height: 0; }
+.movie-card-small { 
+            flex: 0 0 160px; background: #141414; border-radius: 8px; overflow: hidden; 
+            border: 1px solid #222; transition: 0.3s; cursor: pointer;
         }
-.movie-card:hover { transform: translateY(-8px); border-color: #a855f7; box-shadow: 0 15px 40px rgba(168,85,247,0.2); }
-.movie-card img { width: 100%; height: 250px; object-fit: cover; }
-.movie-info { padding: 14px; }
-.movie-title { 
-            font-size: 16px; font-weight: 700; margin-bottom: 10px; 
-            height: 44px; overflow: hidden; line-height: 1.3;
+.movie-card-small:hover { 
+            transform: scale(1.08); border-color: #a855f7; 
+            box-shadow: 0 10px 30px rgba(168,85,247,0.3); z-index: 10;
         }
-.price { color: #a855f7; font-weight: 800; font-size: 16px; }
-.price.free { color: #a855f7; }
-.btn-lipia {
-            display: block; width: 100%; padding: 12px; margin-top: 12px;
-            background: linear-gradient(135deg, #22c55e, #16a34a); 
-            color: white; text-align: center; font-weight: 800;
-            border-radius: 10px; text-decoration: none; transition: 0.3s;
-            font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px;
+.movie-card-small img { width: 100%; height: 240px; object-fit: cover; }
+.movie-card-small.movie-info { padding: 10px; }
+.movie-card-small.movie-title { 
+            font-size: 14px; font-weight: 700; height: 40px; overflow: hidden; 
+            line-height: 1.3; margin-bottom: 6px;
         }
-.btn-lipia:hover { opacity: 0.9; transform: scale(1.02); }
-.btn-bure { background: linear-gradient(135deg, #a855f7, #7e22ce); }
+.movie-card-small.price { color: #22c55e; font-weight: 800; font-size: 14px; }
+.movie-card-small.price.free { color: #a855f7; }
+
 .badge {
-            position: absolute; top: 12px; left: 12px; background: #a855f7;
-            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 800;
+            position: absolute; top: 8px; left: 8px; background: #a855f7;
+            padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800;
             text-transform: uppercase; letter-spacing: 0.5px;
         }
 .no-results { text-align: center; padding: 60px 20px; color: #888; font-weight: 700; font-size: 16px; }
@@ -160,7 +167,7 @@
     <div class="header">
         <div class="logo">
             <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu Logo">
-            <h1>Chilagu Cinema</h1>
+            <h1>CHILAGU LEGACY CINEMA</h1>
         </div>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Tafuta movie...">
@@ -185,8 +192,8 @@
         <button class="filter" data-genre="Love">💖 Love</button>
     </div>
 
-    <h3 class="section-title" id="section-title">MOVIES ZOTE</h3>
-    <div class="movies-grid" id="movies-container"></div>
+    <!-- HAPA SASA ZINAJIPANGA KAMA NETFLIX - ROWS ZA HORIZONTAL -->
+    <div id="categories-container"></div>
 
     <div class="modal" id="videoModal">
         <div class="modal-content">
@@ -199,37 +206,55 @@
     </div>
 
     <script>
-        // WEKA MOVIE ZAKO HAPA - BEI SERIES=500, SINGO=2000
+        // WEKA MOVIE ZAKO HAPA - ZITAJIPANGA AUTOMATIC
         const allMovies = [
             {
                 id: 1,
                 title: "MPANDA MNAZI KWA MKONO MMOJA",
                 type: "singo",
                 genre: "Comedy",
-                price: 0, // BURE
+                price: 0,
                 poster: "https://i.ibb.co/zWN0Jr9d/file-0000000001e471f481a5cc83ddc746bd.png",
                 payhip_link: "FREE",
-                video_link: "https://streamable.com/8326lw" // ITAKUWA /e/ AUTOMATIC
+                video_link: "https://streamable.com/e/8326lw",
+                trending: true,
+                new_release: true
             },
             {
                 id: 2,
                 title: "USWAZI WA MAMA",
                 type: "singo",
                 genre: "Drama",
-                price: 2000, // SINGO = 2000
+                price: 2000,
                 poster: "https://i.ibb.co/placeholder.jpg",
                 payhip_link: "https://payhip.com/b/XXXXX",
-                video_link: "https://youtube.com/embed/XXXXX"
+                video_link: "https://youtube.com/embed/XXXXX",
+                trending: false,
+                new_release: true
             },
             {
                 id: 3,
                 title: "JAMII YANGU S1 EP1",
                 type: "series",
                 genre: "Drama",
-                price: 500, // SERIES = 500
+                price: 500,
                 poster: "https://i.ibb.co/placeholder.jpg",
                 payhip_link: "https://payhip.com/b/YYYYY",
-                video_link: "https://youtube.com/embed/YYYYY"
+                video_link: "https://youtube.com/embed/YYYYY",
+                trending: true,
+                new_release: false
+            },
+            {
+                id: 4,
+                title: "DAKIKA 90 ZA JOTO",
+                type: "singo",
+                genre: "Action",
+                price: 2000,
+                poster: "https://i.ibb.co/placeholder.jpg",
+                payhip_link: "https://payhip.com/b/ZZZZZ",
+                video_link: "https://youtube.com/embed/ZZZZZ",
+                trending: true,
+                new_release: true
             }
         ];
 
@@ -244,13 +269,13 @@
             document.querySelector(`.tab[data-type="${currentType}"]`).classList.add('active');
             
             createBannerSlider(allMovies);
-            displayMovies();
+            displayCategories();
         });
 
         function createBannerSlider(movies) {
             const slider = document.getElementById('banner-slider');
             const dotsContainer = document.getElementById('banner-dots');
-            const sliderMovies = movies.slice(0, 5);
+            const sliderMovies = movies.filter(m => m.trending).slice(0, 5);
 
             if(sliderMovies.length === 0) {
                 slider.style.display = 'none';
@@ -265,8 +290,12 @@
                     <div class="banner-content">
                         <span class="banner-badge">${movie.type === 'series'? '🔥 SERIES MPYA' : '🎬 SINGO MPYA'}</span>
                         <h2>${movie.title}</h2>
+                        <p>${movie.genre} • ${movie.price === 0? 'BURE' : 'Tsh ' + movie.price.toLocaleString()}</p>
+                        <div class="banner-btns">
+                            <button class="banner-btn btn-play" onclick="handleMovieClick('${movie.id}')">▶ Tazama</button>
+                            <button class="banner-btn btn-info" onclick="handleMovieClick('${movie.id}')">ℹ Taarifa</button>
+                        </div>
                     </div>
-                    <div class="play-icon" onclick="handleMovieClick('${movie.id}')">▶</div>
                 `;
                 slider.insertBefore(slide, dotsContainer);
 
@@ -277,7 +306,7 @@
             });
 
             if(sliderMovies.length > 1) {
-                slideInterval = setInterval(nextSlide, 4000);
+                slideInterval = setInterval(nextSlide, 5000);
             }
         }
 
@@ -301,7 +330,7 @@
             slideIndex = index;
             slides[slideIndex].classList.add('active');
             dots[slideIndex].classList.add('active');
-            slideInterval = setInterval(nextSlide, 4000);
+            slideInterval = setInterval(nextSlide, 5000);
         }
 
         function handleMovieClick(movieId) {
@@ -321,14 +350,7 @@
             const title = document.getElementById('modalTitle');
             
             title.textContent = movie.title;
-            
-            // REKEBISHA STREAMABLE AUTOMATIC IWE /e/
-            let videoUrl = movie.video_link;
-            if(videoUrl.includes('streamable.com/') && !videoUrl.includes('/e/')) {
-                videoUrl = videoUrl.replace('streamable.com/', 'streamable.com/e/');
-            }
-            
-            frame.src = videoUrl;
+            frame.src = movie.video_link;
             modal.classList.add('active');
         }
 
@@ -339,8 +361,9 @@
             modal.classList.remove('active');
         }
 
-        function displayMovies() {
-            const container = document.getElementById('movies-container');
+        // HII NDIO INAZIPANGA KAMA NETFLIX - ROWS
+        function displayCategories() {
+            const container = document.getElementById('categories-container');
             let filtered = allMovies;
 
             if(currentType!== 'all') {
@@ -357,34 +380,42 @@
                 );
             }
 
-            document.getElementById('section-title').textContent =
-                searchQuery? `Matokeo: "${searchQuery}"` :
-                currentType === 'series'? 'SERIES ZOTE' :
-                currentType === 'singo'? 'SINGO ZOTE' : 'MOVIES ZOTE';
-
             if(filtered.length === 0) {
                 container.innerHTML = '<div class="no-results">Hakuna movie kwenye category hii.</div>';
                 return;
             }
 
-            container.innerHTML = filtered.map(movie => {
-                const isFree = movie.price === 0 || movie.payhip_link === 'FREE';
-                const buttonText = isFree? 'Tazama Bure' : `Lipia Tsh ${movie.price.toLocaleString()}`;
-                const buttonClass = isFree? 'btn-lipia btn-bure' : 'btn-lipia';
-                const priceText = isFree? '<span class="price free">BURE</span>' : `<span class="price">Tsh ${movie.price.toLocaleString()}</span>`;
+            // TENGENEZA ROWS: TRENDING, NEW RELEASES, ZOTE
+            const categories = [
+                { title: 'Trending Sasa', filter: m => m.trending },
+                { title: 'New Releases', filter: m => m.new_release },
+                { title: currentType === 'series'? 'Series Zote' : 'Singo Zote', filter: m => true }
+            ];
 
+            container.innerHTML = categories.map(cat => {
+                const movies = filtered.filter(cat.filter);
+                if(movies.length === 0) return '';
+                
                 return `
-                <div class="movie-card">
-                    <div style="position:relative">
-                        <img src="${movie.poster}" alt="${movie.title}">
-                        <span class="badge">${movie.type.toUpperCase()}</span>
-                    </div>
-                    <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        ${priceText}
-                        <a href="javascript:void(0)" onclick="handleMovieClick('${movie.id}')" class="${buttonClass}">
-                            ${buttonText}
-                        </a>
+                <div class="category-row">
+                    <h3 class="category-title">${cat.title}</h3>
+                    <div class="movies-row">
+                        ${movies.map(movie => {
+                            const isFree = movie.price === 0 || movie.payhip_link === 'FREE';
+                            const priceText = isFree? 'BURE' : `Tsh ${movie.price.toLocaleString()}`;
+                            return `
+                            <div class="movie-card-small" onclick="handleMovieClick('${movie.id}')">
+                                <div style="position:relative">
+                                    <img src="${movie.poster}" alt="${movie.title}">
+                                    <span class="badge">${movie.type.toUpperCase()}</span>
+                                </div>
+                                <div class="movie-info">
+                                    <div class="movie-title">${movie.title}</div>
+                                    <div class="price ${isFree? 'free' : ''}">${priceText}</div>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
                     </div>
                 </div>
                 `;
@@ -393,7 +424,7 @@
 
         document.getElementById('searchInput').addEventListener('input', function(e) {
             searchQuery = e.target.value;
-            displayMovies();
+            displayCategories();
         });
 
         document.querySelectorAll('.tab').forEach(tab => {
@@ -401,7 +432,7 @@
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 currentType = this.dataset.type;
-                displayMovies();
+                displayCategories();
             });
         });
 
@@ -410,7 +441,7 @@
                 document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
                 this.classList.add('active');
                 currentGenre = this.dataset.genre;
-                displayMovies();
+                displayCategories();
             });
         });
     </script>
