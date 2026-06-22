@@ -1,0 +1,33 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+    - name: "content"
+    label: "Movies & Series"
+    folder: "_content"
+    create: true
+    slug: "{{slug}}"
+    fields:
+            - {label: "Title", name: "title", widget: "string"}
+            - label: "Category"
+        name: "category"
+        widget: "select"
+        options: ["series", "singo"]
+            - label: "Genre"
+        name: "genre"
+        widget: "select"
+        options: ["Drama", "Action", "Love", "Comedy"]
+            - label: "Type"
+        name: "type"
+        widget: "select"
+        options: ["Series", "Comedy", "Action", "Drama"]
+            - {label: "Video Link", name: "video_url", widget: "string"}
+            - {label: "Thumbnail", name: "thumbnail", widget: "image"}
+            - {label: "Duration", name: "duration", widget: "string"}
+            - {label: "Ni Bure?", name: "is_free", widget: "boolean", default: true}
+            - {label: "Bei", name: "price", widget: "number", default: 0}
+            - {label: "Payment Link", name: "payment_link", widget: "string", required: false}
