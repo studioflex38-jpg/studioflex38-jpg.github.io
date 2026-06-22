@@ -12,172 +12,177 @@
       background: #0a0a0a;
       color: #fff;
     }
-    /* HEADER NA LOGO */
-  .header {
-      background: linear-gradient(135deg, #1a0b2e 0%, #000 100%);
-      padding: 12px 20px;
+    /* HEADER SAHI KAMA PICHA */
+ .header {
+      background: linear-gradient(180deg, #1a0b2e 0%, #0a0a0a 100%);
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #2d1b4e;
     }
-  .header-left {
+ .header-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
-  .logo-img {
-      width: 45px;
-      height: 45px;
+ .logo-img {
+      width: 40px;
+      height: 40px;
       border-radius: 8px;
-      object-fit: contain;
     }
-  .logo {
+ .logo-text {
+      color: #a855f7;
       font-size: 20px;
       font-weight: 900;
-      background: linear-gradient(45deg, #a855f7, #d946ef);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       line-height: 1;
+      letter-spacing: 1px;
     }
-  .logo-sub {
+ .logo-sub {
       font-size: 10px;
       color: #888;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       text-align: right;
     }
 
-    /* HERO */
-  .hero {
+    /* HERO SECTION KUBWA */
+ .hero {
       background: #000;
-      padding: 30px 20px;
+      padding: 40px 20px 30px;
       text-align: center;
-      position: relative;
     }
-  .play-btn {
-      width: 70px;
-      height: 70px;
+ .play-btn {
+      width: 80px;
+      height: 80px;
       background: #a855f7;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 20px;
-      box-shadow: 0 0 30px #a855f7;
-      font-size: 30px;
+      box-shadow: 0 0 40px #a855f7;
+      font-size: 35px;
+      cursor: pointer;
     }
-  .hero-title {
-      font-size: 28px;
+ .hero-title {
+      font-size: 32px;
       font-weight: 900;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
     }
-  .badge {
+ .badge {
       background: #a855f7;
       color: #fff;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 12px;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 13px;
       font-weight: bold;
       display: inline-block;
     }
 
     /* CATEGORY BUTTONS */
-  .categories {
+ .categories {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
-      padding: 20px;
+      padding: 25px 20px 20px;
     }
-  .cat-btn {
+ .cat-btn {
       background: #1a1a1a;
       border: 2px solid #2d1b4e;
       border-radius: 15px;
-      padding: 25px 10px;
+      padding: 30px 10px;
       text-align: center;
       cursor: pointer;
       transition: 0.3s;
     }
-  .cat-btn.active {
+ .cat-btn.active {
       background: linear-gradient(135deg, #a855f7, #7c3aed);
       border-color: #a855f7;
-      box-shadow: 0 0 20px #a855f733;
+      box-shadow: 0 0 25px #a855f733;
     }
-  .cat-btn.icon { font-size: 30px; margin-bottom: 8px; }
-  .cat-btn.text { font-weight: bold; font-size: 14px; }
+ .cat-btn.icon { font-size: 35px; margin-bottom: 10px; }
+ .cat-btn.text { font-weight: 900; font-size: 16px; letter-spacing: 1px; }
 
     /* FILTER TAGS */
-  .filters {
-      padding: 0 20px 20px;
+ .filters {
+      padding: 0 20px 25px;
       display: flex;
       gap: 10px;
       overflow-x: auto;
     }
-  .filter {
+ .filters::-webkit-scrollbar { display: none; }
+ .filter {
       background: #1a1a1a;
       border: 1px solid #2d1b4e;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 14px;
       white-space: nowrap;
       cursor: pointer;
+      font-weight: 600;
     }
-  .filter.active { background: #a855f7; border-color: #a855f7; }
+ .filter.active { background: #a855f7; border-color: #a855f7; }
 
     /* CONTENT GRID */
-  .section-title {
+ .section-title {
       color: #a855f7;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 900;
       padding: 0 20px 15px;
+      letter-spacing: 1px;
     }
-  .grid {
+ .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 15px;
       padding: 0 20px 40px;
     }
-  .card {
+ .card {
       background: #1a1a1a;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid #2d1b4e;
     }
-  .card img {
+ .card img {
       width: 100%;
-      height: 220px;
+      height: 230px;
       object-fit: cover;
     }
-  .card-body { padding: 10px; }
-  .card-tag {
+ .card-body { padding: 12px; }
+ .card-tag {
       background: transparent;
       border: 1px solid #a855f7;
       color: #a855f7;
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 5px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
       display: inline-block;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      font-weight: bold;
     }
-  .card-title { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
-  .card-price { color: #0f0; font-size: 12px; font-weight: bold; }
+ .card-title { font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+ .card-price { color: #0f0; font-size: 13px; font-weight: bold; }
   </style>
 </head>
 <body>
+  <!-- HEADER KAMILI -->
   <div class="header">
     <div class="header-left">
-      <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu Logo" class="logo-img">
-      <div>
-        <div class="logo">CHILAGU<br>LEGACY</div>
-      </div>
-    <div class="logo-sub">STREAM • LIKE • A • BOSS</div>
+      <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo" class="logo-img">
+      <div class="logo-text">CHILAGU<br>LEGACY</div>
+    </div>
+    <div class="logo-sub">STREAM • LIKE • A •<br>BOSS</div>
   </div>
 
+  <!-- HERO -->
   <div class="hero">
     <div class="play-btn">▶</div>
     <div class="hero-title" id="hero-title">LOVE AND DESTINY</div>
     <div class="badge">🔥 SERIES MPYA</div>
   </div>
 
+  <!-- CATEGORIES -->
   <div class="categories">
     <div class="cat-btn active" data-cat="series">
       <div class="icon">📺</div>
@@ -189,6 +194,7 @@
     </div>
   </div>
 
+  <!-- FILTERS -->
   <div class="filters">
     <div class="filter active" data-genre="zote">🔥 Zote</div>
     <div class="filter" data-genre="Drama">😢 Drama</div>
@@ -197,6 +203,7 @@
     <div class="filter" data-genre="Comedy">😂 Comedy</div>
   </div>
 
+  <!-- CONTENT -->
   <div class="section-title" id="section-title">SERIES ZOTE</div>
   <div class="grid" id="content-grid"></div>
 
@@ -211,7 +218,6 @@
         if (!res.ok) throw new Error('Function bado');
         allContent = await res.json();
       } catch (e) {
-        console.log('Tumia sample data');
         allContent = [];
       }
       renderContent();
@@ -241,10 +247,9 @@
             <div class="card-price">${item.is_free? 'BURE' : 'TSh ' + item.price}</div>
           </div>
         </div>
-      `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#666;">Hakuna content bado. Ingia /admin</p>';
+      `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#666;padding:40px 0;">Hakuna content bado. Ingia /admin post movie</p>';
     }
 
-    // Category buttons
     document.querySelectorAll('.cat-btn').forEach(btn => {
       btn.onclick = () => {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -254,7 +259,6 @@
       }
     });
 
-    // Genre filters
     document.querySelectorAll('.filter').forEach(btn => {
       btn.onclick = () => {
         document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
@@ -264,7 +268,6 @@
       }
     });
 
-    // Netlify Identity
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
         if (!user) {
