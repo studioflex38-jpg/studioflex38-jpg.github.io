@@ -127,28 +127,54 @@
     <div class="movies-grid" id="movies-container"></div>
 
     <script>
-        let allMovies = [];
-        let currentType = 'all';
+        // HAPA NDIO UNAWEKA MOVIE ZAKO ZOTE - HAKUNA JSON INAHITAJIKA
+        const allMovies = [
+            {
+                id: 1,
+                title: "MPANDA MNAZI KWA MKONO MMOJA",
+                type: "singo",
+                genre: "Comedy",
+                price: 0,
+                poster: "https://i.ibb.co/zWN0Jr9d/file-0000000001e471f481a5cc83ddc746bd.png",
+                payhip_link: "FREE",
+                trailer: "https://streamable.com/8326lw"
+            },
+            {
+                id: 2,
+                title: "USWAZI WA MAMA",
+                type: "singo",
+                genre: "Drama",
+                price: 2000,
+                poster: "https://i.ibb.co/placeholder.jpg",
+                payhip_link: "https://payhip.com/b/XXXXX",
+                trailer: "https://youtube.com/watch?v=XXXXX"
+            },
+            {
+                id: 3,
+                title: "JAMII YANGU S1",
+                type: "series",
+                genre: "Drama",
+                price: 5000,
+                poster: "https://i.ibb.co/placeholder.jpg",
+                payhip_link: "https://payhip.com/b/YYYYY",
+                trailer: "https://youtube.com/watch?v=YYYYY"
+            }
+        ];
+
+        let currentType = 'singo';
         let currentGenre = 'all';
         let searchQuery = '';
         let slideIndex = 0;
         let slideInterval;
 
-        fetch('movie.json?v=' + Date.now())
-    .then(res => res.json())
-    .then(movies => {
-                allMovies = movies;
-                if(movies.length > 0) {
-                    currentType = movies[0].type;
-                    document.querySelector(`.tab[data-type="${currentType}"]`).classList.add('active');
-                }
-                createBannerSlider(movies);
-                displayMovies();
-            })
-    .catch(err => {
-                document.getElementById('movies-container').innerHTML =
-                '<div class="no-results">ERROR: Hakuna movie.json. Hakikisha file inaitwa movie.json na iko folder moja na index.html</div>';
-            });
+        // INAANZA PAPO HAPO - HAKUNA KUSUBIRI JSON
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.tab[data-type="${currentType}"]`).classList.add('active');
+            
+            createBannerSlider(allMovies);
+            displayMovies();
+        });
 
         function createBannerSlider(movies) {
             const slider = document.getElementById('banner-slider');
@@ -242,7 +268,7 @@
                 currentType === 'singo'? 'SINGO ZOTE' : 'MOVIES ZOTE';
 
             if(filtered.length === 0) {
-                container.innerHTML = '<div class="no-results">Hakuna movie iliyopatikana</div>';
+                container.innerHTML = '<div class="no-results">Hakuna movie kwenye category hii.</div>';
                 return;
             }
 
