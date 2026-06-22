@@ -1,571 +1,231 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sw">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CHILAGU LEGACY CINEMA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHILAGU LEGACY</title>
+    <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #000;
-      color: #fff;
-    }
+        body { background: #0a0a0a; color: white; font-family: Arial, sans-serif; }
+      .header {
+            background: #000; padding: 15px 20px; display: flex;
+            justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #1a1a1a;
+        }
+      .logo { display: flex; align-items: center; gap: 10px; }
+      .logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+      .logo-text { color: #a855f7; font-size: 24px; font-weight: bold; line-height: 1.1; }
+      .tagline { color: #666; font-size: 12px; text-align: right; }
 
-    /* HEADER */
-   .header {
-      background: #000;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #1a1a1a;
-      position: relative;
-      z-index: 10;
-    }
-   .header-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-   .logo-img {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-    }
-   .logo-text {
-      color: #a855f7;
-      font-size: 18px;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: 0.5px;
-    }
-   .logo-sub {
-      font-size: 8px;
-      color: #666;
-      letter-spacing: 1.2px;
-      text-align: right;
-      line-height: 1.3;
-    }
+      .featured-slide {
+            position: relative; height: 300px; background: #000;
+            display: flex; align-items: center; justify-content: center;
+        }
+      .play-btn {
+            width: 80px; height: 80px; background: #a855f7;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer;
+        }
+      .play-icon {
+            width: 0; height: 0; border-left: 25px solid white;
+            border-top: 15px solid transparent; border-bottom: 15px solid transparent;
+            margin-left: 5px;
+        }
+      .featured-info { position: absolute; bottom: 20px; left: 20px; }
+      .featured-title { font-size: 28px; font-weight: bold; margin-bottom: 10px; }
+      .featured-badge {
+            background: #a855f7; padding: 6px 15px; border-radius: 20px;
+            font-size: 12px; display: inline-block; margin-bottom: 10px;
+        }
+      .slide-dots { display: flex; gap: 8px; }
+      .dot { width: 30px; height: 4px; background: #a855f7; border-radius: 2px; }
 
-    /* HERO AUTO SLIDE + THUMBNAIL */
-   .hero {
-      position: relative;
-      height: 420px;
-      overflow: hidden;
-      background: #000;
-    }
-   .hero-slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      background-size: cover;
-      background-position: center top;
-    }
-   .hero-slide.active { opacity: 1; }
-   .hero-overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 85%);
-    }
-   .hero-content {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 40px 16px 20px;
-      text-align: center;
-      z-index: 5;
-    }
-   .play-btn {
-      width: 85px;
-      height: 85px;
-      background: #a855f7;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      box-shadow: 0 0 40px #a855f7, 0 0 70px #a855f733;
-      font-size: 36px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-   .play-btn:hover { transform: scale(1.08); }
-   .hero-title {
-      font-size: 28px;
-      font-weight: 900;
-      margin-bottom: 12px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-   .badge {
-      background: #a855f7;
-      color: #fff;
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 700;
-      display: inline-block;
-    }
-   .slide-thumbs {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 6px;
-      z-index: 6;
-      padding: 0 16px;
-      overflow-x: auto;
-      max-width: 100%;
-    }
-   .slide-thumbs::-webkit-scrollbar { display: none; }
-   .thumb {
-      width: 45px;
-      height: 25px;
-      border-radius: 4px;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.4;
-      cursor: pointer;
-      transition: 0.3s;
-      border: 2px solid transparent;
-      flex-shrink: 0;
-    }
-   .thumb.active {
-      opacity: 1;
-      border-color: #a855f7;
-      width: 60px;
-    }
-   .hero-empty {
-      padding: 100px 20px;
-      text-align: center;
-      color: #444;
-      font-size: 16px;
-    }
+      .categories { padding: 20px; display: flex; gap: 15px; }
+      .cat-btn {
+            flex: 1; padding: 25px; border-radius: 15px; text-align: center;
+            cursor: pointer; border: 2px solid transparent;
+        }
+      .cat-btn.active { border-color: #a855f7; background: #a855f7; }
+      .cat-btn:not(.active) { background: #1a1a1a; }
+      .cat-icon { font-size: 30px; margin-bottom: 10px; }
+      .cat-text { font-weight: bold; }
 
-    /* CATEGORY KUBWA */
-   .categories {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 24px 16px 18px;
-    }
-   .cat-btn {
-      background: #111;
-      border: 2px solid #222;
-      border-radius: 14px;
-      padding: 24px 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-   .cat-btn.active {
-      background: linear-gradient(135deg, #a855f7, #7c3aed);
-      border-color: #a855f7;
-    }
-   .cat-btn.icon { font-size: 28px; margin-bottom: 8px; }
-   .cat-btn.text { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
+      .filters { padding: 0 20px 20px; display: flex; gap: 10px; overflow-x: auto; }
+      .filter-btn {
+            padding: 8px 16px; border-radius: 20px; background: #1a1a1a;
+            border: 1px solid #333; white-space: nowrap; cursor: pointer;
+        }
+      .filter-btn.active { background: #a855f7; border-color: #a855f7; }
 
-    /* CATEGORY NDOGO */
-   .filters {
-      padding: 0 16px 24px;
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-    }
-   .filters::-webkit-scrollbar { display: none; }
-   .filter {
-      background: #111;
-      border: 1px solid #222;
-      padding: 10px 16px;
-      border-radius: 30px;
-      font-size: 13px;
-      white-space: nowrap;
-      cursor: pointer;
-      font-weight: 600;
-    }
-   .filter.active {
-      background: #a855f7;
-      border-color: #a855f7;
-    }
-
-    /* GRID YA MOVIEBOX */
-   .section-title {
-      color: #a855f7;
-      font-size: 18px;
-      font-weight: 900;
-      padding: 0 16px 14px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-   .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-      gap: 10px;
-      padding: 0 16px 40px;
-    }
-   .card {
-      background: #111;
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: 0.3s;
-      position: relative;
-    }
-   .card:hover { transform: scale(1.06); }
-   .card img {
-      width: 100%;
-      height: 155px;
-      object-fit: cover;
-    }
-   .card-body { padding: 6px; }
-   .card-title {
-      font-size: 11px;
-      font-weight: 700;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-height: 1.3;
-    }
-   .card-episode {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: rgba(0,0,0,0.85);
-      color: #a855f7;
-      font-size: 9px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 700;
-    }
-   .card-tag {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: #a855f7;
-      color: #fff;
-      font-size: 8px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 700;
-    }
-   .card-price {
-      position: absolute;
-      bottom: 6px;
-      right: 6px;
-      background: #0f0;
-      color: #000;
-      font-size: 9px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 900;
-    }
-   .card-free {
-      position: absolute;
-      bottom: 6px;
-      right: 6px;
-      background: #a855f7;
-      color: #fff;
-      font-size: 9px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 900;
-    }
-
-    /* MODAL YA ALBUM */
-   .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      z-index: 100;
-      overflow-y: auto;
-    }
-   .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      border-bottom: 1px solid #222;
-      position: sticky;
-      top: 0;
-      background: #000;
-    }
-   .modal-title {
-      font-size: 20px;
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-   .modal-close {
-      font-size: 32px;
-      cursor: pointer;
-      color: #a855f7;
-      line-height: 1;
-    }
-   .episode-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 16px;
-    }
-   .episode {
-      background: #111;
-      padding: 12px;
-      border-radius: 10px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      cursor: pointer;
-      border: 2px solid #222;
-    }
-   .episode:hover { border-color: #a855f7; }
-   .episode-num {
-      width: 36px;
-      height: 36px;
-      background: #a855f7;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-   .episode-info { flex: 1; }
-   .episode-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-   .episode-sub { font-size: 12px; color: #666; }
-  </style>
+      .section-title {
+            padding: 0 20px 15px; color: #a855f7; font-size: 18px; font-weight: bold;
+        }
+      .movies-grid {
+            padding: 0 20px 20px; display: grid;
+            grid-template-columns: repeat(2, 1fr); gap: 15px;
+        }
+      .movie-card {
+            background: #1a1a1a; border-radius: 10px; overflow: hidden;
+            cursor: pointer; border: 2px solid #a855f7;
+        }
+      .movie-thumb { width: 100%; height: 200px; background: #000; position: relative; }
+      .movie-thumb img { width: 100%; height: 100%; object-fit: cover; }
+      .movie-badge {
+            position: absolute; top: 10px; left: 10px; background: #a855f7;
+            padding: 4px 10px; border-radius: 15px; font-size: 11px;
+        }
+      .movie-info { padding: 10px; }
+      .movie-title { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+      .movie-price { color: #a855f7; font-size: 12px; }
+    </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-left">
-      <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo" class="logo-img">
-      <div class="logo-text">CHILAGU<br>LEGACY</div>
-    </div>
-    <div class="logo-sub">STREAM • LIKE • A •<br>BOSS</div>
-  </div>
-
-  <!-- HERO AUTO SLIDE -->
-  <div class="hero" id="hero"></div>
-
-  <!-- CATEGORY KUBWA -->
-  <div class="categories">
-    <div class="cat-btn active" data-cat="series">
-      <div class="icon">📺</div>
-      <div class="text">SERIES</div>
-    </div>
-    <div class="cat-btn" data-cat="singo">
-      <div class="icon">🎬</div>
-      <div class="text">SINGO MOVIE</div>
-    </div>
-  </div>
-
-  <!-- CATEGORY NDOGO -->
-  <div class="filters">
-    <div class="filter active" data-genre="zote">🔥 Zote</div>
-    <div class="filter" data-genre="Action">💥 Action</div>
-    <div class="filter" data-genre="Love Story">💖 Love Story</div>
-    <div class="filter" data-genre="Drama">😢 Drama</div>
-    <div class="filter" data-genre="Horror">👻 Horror</div>
-    <div class="filter" data-genre="Comedy">😂 Comedy</div>
-  </div>
-
-  <!-- CONTENT GRID -->
-  <div class="section-title" id="section-title">SERIES ZOTE</div>
-  <div class="grid" id="content-grid"></div>
-
-  <!-- MODAL YA ALBUM -->
-  <div class="modal" id="album-modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title"></div>
-      <div class="modal-close" onclick="closeModal()">&times;</div>
-    </div>
-    <div class="episode-list" id="episode-list"></div>
-  </div>
-
-  <script>
-    let allContent = [];
-    let currentCat = 'series';
-    let currentGenre = 'zote';
-    let currentSlide = 0;
-    let slideInterval;
-
-    async function loadContent() {
-      try {
-        const res = await fetch('/.netlify/functions/content');
-        allContent = await res.json();
-      } catch (e) {
-        allContent = [];
-      }
-      initHeroSlider();
-      renderContent();
-    }
-
-    function initHeroSlider() {
-      const hero = document.getElementById('hero');
-      let featured = allContent.filter(item => item.featured).slice(0, 6);
-
-      // Kama hakuna featured, chukua content 6 za kwanza
-      if (featured.length === 0) {
-        featured = allContent.slice(0, 6);
-      }
-
-      if (featured.length === 0) {
-        hero.innerHTML = `<div class="hero-empty">Hakuna Content Bado.<br>Post kwenye /admin/</div>`;
-        return;
-      }
-
-      hero.innerHTML = `
-        <div class="hero-overlay"></div>
-        ${featured.map((item, i) => `
-          <div class="hero-slide ${i === 0? 'active' : ''}" style="background-image: url('${item.thumbnail}')"></div>
-        `).join('')}
-        <div class="hero-content">
-          <div class="play-btn" onclick="playFeatured()">▶</div>
-          <div class="hero-title" id="hero-title">${featured[0].title}</div>
-          <div class="badge" id="hero-badge">🔥 ${featured[0].type.toUpperCase()} MPYA</div>
+    <!-- HEADER - LOGO YAKO HII HAPA -->
+    <div class="header">
+        <div class="logo">
+            <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
+            <div class="logo-text">CHILAGU<br>LEGACY</div>
         </div>
-        <div class="slide-thumbs" id="slide-thumbs">
-          ${featured.map((item, i) => `
-            <div class="thumb ${i === 0? 'active' : ''}" data-slide="${i}" style="background-image: url('${item.thumbnail}')"></div>
-          `).join('')}
+        <div class="tagline">STREAM • LIKE • A •<br>BOSS</div>
+    </div>
+
+    <!-- FEATURED SLIDE -->
+    <div class="featured-slide" id="featuredSlide">
+        <div class="play-btn" onclick="playFeatured()">
+            <div class="play-icon"></div>
         </div>
-      `;
-
-      slideInterval = setInterval(() => {
-        currentSlide = (currentSlide + 1) % featured.length;
-        showSlide(currentSlide, featured);
-      }, 5000);
-
-      document.querySelectorAll('.thumb').forEach(thumb => {
-        thumb.onclick = () => {
-          clearInterval(slideInterval);
-          currentSlide = parseInt(thumb.dataset.slide);
-          showSlide(currentSlide, featured);
-          slideInterval = setInterval(() => {
-            currentSlide = (currentSlide + 1) % featured.length;
-            showSlide(currentSlide, featured);
-          }, 5000);
-        }
-      });
-    }
-
-    function showSlide(index, items) {
-      document.querySelectorAll('.hero-slide').forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
-      });
-      document.querySelectorAll('.thumb').forEach((thumb, i) => {
-        thumb.classList.toggle('active', i === index);
-      });
-      document.getElementById('hero-title').textContent = items[index].title;
-      document.getElementById('hero-badge').textContent = `🔥 ${items[index].type.toUpperCase()} MPYA`;
-    }
-
-    function playFeatured() {
-      let featured = allContent.filter(item => item.featured);
-      if (featured.length === 0) featured = allContent.slice(0, 6);
-      const item = featured[currentSlide];
-      if (item.episodes) {
-        openAlbum(item);
-      } else {
-        checkPayment(item.video, item.is_free, item.price, item.title);
-      }
-    }
-
-    function renderContent() {
-      const grid = document.getElementById('content-grid');
-      let filtered = allContent.filter(item => item.category === currentCat);
-
-      if (currentGenre!== 'zote') {
-        filtered = filtered.filter(item => item.genre === currentGenre);
-      }
-
-      document.getElementById('section-title').textContent =
-        currentCat === 'series'? 'SERIES ZOTE' : 'SINGO MOVIE ZOTE';
-
-      grid.innerHTML = filtered.map(item => `
-        <div class="card" onclick="${item.episodes? `openAlbum(${JSON.stringify(item).replace(/"/g, '&quot;')})` : `checkPayment('${item.video}', ${item.is_free}, ${item.price}, '${item.title.replace(/'/g, "\\'")}')`}">
-          <img src="${item.thumbnail}" alt="${item.title}">
-          ${item.episodes? `<div class="card-episode">EP ${item.episodes}</div>` : ''}
-          <div class="card-tag">${item.type.toUpperCase()}</div>
-          ${!item.is_free? `<div class="card-price">TSh ${item.price}</div>` : `<div class="card-free">BURE</div>`}
-          <div class="card-body">
-            <div class="card-title">${item.title}</div>
-          </div>
+        <div class="featured-info">
+            <div class="featured-title" id="featuredTitle">LOVE AND DESTINY</div>
+            <div class="featured-badge">✨ SERIES MPYA</div>
+            <div class="slide-dots">
+                <div class="dot"></div>
+            </div>
         </div>
-      `).join('') || '<p style="grid-column:1/-1;text-align:center;color:#444;padding:40px 0;">Hakuna content bado.<br>Ingia /admin/ post kazi zako</p>';
-    }
+    </div>
 
-    function checkPayment(video, isFree, price, title) {
-      if (isFree) {
-        window.open(video, '_blank');
-      } else {
-        alert(`LIPA TSh ${price} KUTAZAMA:\n${title}\n\nWasiliana: +255 XXX XXX XXX`);
-      }
-    }
-
-    function openAlbum(item) {
-      document.getElementById('modal-title').textContent = item.title;
-      const list = document.getElementById('episode-list');
-      list.innerHTML = item.episodeList.map((ep, i) => `
-        <div class="episode" onclick="checkPayment('${ep.video}', ${item.is_free}, ${item.price}, '${ep.title.replace(/'/g, "\\'")}')">
-          <div class="episode-num">${i + 1}</div>
-          <div class="episode-info">
-            <div class="episode-title">${ep.title}</div>
-            <div class="episode-sub">${item.title}</div>
-          </div>
+    <!-- CATEGORIES -->
+    <div class="categories">
+        <div class="cat-btn active" onclick="filterType('all')">
+            <div class="cat-icon">📺</div>
+            <div class="cat-text">SERIES</div>
         </div>
-      `).join('');
-      document.getElementById('album-modal').style.display = 'block';
-      document.body.style.overflow = 'hidden';
+        <div class="cat-btn" onclick="filterType('singo')">
+            <div class="cat-icon">🎬</div>
+            <div class="cat-text">SINGO MOVIE</div>
+        </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+        <div class="filter-btn active" onclick="filterGenre('all')">🔥 Zote</div>
+        <div class="filter-btn" onclick="filterGenre('Drama')">😢 Drama</div>
+        <div class="filter-btn" onclick="filterGenre('Action')">💥 Action</div>
+        <div class="filter-btn" onclick="filterGenre('Love Story')">💕 Love</div>
+    </div>
+
+    <!-- MOVIES SECTION -->
+    <div class="section-title">SERIES ZOTE</div>
+    <div class="movies-grid" id="moviesGrid"></div>
+
+<script>
+let movies = [];
+let currentType = 'all';
+let currentGenre = 'all';
+let featuredMovie = null;
+
+// SOMA MOVIES KUTOKA movies.json
+fetch('movies.json')
+.then(res => res.json())
+.then(data => {
+    movies = data;
+    loadFeaturedSlide();
+    loadMovies();
+  })
+.catch(err => {
+    console.log('movies.json haipatikani');
+    movies = [];
+    loadMovies();
+  });
+
+function loadFeaturedSlide() {
+    const featured = movies.find(m => m.featured) || movies[0];
+    if(featured) {
+        featuredMovie = featured;
+        document.getElementById('featuredTitle').textContent = featured.title;
+        document.getElementById('featuredSlide').style.backgroundImage = `url(${featured.thumbnail})`;
+        document.getElementById('featuredSlide').style.backgroundSize = 'cover';
+        document.getElementById('featuredSlide').style.backgroundPosition = 'center';
+    }
+}
+
+function playFeatured() {
+    if(featuredMovie) playMovie(featuredMovie);
+}
+
+function loadMovies() {
+    const grid = document.getElementById('moviesGrid');
+    let filtered = movies;
+
+    if(currentType!== 'all') {
+        filtered = filtered.filter(m => m.type === currentType);
+    }
+    if(currentGenre!== 'all') {
+        filtered = filtered.filter(m => m.genre === currentGenre);
     }
 
-    function closeModal() {
-      document.getElementById('album-modal').style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }
-
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCat = btn.dataset.cat;
-        renderContent();
-      }
+    grid.innerHTML = '';
+    filtered.forEach(movie => {
+        const priceText = movie.is_free? 'BURE' : `TSh ${movie.price}`;
+        grid.innerHTML += `
+            <div class="movie-card" onclick='playMovie(${JSON.stringify(movie).replace(/'/g, "&apos;")})'>
+                <div class="movie-thumb">
+                    <img src="${movie.thumbnail}" alt="${movie.title}">
+                    <div class="movie-badge">${movie.type.toUpperCase()}</div>
+                </div>
+                <div class="movie-info">
+                    <div class="movie-title">${movie.title}</div>
+                    <div class="movie-price">${priceText}</div>
+                </div>
+            </div>
+        `;
     });
+}
 
-    document.querySelectorAll('.filter').forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentGenre = btn.dataset.genre;
-        renderContent();
-      }
+function filterType(type) {
+    currentType = type;
+    document.querySelectorAll('.cat-btn').forEach((btn, i) => {
+        btn.classList.toggle('active',
+            (type === 'all' && i === 0) || (type === 'singo' && i === 1)
+        );
     });
+    document.querySelector('.section-title').textContent = type === 'singo'? 'SINGO ZOTE' : 'SERIES ZOTE';
+    loadMovies();
+}
 
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
+function filterGenre(genre) {
+    currentGenre = genre;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(genre) || (genre === 'all' && btn.textContent.includes('Zote')));
+    });
+    loadMovies();
+}
+
+// MFUMO WA MALIPO - HAUJAGUSWA
+function playMovie(movie) {
+    if (movie.is_free || movie.price == 0) {
+        if(movie.type === 'series' && movie.episodeList) {
+            alert('Series: ' + movie.title + '\nEpisodes: ' + movie.episodes + '\n\nFungua episode ya kwanza');
+            window.open(movie.episodeList[0].video, '_blank');
+        } else {
+            window.open(movie.video, '_blank');
         }
-      });
+    } else {
+        const lipa = confirm(`KULIPIA: ${movie.title}\nBei: TSh ${movie.price}\n\nBonyeza OK kulipia`);
+        if(lipa) {
+            alert('Unaunganishwa na payment gateway...\n\nWEKA CODE YAKO YA MALIPO HAPA');
+        }
     }
-
-    loadContent();
-  </script>
+}
+</script>
 </body>
 </html>
