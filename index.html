@@ -1,265 +1,416 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chilagu Movie App</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --main-purple: #8B5CF6;
-      --bg-dark: #0A0A0A;
-      --card-dark: #1A1A1A;
-    }
-    body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); }
-  .card-169 { aspect-ratio: 16/9; }
-  .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.1); }
-  .purple-btn { background: var(--main-purple); }
-  .purple-text { color: var(--main-purple); }
-  .scroll-hidden::-webkit-scrollbar { display: none; }
-  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .movie-title {
-     font-family: 'Bebas Neue', sans-serif;
-     letter-spacing: 0.5px;
-     text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-     line-height: 1.1;
-   }
-  .card-title {
-     font-size: 12px;
-     font-weight: 600;
-     line-height: 1.3;
-   }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chilagu Movies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        /* HEADER */
+      .header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #111;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+      .logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+        }
+
+      .search-bar {
+            flex: 1;
+            background: #222;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+      .search-bar::placeholder {
+            color: #888;
+        }
+
+        /* HERO SLIDER - AUTOMATIC */
+      .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+      .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+      .slide.active {
+            opacity: 1;
+        }
+
+      .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 20px 16px 16px;
+        }
+
+      .slide-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+      .slide-desc {
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        /* CATEGORIES */
+      .categories {
+            padding: 0 16px;
+            margin-bottom: 20px;
+        }
+
+      .main-cats,.sub-cats {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
+        }
+
+      .main-cats::-webkit-scrollbar,.sub-cats::-webkit-scrollbar {
+            display: none;
+        }
+
+      .cat-btn {
+            background: #222;
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+      .cat-btn.active {
+            background: #8b5cf6;
+        }
+
+      .sub-cats {
+            margin-top: 12px;
+        }
+
+      .sub-cat-btn {
+            background: #1a1a1a;
+            border: none;
+            color: #fff;
+            padding: 12px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+      .sub-cat-btn.active {
+            background: #8b5cf6;
+        }
+
+        /* MOVIE GRID - CARD YA SINEMA POSTER */
+      .section-title {
+            padding: 0 16px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+      .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 16px;
+            padding: 0 16px 30px;
+        }
+
+      .movie-card {
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+      .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+      .thumbnail {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            background: #222;
+        }
+
+      .card-info {
+            padding: 10px 8px;
+        }
+
+      .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+      .card-category {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* MODAL PLAYER */
+      .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+      .modal-content {
+            width: 95%;
+            max-width: 900px;
+            position: relative;
+        }
+
+      .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+      .video-frame {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            border-radius: 8px;
+        }
+    </style>
 </head>
-<body class="text-white">
-
-  <!-- TOP BAR + SEARCH + LOGO YAKO -->
-  <div class="sticky top-0 z-50 bg-[#0A0A0A] p-4 flex items-center gap-3">
-    <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" class="w-8 h-8" alt="Logo">
-    <div class="flex-1 relative">
-      <input id="search" type="text" placeholder="Tafuta movie, series..."
-             class="w-full bg-[#1A1A1A] rounded-full py-2 pl-10 pr-4 text-sm outline-none">
-      <svg class="w-4 h-4 absolute left-3 top-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816A6 6 0 012 8z"></path></svg>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu" class="logo">
+        <input type="text" class="search-bar" placeholder="Tafuta movie, series..." id="searchInput">
     </div>
-  </div>
 
-  <!-- HERO AUTO SLIDER - INAFANYA KAZI BILA DOTS -->
-  <div id="hero-slider" class="relative w-full card-169 overflow-hidden mb-3"></div>
-
-  <!-- CATEGORY KUBWA -->
-  <div class="px-4 flex gap-3 overflow-x-auto pb-2 scroll-hidden">
-    <button onclick="filterMainCat('all')" id="cat-all" class="cat-main purple-btn px-4 py-2 rounded-xl text-sm whitespace-nowrap">🎬 All Movies</button>
-    <button onclick="filterMainCat('series')" id="cat-series" class="cat-main bg-[#1A1A1A] px-4 py-2 rounded-xl text-sm whitespace-nowrap">📺 Series</button>
-    <button onclick="filterMainCat('singo')" id="cat-singo" class="cat-main bg-[#1A1A1A] px-4 py-2 rounded-xl text-sm whitespace-nowrap">🎬 Singo</button>
-  </div>
-
-  <!-- CATEGORY NDOGO -->
-  <div class="px-4 flex gap-2 overflow-x-auto pb-4 scroll-hidden">
-    <button onclick="filterSubCat('all')" id="sub-all" class="sub-cat purple-btn px-3 py-1.5 rounded-full text-xs">🔥 Zote</button>
-    <button onclick="filterSubCat('Action')" id="sub-Action" class="sub-cat bg-[#1A1A1A] px-3 py-1.5 rounded-full text-xs">💥 Action</button>
-    <button onclick="filterSubCat('Love Story')" id="sub-Love Story" class="sub-cat bg-[#1A1A1A] px-3 py-1.5 rounded-full text-xs">❤️ Love Story</button>
-    <button onclick="filterSubCat('Drama')" id="sub-Drama" class="sub-cat bg-[#1A1A1A] px-3 py-1.5 rounded-full text-xs">😢 Drama</button>
-    <button onclick="filterSubCat('Clips & Comedy')" id="sub-Clips & Comedy" class="sub-cat bg-[#1A1A1A] px-3 py-1.5 rounded-full text-xs">😂 Clips & Comedy</button>
-  </div>
-
-  <!-- TRENDING SASA -->
-  <h2 class="px-4 text-lg font-bold mb-3">TRENDING SASA</h2>
-  <div id="movie-grid" class="px-4 grid grid-cols-2 gap-3 pb-8"></div>
-
-  <!-- VIDEO PLAYER MODAL -->
-  <div id="player-modal" class="fixed inset-0 bg-black z-50 hidden">
-    <button onclick="closePlayer()" class="absolute top-4 right-4 z-50 bg-white/20 rounded-full p-2">
-      <svg class="w-6 h-6" fill="white" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
-    </button>
-    <iframe id="video-player" class="w-full h-full" frameborder="0" allowfullscreen allow="autoplay"></iframe>
-  </div>
-
-  <!-- DETAILS MODAL - INAFUNGUKA UKIBOFYA DETAILS -->
-  <div id="details-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-end">
-    <div class="bg-[#1A1A1A] w-full rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto">
-      <div class="flex justify-between items-center mb-4">
-        <h3 id="details-title" class="text-xl font-bold uppercase"></h3>
-        <button onclick="closeDetails()" class="bg-white/20 rounded-full p-2">
-          <svg class="w-5 h-5" fill="white" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
-      </div>
-      <img id="details-thumbnail" class="w-full rounded-xl mb-4 card-169 object-cover">
-      <div class="flex gap-2 mb-4">
-        <span id="details-category" class="purple-btn text-xs px-2 py-1 rounded-md"></span>
-        <span id="details-price" class="bg-green-600 text-xs px-2 py-1 rounded-md"></span>
-      </div>
-      <p id="details-description" class="text-sm text-gray-300 leading-relaxed">
-        Mpanda Mnazi Kwa Mkono Mmoja ni hadithi ya kusisimua kuhusu kijana mmoja anayejaribu kuvunja rekodi ya dunia kwa kupanda mnazi kwa mkono mmoja. Njiani anakutana na changamoto za mapenzi, urafiki na usaliti. Singo ya kuchekesha na kufundisha.
-      </p>
-      <button onclick="handlePlay(currentMovie.videoUrl, currentMovie.isFree, currentMovie.payhipLink)" class="w-full bg-white text-black py-3 rounded-full text-sm font-semibold mt-6">
-        WATCH NOW
-      </button>
+    <!-- AUTOMATIC HERO SLIDER -->
+    <div class="hero-slider" id="heroSlider">
+        <!-- Slides zinajazwa na JS -->
     </div>
-  </div>
 
-<script>
-const movies = [
-  {
-    title: "MPANDA MNAZI KWA MKONO MMOJA",
-    thumbnail: "https://i.postimg.cc/HLJg2GPL/foto.jpg",
-    videoUrl: "https://streamable.com/e/83261w?",
-    price: 0,
-    isFree: true,
-    mainCategory: "singo",
-    subCategory: "Clips & Comedy",
-    featured: true,
-    payhipLink: "",
-    description: "Mpanda Mnazi Kwa Mkono Mmoja"
-  },   // <-- Hii comma ni muhimu sana
-  {
-    title: "TRAILER: Yellow RECKONING Full Power",
-    thumbnail: "https://i.postimg.cc/YSnrwTCg/foto.jpg",
-    videoUrl: "https://streamable.com/e/02hbc4?",
-    price: 0,
-    isFree: true,
-    mainCategory: "Series",
-    subCategory: "Drama",
-    featured: true,
-    payhipLink: "",
-    description: "Kisasi cha Binti, alie poteza familia yake kwa Mr Bad Ghost"
-  }
-];
-
-let currentSlide = 0;
-let activeMainCat = 'all';
-let activeSubCat = 'all';
-let currentMovie = null;
-
-function renderHero() {
-
-function renderHero() {
-  const featured = movies.filter(m => m.featured);
-  const slider = document.getElementById('hero-slider');
-  if(featured.length === 0) {
-    slider.innerHTML = `<div class="w-full h-full bg-[#1A1A1A] flex items-center justify-center text-gray-500">Hakuna Singo Mpya</div>`;
-    return;
-  }
-  slider.innerHTML = featured.map((m, i) => `
-    <div class="absolute inset-0 transition-opacity duration-700 ${i === currentSlide? 'opacity-100' : 'opacity-0'}">
-      <img src="${m.thumbnail}" class="w-full h-full object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-      <div class="absolute bottom-4 left-4 right-4">
-        <span class="purple-btn text-xs px-2 py-1 rounded-md">🎬 SINGO MPYA</span>
-        <h1 class="movie-title text-xl font-normal mt-2 uppercase">${m.title}</h1>
-        <p class="text-xs text-gray-300 mt-1">${m.subCategory} • ${m.isFree? 'FREE' : 'Tsh '+m.price.toLocaleString()}</p>
-        <div class="flex gap-2 mt-3">
-          <button onclick="handlePlay('${m.videoUrl}', ${m.isFree}, '${m.payhipLink}')" class="bg-white text-black px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-1">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 0 000-2.538L6.3 2.84z"></path></svg>
-            WATCH NOW
-          </button>
-          <button onclick="showDetails(${JSON.stringify(m).replace(/"/g, '&quot;')})" class="glass px-4 py-2 rounded-full text-sm">Details</button>
+    <!-- CATEGORIES -->
+    <div class="categories">
+        <div class="main-cats" id="mainCats">
+            <button class="cat-btn active" data-cat="all">🎬 All Movies</button>
+            <button class="cat-btn" data-cat="Series">📺 Series</button>
+            <button class="cat-btn" data-cat="singo">🎬 Singo</button>
         </div>
-      </div>
+        <div class="sub-cats" id="subCats">
+            <button class="sub-cat-btn active" data-sub="all">🔥<br>Zote</button>
+            <button class="sub-cat-btn" data-sub="Action">💥<br>Action</button>
+            <button class="sub-cat-btn" data-sub="Love Story">❤️<br>Love Story</button>
+            <button class="sub-cat-btn" data-sub="Drama">😢<br>Drama</button>
+            <button class="sub-cat-btn" data-sub="Clips & Comedy">😂<br>Clips & Comedy</button>
+        </div>
     </div>
-  `).join('');
-}
 
-// AUTO SLIDE INAFANYA KAZI HAPA
-setInterval(() => {
-  const featured = movies.filter(m => m.featured);
-  if(featured.length > 1) {
-    currentSlide = (currentSlide + 1) % featured.length;
-    renderHero();
-  }
-}, 4000);
-
-function filterMainCat(cat) {
-  activeMainCat = cat;
-  document.querySelectorAll('.cat-main').forEach(btn => {
-    btn.classList.remove('purple-btn');
-    btn.classList.add('bg-[#1A1A1A]');
-  });
-  document.getElementById('cat-' + cat).classList.add('purple-btn');
-  document.getElementById('cat-' + cat).classList.remove('bg-[#1A1A1A]');
-  applyFilters();
-}
-
-function filterSubCat(cat) {
-  activeSubCat = cat;
-  document.querySelectorAll('.sub-cat').forEach(btn => {
-    btn.classList.remove('purple-btn');
-    btn.classList.add('bg-[#1A1A1A]');
-  });
-  document.getElementById('sub-' + cat).classList.add('purple-btn');
-  document.getElementById('sub-' + cat).classList.remove('bg-[#1A1A1A]');
-  applyFilters();
-}
-
-function applyFilters() {
-  let filtered = movies;
-  if(activeMainCat!== 'all') filtered = filtered.filter(m => m.mainCategory === activeMainCat);
-  if(activeSubCat!== 'all') filtered = filtered.filter(m => m.subCategory === activeSubCat);
-  renderGrid(filtered);
-}
-
-function renderGrid(data = movies) {
-  const grid = document.getElementById('movie-grid');
-  if(data.length === 0) {
-    grid.innerHTML = `<p class="col-span-2 text-center text-gray-500 py-8">Hakuna movie kwenye category hii</p>`;
-    return;
-  }
-
-  grid.innerHTML = data.map(m => `
-    <div onclick="handlePlay('${m.videoUrl}', ${m.isFree}, '${m.payhipLink}')" class="active:scale-95 transition-transform">
-      <div class="relative card-169 rounded-xl overflow-hidden mb-2">
-        <img src="${m.thumbnail}" class="w-full h-full object-cover">
-        <span class="absolute top-2 left-2 purple-btn text-xs px-2 py-0.5 rounded-md">SINGO</span>
-      </div>
-      <h3 class="card-title line-clamp-2 uppercase">${m.title}</h3>
-      <div class="flex items-center gap-1 text-xs mt-1 ${m.isFree? 'text-green-500' : 'text-yellow-500'}">
-        ${m.isFree? '👁️ Watching now' : '⭐ Tsh ' + m.price.toLocaleString()}
-      </div>
+    <!-- TRENDING SECTION -->
+    <h2 class="section-title">TRENDING SASA</h2>
+    <div class="movie-grid" id="movieGrid">
+        <!-- Movies zinajazwa na JS -->
     </div>
-  `).join('');
-}
 
-function showDetails(movie) {
-  currentMovie = movie;
-  document.getElementById('details-title').textContent = movie.title;
-  document.getElementById('details-thumbnail').src = movie.thumbnail;
-  document.getElementById('details-category').textContent = movie.subCategory;
-  document.getElementById('details-price').textContent = movie.isFree? 'FREE' : 'Tsh ' + movie.price.toLocaleString();
-  document.getElementById('details-description').textContent = movie.description || 'Maelezo hayapatikani kwa sasa.';
-  document.getElementById('details-modal').classList.remove('hidden');
-}
+    <!-- VIDEO MODAL -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <iframe class="video-frame" id="videoFrame" allowfullscreen></iframe>
+        </div>
+    </div>
 
-function closeDetails() {
-  document.getElementById('details-modal').classList.add('hidden');
-}
+    <script>
+        const movies = [
+            {
+                title: "TRAILER: Yellow RECKONING Full Power",
+                thumbnail: "https://i.postimg.cc/YSnrwTCg/file-000000007ed871f49b545ab627e53b0d.png",
+                videoUrl: "https://streamable.com/e/02hbc4?",
+                price: 0,
+                isFree: true,
+                mainCategory: "Series",
+                subCategory: "Drama",
+                featured: true,
+                payhipLink: "",
+                description: "Kisasi cha Binti, alie poteza familia yake kwa Mr Bad Ghost. The Yellow Reckoning imeanza."
+            },
+            {
+                title: "MPANDA MNAZI KWA MKONO MMOJA",
+                thumbnail: "https://i.postimg.cc/HLJg2GPL/file-0000000001e471f481a5cc83ddc746bd.png",
+                videoUrl: "https://streamable.com/e/83261w?",
+                price: 0,
+                isFree: true,
+                mainCategory: "singo",
+                subCategory: "Clips & Comedy",
+                featured: true,
+                payhipLink: "",
+                description: "Mpanda Mnazi Kwa Mkono Mmoja - Comedy kali"
+            }
+        ];
 
-function handlePlay(videoUrl, isFree, payhipLink) {
-  if (isFree) {
-    document.getElementById('video-player').src = videoUrl + '?autoplay=1';
-    document.getElementById('player-modal').classList.remove('hidden');
-    closeDetails();
-  } else {
-    if(window.AppInventor){
-      window.AppInventor.setWebViewString("PAYHIP:" + payhipLink);
-    } else {
-      window.open(payhipLink, '_blank');
-    }
-  }
-}
+        let currentSlide = 0;
+        let activeMainCat = 'all';
+        let activeSubCat = 'all';
+        let currentMovie = null;
 
-function closePlayer() {
-  document.getElementById('player-modal').classList.add('hidden');
-  document.getElementById('video-player').src = '';
-}
+        // RENDER HERO SLIDER - AUTOMATIC
+        function renderHero() {
+            const featured = movies.filter(m => m.featured);
+            const slider = document.getElementById('heroSlider');
 
-document.getElementById('search').addEventListener('input', (e) => {
-  const term = e.target.value.toLowerCase();
-  const filtered = movies.filter(m => m.title.toLowerCase().includes(term));
-  renderGrid(filtered);
-});
+            slider.innerHTML = featured.map((movie, index) => `
+                <div class="slide ${index === 0? 'active' : ''}" style="background-image: url('${movie.thumbnail}')">
+                    <div class="slide-overlay">
+                        <div class="slide-title">${movie.title}</div>
+                        <div class="slide-desc">${movie.description}</div>
+                    </div>
+                </div>
+            `).join('');
 
-renderHero();
-renderGrid();
-</script>
+            // AUTO SLIDE KILA SEKUNDE 4
+            setInterval(() => {
+                const slides = document.querySelectorAll('.slide');
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 4000);
+        }
+
+        // RENDER MOVIE GRID
+        function renderMovies() {
+            const grid = document.getElementById('movieGrid');
+            let filtered = movies;
+
+            if (activeMainCat!== 'all') {
+                filtered = filtered.filter(m => m.mainCategory === activeMainCat);
+            }
+            if (activeSubCat!== 'all') {
+                filtered = filtered.filter(m => m.subCategory === activeSubCat);
+            }
+
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(m =>
+                    m.title.toLowerCase().includes(searchTerm) ||
+                    m.description.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            grid.innerHTML = filtered.map(movie => `
+                <div class="movie-card" onclick="openModal('${movie.videoUrl}')">
+                    <img src="${movie.thumbnail}" alt="${movie.title}" class="thumbnail">
+                    <div class="card-info">
+                        <div class="card-title">${movie.title}</div>
+                        <div class="card-category">${movie.subCategory}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // MODAL FUNCTIONS
+        function openModal(videoUrl) {
+            document.getElementById('videoFrame').src = videoUrl;
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('videoFrame').src = '';
+            document.getElementById('videoModal').style.display = 'none';
+        }
+
+        // CATEGORY FILTERS
+        document.getElementById('mainCats').addEventListener('click', (e) => {
+            if (e.target.classList.contains('cat-btn')) {
+                document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                activeMainCat = e.target.dataset.cat;
+                renderMovies();
+            }
+        });
+
+        document.getElementById('subCats').addEventListener('click', (e) => {
+            if (e.target.classList.contains('sub-cat-btn')) {
+                document.querySelectorAll('.sub-cat-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                activeSubCat = e.target.dataset.sub;
+                renderMovies();
+            }
+        });
+
+        // SEARCH
+        document.getElementById('searchInput').addEventListener('input', renderMovies);
+
+        // CLOSE MODAL ON CLICK OUTSIDE
+        document.getElementById('videoModal').addEventListener('click', (e) => {
+            if (e.target.id === 'videoModal') closeModal();
+        });
+
+        // INIT
+        renderHero();
+        renderMovies();
+    </script>
 </body>
-  </html>
+</html>
