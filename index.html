@@ -5,21 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Singo Movie App</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- FONT MPYA 2: POPPINS KWA MAANDISHI + BEBAS NEUE KWA TITLE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
     :root {
-      --main-purple: #8B5CF6; /* RANGI YAKO KUU */
+      --main-purple: #8B5CF6;
       --bg-dark: #0A0A0A;
       --card-dark: #1A1A1A;
     }
     body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); }
-   .card-169 { aspect-ratio: 16/9; } /* RATIO 16:9 INYOOKE */
+   .card-169 { aspect-ratio: 16/9; }
    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.1); }
    .purple-btn { background: var(--main-purple); }
    .purple-text { color: var(--main-purple); }
    .purple-dot { background: var(--main-purple); }
    .scroll-hidden::-webkit-scrollbar { display: none; }
    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+   
+   /* STYLE MPYA YA TITLE - KIJANJA SASA */
+   .movie-title {
+     font-family: 'Bebas Neue', sans-serif;
+     letter-spacing: 0.5px;
+     text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+     line-height: 1.1;
+   }
+   .card-title {
+     font-size: 12px; /* NDOGO KIJANJA */
+     font-weight: 600;
+     line-height: 1.3;
+   }
   </style>
 </head>
 <body class="text-white">
@@ -67,7 +81,6 @@
   </div>
 
 <script>
-// 1. DATABASE YA MOVIE - WEKA MOVIE YAKO MOJA HAPA. ZINGINE ONGEZA WEWE
 const movies = [
   {
     title: "MPANDA MNAZI KWA MKONO MMOJA",
@@ -75,19 +88,17 @@ const movies = [
     videoUrl: "https://streamable.com/8326lw",
     price: 0,
     isFree: true,
-    mainCategory: "singo", // CATEGORY KUBWA: all, series, singo
-    subCategory: "Clips & Comedy", // CATEGORY NDOGO: Action, Love Story, Drama, Clips & Comedy
-    featured: true, // true = INAINGIA SLIDE AUTOMATIC
-    payhipLink: "" // WEKA LINK YA PAYHIP KAMA NI YA KULIPIA
+    mainCategory: "singo",
+    subCategory: "Clips & Comedy",
+    featured: true,
+    payhipLink: ""
   }
-  // ONGEZA MOVIE NYINGINE HAPA KWA FORMAT HIYO HIYO
 ];
 
 let currentSlide = 0;
 let activeMainCat = 'all';
 let activeSubCat = 'all';
 
-// 2. HERO AUTO SLIDER
 function renderHero() {
   const featured = movies.filter(m => m.featured);
   const slider = document.getElementById('hero-slider');
@@ -101,8 +112,9 @@ function renderHero() {
       <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
       <div class="absolute bottom-4 left-4 right-4">
         <span class="purple-btn text-xs px-2 py-1 rounded-md">🎬 SINGO MPYA</span>
-        <h1 class="text-2xl font-bold mt-2">${m.title}</h1>
-        <p class="text-sm text-gray-300">${m.subCategory} • ${m.isFree? 'BURE' : 'Tsh '+m.price.toLocaleString()}</p>
+        <!-- TITLE MPYA HAPA - FONT KIJANJA + NDOGO -->
+        <h1 class="movie-title text-[20px] font-normal mt-2 uppercase">${m.title}</h1>
+        <p class="text-xs text-gray-300 mt-1">${m.subCategory} • ${m.isFree? 'BURE' : 'Tsh '+m.price.toLocaleString()}</p>
         <div class="flex gap-2 mt-3">
           <button onclick="handlePlay('${m.videoUrl}', ${m.isFree}, '${m.payhipLink}')" class="bg-white text-black px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-1">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 0 000-2.538L6.3 2.84z"></path></svg>
@@ -119,7 +131,6 @@ function renderHero() {
   `).join('');
 }
 
-// AUTO SLIDE KILA SEKUNDE 4
 setInterval(() => {
   const featured = movies.filter(m => m.featured);
   if(featured.length > 1) {
@@ -128,7 +139,6 @@ setInterval(() => {
   }
 }, 4000);
 
-// 3. FILTER CATEGORY KUBWA
 function filterMainCat(cat) {
   activeMainCat = cat;
   document.querySelectorAll('.cat-main').forEach(btn => {
@@ -140,7 +150,6 @@ function filterMainCat(cat) {
   applyFilters();
 }
 
-// 4. FILTER CATEGORY NDOGO
 function filterSubCat(cat) {
   activeSubCat = cat;
   document.querySelectorAll('.sub-cat').forEach(btn => {
@@ -152,22 +161,13 @@ function filterSubCat(cat) {
   applyFilters();
 }
 
-// 5. APPLY FILTERS ZOTE
 function applyFilters() {
   let filtered = movies;
-  
-  if(activeMainCat !== 'all') {
-    filtered = filtered.filter(m => m.mainCategory === activeMainCat);
-  }
-  
-  if(activeSubCat !== 'all') {
-    filtered = filtered.filter(m => m.subCategory === activeSubCat);
-  }
-  
+  if(activeMainCat !== 'all') filtered = filtered.filter(m => m.mainCategory === activeMainCat);
+  if(activeSubCat !== 'all') filtered = filtered.filter(m => m.subCategory === activeSubCat);
   renderGrid(filtered);
 }
 
-// 6. RENDER GRID 16:9
 function renderGrid(data = movies) {
   const grid = document.getElementById('movie-grid');
   if(data.length === 0) {
@@ -181,7 +181,8 @@ function renderGrid(data = movies) {
         <img src="${m.thumbnail}" class="w-full h-full object-cover">
         <span class="absolute top-2 left-2 purple-btn text-xs px-2 py-0.5 rounded-md">SINGO</span>
       </div>
-      <h3 class="text-sm font-semibold line-clamp-2">${m.title}</h3>
+      <!-- TITLE YA CARD NDOGO KIJANJA -->
+      <h3 class="card-title line-clamp-2 uppercase">${m.title}</h3>
       <div class="flex items-center gap-1 text-xs mt-1 ${m.isFree? 'text-green-500' : 'text-yellow-500'}">
         ${m.isFree? '👁️ Watching' : '⭐ Tsh ' + m.price.toLocaleString()}
       </div>
@@ -189,7 +190,6 @@ function renderGrid(data = movies) {
   `).join('');
 }
 
-// 7. MALIPO + PLAYER
 function handlePlay(videoUrl, isFree, payhipLink) {
   if (isFree) {
     document.getElementById('video-player').src = videoUrl;
@@ -208,14 +208,12 @@ function closePlayer() {
   document.getElementById('video-player').src = '';
 }
 
-// 8. SEARCH
 document.getElementById('search').addEventListener('input', (e) => {
   const term = e.target.value.toLowerCase();
   const filtered = movies.filter(m => m.title.toLowerCase().includes(term));
   renderGrid(filtered);
 });
 
-// ANZISHA
 renderHero();
 renderGrid();
 </script>
