@@ -102,35 +102,36 @@
 const movies = [
   {
     title: "MPANDA MNAZI KWA MKONO MMOJA",
-    thumbnail: "https://i.postimg.cc/HLJg2GPL/file-0000000001e471f481a5cc83ddc746bd.png",
-    videoUrl: "https://streamable.com/e/8326lw?nocontrols=1",
+    thumbnail: "https://i.postimg.cc/HLJg2GPL/foto.jpg",
+    videoUrl: "https://streamable.com/e/83261w?",
     price: 0,
     isFree: true,
     mainCategory: "singo",
     subCategory: "Clips & Comedy",
     featured: true,
     payhipLink: "",
-    description: "Mpanda Mnazi Kwa Mkono Mmoja ni hadithi ya kusisimua kuhusu kijana mmoja anayejaribu kuvunja rekodi ya dunia kwa kupanda mnazi kwa mkono mmoja. Njiani anakutana na changamoto za mapenzi, urafiki na usaliti."
-  }
-],
-
+    description: "Mpanda Mnazi Kwa Mkono Mmoja"
+  },   // <-- Hii comma ni muhimu sana
   {
-    title: "TRAILER.Yellow RECKONING Full Power",
-    thumbnail: "https://i.postimg.cc/YSnrwTCg/file-000000007ed871f49b545ab627e53b0d.png",
-    videoUrl: "https://streamable.com/e/02hbc4?nocontrols=1",
+    title: "TRAILER: Yellow RECKONING Full Power",
+    thumbnail: "https://i.postimg.cc/YSnrwTCg/foto.jpg",
+    videoUrl: "https://streamable.com/e/02hbc4?",
     price: 0,
     isFree: true,
     mainCategory: "Series",
     subCategory: "Drama",
     featured: true,
     payhipLink: "",
-    description: "kisasi cha Binti,alie poteza family yake, kutokana na kikosi cha mtu mbaya Mister Bad ghost, Binti huyu aliahidi kulipiza kisasi juu ya hayo yaliyo tokea katika jamii yake, je atafanikiwa katika hilo, twende tuone mwanzo mpaka mwisho wa kazi hii."
+    description: "Kisasi cha Binti, alie poteza familia yake kwa Mr Bad Ghost"
   }
 ];
+
 let currentSlide = 0;
 let activeMainCat = 'all';
 let activeSubCat = 'all';
 let currentMovie = null;
+
+function renderHero() {
 
 function renderHero() {
   const featured = movies.filter(m => m.featured);
