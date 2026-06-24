@@ -116,4 +116,68 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.9);backdrop-f
 <div class="nav-item active" onclick="scrollToTop()">🏠<span>Home</span></div>
 <div class="nav-item" onclick="alert('Tafuta hapo juu')">🔍<span>Search</span></div>
 <div class="nav-item" onclick="toggleAdmin()">⚙️<span>Admin</span></div>
-</div>
+</div><script>
+let movies=JSON.parse(localStorage.getItem('momba_movies')||'[]');
+let currentMovie=null;
+
+function saveMovies(){localStorage.setItem('momba_movies',JSON.stringify(movies))}
+
+function renderMovies(list=movies){
+const grid=document.getElementById('moviesGrid');
+grid.innerHTML='';
+list.forEach(m=>{
+grid.innerHTML+=`<div class="card" onclick="openModal(${m.id})">
+<img src="${m.thumb}" loading="lazy">
+<div class="info">
+<div class="title">${m.title}</div>
+<div class="meta">TZS ${m.price} • ⭐</div>
+</div></div>`;
+});
+if(movies.length>0){
+const b=movies[movies.length-1];
+document.getElementById('banner').classList.remove('hidden');
+document.getElementById('bannerImg').src=b.banner||b.thumb;
+document.getElementById('bannerTitle').textContent=b.title;
+document.getElementById('bannerDesc').textContent=b.desc||'';
+}
+
+function openModal(id){
+currentMovie=movies.find(x=>x.id==id);
+document.getElementById('modal').classList.add('active');
+document.getElementById('modalPoster').src=currentMovie.banner||currentMovie.thumb;
+document.getElementById('modalTitle').textContent=currentMovie.title;
+document.getElementById('modalMeta').textContent=`Bei: TZS ${currentMovie.price}`;
+document.getElementById('modalDesc').textContent=currentMovie.desc||'';
+document.getElementById('playerFrame').src=currentMovie.stream;
+}
+
+function closeModal(e){if(!e||e.target.id=='modal')document.getElementById('modal').classList.remove('active')}
+
+function playBanner(){if(movies.length>0)openModal(movies[movies.length-1].id)}
+
+function scrollToTop(){window.scrollTo(0,0)}
+
+document.getElementById('search').oninput=e=>{
+const q=e.target.value.toLowerCase();
+renderMovies(movies.filter(m=>m.title.toLowerCase().includes(q)));
+}
+
+function toggleAdmin(){
+document.getElementById('admin').classList.toggle('active');
+loadAdminData();
+}
+
+function addMovie(){
+const m={
+id:Date.now(),
+title:document.getElementById('newTitle').value,
+thumb:document.getElementById('newThumb').value,
+banner:document.getElementById('newBanner').value,
+stream:document.getElementById('newStream').value,
+price:document.getElementById('newPrice').value,
+desc:document.getElementById('newDesc').value
+};
+movies.push(m);saveMovies();renderMovies();loadAdminData();
+['newTitle','newThumb','newBanner','newStream','newPrice','newDesc'].forEach(id=>document.getElementById(id).value='');
+alert('Movie imehifadhiwa!');
+}
