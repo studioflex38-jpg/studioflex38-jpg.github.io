@@ -8,13 +8,31 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: #0a0a0a; color: #fff; }
 
-        /* HEADER */
   .header { display: flex; align-items: center; padding: 12px 16px; background: #111; position: sticky; top: 0; z-index: 100; }
-  .logo { width: 40px; height: 40px; margin-right: 12px; }
+  .logo { width: 40px; height: 40px; margin-right: 12px; cursor: pointer; }
   .search-bar { flex: 1; background: #222; border: none; border-radius: 20px; padding: 10px 16px; color: #fff; }
-  .admin-btn { background: #8b5cf6; border: none; color: #fff; padding: 10px 16px; border-radius: 6px; margin-left: 10px; cursor: pointer; font-weight: 600; }
 
-        /* HERO SLIDER */
+        /* FAB YA UPLOAD KAMA AUDIOMACK */
+  .fab-upload { 
+       position: fixed; 
+       bottom: 20px; 
+       right: 20px; 
+       width: 56px; 
+       height: 56px; 
+       background: #8b5cf6; 
+       border: none; 
+       border-radius: 50%; 
+       display: none; 
+       align-items: center; 
+       justify-content: center; 
+       cursor: pointer; 
+       box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+       z-index: 999;
+       transition: transform 0.2s;
+   }
+  .fab-upload:hover { transform: scale(1.1); }
+  .fab-upload svg { width: 24px; height: 24px; fill: #fff; }
+
   .hero-slider { position: relative; width: 100%; height: 200px; overflow: hidden; margin-bottom: 16px; }
   .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s; background-size: cover; background-position: center; }
   .slide.active { opacity: 1; }
@@ -27,7 +45,6 @@
   .btn-details { background: rgba(255,255,255,0.2); color: #fff; }
   .btn-buy { background: #10b981; color: #fff; }
 
-        /* CATEGORIES */
   .categories { padding: 0 16px; margin-bottom: 16px; }
   .main-cats,.sub-cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
   .main-cats::-webkit-scrollbar,.sub-cats::-webkit-scrollbar { display: none; }
@@ -37,17 +54,15 @@
   .sub-cat-btn { background: #1a1a1a; border: none; color: #fff; padding: 10px; border-radius: 50%; width: 56px; height: 56px; font-size: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
   .sub-cat-btn.active { background: #8b5cf6; }
 
-        /* MOVIE GRID - 3 KWA SAFU + NYOTA */
   .section-title { padding: 0 16px; font-size: 16px; font-weight: bold; margin-bottom: 10px; }
-  .movie-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 16px 30px; }
+  .movie-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 16px 80px; }
   .movie-card { background: #111; border-radius: 6px; overflow: hidden; cursor: pointer; position: relative; }
   .thumbnail { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #222; }
   .card-info { padding: 6px; }
   .card-title { font-size: 11px; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 26px; }
-  .free-tag { font-size: 10px; color: #8b5cf6; font-weight: bold; margin-top: 3px; }
+   /* FREE TAG IMETOLEWA - TOFOUTI NI NYOTA TU */
   .star-badge { position: absolute; top: 6px; right: 6px; background: #f59e0b; color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
 
-        /* MODAL */
   .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
   .modal-content { width: 95%; max-width: 900px; position: relative; }
   .close-btn { position: absolute; top: -40px; right: 0; background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; }
@@ -57,7 +72,6 @@
   .modal-desc { font-size: 13px; color: #ccc; line-height: 1.5; margin-bottom: 12px; }
   .modal-buy { background: #10b981; color: #fff; border: none; padding: 12px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; }
 
-        /* ADMIN PANEL */
   .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; overflow-y: auto; }
   .admin-content { background: #111; width: 95%; max-width: 500px; margin: 20px auto; border-radius: 12px; padding: 20px; }
   .admin-title { font-size: 20px; font-weight: bold; margin-bottom: 20px; text-align: center; }
@@ -66,30 +80,38 @@
   .form-group input,.form-group select,.form-group textarea { width: 100%; background: #222; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #fff; font-size: 14px; }
   .form-group textarea { resize: vertical; min-height: 60px; }
   .form-row { display: flex; gap: 10px; }
-  .form-row .form-group { flex: 1; }
+  .form-row.form-group { flex: 1; }
   .checkbox-group { display: flex; align-items: center; gap: 8px; }
   .admin-buttons { display: flex; gap: 10px; margin-top: 20px; }
   .btn-save { flex: 1; background: #8b5cf6; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
   .btn-cancel { flex: 1; background: #333; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
   .movie-list { margin-top: 30px; }
   .movie-list-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; }
-  .admin-movie-item { background: #1a1a1a; padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-  .admin-movie-name { font-size: 13px; }
-  .btn-delete { background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+  .admin-movie-item { background: #1a1a1a; padding: 10px; border-radius: 6px; margin-bottom: 8px; }
+  .admin-movie-name { font-size: 13px; margin-bottom: 8px; }
+  .admin-movie-actions { display: flex; gap: 8px; }
+  .btn-edit { background: #3b82f6; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; flex: 1; }
+  .btn-delete { background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; flex: 1; }
+
+  .login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; }
+  .login-content { background: #111; width: 90%; max-width: 350px; border-radius: 12px; padding: 30px 20px; text-align: center; }
+  .login-title { font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+  .login-input { width: 100%; background: #222; border: 1px solid #333; border-radius: 6px; padding: 12px; color: #fff; font-size: 14px; margin-bottom: 15px; }
+  .login-btn { width: 100%; background: #8b5cf6; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
     <div class="header">
-        <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu" class="logo">
+        <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu" class="logo" id="logo">
         <input type="text" class="search-bar" placeholder="Tafuta movie, series..." id="searchInput">
-        <button class="admin-btn" onclick="openAdmin()">+ Ongeza Movie</button>
     </div>
 
-    <!-- HERO SLIDER -->
+    <button class="fab-upload" id="fabUpload" onclick="openAdmin()">
+        <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+    </button>
+
     <div class="hero-slider" id="heroSlider"></div>
 
-    <!-- CATEGORIES - COMEDY IMETOLEWA, ANIMATION IMEINGIA -->
     <div class="categories">
         <div class="main-cats" id="mainCats">
             <button class="cat-btn active" data-cat="all">🎬 All Movies</button>
@@ -105,11 +127,9 @@
         </div>
     </div>
 
-    <!-- TRENDING SECTION -->
     <h2 class="section-title">TRENDING SASA</h2>
     <div class="movie-grid" id="movieGrid"></div>
 
-    <!-- VIDEO MODAL -->
     <div class="modal" id="videoModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -122,11 +142,20 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL MODAL -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <div class="login-title">🔒 Ingia Admin</div>
+            <input type="password" class="login-input" id="passwordInput" placeholder="Weka Password">
+            <button class="login-btn" onclick="checkPassword()">Ingia</button>
+        </div>
+    </div>
+
     <div class="admin-modal" id="adminModal">
         <div class="admin-content">
             <button class="close-btn" onclick="closeAdmin()">&times;</button>
-            <div class="admin-title">Ongeza Movie Mpya 🎬</div>
+            <div class="admin-title" id="adminFormTitle">Ongeza Movie Mpya 🎬</div>
+            
+            <input type="hidden" id="editIndex" value="">
             
             <div class="form-group">
                 <label>Jina la Movie *</label>
@@ -194,7 +223,7 @@
 
             <div class="admin-buttons">
                 <button class="btn-cancel" onclick="closeAdmin()">Ghairi</button>
-                <button class="btn-save" onclick="saveMovie()">Hifadhi Movie</button>
+                <button class="btn-save" id="saveBtn" onclick="saveMovie()">Hifadhi Movie</button>
             </div>
 
             <div class="movie-list">
@@ -205,6 +234,10 @@
     </div>
 
     <script>
+        const ADMIN_PASSWORD = "ChilaguCinemaPro"; 
+        let clickCount = 0;
+        let clickTimer = null;
+
         let movies = JSON.parse(localStorage.getItem('chilaguMovies')) || [
             {
                 title: "TRAILER: Yellow RECKONING Full Power",
@@ -213,7 +246,7 @@
                 price: 0,
                 isFree: true,
                 mainCategory: "Series",
-                subCategory: "Animation",
+                subCategory: "Drama",
                 featured: true,
                 payhipLink: "",
                 description: "Kisasi cha Binti, alie poteza familia yake kwa Mr Bad Ghost. The Yellow Reckoning imeanza."
@@ -228,7 +261,7 @@
                 subCategory: "Animation",
                 featured: true,
                 payhipLink: "",
-                description: "Mpanda Mnazi Kwa Mkono Mmoja ni short yenye kuchekesha ambayo inawaelezea vijana wenye tabia flani zisizo rafiki kwa jamii."
+                description: "Mpanda Mnazi Kwa Mkono Mmoja - Animation kali ya Kitanzania."
             },
             {
                 title: "Upcoming Animation",
@@ -247,12 +280,41 @@
         let currentSlide = 0;
         let activeMainCat = 'all';
         let activeSubCat = 'all';
+        let isAdmin = false;
+        let editMode = false;
+
+        document.getElementById('logo').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                showLogin();
+                clickCount = 0;
+            }
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+        });
+
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('fabUpload').style.display = 'flex';
+                openAdmin();
+                document.getElementById('passwordInput').value = '';
+            } else {
+                alert('Password sio sahihi!');
+                document.getElementById('passwordInput').value = '';
+            }
+        }
 
         function saveToStorage() {
             localStorage.setItem('chilaguMovies', JSON.stringify(movies));
         }
 
-        // HERO SLIDER
         function renderHero() {
             const featured = movies.filter(m => m.featured);
             const slider = document.getElementById('heroSlider');
@@ -289,7 +351,6 @@
             }, 4000);
         }
 
-        // MOVIE GRID
         function renderMovies() {
             const grid = document.getElementById('movieGrid');
             let filtered = movies;
@@ -302,11 +363,10 @@
 
             grid.innerHTML = filtered.map(movie => `
                 <div class="movie-card" onclick='handleCardClick(${JSON.stringify(movie)})'>
-                    ${!movie.isFree ? '<div class="star-badge">★</div>' : ''}
+                    ${!movie.isFree? '<div class="star-badge">★</div>' : ''}
                     <img src="${movie.thumbnail}" alt="${movie.title}" class="thumbnail">
                     <div class="card-info">
                         <div class="card-title">${movie.title}</div>
-                        ${movie.isFree ? '<div class="free-tag">FREE</div>' : ''}
                     </div>
                 </div>
             `).join('');
@@ -320,7 +380,6 @@
             }
         }
 
-        // PLAY MOVIE
         function playMovie(movie) {
             document.getElementById('videoFrame').style.display = 'block';
             document.getElementById('videoFrame').src = movie.videoUrl;
@@ -330,7 +389,6 @@
             document.getElementById('videoModal').style.display = 'flex';
         }
 
-        // SHOW DETAILS
         function showDetails(movie) {
             document.getElementById('videoFrame').style.display = 'none';
             document.getElementById('modalTitle').textContent = movie.title;
@@ -352,8 +410,15 @@
             document.getElementById('videoModal').style.display = 'none';
         }
 
-        // ADMIN PANEL
         function openAdmin() {
+            if (!isAdmin) {
+                showLogin();
+                return;
+            }
+            editMode = false;
+            document.getElementById('adminFormTitle').textContent = 'Ongeza Movie Mpya 🎬';
+            document.getElementById('saveBtn').textContent = 'Hifadhi Movie';
+            clearForm();
             renderAdminList();
             document.getElementById('adminModal').style.display = 'block';
         }
@@ -361,9 +426,11 @@
         function closeAdmin() {
             document.getElementById('adminModal').style.display = 'none';
             clearForm();
+            editMode = false;
         }
 
         function clearForm() {
+            document.getElementById('editIndex').value = '';
             document.getElementById('movieTitle').value = '';
             document.getElementById('movieThumbnail').value = '';
             document.getElementById('movieVideo').value = '';
@@ -383,7 +450,7 @@
                 return;
             }
 
-            const newMovie = {
+            const movieData = {
                 title: title,
                 thumbnail: thumbnail,
                 videoUrl: document.getElementById('movieVideo').value.trim(),
@@ -396,13 +463,45 @@
                 featured: document.getElementById('movieFeatured').checked
             };
 
-            movies.push(newMovie);
+            const editIndex = document.getElementById('editIndex').value;
+            
+            if (editMode && editIndex!== '') {
+                movies[parseInt(editIndex)] = movieData;
+                alert('Movie imehaririwa! ✅');
+            } else {
+                movies.push(movieData);
+                alert('Movie imeongezwa! 🎬');
+            }
+
             saveToStorage();
             renderHero();
             renderMovies();
             renderAdminList();
             clearForm();
-            alert('Movie imeongezwa! 🎬');
+            editMode = false;
+            document.getElementById('adminFormTitle').textContent = 'Ongeza Movie Mpya 🎬';
+            document.getElementById('saveBtn').textContent = 'Hifadhi Movie';
+        }
+
+        function editMovie(index) {
+            const movie = movies[index];
+            editMode = true;
+            document.getElementById('editIndex').value = index;
+            document.getElementById('adminFormTitle').textContent = 'Hariri Movie ✏️';
+            document.getElementById('saveBtn').textContent = 'Hifadhi Mabadiliko';
+            
+            document.getElementById('movieTitle').value = movie.title;
+            document.getElementById('movieThumbnail').value = movie.thumbnail;
+            document.getElementById('movieVideo').value = movie.videoUrl;
+            document.getElementById('movieDesc').value = movie.description;
+            document.getElementById('movieMainCat').value = movie.mainCategory;
+            document.getElementById('movieSubCat').value = movie.subCategory;
+            document.getElementById('moviePrice').value = movie.price;
+            document.getElementById('moviePayhip').value = movie.payhipLink;
+            document.getElementById('movieFree').checked = movie.isFree;
+            document.getElementById('movieFeatured').checked = movie.featured;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function deleteMovie(index) {
@@ -420,12 +519,14 @@
             list.innerHTML = movies.map((movie, index) => `
                 <div class="admin-movie-item">
                     <div class="admin-movie-name">${movie.title}</div>
-                    <button class="btn-delete" onclick="deleteMovie(${index})">Futa</button>
+                    <div class="admin-movie-actions">
+                        <button class="btn-edit" onclick="editMovie(${index})">Hariri</button>
+                        <button class="btn-delete" onclick="deleteMovie(${index})">Futa</button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        // FILTERS
         document.getElementById('mainCats').addEventListener('click', (e) => {
             if (e.target.classList.contains('cat-btn')) {
                 document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
@@ -447,8 +548,12 @@
         document.getElementById('searchInput').addEventListener('input', renderMovies);
         document.getElementById('videoModal').addEventListener('click', (e) => { if (e.target.id === 'videoModal') closeModal(); });
         document.getElementById('adminModal').addEventListener('click', (e) => { if (e.target.id === 'adminModal') closeAdmin(); });
+        document.getElementById('loginModal').addEventListener('click', (e) => { if (e.target.id === 'loginModal') document.getElementById('loginModal').style.display = 'none'; });
+        
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
 
-        // INIT
         renderHero();
         renderMovies();
     </script>
