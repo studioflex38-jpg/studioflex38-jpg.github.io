@@ -181,3 +181,46 @@ movies.push(m);saveMovies();renderMovies();loadAdminData();
 ['newTitle','newThumb','newBanner','newStream','newPrice','newDesc'].forEach(id=>document.getElementById(id).value='');
 alert('Movie imehifadhiwa!');
 }
+function loadAdminData(){
+const list=document.getElementById('adminList');
+list.innerHTML='';
+movies.forEach(m=>{
+list.innerHTML+=`<div class="movie-item">
+<strong>${m.title}</strong>
+<div class="input-group"><label>Jina</label><input id="title${m.id}" value="${m.title}"></div>
+<div class="input-group"><label>Thumbnail</label><input id="thumb${m.id}" value="${m.thumb}"></div>
+<div class="input-group"><label>Banner</label><input id="banner${m.id}" value="${m.banner}"></div>
+<div class="input-group"><label>Streamable</label><input id="stream${m.id}" value="${m.stream}"></div>
+<div class="input-group"><label>Bei</label><input id="price${m.id}" type="number" value="${m.price}"></div>
+<div class="input-group"><label>Maelezo ya Banner</label><textarea id="desc${m.id}">${m.desc||''}</textarea></div>
+<div class="row">
+<button class="btn" onclick="updateMovie(${m.id})">Update</button>
+<button class="btn ghost" onclick="deleteMovie(${m.id})">Delete</button>
+</div>
+</div>`;
+});
+}
+
+function updateMovie(id){
+const m=movies.find(x=>x.id==id);
+m.title=document.getElementById('title'+id).value;
+m.thumb=document.getElementById('thumb'+id).value;
+m.banner=document.getElementById('banner'+id).value;
+m.stream=document.getElementById('stream'+id).value;
+m.price=document.getElementById('price'+id).value;
+m.desc=document.getElementById('desc'+id).value;
+saveMovies();renderMovies();loadAdminData();
+alert('Imeupdate!');
+}
+
+function deleteMovie(id){
+if(confirm('Una uhakika?')){
+movies=movies.filter(x=>x.id!=id);
+saveMovies();renderMovies();loadAdminData();
+}
+}
+
+renderMovies();
+</script>
+</body>
+</html>
