@@ -5,308 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chilagu Movies</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: #0a0a0a;
-            color: #fff;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #0a0a0a; color: #fff; }
 
         /* HEADER */
-    .header {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            background: #111;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+  .header { display: flex; align-items: center; padding: 12px 16px; background: #111; position: sticky; top: 0; z-index: 100; }
+  .logo { width: 40px; height: 40px; margin-right: 12px; }
+  .search-bar { flex: 1; background: #222; border: none; border-radius: 20px; padding: 10px 16px; color: #fff; }
+  .admin-btn { background: #8b5cf6; border: none; color: #fff; padding: 10px 16px; border-radius: 6px; margin-left: 10px; cursor: pointer; font-weight: 600; }
 
-    .logo {
-            width: 40px;
-            height: 40px;
-            margin-right: 12px;
-        }
-
-    .search-bar {
-            flex: 1;
-            background: #222;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 16px;
-            color: #fff;
-            font-size: 14px;
-        }
-
-        /* HERO SLIDER - AUTOMATIC + BUTTONS JUU TU */
-    .hero-slider {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            margin-bottom: 16px;
-        }
-
-    .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            background-size: cover;
-            background-position: center;
-        }
-
-    .slide.active {
-            opacity: 1;
-        }
-
-    .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.95));
-            padding: 16px;
-        }
-
-    .slide-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-    .slide-desc {
-            font-size: 12px;
-            color: #ccc;
-            margin-bottom: 10px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-    .hero-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-    .btn-watch,.btn-details,.btn-buy {
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-    .btn-watch {
-            background: #8b5cf6;
-            color: #fff;
-        }
-
-    .btn-details {
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-        }
-
-    .btn-buy {
-            background: #10b981;
-            color: #fff;
-        }
+        /* HERO SLIDER */
+  .hero-slider { position: relative; width: 100%; height: 200px; overflow: hidden; margin-bottom: 16px; }
+  .slide { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s; background-size: cover; background-position: center; }
+  .slide.active { opacity: 1; }
+  .slide-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.95)); padding: 16px; }
+  .slide-title { font-size: 18px; font-weight: bold; margin-bottom: 4px; }
+  .slide-desc { font-size: 12px; color: #ccc; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .hero-buttons { display: flex; gap: 8px; }
+  .btn-watch,.btn-details,.btn-buy { border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .btn-watch { background: #8b5cf6; color: #fff; }
+  .btn-details { background: rgba(255,255,255,0.2); color: #fff; }
+  .btn-buy { background: #10b981; color: #fff; }
 
         /* CATEGORIES */
-    .categories {
-            padding: 0 16px;
-            margin-bottom: 16px;
-        }
+  .categories { padding: 0 16px; margin-bottom: 16px; }
+  .main-cats,.sub-cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+  .main-cats::-webkit-scrollbar,.sub-cats::-webkit-scrollbar { display: none; }
+  .cat-btn { background: #222; border: none; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; }
+  .cat-btn.active { background: #8b5cf6; }
+  .sub-cats { margin-top: 10px; }
+  .sub-cat-btn { background: #1a1a1a; border: none; color: #fff; padding: 10px; border-radius: 50%; width: 56px; height: 56px; font-size: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+  .sub-cat-btn.active { background: #8b5cf6; }
 
-    .main-cats,.sub-cats {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            scrollbar-width: none;
-        }
-
-    .main-cats::-webkit-scrollbar,.sub-cats::-webkit-scrollbar {
-            display: none;
-        }
-
-    .cat-btn {
-            background: #222;
-            border: none;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-
-    .cat-btn.active {
-            background: #8b5cf6;
-        }
-
-    .sub-cats {
-            margin-top: 10px;
-        }
-
-    .sub-cat-btn {
-            background: #1a1a1a;
-            border: none;
-            color: #fff;
-            padding: 10px;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            font-size: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-    .sub-cat-btn.active {
-            background: #8b5cf6;
-        }
-
-        /* MOVIE GRID - CARD NDOGO ZA ULALO 3 KWA SAFU */
-    .section-title {
-            padding: 0 16px;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-    .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            padding: 0 16px 30px;
-        }
-
-    .movie-card {
-            background: #111;
-            border-radius: 6px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-    .movie-card:hover {
-            transform: scale(1.05);
-        }
-
-    .thumbnail {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: #222;
-        }
-
-    .card-info {
-            padding: 6px;
-        }
-
-    .card-title {
-            font-size: 11px;
-            font-weight: 600;
-            line-height: 1.2;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            height: 26px;
-        }
-
-    .price-tag {
-            font-size: 10px;
-            color: #10b981;
-            font-weight: bold;
-            margin-top: 3px;
-        }
-
-    .free-tag {
-            font-size: 10px;
-            color: #8b5cf6;
-            font-weight: bold;
-            margin-top: 3px;
-        }
+        /* MOVIE GRID - 3 KWA SAFU + NYOTA */
+  .section-title { padding: 0 16px; font-size: 16px; font-weight: bold; margin-bottom: 10px; }
+  .movie-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 16px 30px; }
+  .movie-card { background: #111; border-radius: 6px; overflow: hidden; cursor: pointer; position: relative; }
+  .thumbnail { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #222; }
+  .card-info { padding: 6px; }
+  .card-title { font-size: 11px; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 26px; }
+  .free-tag { font-size: 10px; color: #8b5cf6; font-weight: bold; margin-top: 3px; }
+  .star-badge { position: absolute; top: 6px; right: 6px; background: #f59e0b; color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
 
         /* MODAL */
-    .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
+  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-content { width: 95%; max-width: 900px; position: relative; }
+  .close-btn { position: absolute; top: -40px; right: 0; background: none; border: none; color: #fff; font-size: 30px; cursor: pointer; }
+  .video-frame { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 8px; }
+  .modal-info { padding: 16px 0; }
+  .modal-title { font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+  .modal-desc { font-size: 13px; color: #ccc; line-height: 1.5; margin-bottom: 12px; }
+  .modal-buy { background: #10b981; color: #fff; border: none; padding: 12px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; }
 
-    .modal-content {
-            width: 95%;
-            max-width: 900px;
-            position: relative;
-        }
-
-    .close-btn {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-    .video-frame {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border: none;
-            border-radius: 8px;
-        }
-
-    .modal-info {
-            padding: 16px 0;
-        }
-
-    .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-    .modal-desc {
-            font-size: 13px;
-            color: #ccc;
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-
-    .modal-buy {
-            background: #10b981;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-        }
+        /* ADMIN PANEL */
+  .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; overflow-y: auto; }
+  .admin-content { background: #111; width: 95%; max-width: 500px; margin: 20px auto; border-radius: 12px; padding: 20px; }
+  .admin-title { font-size: 20px; font-weight: bold; margin-bottom: 20px; text-align: center; }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; font-size: 13px; margin-bottom: 6px; color: #ccc; }
+  .form-group input,.form-group select,.form-group textarea { width: 100%; background: #222; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #fff; font-size: 14px; }
+  .form-group textarea { resize: vertical; min-height: 60px; }
+  .form-row { display: flex; gap: 10px; }
+  .form-row .form-group { flex: 1; }
+  .checkbox-group { display: flex; align-items: center; gap: 8px; }
+  .admin-buttons { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-save { flex: 1; background: #8b5cf6; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+  .btn-cancel { flex: 1; background: #333; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+  .movie-list { margin-top: 30px; }
+  .movie-list-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; }
+  .admin-movie-item { background: #1a1a1a; padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .admin-movie-name { font-size: 13px; }
+  .btn-delete { background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -314,12 +83,13 @@
     <div class="header">
         <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Chilagu" class="logo">
         <input type="text" class="search-bar" placeholder="Tafuta movie, series..." id="searchInput">
+        <button class="admin-btn" onclick="openAdmin()">+ Ongeza Movie</button>
     </div>
 
-    <!-- HERO SLIDER - BUTTON ZIPO HAPA TU -->
+    <!-- HERO SLIDER -->
     <div class="hero-slider" id="heroSlider"></div>
 
-    <!-- CATEGORIES -->
+    <!-- CATEGORIES - COMEDY IMETOLEWA, ANIMATION IMEINGIA -->
     <div class="categories">
         <div class="main-cats" id="mainCats">
             <button class="cat-btn active" data-cat="all">🎬 All Movies</button>
@@ -331,15 +101,15 @@
             <button class="sub-cat-btn" data-sub="Action">💥<br>Action</button>
             <button class="sub-cat-btn" data-sub="Love Story">❤️<br>Love</button>
             <button class="sub-cat-btn" data-sub="Drama">😢<br>Drama</button>
-            <button class="sub-cat-btn" data-sub="Clips & Comedy">😂<br>Comedy</button>
+            <button class="sub-cat-btn" data-sub="Animation">🎨<br>Animation</button>
         </div>
     </div>
 
-    <!-- TRENDING SECTION - CARD TU, HAKUNA BUTTON -->
+    <!-- TRENDING SECTION -->
     <h2 class="section-title">TRENDING SASA</h2>
     <div class="movie-grid" id="movieGrid"></div>
 
-    <!-- MODAL -->
+    <!-- VIDEO MODAL -->
     <div class="modal" id="videoModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -352,8 +122,90 @@
         </div>
     </div>
 
+    <!-- ADMIN PANEL MODAL -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-content">
+            <button class="close-btn" onclick="closeAdmin()">&times;</button>
+            <div class="admin-title">Ongeza Movie Mpya 🎬</div>
+            
+            <div class="form-group">
+                <label>Jina la Movie *</label>
+                <input type="text" id="movieTitle" placeholder="Mfano: Yellow RECKONING Full Power">
+            </div>
+
+            <div class="form-group">
+                <label>Link ya Thumbnail *</label>
+                <input type="text" id="movieThumbnail" placeholder="https://i.postimg.cc/...">
+            </div>
+
+            <div class="form-group">
+                <label>Link ya Video/Trailer</label>
+                <input type="text" id="movieVideo" placeholder="https://streamable.com/e/...">
+            </div>
+
+            <div class="form-group">
+                <label>Maelezo ya Movie</label>
+                <textarea id="movieDesc" placeholder="Andika story fupi hapa..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category Kuu</label>
+                    <select id="movieMainCat">
+                        <option value="Series">Series</option>
+                        <option value="singo">Singo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category Ndogo</label>
+                    <select id="movieSubCat">
+                        <option value="Action">Action</option>
+                        <option value="Love Story">Love Story</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Animation">Animation</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Bei (Tsh)</label>
+                    <input type="number" id="moviePrice" placeholder="0" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Link ya Payhip</label>
+                    <input type="text" id="moviePayhip" placeholder="https://payhip.com/b/...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="movieFree" checked>
+                    <label for="movieFree">Ni Bure (Free)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="movieFeatured">
+                    <label for="movieFeatured">Weka Kwenye Banner Kuu</label>
+                </div>
+            </div>
+
+            <div class="admin-buttons">
+                <button class="btn-cancel" onclick="closeAdmin()">Ghairi</button>
+                <button class="btn-save" onclick="saveMovie()">Hifadhi Movie</button>
+            </div>
+
+            <div class="movie-list">
+                <div class="movie-list-title">Movie Zilizopo:</div>
+                <div id="adminMovieList"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const movies = [
+        let movies = JSON.parse(localStorage.getItem('chilaguMovies')) || [
             {
                 title: "TRAILER: Yellow RECKONING Full Power",
                 thumbnail: "https://i.postimg.cc/YSnrwTCg/file-000000007ed871f49b545ab627e53b0d.png",
@@ -361,7 +213,7 @@
                 price: 0,
                 isFree: true,
                 mainCategory: "Series",
-                subCategory: "Drama",
+                subCategory: "Animation",
                 featured: true,
                 payhipLink: "",
                 description: "Kisasi cha Binti, alie poteza familia yake kwa Mr Bad Ghost. The Yellow Reckoning imeanza."
@@ -373,22 +225,22 @@
                 price: 0,
                 isFree: true,
                 mainCategory: "singo",
-                subCategory: "Clips & Comedy",
+                subCategory: "Animation",
                 featured: true,
                 payhipLink: "",
-                description: "Mpanda Mnazi Kwa Mkono Mmoja - Comedy kali ya mtaani."
+                description: "Mpanda Mnazi Kwa Mkono Mmoja ni short yenye kuchekesha ambayo inawaelezea vijana wenye tabia flani zisizo rafiki kwa jamii."
             },
             {
-                title: "Upcoming",
+                title: "Upcoming Animation",
                 thumbnail: "https://i.postimg.cc/YSnrwTCg/file-000000007ed871f49b545ab627e53b0d.png",
-                videoUrl: "https://streamable.com/e/02hbc4?",
+                videoUrl: "",
                 price: 5000,
                 isFree: false,
                 mainCategory: "Series",
-                subCategory: "Action",
+                subCategory: "Animation",
                 featured: false,
                 payhipLink: "https://payhip.com/b/YOUR_LINK",
-                description: "Hii ni sinema ya kulipia. Lipia uone full movie."
+                description: "Hii ni animation ya kulipia. Lipia uone full movie."
             }
         ];
 
@@ -396,10 +248,18 @@
         let activeMainCat = 'all';
         let activeSubCat = 'all';
 
-        // HERO SLIDER - BUTTON ZIPO HAPA TU
+        function saveToStorage() {
+            localStorage.setItem('chilaguMovies', JSON.stringify(movies));
+        }
+
+        // HERO SLIDER
         function renderHero() {
             const featured = movies.filter(m => m.featured);
             const slider = document.getElementById('heroSlider');
+            if (featured.length === 0) {
+                slider.innerHTML = '<div class="slide active" style="background:#222;display:flex;align-items:center;justify-content:center;"><div>Weka movie ya featured</div></div>';
+                return;
+            }
 
             slider.innerHTML = featured.map((movie, index) => `
                 <div class="slide ${index === 0? 'active' : ''}" style="background-image: url('${movie.thumbnail}')">
@@ -408,83 +268,82 @@
                         <div class="slide-desc">${movie.description}</div>
                         <div class="hero-buttons">
                             ${movie.isFree? 
-                                `<button class="btn-watch" onclick="openModal(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Watch Now</button>
-                                 <button class="btn-details" onclick="openModal(${JSON.stringify(movie).replace(/"/g, '&quot;')})">ℹ Details</button>` 
+                                `<button class="btn-watch" onclick='playMovie(${JSON.stringify(movie)})'>▶ Watch Now</button>
+                                 <button class="btn-details" onclick='showDetails(${JSON.stringify(movie)})'>ℹ Details</button>` 
                                 : 
-                                `<button class="btn-buy" onclick="window.open('${movie.payhipLink}', '_blank')">💰 Nunua Tsh ${movie.price}</button>
-                                 <button class="btn-details" onclick="openModal(${JSON.stringify(movie).replace(/"/g, '&quot;')})">ℹ Details</button>`
+                                `<button class="btn-buy" onclick="window.open('${movie.payhipLink}', '_blank')">💰 Nunua Sasa</button>
+                                 <button class="btn-details" onclick='showDetails(${JSON.stringify(movie)})'>ℹ Details</button>`
                             }
                         </div>
                     </div>
                 </div>
             `).join('');
 
-            // AUTO SLIDE KILA SEKUNDE 4
             setInterval(() => {
                 const slides = document.querySelectorAll('.slide');
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
+                if (slides.length > 1) {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }
             }, 4000);
         }
 
-        // MOVIE GRID - CARD NDOGO 3 KWA SAFU, HAKUNA BUTTON
+        // MOVIE GRID
         function renderMovies() {
             const grid = document.getElementById('movieGrid');
             let filtered = movies;
 
-            if (activeMainCat!== 'all') {
-                filtered = filtered.filter(m => m.mainCategory === activeMainCat);
-            }
-            if (activeSubCat!== 'all') {
-                filtered = filtered.filter(m => m.subCategory === activeSubCat);
-            }
+            if (activeMainCat!== 'all') filtered = filtered.filter(m => m.mainCategory === activeMainCat);
+            if (activeSubCat!== 'all') filtered = filtered.filter(m => m.subCategory === activeSubCat);
 
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            if (searchTerm) {
-                filtered = filtered.filter(m =>
-                    m.title.toLowerCase().includes(searchTerm) ||
-                    m.description.toLowerCase().includes(searchTerm)
-                );
-            }
+            if (searchTerm) filtered = filtered.filter(m => m.title.toLowerCase().includes(searchTerm) || m.description.toLowerCase().includes(searchTerm));
 
             grid.innerHTML = filtered.map(movie => `
-                <div class="movie-card" onclick="handleCardClick(${JSON.stringify(movie).replace(/"/g, '&quot;')})">
+                <div class="movie-card" onclick='handleCardClick(${JSON.stringify(movie)})'>
+                    ${!movie.isFree ? '<div class="star-badge">★</div>' : ''}
                     <img src="${movie.thumbnail}" alt="${movie.title}" class="thumbnail">
                     <div class="card-info">
                         <div class="card-title">${movie.title}</div>
-                        ${movie.isFree? 
-                            `<div class="free-tag">FREE</div>` : 
-                            `<div class="price-tag">Tsh ${movie.price}</div>`
-                        }
+                        ${movie.isFree ? '<div class="free-tag">FREE</div>' : ''}
                     </div>
                 </div>
             `).join('');
         }
 
-        // HANDLE CARD CLICK - FREE = PLAY, PAID = PAYHIP
         function handleCardClick(movie) {
             if (movie.isFree) {
-                openModal(movie);
+                playMovie(movie);
             } else {
                 window.open(movie.payhipLink, '_blank');
             }
         }
 
-        // MODAL
-        function openModal(movie) {
+        // PLAY MOVIE
+        function playMovie(movie) {
+            document.getElementById('videoFrame').style.display = 'block';
+            document.getElementById('videoFrame').src = movie.videoUrl;
+            document.getElementById('modalTitle').textContent = movie.title;
+            document.getElementById('modalDesc').textContent = movie.description;
+            document.getElementById('modalBuyBtn').style.display = 'none';
+            document.getElementById('videoModal').style.display = 'flex';
+        }
+
+        // SHOW DETAILS
+        function showDetails(movie) {
+            document.getElementById('videoFrame').style.display = 'none';
+            document.getElementById('modalTitle').textContent = movie.title;
+            document.getElementById('modalDesc').textContent = movie.description;
+            
             if (!movie.isFree) {
-                document.getElementById('videoFrame').style.display = 'none';
                 document.getElementById('modalBuyBtn').style.display = 'block';
                 document.getElementById('modalPrice').textContent = movie.price;
                 document.getElementById('modalBuyBtn').onclick = () => window.open(movie.payhipLink, '_blank');
             } else {
-                document.getElementById('videoFrame').style.display = 'block';
-                document.getElementById('videoFrame').src = movie.videoUrl;
                 document.getElementById('modalBuyBtn').style.display = 'none';
             }
-            document.getElementById('modalTitle').textContent = movie.title;
-            document.getElementById('modalDesc').textContent = movie.description;
+            
             document.getElementById('videoModal').style.display = 'flex';
         }
 
@@ -493,7 +352,80 @@
             document.getElementById('videoModal').style.display = 'none';
         }
 
-        // CATEGORY FILTERS
+        // ADMIN PANEL
+        function openAdmin() {
+            renderAdminList();
+            document.getElementById('adminModal').style.display = 'block';
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminModal').style.display = 'none';
+            clearForm();
+        }
+
+        function clearForm() {
+            document.getElementById('movieTitle').value = '';
+            document.getElementById('movieThumbnail').value = '';
+            document.getElementById('movieVideo').value = '';
+            document.getElementById('movieDesc').value = '';
+            document.getElementById('moviePrice').value = '0';
+            document.getElementById('moviePayhip').value = '';
+            document.getElementById('movieFree').checked = true;
+            document.getElementById('movieFeatured').checked = false;
+        }
+
+        function saveMovie() {
+            const title = document.getElementById('movieTitle').value.trim();
+            const thumbnail = document.getElementById('movieThumbnail').value.trim();
+            
+            if (!title ||!thumbnail) {
+                alert('Jaza Jina na Link ya Thumbnail!');
+                return;
+            }
+
+            const newMovie = {
+                title: title,
+                thumbnail: thumbnail,
+                videoUrl: document.getElementById('movieVideo').value.trim(),
+                description: document.getElementById('movieDesc').value.trim(),
+                mainCategory: document.getElementById('movieMainCat').value,
+                subCategory: document.getElementById('movieSubCat').value,
+                price: parseInt(document.getElementById('moviePrice').value) || 0,
+                payhipLink: document.getElementById('moviePayhip').value.trim(),
+                isFree: document.getElementById('movieFree').checked,
+                featured: document.getElementById('movieFeatured').checked
+            };
+
+            movies.push(newMovie);
+            saveToStorage();
+            renderHero();
+            renderMovies();
+            renderAdminList();
+            clearForm();
+            alert('Movie imeongezwa! 🎬');
+        }
+
+        function deleteMovie(index) {
+            if (confirm('Una uhakika unataka kufuta movie hii?')) {
+                movies.splice(index, 1);
+                saveToStorage();
+                renderHero();
+                renderMovies();
+                renderAdminList();
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('adminMovieList');
+            list.innerHTML = movies.map((movie, index) => `
+                <div class="admin-movie-item">
+                    <div class="admin-movie-name">${movie.title}</div>
+                    <button class="btn-delete" onclick="deleteMovie(${index})">Futa</button>
+                </div>
+            `).join('');
+        }
+
+        // FILTERS
         document.getElementById('mainCats').addEventListener('click', (e) => {
             if (e.target.classList.contains('cat-btn')) {
                 document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
@@ -512,13 +444,9 @@
             }
         });
 
-        // SEARCH
         document.getElementById('searchInput').addEventListener('input', renderMovies);
-
-        // CLOSE MODAL
-        document.getElementById('videoModal').addEventListener('click', (e) => {
-            if (e.target.id === 'videoModal') closeModal();
-        });
+        document.getElementById('videoModal').addEventListener('click', (e) => { if (e.target.id === 'videoModal') closeModal(); });
+        document.getElementById('adminModal').addEventListener('click', (e) => { if (e.target.id === 'adminModal') closeAdmin(); });
 
         // INIT
         renderHero();
