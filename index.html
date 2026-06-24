@@ -20,24 +20,25 @@ header{background:#0a0a0a;padding:12px;display:flex;align-items:center;gap:10px;
 .banner-text{position:absolute;bottom:15px;left:15px;right:15px;z-index:2}
 .banner-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#fff;margin-bottom:5px;text-shadow:0 2px 8px #000}
 .banner-desc{font-size:12px;color:#ccc;margin-bottom:10px}
-.btn{padding:8px 16px;border:none;border-radius:6px;margin-right:6px;cursor:pointer;font-weight:600;font-size:13px}
+.btn{padding:9px 18px;border:none;border-radius:6px;margin-right:8px;cursor:pointer;font-weight:600;font-size:13px}
 .btn-purple{background:#7c3aed;color:#fff}
 .btn-yellow{background:#fbbf24;color:#000}
-.btn-gray{background:#2a2a2a;color:#fff}
 
-/* CATEGORY NA ICON */
+/* CATEGORY - 3 KUBWA, ZINGINE NDOGO */
 .filters{display:flex;gap:8px;padding:12px 15px;overflow-x:auto}
-.filter{padding:8px 14px;background:#1a1a1a;border-radius:25px;white-space:nowrap;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px}
-.filter.active{background:#7c3aed}
+.filter{padding:8px 12px;background:#1a1a1a;border-radius:25px;white-space:nowrap;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:5px;border:1px solid #2a2a2a}
+.filter.big{padding:10px 16px;font-size:14px;font-weight:600} /* Kubwa */
+.filter.active{background:#7c3aed;border-color:#7c3aed}
 .filter-icon{font-size:16px}
 
 h3{padding:0 15px 10px;font-size:16px;font-weight:600}
 
-.grid{display:flex;gap:10px;padding:0 15px 80px;overflow-x:auto;scroll-snap-type:x mandatory}
-.card{min-width:32%;background:#111;border-radius:8px;overflow:hidden;cursor:pointer;scroll-snap-align:start;position:relative}
-.card img{width:100%;height:160px;object-fit:cover}
-.card-title{padding:8px;font-size:11px;line-height:1.3;height:38px;overflow:hidden}
-.star{position:absolute;top:6px;right:6px;background:#fbbf24;color:#000;font-size:10px;padding:3px 6px;border-radius:4px;font-weight:700}
+/* CARDS NDOGO NDOGO 3 KWA SAFU - MUONEKANO WA VIDEO */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 15px 80px}
+.card{background:#111;border-radius:6px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:2/3}
+.card img{width:100%;height:100%;object-fit:cover}
+.card-title{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#000 80%);padding:6px 5px;font-size:10px;line-height:1.2;height:35px;overflow:hidden}
+.star{position:absolute;top:5px;right:5px;background:#fbbf24;color:#000;font-size:9px;padding:2px 5px;border-radius:3px;font-weight:700}
 
 .creator-btn{position:fixed;bottom:20px;right:20px;background:#7c3aed;color:#fff;padding:12px 20px;border-radius:50px;border:none;cursor:pointer;font-weight:600;z-index:5;font-size:14px}
 
@@ -69,15 +70,16 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
   <div class="banner-text">
     <h2 class="banner-title" id="bannerTitle">TRAILER: YELLOW RECKONING</h2>
     <p class="banner-desc" id="bannerDesc">Kisai cha Binti, alie poteza familia yake...</p>
-    <button class="btn btn-purple">▶ Watch</button>
-    <button class="btn btn-yellow">i Details</button>
+    <button class="btn btn-purple" onclick="playBanner()">▶ Watch Now</button>
+    <button class="btn btn-yellow" onclick="playBanner()">i Details</button>
   </div>
 </div>
 
-<!-- CATEGORY NA ICON ZAO -->
+<!-- CATEGORY: 3 KUBWA, ZINGINE NDOGO -->
 <div class="filters">
-  <div class="filter active"><span class="filter-icon">🎬</span> All Movies</div>
-  <div class="filter"><span class="filter-icon">📺</span> Series</div>
+  <div class="filter big active"><span class="filter-icon">🎬</span> All Movies</div>
+  <div class="filter big"><span class="filter-icon">🎬</span> Single Movie</div>
+  <div class="filter big"><span class="filter-icon">📺</span> Series</div>
   <div class="filter"><span class="filter-icon">🎤</span> Singo</div>
   <div class="filter"><span class="filter-icon">💥</span> Action</div>
   <div class="filter"><span class="filter-icon">❤️</span> Love</div>
@@ -117,7 +119,7 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
     <h2>👤 Profile Icon</h2>
     <input id="profileUrl" placeholder="Weka link ya picha yako">
     <button class="pass-btn" onclick="saveProfile()">Save</button>
-    <button class="pass-btn btn-gray" onclick="closeProfile()">Cancel</button>
+    <button class="pass-btn" style="background:#444" onclick="closeProfile()">Cancel</button>
   </div>
 </div>
 
@@ -127,7 +129,7 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
     <h2>🔐 ADMIN LOGIN</h2>
     <input type="password" id="adminPass" placeholder="Password">
     <button class="pass-btn" onclick="checkPass()">Ingia</button>
-    <button class="pass-btn btn-gray" onclick="closePass()">Cancel</button>
+    <button class="pass-btn" style="background:#444" onclick="closePass()">Cancel</button>
     <p id="passError" style="color:#dc2626;font-size:12px;margin-top:10px;display:none">Password si sahihi!</p>
   </div>
 </div>
@@ -165,12 +167,13 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
 
 <script>
 let movies = JSON.parse(localStorage.getItem('movies')) || [
-  {id:1,title:"TRAILER: YELLOW RECKONING",thumb:"https://via.placeholder.com/300x400/ff0/000",price:1000,cat:"Animation",status:"approved",stream:"https://streamable.com/demo",featured:true},
-  {id:2,title:"MPANDA MNAZI",thumb:"https://via.placeholder.com/300x400/0f0/000",price:500,cat:"Drama",status:"approved",stream:"https://streamable.com/demo2",featured:false}
+  {id:1,title:"TRAILER: YELLOW RECKONING",thumb:"https://via.placeholder.com/300x450/ff0/000",price:1000,cat:"Animation",status:"approved",stream:"https://streamable.com/demo",featured:true},
+  {id:2,title:"MPANDA MNAZI",thumb:"https://via.placeholder.com/300x450/0f0/000",price:500,cat:"Drama",status:"approved",stream:"https://streamable.com/demo2",featured:false}
 ];
 let creators = JSON.parse(localStorage.getItem('creators')) || [];
 const ADMIN_PASSWORD = "ChilaguCinemaPro";
 let tapCount = 0;
+let currentBannerStream = "https://streamable.com/demo";
 
 // PROFILE ICON
 function openProfile(){document.getElementById('profilePopup').style.display='flex'; document.getElementById('profileUrl').value = localStorage.getItem('profileIcon') || ''}
@@ -181,6 +184,9 @@ function saveProfile(){
   closeProfile();
 }
 window.onload = ()=>{let p = localStorage.getItem('profileIcon'); if(p) document.getElementById('profileIcon').src = p}
+
+// PLAY BANNER MOVIE
+function playBanner(){window.open(currentBannerStream,'_blank')}
 
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -298,8 +304,8 @@ function approve(id){
 function setBanner(){
   let m = movies.find(x=>x.id==parseInt(document.getElementById('promoMovie').value));
   document.getElementById('bannerTitle').innerText = m.title.toUpperCase();
-  document.getElementById('mainBanner').onclick = ()=>window.open(m.stream,'_blank');
-  alert('Banner imewekwa!');
+  currentBannerStream = m.stream;
+  alert('Banner imewekwa! Bonyeza Watch/Details inafungua movie.');
 }
 </script>
 </body>
