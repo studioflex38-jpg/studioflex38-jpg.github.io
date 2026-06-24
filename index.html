@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chilagu Legacy Cinema</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#fff;font-family:'Poppins',sans-serif}
+.page{display:none}
+.page.active{display:block}
+header{background:#0a0a0a;padding:12px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a1a1a}
+.logo{height:38px;cursor:pointer}
+.search{flex:1;background:#1a1a1a;border:none;padding:10px 15px;border-radius:25px;color:#fff;font-family:'Poppins'}
+.profile-icon{width:36px;height:36px;border-radius:50%;background:#7c3aed;cursor:pointer;object-fit:cover;border:2px solid #7c3aed}
+
+.banner{position:relative;height:220px;background-size:cover;background-position:center;transition:background-image 0.8s ease}
+.banner::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,transparent 0%,#0a0a0a 100%)}
+.banner-text{position:absolute;bottom:15px;left:15px;right:15px;z-index:2}
+.banner-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:#fff;margin-bottom:5px;text-shadow:0 2px 8px #000}
+.banner-desc{font-size:12px;color:#ccc;margin-bottom:10px}
+.btn{padding:9px 18px;border:none;border-radius:6px;margin-right:8px;cursor:pointer;font-weight:600;font-size:13px}
+.btn-purple{background:#7c3aed;color:#fff}
+.btn-yellow{background:#fbbf24;color:#000}
+
+/* CATEGORY - 3 KUBWA, ZINGINE NDOGO */
+.filters{display:flex;gap:8px;padding:12px 15px;overflow-x:auto}
+.filter{padding:8px 12px;background:#1a1a1a;border-radius:25px;white-space:nowrap;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:5px;border:1px solid #2a2a2a}
+.filter.big{padding:10px 16px;font-size:14px;font-weight:600}
+.filter.active{background:#7c3aed;border-color:#7c3aed}
+.filter-icon{font-size:16px}
+
+h3{padding:0 15px 10px;font-size:16px;font-weight:600}
+
+/* CARDS NDOGO 3 KWA SAFU */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 15px 80px}
+.card{background:#111;border-radius:6px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:2/3}
+.card img{width:100%;height:100%;object-fit:cover}
+.card-title{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#000 80%);padding:6px 5px;font-size:10px;line-height:1.2;height:35px;overflow:hidden}
+.star{position:absolute;top:5px;right:5px;background:#fbbf24;color:#000;font-size:9px;padding:2px 5px;border-radius:3px;font-weight:700}
+
+.creator-btn{position:fixed;bottom:20px;right:20px;background:#7c3aed;color:#fff;padding:12px 20px;border-radius:50px;border:none;cursor:pointer;font-weight:600;z-index:5;font-size:14px}
+
+#adminPanel,#passPopup,#profilePopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;overflow-y:auto}
+#adminPanel{background:#0a0a0a;padding:20px}
+#passPopup,#profilePopup{background:rgba(0,0,0,0.95);justify-content:center;align-items:center}
+.admin-box,.creator-box{background:#111;padding:15px;margin-bottom:15px;border-radius:8px;border:1px solid #222;max-width:600px;margin:15px auto}
+.admin-box h2,.creator-box h2{color:#7c3aed;margin-bottom:10px;font-family:'Bebas Neue';letter-spacing:1px}
+input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:5px;font-family:'Poppins'}
+.close-btn{background:#dc2626;padding:6px 12px;border:none;color:#fff;float:right;cursor:pointer;border-radius:5px}
+.pass-box{background:#111;padding:30px;border-radius:10px;width:90%;max-width:320px;text-align:center;border:2px solid #7c3aed}
+.pass-btn{width:100%;padding:10px;background:#7c3aed;border:none;color:#fff;border-radius:5px;cursor:pointer;margin-top:10px;font-weight:600}
+.movie-edit-row{display:flex;gap:8px;margin:8px 0}
+.movie-edit-row input{flex:1}
+.del-btn{background:#dc2626;padding:6px 10px;border:none;color:#fff;border-radius:4px;cursor:pointer;font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="homePage" class="page active">
+<header>
+  <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" class="logo" id="logo" alt="Chilagu">
+  <input class="search" placeholder="Tafuta movie, series...">
+  <img src="https://i.postimg.cc/8cV8cR0R/user-default.png" class="profile-icon" id="profileIcon" onclick="openProfile()">
+</header>
+
+<div class="banner" id="mainBanner">
+  <div class="banner-text">
+    <h2 class="banner-title" id="bannerTitle">TRAILER: YELLOW RECKONING</h2>
+    <p class="banner-desc" id="bannerDesc">Kisai cha Binti, alie poteza familia yake...</p>
+    <button class="btn btn-purple" onclick="playBanner()">▶ Watch Now</button>
+    <button class="btn btn-yellow" onclick="playBanner()">i Details</button>
+  </div>
+</div>
+
+<!-- CATEGORY: 3 KUBWA, ZINGINE NDOGO -->
+<div class="filters">
+  <div class="filter big active"><span class="filter-icon">🎬</span> All Movies</div>
+  <div class="filter big"><span class="filter-icon">🎬</span> Single Movie</div>
+  <div class="filter big"><span class="filter-icon">📺</span> Series</div>
+  <div class="filter"><span class="filter-icon">🎤</span> Singo</div>
+  <div class="filter"><span class="filter-icon">💥</span> Action</div>
+  <div class="filter"><span class="filter-icon">❤️</span> Love</div>
+  <div class="filter"><span class="filter-icon">🎭</span> Drama</div>
+  <div class="filter"><span class="filter-icon">🎨</span> Animation</div>
+</div>
+
+<h3>TRENDING SASA</h3>
+<div class="grid" id="movieGrid"></div>
+
+<button class="creator-btn" onclick="showPage('creatorPage')">+ Jiunge Creator</button>
+</div>
+
+<!-- CREATOR FORM -->
+<div id="creatorPage" class="page">
+<div class="creator-box">
+  <h2>🎬 JIUNGE CREATOR</h2>
+  <div class="note">Upload movie kwenye <a href="https://streamable.com" target="_blank">Streamable.com</a> kisha weka link hapa</div>
+  <input id="cName" placeholder="Jina lako kamili">
+  <input id="cEmail" placeholder="Email / Namba">
+  <input id="cTitle" placeholder="Jina la Movie">
+  <input id="cThumb" placeholder="Link ya Thumbnail">
+  <input id="cStream" placeholder="Link ya Streamable">
+  <select id="cCat"><option>Action</option><option>Love</option><option>Drama</option><option>Animation</option></select>
+  <input id="cPrice" type="number" placeholder="Bei TZS">
+  <label style="display:block;margin:10px 0"><input type="checkbox" id="terms"> Nakubali masharti: No matusi</label>
+  <label style="display:block;margin:10px 0"><input type="checkbox" id="promo" onchange="document.getElementById('promoPlan').style.display=this.checked?'block':'none'"> Nataka banner? Airtel 0686436004</label>
+  <select id="promoPlan" style="display:none"><option value="500">500 - Week 1</option><option value="1000">1000 - Week 2</option><option value="5000">5000 - Miezi 2</option><option value="10000">10000 - Miezi 5</option></select>
+  <button class="pass-btn" onclick="submitCreator()">Tuma Maombi</button>
+  <button class="btn" style="background:#444" onclick="showPage('homePage')">⬅ Rudi</button>
+</div>
+</div>
+
+<!-- PROFILE ICON POPUP -->
+<div id="profilePopup" style="display:none">
+  <div class="pass-box">
+    <h2>👤 Profile Icon</h2>
+    <input id="profileUrl" placeholder="Weka link ya picha yako">
+    <button class="pass-btn" onclick="saveProfile()">Save</button>
+    <button class="pass-btn" style="background:#444" onclick="closeProfile()">Cancel</button>
+  </div>
+</div>
+
+<!-- PASSWORD -->
+<div id="passPopup" style="display:none">
+  <div class="pass-box">
+    <h2>🔐 ADMIN LOGIN</h2>
+    <input type="password" id="adminPass" placeholder="Password">
+    <button class="pass-btn" onclick="checkPass()">Ingia</button>
+    <button class="pass-btn" style="background:#444" onclick="closePass()">Cancel</button>
+    <p id="passError" style="color:#dc2626;font-size:12px;margin-top:10px;display:none">Password si sahihi!</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <button class="close-btn" onclick="closeAdmin()">X Logout</button>
+  <h1 style="font-family:'Bebas Neue';letter-spacing:2px">⚙️ ADMIN PANEL</h1>
+
+  <div class="admin-box">
+    <h2>MANAGE MOVIES</h2>
+    <div id="movieList"></div>
+  </div>
+
+  <div class="admin-box">
+    <h2>MAOMBI YA CREATOR</h2>
+    <div id="creatorList"></div>
+  </div>
+
+  <div class="admin-box">
+    <h2>ONGEZA MOVIE</h2>
+    <input id="newTitle" placeholder="Jina">
+    <input id="newThumb" placeholder="Link Thumbnail">
+    <input id="newStream" placeholder="Link Streamable">
+    <select id="newCat"><option>Action</option><option>Love</option><option>Drama</option><option>Animation</option></select>
+    <button class="pass-btn" onclick="addMovie()">Ongeza</button>
+  </div>
+
+  <div class="admin-box">
+    <h2>BANNER AUTO-SLIDE</h2>
+    <p style="font-size:12px;color:#999">Banner itajigeuza kila sek 4 kiotomatiki</p>
+    <button class="pass-btn" onclick="resetBanner()">Rudisha Banner Default</button>
+  </div>
+</div>
+
+<script>
+let movies = JSON.parse(localStorage.getItem('movies')) || [
+  {id:1,title:"TRAILER: YELLOW RECKONING",thumb:"https://via.placeholder.com/300x450/ff0/000",price:1000,cat:"Animation",status:"approved",stream:"https://streamable.com/demo",featured:true,banner:"https://via.placeholder.com/800x220/7c3aed/fff?text=YELLOW+RECKONING",desc:"Kisai cha Binti, alie poteza familia yake..."},
+  {id:2,title:"MPANDA MNAZI",thumb:"https://via.placeholder.com/300x450/0f0/000",price:500,cat:"Drama",status:"approved",stream:"https://streamable.com/demo2",featured:false,banner:"https://via.placeholder.com/800x220/fbbf24/000?text=MPANDA+MNAZI",desc:"Hadithi ya kijana aliyepanda maziwa..."},
+  {id:3,title:"DARK SHADOWS",thumb:"https://via.placeholder.com/300x450/444/fff",price:800,cat:"Action",status:"approved",stream:"https://streamable.com/demo3",featured:false,banner:"https://via.placeholder.com/800x220/222/fff?text=DARK+SHADOWS",desc:"Vita vya kivuli usiku wa giza..."}
+];
+let creators = JSON.parse(localStorage.getItem('creators')) || [];
+const ADMIN_PASSWORD = "chilagu2026";
+let tapCount = 0;
+let bannerIndex = 0;
+let bannerInterval;
+
+// PROFILE ICON
+function openProfile(){document.getElementById('profilePopup').style.display='flex'; document.getElementById('profileUrl').value = localStorage.getItem('profileIcon') || ''}
+function closeProfile(){document.getElementById('profilePopup').style.display='none'}
+function saveProfile(){
+  let url = document.getElementById('profileUrl').value;
+  if(url){localStorage.setItem('profileIcon',url); document.getElementById('profileIcon').src = url}
+  closeProfile();
+}
+window.onload = ()=>{
+  let p = localStorage.getItem('profileIcon');
+  if(p) document.getElementById('profileIcon').src = p;
+  showMovies();
+  startBannerSlide(); // ANZA AUTO SLIDE
+}
+
+// AUTO SLIDE YA BANNER KILA SEC 4
+function startBannerSlide(){
+  let approvedMovies = movies.filter(m=>m.status=='approved' && m.banner);
+  if(approvedMovies.length==0) return;
+
+  bannerInterval = setInterval(()=>{
+    bannerIndex = (bannerIndex + 1) % approvedMovies.length;
+    let m = approvedMovies[bannerIndex];
+    document.getElementById('mainBanner').style.backgroundImage = `url('${m.banner}')`;
+    document.getElementById('bannerTitle').innerText = m.title.toUpperCase();
+    document.getElementById('bannerDesc').innerText = m.desc;
+    currentBannerStream = m.stream;
+  }, 4000); // Sek 4
+}
+
+function playBanner(){window.open(currentBannerStream,'_blank')}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showMovies(){
+  document.getElementById('movieGrid').innerHTML = movies.filter(m=>m.status=='approved').map(m=>`
+    <div class="card" onclick="window.open('${m.stream}','_blank')">
+      ${m.featured? '<div class="star">⭐</div>' : ''}
+      <img src="${m.thumb}">
+      <p class="card-title">${m.title}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('logo').onclick = () => {
+  tapCount++; setTimeout(()=>tapCount=0,2000);
+  if(tapCount==5){document.getElementById('passPopup').style.display='flex'; tapCount=0;}
+}
+
+function checkPass(){
+  if(document.getElementById('adminPass').value === ADMIN_PASSWORD){
+    document.getElementById('passPopup').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    document.getElementById('adminPass').value = '';
+    loadAdminData();
+  } else {
+    document.getElementById('passError').style.display='block';
+    setTimeout(()=>document.getElementById('passError').style.display='none',2000);
+  }
+}
+function closePass(){document.getElementById('passPopup').style.display='none'; document.getElementById('adminPass').value=''}
+function closeAdmin(){document.getElementById('adminPanel').style.display='none'}
+
+function loadAdminData(){
+  document.getElementById('movieList').innerHTML = movies.map(m=>`
+    <div style="border:1px solid #333;padding:10px;margin:8px 0;border-radius:6px">
+      <div class="movie-edit-row">
+        <input id="title${m.id}" value="${m.title}">
+        <input id="price${m.id}" type="number" value="${m.price}" style="width:80px">
+      </div>
+      <input id="banner${m.id}" value="${m.banner||''}" placeholder="Banner image link">
+      <input id="desc${m.id}" value="${m.desc||''}" placeholder="Maelezo ya banner">
+      <button class="pass-btn" style="padding:6px;margin-right:5px" onclick="updateMovie(${m.id})">Save</button>
+      <button class="del-btn" onclick="deleteMovie(${m.id})">Delete</button>
+      <label style="margin-left:10px;font-size:12px"><input type="checkbox" ${m.featured?'checked':''} onchange="toggleStar(${m.id},this.checked)"> ⭐ Featured</label>
+    </div>
+  `).join('');
+
+  document.getElementById('creatorList').innerHTML = creators.length==0? '<p style="color:#666">Hakuna maombi</p>' : creators.map(c=>`
+    <div style="border:1px solid #333;padding:8px;margin:5px 0">
+      <b>${c.title}</b><br>Jina: ${c.name}<br>Bei: ${c.price} | ${c.cat}
+      <button class="pass-btn" style="padding:5px;margin-top:5px" onclick="approve(${c.id})">Approve</button>
+    </div>
+  `).join('');
+}
+
+function updateMovie(id){
+  let m = movies.find(x=>x.id==id);
+  m.title = document.getElementById('title'+id).value;
+  m.price = document.getElementById('price'+id).value;
+  m.banner = document.getElementById('banner'+id).value;
+  m.desc = document.getElementById('desc'+id).value;
+  localStorage.setItem('movies',JSON.stringify(movies));
+  showMovies();
+  clearInterval(bannerInterval); startBannerSlide(); // RESTART SLIDE
+  alert('Movie updated!');
+}
+
+function deleteMovie(id){
+  if(confirm('Futa movie hii?')){
+    movies = movies.filter(x=>x.id!=id);
+    localStorage.setItem('movies',JSON.stringify(movies));
+    loadAdminData(); showMovies();
+    clearInterval(bannerInterval); startBannerSlide();
+  }
+}
+
+function toggleStar(id, val){
+  let m = movies.find(x=>x.id==id);
+  m.featured = val;
+  localStorage.setItem('movies',JSON.stringify(movies));
+  showMovies();
+}
+
+function addMovie(){
+  let m = {
+    id:Date.now(),
+    title:document.getElementById('newTitle').value,
+    thumb:document.getElementById('newThumb').value,
+    stream:document.getElementById('newStream').value,
+    cat:document.getElementById('newCat').value,
+    status:'approved',
+    featured:false,
+    banner:document.getElementById('newThumb').value,
+    desc:"Movie mpya"
+  };
+  if(!m.title||!m.thumb||!m.stream){alert('Jaza zote'); return}
+  movies.push(m); localStorage.setItem('movies',JSON.stringify(movies));
+  showMovies(); loadAdminData();
+  clearInterval(bannerInterval); startBannerSlide();
+  alert('Movie imeongezwa!');
+}
+
+function submitCreator(){
+  if(!document.getElementById('terms').checked){alert('Kubali masharti!'); return;}
+  let data = {
+    id: Date.now(), name: document.getElementById('cName').value, email: document.getElementById('cEmail').value,
+    title: document.getElementById('cTitle').value.toUpperCase(), thumb: document.getElementById('cThumb').value,
+    stream: document.getElementById('cStream').value, cat: document.getElementById('cCat').value,
+    price: document.getElementById('cPrice').value, promo: document.getElementById('promo').checked? document.getElementById('promoPlan').value : 0,
+    status: 'pending', featured:false, banner:document.getElementById('cThumb').value, desc:"Movie mpya"
+  };
+  if(!data.name||!data.title||!data.stream||!data.price){alert('Jaza zote muhimu!'); return;}
+  creators.push(data); localStorage.setItem('creators',JSON.stringify(creators));
+  alert('✅ Maombi yametumwa!');
+  showPage('homePage');
+}
+
+function approve(id){
+  let c = creators.find(x=>x.id==id);
+  movies.push({...c,status:'approved'});
+  creators = creators.filter(x=>x.id!=id);
+  localStorage.setItem('movies',JSON.stringify(movies));
+  localStorage.setItem('creators',JSON.stringify(creators));
+  loadAdminData(); showMovies();
+  clearInterval(bannerInterval); startBannerSlide();
+  alert('Approved!');
+}
+
+function resetBanner(){
+  bannerIndex = 0;
+  clearInterval(bannerInterval);
+  startBannerSlide();
+  alert('Banner ime-reset!');
+}
+
+let currentBannerStream = movies[0].stream;
+</script>
+</body>
+  </html>
