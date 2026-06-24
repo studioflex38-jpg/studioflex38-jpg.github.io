@@ -41,7 +41,6 @@ h3{padding:0 15px 10px;font-size:16px;font-weight:600}
 
 .creator-btn{position:fixed;bottom:20px;right:20px;background:#7c3aed;color:#fff;padding:12px 20px;border-radius:50px;border:none;cursor:pointer;font-weight:600;z-index:5;font-size:14px}
 
-/* VIDEO PLAYER POPUP - HAPA VIDEO INACHEZA NDANI */
 #videoPlayer{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:1000;justify-content:center;align-items:center}
 .video-box{width:100%;max-width:800px;background:#000;border-radius:10px;overflow:hidden}
 .video-box iframe{width:100%;height:450px;border:none}
@@ -53,6 +52,7 @@ h3{padding:0 15px 10px;font-size:16px;font-weight:600}
 .admin-box,.creator-box{background:#111;padding:15px;margin-bottom:15px;border-radius:8px;border:1px solid #222;max-width:600px;margin:15px auto}
 .admin-box h2,.creator-box h2{color:#7c3aed;margin-bottom:10px;font-family:'Bebas Neue';letter-spacing:1px}
 input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:5px}
+textarea{min-height:60px;resize:vertical}
 .close-btn{background:#dc2626;padding:6px 12px;border:none;color:#fff;float:right;cursor:pointer;border-radius:5px}
 .pass-box{background:#111;padding:30px;border-radius:10px;width:90%;max-width:320px;text-align:center;border:2px solid #7c3aed}
 .pass-btn{width:100%;padding:10px;background:#7c3aed;border:none;color:#fff;border-radius:5px;cursor:pointer;margin-top:10px;font-weight:600}
@@ -60,6 +60,7 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
 .movie-edit-row input{flex:1}
 .del-btn{background:#dc2626;padding:6px 10px;border:none;color:#fff;border-radius:4px;cursor:pointer;font-size:12px}
 .note{font-size:11px;color:#fbbf24;margin:5px 0}
+label{font-size:12px;color:#999;display:block;margin-top:8px}
 </style>
 </head>
 <body>
@@ -94,7 +95,6 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
 <button class="creator-btn" onclick="showPage('creatorPage')">+ Jiunge Creator</button>
 </div>
 
-<!-- VIDEO PLAYER POPUP -->
 <div id="videoPlayer">
   <div class="video-box">
     <iframe id="videoFrame" src="" allowfullscreen></iframe>
@@ -105,16 +105,17 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
 <div id="creatorPage" class="page">
 <div class="creator-box">
   <h2>🎬 JIUNGE CREATOR</h2>
-  <p class="note">MUHIMU: Kwenye Streamable bonyeza "Share" → "Embed" → Copy link ya iframe</p>
+  <p class="note">MUHIMU: Link ya Embed ya Streamable + Maelezo ya movie</p>
   <input id="cName" placeholder="Jina lako kamili">
   <input id="cEmail" placeholder="Email / Namba">
   <input id="cTitle" placeholder="Jina la Movie">
   <input id="cThumb" placeholder="Link ya Thumbnail">
+  <textarea id="cDesc" placeholder="Maelezo ya movie - itaonekana banner"></textarea>
   <input id="cEmbed" placeholder="Link ya Streamable Embed">
   <input id="cPayhip" placeholder="Link ya Payhip - kama ni ya kulipiwa">
   <select id="cCat"><option>Action</option><option>Love</option><option>Drama</option><option>Animation</option></select>
   <input id="cPrice" type="number" placeholder="Bei TZS - 0 = bure">
-  <label style="display:block;margin:10px 0"><input type="checkbox" id="terms"> Nakubali masharti</label>
+  <label><input type="checkbox" id="terms"> Nakubali masharti</label>
   <button class="pass-btn" onclick="submitCreator()">Tuma Maombi</button>
   <button class="btn" style="background:#444" onclick="showPage('homePage')">⬅ Rudi</button>
 </div>
@@ -145,26 +146,41 @@ input,select,textarea{width:100%;padding:10px;margin:8px 0;background:#1a1a1a;bo
 
   <div class="admin-box">
     <h2>MANAGE MOVIES</h2>
-    <p class="note">Weka link ya EMBED ya Streamable. Bei > 0 = ⭐ ya kulipiwa</p>
+    <p class="note">Weka link ya EMBED + Description ya banner. Bei > 0 = ⭐ ya kulipiwa</p>
     <div id="movieList"></div>
   </div>
 
   <div class="admin-box">
     <h2>ONGEZA MOVIE</h2>
+    <label>Jina la Movie</label>
     <input id="newTitle" placeholder="Jina">
+
+    <label>Link Thumbnail</label>
     <input id="newThumb" placeholder="Link Thumbnail">
-    <input id="newEmbed" placeholder="Link ya Streamable Embed">
-    <input id="newPayhip" placeholder="Link ya Payhip">
-    <input id="newPrice" type="number" placeholder="Bei TZS - 0 = bure">
+
+    <label>Maelezo ya Movie - Banner Description</label>
+    <textarea id="newDesc" placeholder="Andika maelezo mafupi ya movie hapa"></textarea>
+
+    <label>Link ya Streamable Embed</label>
+    <input id="newEmbed" placeholder="https://streamable.com/e/xxxx">
+
+    <label>Link ya Payhip - kama ni ya kulipiwa</label>
+    <input id="newPayhip" placeholder="https://payhip.com/b/xxxx">
+
+    <label>Bei TZS - 0 = bure</label>
+    <input id="newPrice" type="number" placeholder="0">
+
+    <label>Category</label>
     <select id="newCat"><option>Action</option><option>Love</option><option>Drama</option><option>Animation</option></select>
+
     <button class="pass-btn" onclick="addMovie()">Ongeza</button>
   </div>
 </div>
 
 <script>
 let movies = JSON.parse(localStorage.getItem('movies')) || [
-  {id:1,title:"YELLOW RECKONING",thumb:"https://via.placeholder.com/300x450/ff0/000",price:1000,payhip:"https://payhip.com/b/demo",cat:"Animation",status:"approved",embed:"https://streamable.com/e/demo",banner:"https://via.placeholder.com/800x220/7c3aed/fff",desc:"Kisai cha Binti..."},
-  {id:2,title:"MPANDA MNAZI",thumb:"https://via.placeholder.com/300x450/0f0/000",price:0,payhip:"",cat:"Drama",status:"approved",embed:"https://streamable.com/e/demo2",banner:"https://via.placeholder.com/800x220/fbbf24/000",desc:"Hadithi ya kijana..."}
+  {id:1,title:"YELLOW RECKONING",thumb:"https://via.placeholder.com/300x450/ff0/000",price:1000,payhip:"https://payhip.com/b/demo",cat:"Animation",status:"approved",embed:"https://streamable.com/e/demo",banner:"https://via.placeholder.com/800x220/7c3aed/fff",desc:"Kisai cha Binti, alie poteza familia yake katika vita vya kivuli..."},
+  {id:2,title:"MPANDA MNAZI",thumb:"https://via.placeholder.com/300x450/0f0/000",price:0,payhip:"",cat:"Drama",status:"approved",embed:"https://streamable.com/e/demo2",banner:"https://via.placeholder.com/800x220/fbbf24/000",desc:"Hadithi ya kijana aliyepanda maziwa ili kubadilisha maisha ya familia yake."}
 ];
 let creators = JSON.parse(localStorage.getItem('creators')) || [];
 const ADMIN_PASSWORD = "ChilaguCinemaPro";
@@ -194,7 +210,7 @@ function startBannerSlide(){
     let m = approvedMovies[bannerIndex];
     document.getElementById('mainBanner').style.backgroundImage = `url('${m.banner}')`;
     document.getElementById('bannerTitle').innerText = m.title.toUpperCase();
-    document.getElementById('bannerDesc').innerText = m.desc;
+    document.getElementById('bannerDesc').innerText = m.desc || 'Hakuna maelezo';
     currentBannerEmbed = m.embed;
     currentBannerPayhip = m.payhip;
     currentBannerPrice = m.price;
@@ -219,7 +235,6 @@ function showPage(id){
   window.scrollTo(0,0);
 }
 
-// FUNCTION MPYA: CHEZA VIDEO NDANI
 function playVideo(embedLink){
   document.getElementById('videoFrame').src = embedLink;
   document.getElementById('videoPlayer').style.display = 'flex';
@@ -233,11 +248,9 @@ function closeVideo(){
 function watchMovie(id){
   let m = movies.find(x=>x.id==id);
   if(m.price > 0 && m.payhip){
-    // Movie ya kulipiwa - peleka Payhip kwanza
     window.open(m.payhip,'_blank');
-    alert('Lipa kwanza Payhip. Baada ya kulipa utarudi hapa kuangalia');
+    alert('Lipa kwanza Payhip. Baada ya kulipa rudi hapa ubofye tena');
   } else {
-    // Movie ya bure - cheza ndani
     playVideo(m.embed);
   }
 }
@@ -278,11 +291,15 @@ function loadAdminData(){
         <input id="title${m.id}" value="${m.title}">
         <input id="price${m.id}" type="number" value="${m.price}" placeholder="Bei" style="width:80px">
       </div>
-      <input id="embed${m.id}" value="${m.embed}" placeholder="Streamable Embed Link">
-      <input id="payhip${m.id}" value="${m.payhip||''}" placeholder="Payhip Link">
+      <label>Maelezo ya Banner</label>
+      <textarea id="desc${m.id}">${m.desc||''}</textarea>
+      <label>Streamable Embed Link</label>
+      <input id="embed${m.id}" value="${m.embed}" placeholder="https://streamable.com/e/xxx">
+      <label>Payhip Link</label>
+      <input id="payhip${m.id}" value="${m.payhip||''}" placeholder="https://payhip.com/b/xxx">
       <button class="pass-btn" style="padding:6px;margin-right:5px" onclick="updateMovie(${m.id})">Save</button>
       <button class="del-btn" onclick="deleteMovie(${m.id})">Delete</button>
-      <p style="font-size:11px;color:${m.price>0?'#fbbf24':'#4ade80'}">${m.price>0? '⭐ Ya kulipiwa' : 'Bure'}</p>
+      <p style="font-size:11px;color:${m.price>0?'#fbbf24':'#4ade80'};margin-top:5px">${m.price>0? '⭐ Ya kulipiwa' : 'Bure'}</p>
     </div>
   `).join('');
 }
@@ -291,12 +308,13 @@ function updateMovie(id){
   let m = movies.find(x=>x.id==id);
   m.title = document.getElementById('title'+id).value;
   m.price = parseInt(document.getElementById('price'+id).value) || 0;
+  m.desc = document.getElementById('desc'+id).value;
   m.embed = document.getElementById('embed'+id).value;
   m.payhip = document.getElementById('payhip'+id).value;
   localStorage.setItem('movies',JSON.stringify(movies));
   showMovies(); loadAdminData();
   clearInterval(bannerInterval); startBannerSlide();
-  alert('Updated!');
+  alert('Movie updated!');
 }
 
 function deleteMovie(id){
@@ -313,15 +331,15 @@ function addMovie(){
     id:Date.now(),
     title:document.getElementById('newTitle').value,
     thumb:document.getElementById('newThumb').value,
+    desc:document.getElementById('newDesc').value,
     embed:document.getElementById('newEmbed').value,
     payhip:document.getElementById('newPayhip').value,
     price:parseInt(document.getElementById('newPrice').value) || 0,
     cat:document.getElementById('newCat').value,
     status:'approved',
-    banner:document.getElementById('newThumb').value,
-    desc:"Movie mpya"
+    banner:document.getElementById('newThumb').value
   };
-  if(!m.title||!m.thumb||!m.embed){alert('Jaza jina, thumbnail na embed link'); return}
+  if(!m.title||!m.thumb||!m.embed||!m.desc){alert('Jaza zote: Jina, Thumbnail, Maelezo na Embed link'); return}
   movies.push(m); localStorage.setItem('movies',JSON.stringify(movies));
   showMovies(); loadAdminData();
   clearInterval(bannerInterval); startBannerSlide();
@@ -333,11 +351,11 @@ function submitCreator(){
   let data = {
     id: Date.now(), name: document.getElementById('cName').value, email: document.getElementById('cEmail').value,
     title: document.getElementById('cTitle').value.toUpperCase(), thumb: document.getElementById('cThumb').value,
-    embed: document.getElementById('cEmbed').value, payhip: document.getElementById('cPayhip').value,
-    price: parseInt(document.getElementById('cPrice').value) || 0, cat: document.getElementById('cCat').value,
-    status: 'pending', banner:document.getElementById('cThumb').value, desc:"Movie mpya"
+    desc: document.getElementById('cDesc').value, embed: document.getElementById('cEmbed').value,
+    payhip: document.getElementById('cPayhip').value, price: parseInt(document.getElementById('cPrice').value) || 0,
+    cat: document.getElementById('cCat').value, status: 'pending', banner:document.getElementById('cThumb').value
   };
-  if(!data.name||!data.title||!data.embed){alert('Jaza jina, title na embed link!'); return;}
+  if(!data.name||!data.title||!data.embed||!data.desc){alert('Jaza zote muhimu!'); return;}
   creators.push(data); localStorage.setItem('creators',JSON.stringify(creators));
   alert('✅ Maombi yametumwa!');
   showPage('homePage');
