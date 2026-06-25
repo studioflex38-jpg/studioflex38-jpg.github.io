@@ -210,3 +210,47 @@ const list=document.getElementById('commentsList');
 let comments=JSON.parse(localStorage.getItem('comments_'+id)||'[]');
 list.innerHTML=comments.map(c=>`<div class="comment">${c.txt}<br><small style="color:#666">${c.date}</small></div>`).join('');
 }
+function openCreator(){document.getElementById('creator').classList.add('active')}
+function closeCreator(){document.getElementById('creator').classList.remove('active')}
+
+function submitCreator(){
+if(!document.getElementById('cTerms').checked){alert('Kubali masharti kwanza');return}
+const req={
+id:Date.now(),
+studio:document.getElementById('cStudio').value,
+phone:document.getElementById('cPhone').value,
+email:document.getElementById('cEmail').value,
+stream:document.getElementById('cStream').value,
+thumb:document.getElementById('cThumb').value,
+desc:document.getElementById('cDesc').value,
+price:document.getElementById('cPrice').value,
+promo:document.getElementById('cPromoPrice').value
+};
+if(!req.studio||!req.stream||!req.thumb){alert('Jaza sehemu muhimu');return}
+pending.push(req);savePending();
+['cStudio','cPhone','cEmail','cStream','cThumb','cDesc','cPrice','cPromoPrice'].forEach(i=>document.getElementById(i).value='');
+document.getElementById('cTerms').checked=false;
+alert('Maombi yametumwa kwa Admin!');
+closeCreator();
+}
+
+document.getElementById('logoBtn').onclick=()=>{
+logoClicks++;
+clearTimeout(logoTimer);
+logoTimer=setTimeout(()=>logoClicks=0,3000);
+if(logoClicks>=5){
+document.getElementById('passwordModal').classList.add('active');
+logoClicks=0;
+}
+}
+
+function closePass(e){if(!e||e.target.id=='passwordModal')document.getElementById('passwordModal').classList.remove('active')}
+function checkPass(){
+if(document.getElementById('passInput').value=='ChilaguCinemaPro'){
+document.getElementById('passwordModal').classList.remove('active');
+document.getElementById('admin').classList.add('active');
+loadAdmin();
+}else{alert('Password si sahihi')}
+}
+
+function closeAdmin(){document.getElementById('admin').classList.remove('active')}
