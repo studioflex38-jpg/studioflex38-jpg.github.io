@@ -568,7 +568,7 @@ let currentSession = JSON.parse(localStorage.getItem('cm_session') || 'null');
 let settings = JSON.parse(localStorage.getItem('cm_settings') || '{"defaultSplit":70,"promoPrice":10000,"mpesa":"0686436004"}');
 let logoClickCount = 0;
 let logoClickTimer = null;
-const ADMIN_PASSWORD = 'admin123';
+const ADMIN_PASSWORD = 'ChilaguCinemaPro';
 
 document.addEventListener('DOMContentLoaded', () => {
     if(movies.length === 0) initDefaultMovies();
@@ -795,3 +795,655 @@ function buyMovie(id) {
             }
         }
         save
+Data();
+        updateCreatorStats();
+        renderWithdrawHistory();
+        alert('Asante kwa kununua! Sasa unaweza kutazama.');
+        openMovie(id);
+    }
+}
+
+function toggleChannelField() {
+    const isCreator = document.getElementById('roleCreator').checked;
+    document.getElementById('channelGroup').style.display = isCreator? 'block' : 'none';
+}
+
+function openRegister() {
+    closeAllModals();
+    document.getElementById('registerModal').style.display = 'block';
+}
+
+function closeRegister() {
+    document.getElementById('registerModal').style.display = 'none';
+}
+
+function showTerms() {
+    if(document.getElementById('roleCreator').checked) {
+        document.getElementById('termsModal').style.display = 'block';
+    } else {
+        registerUser();
+    }
+}
+
+function closeTerms() {
+    document.getElementById('termsModal').style.display = 'none';
+}
+
+function acceptTermsAndContinue() {
+    if (!document.getElementById('acceptTerms').checked) {
+        alert('Lazima ukubali masharti kwanza');
+        return;
+    }
+    closeTerms();
+    registerUser();
+}
+
+function registerUser() {
+    const name = document.getElementById('regName').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const channel = document.getElementById('regChannel').value.trim();
+    const role = document.querySelector('input[name="regRole"]:checked').value;
+    if (!name ||!phone ||!password) {
+        alert('Jaza sehemu zote muhimu');
+        return;
+    }
+    if (users.some(u => u.phone === phone) || creators.some(c => c.phone === phone)) {
+        alert('Namba hii tayari imesajiliwa');
+        return;
+    }
+    const newUser = {
+        id: Date.now(),
+        name, phone, email, password, channel,
+        role,
+        status: 'active',
+        balance: 0,
+        totalEarnings: 0,
+        totalSales: 0,
+        joined: new Date().toISOString()
+    };
+    if (role === 'creator') {
+        creators.push(newUser);
+    } else {
+        users.push(newUser);
+    }
+    currentSession = { id: newUser.id, type: role, name: name };
+    saveData();
+    updateHeader();
+    closeRegister();
+    alert(`Karibu ${name}! Umesajiliwa kama ${role === 'creator'? 'Creator' : 'User'}`);
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+function loginUser() {
+    const phone = document.getElementById('loginPhone').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    let user = users.find(u => u.phone === phone && u.password === password);
+    let creator = creators.find(c => c.phone === phone && c.password === password);
+    if (user) {
+        currentSession = { id: user.id, type: 'user', name: user.name };
+    } else if (creator) {
+        currentSession = { id: creator.id, type: 'creator', name: creator.name };
+    } else {
+        alert('Namba au password sio sahihi');
+        return;
+    }
+    saveData();
+    updateHeader();
+    closeLoginModal();
+    alert('Umeingia kikamilifu!');
+}
+
+function openCreatorDashboard() {
+    if (!currentSession || currentSession.type!== 'creator') {
+        document.getElementById('loginModal').style.display = 'flex';
+        return;
+    }
+    document.getElementById('creatorModal').style.display = 'block';
+    updateCreatorStats();
+    renderCreatorMovies();
+    renderWithdrawHistory();
+    loadChat();
+}
+
+function closeCreatorDashboard() {
+    document.getElementById('creatorModal').style.display = 'none';
+}
+
+function switchCreatorTab(tab) {
+    document.querySelectorAll('#creatorModal.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#creatorModal.tab-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tab + 'Tab').classList.add('active');
+}
+
+function updateCreatorStats() {
+    const creator = creators.find(c => c.id === currentSession.id);
+    if (!creator) return;
+    document.getElementById('totalEarnings').textContent = (creator.totalEarnings || 0).toLocaleString();
+    document.getElementById('availableBalance').textContent = (creator.balance || 0).toLocaleString();
+    document.getElementById('totalSales').textContent = creator.totalSales || 0;
+    document.getElementById('totalMovies').textContent = movies.filter(m => m.creatorId === currentSession.id).length;
+    document.getElementById('creatorPercent').textContent = (creator.customSplit || settings.defaultSplit) + '%';
+    document.getElementById('platformPercent').textContent = (100 - (creator.customSplit || settings.defaultSplit)) + '%';
+    document.getElementById('withdrawBalance').textContent = (creator.balance || 0).toLocaleString();
+}
+
+function renderCreatorMovies() {
+    const list = document.getElementById('creatorMovieList');
+    const myMovies = movies.filter(m => m.creatorId === currentSession.id);
+    if (myMovies.length === 0) {
+        list.innerHTML = '<div class="empty-state">Bado huja-upload movie yoyote</div>';
+        return;
+    }
+    list.innerHTML = myMovies.map(m => `
+        <div class="admin-movie-item">
+            <div class="admin-movie-name">${m.title}</div>
+            <div class="admin-movie-meta">Status: ${m.status} | Bei: Tsh ${m.price} | Asilimia: ${m.creatorSplit}%</div>
+            ${m.promotion? '<div class="promotion-note">PROMOTED - Banner Kuu</div>' : ''}
+        </div>
+    `).join('');
+}
+
+function openUpload() {
+    closeCreatorDashboard();
+    document.getElementById('uploadModal').style.display = 'block';
+}
+
+function closeUpload() {
+    document.getElementById('uploadModal').style.display = 'none';
+}
+
+function togglePromoInfo() {
+    document.getElementById('promoInstructions').style.display = document.getElementById('requestPromotion').checked? 'block' : 'none';
+}
+
+function submitUserMovie() {
+    const title = document.getElementById('userMovieTitle').value.trim();
+    const thumbnail = document.getElementById('userMovieThumbnail').value.trim();
+    const video = document.getElementById('userMovieVideo').value.trim();
+    const desc = document.getElementById('userMovieDesc').value.trim();
+    const mainCat = document.getElementById('userMovieMainCat').value;
+    const subCat = document.getElementById('userMovieSubCat').value;
+    const note = document.getElementById('userMovieNote').value.trim();
+    const promotion = document.getElementById('requestPromotion').checked;
+    if (!title ||!thumbnail ||!video ||!desc ||!note) {
+        alert('Jaza sehemu zote muhimu');
+        return;
+    }
+    pendingMovies.push({
+        id: Date.now(),
+        title, thumbnail, video, desc,
+        mainCat, subCat, note,
+        promotion,
+        creatorId: currentSession.id,
+        status: 'pending',
+        date: new Date().toISOString()
+    });
+    saveData();
+    document.getElementById('uploadSuccessMsg').style.display = 'block';
+    setTimeout(() => {
+        closeUpload();
+        document.getElementById('uploadSuccessMsg').style.display = 'none';
+        document.getElementById('userMovieTitle').value = '';
+        document.getElementById('userMovieThumbnail').value = '';
+        document.getElementById('userMovieVideo').value = '';
+        document.getElementById('userMovieDesc').value = '';
+        document.getElementById('userMovieNote').value = '';
+        document.getElementById('requestPromotion').checked = false;
+    }, 2000);
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+    const chatId = currentSession.id;
+    if (!chats[chatId]) chats[chatId] = [];
+    chats[chatId].push({
+        from: currentSession.type,
+        text: msg,
+        time: new Date().toISOString()
+    });
+    saveData();
+    input.value = '';
+    loadChat();
+}
+
+function loadChat() {
+    const chatId = currentSession.id;
+    const box = document.getElementById('chatBox');
+    if (!chats[chatId] || chats[chatId].length === 0) {
+        box.innerHTML = '<div class="empty-state">Hakuna ujumbe bado. Anza ku-chat na admin</div>';
+        return;
+    }
+    box.innerHTML = chats[chatId].map(m => `
+        <div class="chat-msg ${m.from}">
+            ${m.text}
+            <div class="chat-msg-meta">${new Date(m.time).toLocaleString()}</div>
+        </div>
+    `).join('');
+    box.scrollTop = box.scrollHeight;
+}
+
+function requestWithdraw() {
+    const amount = parseInt(document.getElementById('withdrawAmount').value);
+    const phone = document.getElementById('withdrawPhone').value.trim();
+    const creator = creators.find(c => c.id === currentSession.id);
+    if (!amount ||!phone) {
+        alert('Jaza sehemu zote');
+        return;
+    }
+    if (amount < 10000) {
+        alert('Kima cha chini ni Tsh 10,000');
+        return;
+    }
+    if (amount > (creator.balance || 0)) {
+        alert('Huna balance ya kutosha');
+        return;
+    }
+    withdrawals.push({
+        id: Date.now(),
+        creatorId: currentSession.id,
+        amount, phone,
+        status: 'pending',
+        date: new Date().toISOString()
+    });
+    creator.balance -= amount;
+    saveData();
+    updateCreatorStats();
+    renderWithdrawHistory();
+    alert('Ombi lako limetumwa! Admin atalipa ndani ya masaa 24.');
+    document.getElementById('withdrawAmount').value = '';
+}
+
+function renderWithdrawHistory() {
+    const list = document.getElementById('withdrawHistory');
+    const myWithdrawals = withdrawals.filter(w => w.creatorId === currentSession.id);
+    if (myWithdrawals.length === 0) {
+        list.innerHTML = '<div class="empty-state">Hakuna historia ya malipo</div>';
+        return;
+    }
+    list.innerHTML = myWithdrawals.map(w => `
+        <div class="admin-movie-item">
+            <div class="admin-movie-name">Tsh ${w.amount.toLocaleString()}</div>
+            <div class="admin-movie-meta">Status: ${w.status} | Tarehe: ${new Date(w.date).toLocaleDateString()}</div>
+        </div>
+    `).join('');
+}
+
+function openUserDashboard() {
+    if (!currentSession || currentSession.type!== 'user') {
+        document.getElementById('loginModal').style.display = 'flex';
+        return;
+    }
+    document.getElementById('userModal').style.display = 'block';
+    renderUserPurchases();
+    loadUserProfile();
+}
+
+function closeUserDashboard() {
+    document.getElementById('userModal').style.display = 'none';
+}
+
+function switchUserTab(tab) {
+    document.querySelectorAll('#userModal.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#userModal.tab-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tab + 'Tab').classList.add('active');
+}
+
+function renderUserPurchases() {
+    const list = document.getElementById('userPurchasesList');
+    const myPurchases = purchases.filter(p => p.userId === currentSession.id);
+    if (myPurchases.length === 0) {
+        list.innerHTML = '<div class="empty-state">Bado hujanunua movie yoyote</div>';
+        return;
+    }
+    list.innerHTML = myPurchases.map(p => {
+        const movie = movies.find(m => m.id === p.movieId);
+        if (!movie) return '';
+        return `
+            <div class="purchase-item" onclick="openMovie(${movie.id})" style="cursor:pointer;">
+                <div class="purchase-title">${movie.title}</div>
+                <div class="purchase-meta">Ulinunua: ${new Date(p.date).toLocaleDateString()} | Tsh ${p.amount.toLocaleString()}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function loadUserProfile() {
+    const user = users.find(u => u.id === currentSession.id);
+    if (!user) return;
+    document.getElementById('userProfileName').textContent = user.name;
+    document.getElementById('userProfilePhone').textContent = user.phone;
+    document.getElementById('userProfileEmail').textContent = user.email || 'Haijawekwa';
+    document.getElementById('userProfileRole').textContent = 'User';
+}
+
+function openAdmin() {
+    document.getElementById('adminModal').style.display = 'block';
+    renderAdminMovies();
+    renderPendingMovies();
+    renderAdminCreators();
+    renderAdminUsers();
+    renderAdminWithdrawals();
+    loadAdminSettings();
+}
+
+function closeAdmin() {
+    document.getElementById('adminModal').style.display = 'none';
+}
+
+function switchAdminTab(tab) {
+    document.querySelectorAll('#adminModal.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#adminModal.tab-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tab + 'AdminTab').classList.add('active');
+}
+
+function renderAdminMovies() {
+    const list = document.getElementById('adminMovieList');
+    list.innerHTML = movies.map(m => `
+        <div class="admin-movie-item">
+            <div class="admin-movie-name">${m.title}</div>
+            <div class="admin-movie-meta">Bei: Tsh ${m.price} | Split: ${m.creatorSplit}% | ${m.featured? '⭐ Featured' : ''} ${m.promotion? '| PROMOTED' : ''}</div>
+            <div class="admin-movie-actions">
+                <button class="btn-edit" onclick="editMovie(${m.id})">Edit</button>
+                <button class="btn-delete" onclick="deleteMovie(${m.id})">Futa</button>
+                <button class="btn-chat" onclick="openAdminChat(${m.creatorId || 0})">Chat</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderPendingMovies() {
+    const list = document.getElementById('pendingMovieList');
+    const count = document.getElementById('pendingCount');
+    count.textContent = pendingMovies.length;
+    if (pendingMovies.length === 0) {
+        list.innerHTML = '<div class="empty-state">Hakuna movies zinazosubiri</div>';
+        return;
+    }
+    list.innerHTML = pendingMovies.map(m => `
+        <div class="admin-movie-item">
+            <div class="admin-movie-name">${m.title}</div>
+            <div class="admin-movie-meta">Creator: ${getCreatorName(m.creatorId)} | Promotion: ${m.promotion? 'NDIYO - Tsh 10,000' : 'Hapana'}</div>
+            <div class="admin-movie-meta" style="margin: 8px 0; color: #ccc;">Maombi: ${m.note}</div>
+            <div class="admin-movie-actions">
+                <button class="btn-approve" onclick="approveMovie(${m.id})">Approve</button>
+                <button class="btn-reject" onclick="rejectMovie(${m.id})">Kataa</button>
+                <button class="btn-chat" onclick="openAdminChat(${m.creatorId})">Chat</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderAdminCreators() {
+    const list = document.getElementById('adminCreatorsList');
+    list.innerHTML = creators.map(c => `
+        <div class="creator-card">
+            <div class="creator-header">
+                <div class="creator-name">${c.name}</div>
+                <div class="creator-status ${c.status}">${c.status.toUpperCase()}</div>
+            </div>
+            <div class="creator-info">Simu: ${c.phone} | Channel: ${c.channel || 'Hakuna'}<br>
+            Balance: Tsh ${(c.balance || 0).toLocaleString()} | Mauzo: ${c.totalSales || 0} | Asilimia: ${c.customSplit || settings.defaultSplit}%</div>
+            <div class="creator-actions">
+                <button class="btn-chat" onclick="openAdminChat(${c.id})">Chat</button>
+                <button class="btn-pay" onclick="payCreator(${c.id})">Lipa</button>
+                <button class="btn-edit" onclick="editCreatorSplit(${c.id})">Asilimia</button>
+                <button class="btn-delete" onclick="toggleBanCreator(${c.id})">${c.status === 'banned'? 'Unban' : 'Ban'}</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderAdminUsers() {
+    const list = document.getElementById('adminUsersList');
+    list.innerHTML = users.map(u => `
+        <div class="user-list-item">
+            <div>
+                <div class="user-list-name">${u.name}</div>
+                <div style="font-size:10px;color:#666;">${u.phone}</div>
+            </div>
+            <div class="user-list-role user">USER</div>
+        </div>
+    `).join('');
+}
+
+function renderAdminWithdrawals() {
+    const list = document.getElementById('adminWithdrawalsList');
+    const pending = withdrawals.filter(w => w.status === 'pending');
+    if (pending.length === 0) {
+        list.innerHTML = '<div class="empty-state">Hakuna maombi ya kutoa pesa</div>';
+        return;
+    }
+    list.innerHTML = pending.map(w => `
+        <div class="admin-movie-item">
+            <div class="admin-movie-name">${getCreatorName(w.creatorId)} - Tsh ${w.amount.toLocaleString()}</div>
+            <div class="admin-movie-meta">M-Pesa: ${w.phone} | Tarehe: ${new Date(w.date).toLocaleDateString()}</div>
+            <div class="admin-movie-actions">
+                <button class="btn-approve" onclick="approveWithdrawal(${w.id})">Lipa</button>
+                <button class="btn-reject" onclick="rejectWithdrawal(${w.id})">Kataa</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function loadAdminSettings() {
+    document.getElementById('defaultCreatorSplit').value = settings.defaultSplit;
+    document.getElementById('promoPrice').value = settings.promoPrice;
+    document.getElementById('adminMpesaNumber').value = settings.mpesa;
+}
+
+function saveAdminSettings() {
+    settings.defaultSplit = parseInt(document.getElementById('defaultCreatorSplit').value);
+    settings.promoPrice = parseInt(document.getElementById('promoPrice').value);
+    settings.mpesa = document.getElementById('adminMpesaNumber').value;
+    saveData();
+    alert('Settings zimehifadhiwa!');
+}
+
+function approveMovie(id) {
+    const idx = pendingMovies.findIndex(m => m.id === id);
+    if (idx === -1) return;
+    const movie = pendingMovies[idx];
+    const price = prompt('Weka bei ya movie (Tsh). 0 = Bure:', '0');
+    if (price === null) return;
+    const split = prompt('Weka asilimia ya creator (1-99):', settings.defaultSplit);
+    if (split === null) return;
+    movie.price = parseInt(price) || 0;
+    movie.creatorSplit = parseInt(split) || settings.defaultSplit;
+    movie.status = 'approved';
+    movie.featured = movie.promotion || false;
+    movies.push(movie);
+    pendingMovies.splice(idx, 1);
+    saveData();
+    renderPendingMovies();
+    renderAdminMovies();
+    renderMovies();
+    renderHeroSlider();
+    alert('Movie imekubaliwa!');
+}
+
+function rejectMovie(id) {
+    if (!confirm('Una uhakika unataka kukataa movie hii?')) return;
+    pendingMovies = pendingMovies.filter(m => m.id!== id);
+    saveData();
+    renderPendingMovies();
+}
+
+function openAdminChat(creatorId) {
+    const creator = creators.find(c => c.id === creatorId);
+    if (!creator) return;
+    const msg = prompt(`Tuma ujumbe kwa ${creator.name}:`);
+    if (!msg) return;
+    if (!chats[creatorId]) chats[creatorId] = [];
+    chats[creatorId].push({
+        from: 'admin',
+        text: msg,
+        time: new Date().toISOString()
+    });
+    saveData();
+    alert('Ujumbe umetumwa!');
+}
+
+function payCreator(id) {
+    const creator = creators.find(c => c.id === id);
+    if (!creator ||!creator.balance || creator.balance < 10000) {
+        alert('Balance haitoshi. Kima cha chini Tsh 10,000');
+        return;
+    }
+    if (confirm(`Lipa Tsh ${creator.balance.toLocaleString()} kwa ${creator.name}?\nM-Pesa: ${creator.phone}`)) {
+        withdrawals.push({
+            id: Date.now(),
+            creatorId: id,
+            amount: creator.balance,
+            phone: creator.phone,
+            status: 'paid',
+            date: new Date().toISOString()
+        });
+        creator.balance = 0;
+        saveData();
+        renderAdminCreators();
+        renderAdminWithdrawals();
+        alert('Malipo yamerekodiwa!');
+    }
+}
+
+function editCreatorSplit(id) {
+    const creator = creators.find(c => c.id === id);
+    if (!creator) return;
+    const newSplit = prompt(`Weka asilimia mpya ya ${creator.name} (1-99):`, creator.customSplit || settings.defaultSplit);
+    if (newSplit === null) return;
+    creator.customSplit = parseInt(newSplit);
+    saveData();
+    renderAdminCreators();
+}
+
+function toggleBanCreator(id) {
+    const creator = creators.find(c => c.id === id);
+    if (!creator) return;
+    creator.status = creator.status === 'banned'? 'active' : 'banned';
+    saveData();
+    renderAdminCreators();
+    alert(creator.status === 'banned'? 'Creator amefungiwa' : 'Creator ameruhusiwa');
+}
+
+function approveWithdrawal(id) {
+    const w = withdrawals.find(w => w.id === id);
+    if (!w) return;
+    w.status = 'paid';
+    saveData();
+    renderAdminWithdrawals();
+    alert('Malipo yamethibitishwa!');
+}
+
+function rejectWithdrawal(id) {
+    const w = withdrawals.find(w => w.id === id);
+    if (!w) return;
+    const creator = creators.find(c => c.id === w.creatorId);
+    if (creator) creator.balance += w.amount;
+    w.status = 'rejected';
+    saveData();
+    renderAdminWithdrawals();
+    alert('Ombi limekataliwa, pesa zimerudishwa');
+}
+
+function openAddMovie() {
+    document.getElementById('addMovieTitle').textContent = 'Ongeza Movie Mpya 🎬';
+    document.getElementById('editMovieId').value = '';
+    document.getElementById('adminMovieTitle').value = '';
+    document.getElementById('adminMovieThumbnail').value = '';
+    document.getElementById('adminMovieVideo').value = '';
+    document.getElementById('adminMovieDesc').value = '';
+    document.getElementById('adminMoviePrice').value = '0';
+    document.getElementById('adminMovieCreatorSplit').value = '70';
+    document.getElementById('adminMoviePayhip').value = '';
+    document.getElementById('adminMovieFeatured').checked = false;
+    document.getElementById('adminMoviePromotion').checked = false;
+    document.getElementById('addMovieModal').style.display = 'block';
+}
+
+function closeAddMovie() {
+    document.getElementById('addMovieModal').style.display = 'none';
+}
+
+function editMovie(id) {
+    const m = movies.find(m => m.id === id);
+    if (!m) return;
+    document.getElementById('addMovieTitle').textContent = 'Hariri Movie';
+    document.getElementById('editMovieId').value = id;
+    document.getElementById('adminMovieTitle').value = m.title;
+    document.getElementById('adminMovieThumbnail').value = m.thumbnail;
+    document.getElementById('adminMovieVideo').value = m.video;
+    document.getElementById('adminMovieDesc').value = m.desc;
+    document.getElementById('adminMovieMainCat').value = m.mainCat;
+    document.getElementById('adminMovieSubCat').value = m.subCat;
+    document.getElementById('adminMoviePrice').value = m.price;
+    document.getElementById('adminMovieCreatorSplit').value = m.creatorSplit;
+    document.getElementById('adminMoviePayhip').value = m.payhip || '';
+    document.getElementById('adminMovieFeatured').checked = m.featured;
+    document.getElementById('adminMoviePromotion').checked = m.promotion;
+    document.getElementById('addMovieModal').style.display = 'block';
+}
+
+function saveAdminMovie() {
+    const id = document.getElementById('editMovieId').value;
+    const movieData = {
+        title: document.getElementById('adminMovieTitle').value.trim(),
+        thumbnail: document.getElementById('adminMovieThumbnail').value.trim(),
+        video: document.getElementById('adminMovieVideo').value.trim(),
+        desc: document.getElementById('adminMovieDesc').value.trim(),
+        mainCat: document.getElementById('adminMovieMainCat').value,
+        subCat: document.getElementById('adminMovieSubCat').value,
+        price: parseInt(document.getElementById('adminMoviePrice').value) || 0,
+        creatorSplit: parseInt(document.getElementById('adminMovieCreatorSplit').value) || 70,
+        payhip: document.getElementById('adminMoviePayhip').value.trim(),
+        featured: document.getElementById('adminMovieFeatured').checked,
+        promotion: document.getElementById('adminMoviePromotion').checked,
+        status: 'approved'
+    };
+    if (!movieData.title ||!movieData.thumbnail ||!movieData.video) {
+        alert('Jaza sehemu zote muhimu');
+        return;
+    }
+    if (id) {
+        const idx = movies.findIndex(m => m.id == id);
+        movies[idx] = {...movies[idx],...movieData };
+    } else {
+        movieData.id = Date.now();
+        movies.push(movieData);
+    }
+    saveData();
+    closeAddMovie();
+    renderAdminMovies();
+    renderHeroSlider();
+}
+
+function deleteMovie(id) {
+    if (!confirm('Una uhakika unataka kufuta movie hii?')) return;
+    movies = movies.filter(m => m.id!== id);
+    saveData();
+    renderAdminMovies();
+    renderMovies();
+    renderHeroSlider();
+}
+
+function closeAllModals() {
+    document.querySelectorAll('.modal,.admin-modal,.upload-modal,.creator-modal,.register-modal,.terms-modal,.login-modal,.user-modal,.admin-panel-modal').forEach(m => m.style.display = 'none');
+}
+
+window.onclick = function(e) {
+    if (e.target.classList.contains('modal') || e.target.classList.contains('admin-modal') || e.target.classList.contains('upload-modal') || e.target.classList.contains('creator-modal') || e.target.classList.contains('register-modal') || e.target.classList.contains('terms-modal') || e.target.classList.contains('login-modal') || e.target.classList.contains('user-modal') || e.target.classList.contains('admin-panel-modal')) {
+        closeAllModals();
+    }
+}
+</script>
+</body>
+</html>
