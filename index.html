@@ -254,3 +254,54 @@ loadAdmin();
 }
 
 function closeAdmin(){document.getElementById('admin').classList.remove('active')}
+function loadAdmin(){
+const pList=document.getElementById('pendingList');
+pList.innerHTML=pending.length?pending.map(r=>`
+<div class="movie-item">
+<strong>${r.studio}</strong> - ${r.phone}<br>
+<small>${r.email}</small><br>
+<img src="${r.thumb}" style="width:100px;margin:8px 0"><br>
+<p>${r.desc}</p>
+<p>Bei pendekezo: TZS ${r.price}</p>
+<p>Promotion: TZS ${r.promo||0}</p>
+<div class="input-group"><label>Jina la Movie</label><input id="t${r.id}" placeholder="Andika jina"></div>
+<div class="input-group"><label>Bei ya Mauzo TZS</label><input id="p${r.id}" type="number" value="${r.price}"></div>
+<div class="input-group"><label>Link ya Payhip</label><input id="pay${r.id}" placeholder="https://payhip.com/..."></div>
+<div class="input-group"><label>Description ya Mwisho</label><textarea id="d${r.id}">${r.desc}</textarea></div>
+<div class="row">
+<button class="btn" onclick="approve(${r.id})">Pitisha</button>
+<button class="btn" style="background:#ef4444" onclick="reject(${r.id})">Kataa</button>
+</div>
+</div>`).join(''):'<p>Hakuna maombi kwa sasa</p>';
+
+const aList=document.getElementById('approvedList');
+aList.innerHTML=movies.length?movies.map(m=>`
+<div class="movie-item">
+<strong>${m.title}</strong> - TZS ${m.price} ${m.payhip?'⭐':''}
+<div class="input-group"><label>Badili Bei</label><input id="up${m.id}" type="number" value="${m.price}"></div>
+<div class="input-group"><label>Badili Payhip</label><input id="upay${m.id}" value="${m.payhip||''}"></div>
+<button class="btn" onclick="updateMovie(${m.id})">Update</button>
+<button class="btn" style="background:#ef4444" onclick="delMovie(${m.id})">Delete</button>
+</div>`).join(''):'<p>Hakuna movies</p>';
+}
+
+function approve(id){
+const r=pending.find(x=>x.id==id);
+const title=document.getElementById('t'+id).value||r.studio;
+const price=document.getElementById('p'+id).value;
+const payhip=document.getElementById('pay'+id).value;
+const desc=document.getElementById('d'+id).value;
+movies.push({id:Date.now(),title,thumb:r.thumb,banner:r.thumb,stream:r.stream,desc,price,payhip});
+pending=pending.filter(x=>x.id!=id);
+saveMovies();savePending();loadAdmin();renderMovies();
+alert('Movie imepitishwa!');
+}
+
+function reject(id){pending=pending.filter(x=>x.id!=id);savePending();loadAdmin()}
+function updateMovie(id){const m=movies.find(x=>x.id==id);m.price=document.getElementById('up'+id).value;m.payhip=document.getElementById('upay'+id).value;saveMovies();loadAdmin();renderMovies()}
+function delMovie(id){if(confirm('Futa?')){movies=movies.filter(x=>x.id!=id);saveMovies();loadAdmin();renderMovies()}}
+
+renderMovies();
+</script>
+</body>
+</html>
