@@ -361,3 +361,437 @@
                 </div>
                 <div class="info-box">
                     💰 <strong>Jinsi Unavyolipwa:</strong> Kila mtu akinunua movie yako, asilimia yako inaingia kwenye balance. Omba kutoa pesa ukiwa na Tsh 10,000+. Malipo ni manual kupitia M-Pesa.
+.</div>
+            </div>
+            <div class="tab-content" id="moviesTab">
+                <button class="btn-save" style="width: 100%; margin-bottom: 15px;" onclick="openUpload()">⬆️ Upload Movie Mpya</button>
+                <div class="movie-list">
+                    <div class="movie-list-title">Movies Zako:</div>
+                    <div id="creatorMovieList"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="chatTab">
+                <div class="chat-box" id="chatBox"></div>
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Andika ujumbe kwa admin...">
+                    <button class="chat-send" onclick="sendMessage()">Tuma</button>
+                </div>
+            </div>
+            <div class="tab-content" id="withdrawTab">
+                <div class="info-box">
+                    💸 Balance Yako: <strong>Tsh <span id="withdrawBalance">0</span></strong><br>
+                    <small>Kima cha chini cha kutoa: Tsh 10,000</small>
+                </div>
+                <div class="form-group">
+                    <label>Kiasi cha Kutoa (Tsh)</label>
+                    <input type="number" id="withdrawAmount" placeholder="Mfano: 50000">
+                </div>
+                <div class="form-group">
+                    <label>Namba ya M-Pesa</label>
+                    <input type="text" id="withdrawPhone" placeholder="0712345678">
+                </div>
+                <button class="btn-save" style="width: 100%;" onclick="requestWithdraw()">Omba Kutoa Pesa</button>
+                <div class="movie-list" style="margin-top: 20px;">
+                    <div class="movie-list-title">Historia ya Malipo:</div>
+                    <div id="withdrawHistory"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-modal" id="userModal">
+        <div class="user-content">
+            <button class="close-btn" onclick="closeUserDashboard()">&times;</button>
+            <div class="admin-title">Dashboard Yako 👤</div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchUserTab('purchases')">Movies Zangu</button>
+                <button class="tab-btn" onclick="switchUserTab('profile')">Wasifu Wangu</button>
+            </div>
+            <div class="tab-content active" id="purchasesTab">
+                <div class="movie-list">
+                    <div class="movie-list-title">Movies Ulizonunua:</div>
+                    <div id="userPurchasesList"></div>
+                </div>
+            <div class="tab-content" id="profileTab">
+                <div class="info-box">
+                    <strong>Jina:</strong> <span id="userProfileName"></span><br>
+                    <strong>Simu:</strong> <span id="userProfilePhone"></span><br>
+                    <strong>Email:</strong> <span id="userProfileEmail"></span><br>
+                    <strong>Aina:</strong> <span id="userProfileRole"></span>
+                </div>
+                <button class="btn-save" style="width: 100%; background: #ef4444;" onclick="logout()">Toka Kwenye Account</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-panel-modal" id="adminModal">
+        <div class="admin-content">
+            <button class="close-btn" onclick="closeAdmin()">&times;</button>
+            <div class="admin-title">Admin Panel ⚙️</div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchAdminTab('movies')">Movies</button>
+                <button class="tab-btn" onclick="switchAdminTab('pending')">Pending <span class="pending-count" id="pendingCount">0</span></button>
+                <button class="tab-btn" onclick="switchAdminTab('creators')">Creators</button>
+                <button class="tab-btn" onclick="switchAdminTab('users')">Users</button>
+                <button class="tab-btn" onclick="switchAdminTab('withdrawals')">Withdrawals</button>
+                <button class="tab-btn" onclick="switchAdminTab('settings')">Settings</button>
+            </div>
+            <div class="tab-content active" id="moviesAdminTab">
+                <button class="btn-save" style="width: 100%; margin-bottom: 15px;" onclick="openAddMovie()">+ Ongeza Movie Mpya</button>
+                <div class="movie-list">
+                    <div class="movie-list-title">Movies Zote:</div>
+                    <div id="adminMovieList"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="pendingAdminTab">
+                <div class="movie-list">
+                    <div class="movie-list-title">Movies Zinazosubiri Approval:</div>
+                    <div id="pendingMovieList"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="creatorsAdminTab">
+                <div class="movie-list">
+                    <div class="movie-list-title">Creators Wote:</div>
+                    <div id="adminCreatorsList"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="usersAdminTab">
+                <div class="movie-list">
+                    <div class="movie-list-title">Users Wote:</div>
+                    <div id="adminUsersList"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="withdrawalsAdminTab">
+                <div class="movie-list">
+                    <div class="movie-list-title">Maombi ya Kutoa Pesa:</div>
+                    <div id="adminWithdrawalsList"></div>
+                </div>
+            </div>
+            <div class="tab-content" id="settingsAdminTab">
+                <div class="form-group">
+                    <label>Default Asilimia ya Creator (%)</label>
+                    <input type="number" id="defaultCreatorSplit" value="70" min="1" max="99">
+                </div>
+                <div class="form-group">
+                    <label>Bei ya Promotion Banner (Tsh)</label>
+                    <input type="number" id="promoPrice" value="10000">
+                </div>
+                <div class="form-group">
+                    <label>Namba ya M-Pesa ya Kupokea Malipo</label>
+                    <input type="text" id="adminMpesaNumber" value="0686436004">
+                </div>
+                <button class="btn-save" style="width: 100%;" onclick="saveAdminSettings()">Hifadhi Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-modal" id="addMovieModal">
+        <div class="admin-content">
+            <button class="close-btn" onclick="closeAddMovie()">&times;</button>
+            <div class="admin-title" id="addMovieTitle">Ongeza Movie Mpya 🎬</div>
+            <input type="hidden" id="editMovieId">
+            <div class="form-group">
+                <label>Jina la Movie *</label>
+                <input type="text" id="adminMovieTitle">
+            </div>
+            <div class="form-group">
+                <label>Link ya Thumbnail *</label>
+                <input type="text" id="adminMovieThumbnail">
+            </div>
+            <div class="form-group">
+                <label>Link ya Video *</label>
+                <input type="text" id="adminMovieVideo">
+            </div>
+            <div class="form-group">
+                <label>Maelezo</label>
+                <textarea id="adminMovieDesc"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category Kuu</label>
+                    <select id="adminMovieMainCat">
+                        <option value="Series">Series</option>
+                        <option value="singo">Singo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category Ndogo</label>
+                    <select id="adminMovieSubCat">
+                        <option value="Action">Action</option>
+                        <option value="Love Story">Love Story</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Animation">Animation</option>
+                    </select>
+                </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Bei (Tsh) - 0 = Bure</label>
+                    <input type="number" id="adminMoviePrice" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Asilimia ya Creator (%)</label>
+                    <input type="number" id="adminMovieCreatorSplit" value="70">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Payhip Link</label>
+                <input type="text" id="adminMoviePayhip" placeholder="https://payhip.com/b/xxx">
+            </div>
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="adminMovieFeatured">
+                    <label for="adminMovieFeatured">Weka kwenye Banner Kuu</label>
+                </div>
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="adminMoviePromotion">
+                    <label for="adminMoviePromotion">Ni Promotion (Paid)</label>
+                </div>
+            </div>
+            <div class="admin-buttons">
+                <button class="btn-cancel" onclick="closeAddMovie()">Ghairi</button>
+                <button class="btn-save" onclick="saveAdminMovie()">Hifadhi</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ============= GLOBAL STATE =============
+let movies = JSON.parse(localStorage.getItem('cm_movies') || '[]');
+let users = JSON.parse(localStorage.getItem('cm_users') || '[]');
+let creators = JSON.parse(localStorage.getItem('cm_creators') || '[]');
+let pendingMovies = JSON.parse(localStorage.getItem('cm_pending') || '[]');
+let chats = JSON.parse(localStorage.getItem('cm_chats') || '{}');
+let withdrawals = JSON.parse(localStorage.getItem('cm_withdrawals') || '[]');
+let purchases = JSON.parse(localStorage.getItem('cm_purchases') || '[]');
+let currentSession = JSON.parse(localStorage.getItem('cm_session') || 'null');
+let settings = JSON.parse(localStorage.getItem('cm_settings') || '{"defaultSplit":70,"promoPrice":10000,"mpesa":"0686436004"}');
+let logoClickCount = 0;
+let logoClickTimer = null;
+const ADMIN_PASSWORD = 'admin123';
+
+document.addEventListener('DOMContentLoaded', () => {
+    if(movies.length === 0) initDefaultMovies();
+    updateHeader();
+    renderMovies();
+    renderHeroSlider();
+    setupLogoClick();
+    document.getElementById('searchInput').addEventListener('input', filterMovies);
+    document.querySelectorAll('.cat-btn').forEach(btn => btn.addEventListener('click', (e) => selectCategory(e.target.dataset.cat)));
+    document.querySelectorAll('.sub-cat-btn').forEach(btn => btn.addEventListener('click', (e) => selectSubCategory(e.target.dataset.sub)));
+    document.getElementById('roleUser').addEventListener('change', toggleChannelField);
+    document.getElementById('roleCreator').addEventListener('change', toggleChannelField);
+});
+
+function saveData() {
+    localStorage.setItem('cm_movies', JSON.stringify(movies));
+    localStorage.setItem('cm_users', JSON.stringify(users));
+    localStorage.setItem('cm_creators', JSON.stringify(creators));
+    localStorage.setItem('cm_pending', JSON.stringify(pendingMovies));
+    localStorage.setItem('cm_chats', JSON.stringify(chats));
+    localStorage.setItem('cm_withdrawals', JSON.stringify(withdrawals));
+    localStorage.setItem('cm_purchases', JSON.stringify(purchases));
+    localStorage.setItem('cm_session', JSON.stringify(currentSession));
+    localStorage.setItem('cm_settings', JSON.stringify(settings));
+}
+
+function initDefaultMovies() {
+    movies = [
+        {id:1,title:"KIFO CHA MUME WANGU",thumbnail:"https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",video:"https://www.youtube.com/embed/dQw4w9WgXcQ",desc:"Hadithi ya kusisimua ya mke aliyepoteza mume wake",mainCat:"Series",subCat:"Drama",price:0,creatorSplit:70,featured:true,promotion:false,status:"approved",payhip:""},
+        {id:2,title:"SALA ZA USIKU",thumbnail:"https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",video:"https://www.youtube.com/embed/dQw4w9WgXcQ",desc:"Movie ya kuogofya ya usiku",mainCat:"singo",subCat:"Action",price:3000,creatorSplit:70,featured:true,promotion:false,status:"approved",payhip:"https://payhip.com/b/test"}
+    ];
+    saveData();
+}
+
+function updateHeader() {
+    const authBtn = document.getElementById('authBtn');
+    const badge = document.getElementById('sessionBadge');
+    if (!currentSession) {
+        authBtn.textContent = 'Ingia';
+        authBtn.className = 'header-btn';
+        authBtn.onclick = handleAuthClick;
+        badge.style.display = 'none';
+    } else if (currentSession.type === 'admin') {
+        authBtn.textContent = 'Admin Panel';
+        authBtn.className = 'header-btn';
+        authBtn.onclick = openAdmin;
+        badge.textContent = 'ADMIN';
+        badge.style.display = 'block';
+    } else if (currentSession.type === 'creator') {
+        authBtn.textContent = 'Creator';
+        authBtn.className = 'header-btn creator';
+        authBtn.onclick = openCreatorDashboard;
+        badge.textContent = 'CREATOR';
+        badge.style.display = 'block';
+    } else if (currentSession.type === 'user') {
+        authBtn.textContent = currentSession.name.split(' ')[0];
+        authBtn.className = 'header-btn user';
+        authBtn.onclick = openUserDashboard;
+        badge.textContent = 'USER';
+        badge.style.display = 'block';
+    }
+}
+
+function handleAuthClick() {
+    if (currentSession) {
+        logout();
+    } else {
+        document.getElementById('loginModal').style.display = 'flex';
+    }
+}
+
+function logout() {
+    currentSession = null;
+    saveData();
+    updateHeader();
+    alert('Umetoka kwenye account');
+}
+
+function setupLogoClick() {
+    document.getElementById('logo').addEventListener('click', () => {
+        logoClickCount++;
+        clearTimeout(logoClickTimer);
+        if (logoClickCount >= 5) {
+            logoClickCount = 0;
+            const pass = prompt('Weka Password ya Admin:');
+            if(pass === ADMIN_PASSWORD) {
+                currentSession = {id: 'admin', type: 'admin', name: 'Admin'};
+                saveData();
+                updateHeader();
+                openAdmin();
+            } else if(pass!== null) {
+                alert('Password sio sahihi');
+            }
+        } else {
+            logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
+        }
+    });
+}
+
+function renderMovies(filter = '') {
+    const grid = document.getElementById('movieGrid');
+    let filtered = movies.filter(m => m.status === 'approved');
+    if (filter) {
+        filtered = filtered.filter(m =>
+            m.title.toLowerCase().includes(filter.toLowerCase()) ||
+            m.desc.toLowerCase().includes(filter.toLowerCase())
+        );
+    }
+    grid.innerHTML = filtered.map(m => `
+        <div class="movie-card" onclick="openMovie(${m.id})">
+            ${m.featured? '<div class="star-badge">⭐</div>' : ''}
+            ${m.creatorId? '<div class="user-badge">USER</div>' : ''}
+            <img src="${m.thumbnail}" class="thumbnail" onerror="this.src='https://via.placeholder.com/300x169'">
+            <div class="card-info">
+                <div class="card-title">${m.title}</div>
+                ${m.creatorId? `<div class="creator-name">${getCreatorName(m.creatorId)}</div>` : ''}
+                ${m.price > 0? `<div class="price-tag">Tsh ${m.price.toLocaleString()}</div>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderHeroSlider() {
+    const slider = document.getElementById('heroSlider');
+    const featured = movies.filter(m => m.featured && m.status === 'approved').slice(0, 5);
+    if (featured.length === 0) {
+        slider.innerHTML = '<div class="slide active" style="background:#222;display:flex;align-items:center;justify-content:center;"><div>Hakuna Featured Movies</div></div>';
+        return;
+    }
+    slider.innerHTML = featured.map((m, i) => `
+        <div class="slide ${i === 0? 'active' : ''}" style="background-image:url('${m.thumbnail}')" onclick="openMovie(${m.id})">
+            ${m.promotion? '<div class="promo-badge">PROMOTED</div>' : ''}
+            <div class="slide-overlay">
+                <div class="slide-title">${m.title}</div>
+                <div class="slide-desc">${m.desc}</div>
+                <div class="hero-buttons">
+                    <button class="btn-watch" onclick="event.stopPropagation(); openMovie(${m.id})">▶ Tazama</button>
+                    ${m.price > 0? `<button class="btn-buy" onclick="event.stopPropagation(); buyMovie(${m.id})">Nunua Tsh ${m.price.toLocaleString()}</button>` : ''}
+                </div>
+            </div>
+        </div>
+    `).join('');
+    let currentSlide = 0;
+    setInterval(() => {
+        const slides = slider.querySelectorAll('.slide');
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }, 5000);
+}
+
+function getCreatorName(id) {
+    const c = creators.find(cr => cr.id === id);
+    return c? c.channel || c.name : 'Unknown';
+}
+
+function filterMovies() {
+    const term = document.getElementById('searchInput').value;
+    renderMovies(term);
+}
+
+function selectCategory(cat) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function selectSubCategory(sub) {
+    document.querySelectorAll('.sub-cat-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function openMovie(id) {
+    const movie = movies.find(m => m.id === id);
+    if (!movie) return;
+    if (movie.price > 0 &&!hasPurchased(id)) {
+        if (!currentSession) {
+            alert('Ingia kwanza ili ununue');
+            document.getElementById('loginModal').style.display = 'flex';
+            return;
+        }
+        buyMovie(id);
+        return;
+    }
+    document.getElementById('videoModal').style.display = 'flex';
+    document.getElementById('videoFrame').src = movie.video;
+    document.getElementById('modalTitle').textContent = movie.title;
+    document.getElementById('modalDesc').textContent = movie.desc;
+    document.getElementById('modalBuyBtn').style.display = 'none';
+}
+
+function closeModal() {
+    document.getElementById('videoModal').style.display = 'none';
+    document.getElementById('videoFrame').src = '';
+}
+
+function hasPurchased(movieId) {
+    if (!currentSession) return false;
+    return purchases.some(p => p.userId === currentSession.id && p.movieId === movieId);
+}
+
+function buyMovie(id) {
+    const movie = movies.find(m => m.id === id);
+    if (!movie) return;
+    if (!currentSession) {
+        alert('Ingia kwanza');
+        document.getElementById('loginModal').style.display = 'flex';
+        return;
+    }
+    if (confirm(`Nunua "${movie.title}" kwa Tsh ${movie.price.toLocaleString()}?\n\nLipa kupitia Payhip: ${movie.payhip || 'Contact Admin'}`)) {
+        purchases.push({
+            id: Date.now(),
+            userId: currentSession.id,
+            movieId: id,
+            amount: movie.price,
+            date: new Date().toISOString()
+        });
+        if (movie.creatorId) {
+            const creator = creators.find(c => c.id === movie.creatorId);
+            if (creator) {
+                const earning = movie.price * (movie.creatorSplit / 100);
+                creator.balance = (creator.balance || 0) + earning;
+                creator.totalEarnings = (creator.totalEarnings || 0) + earning;
+                creator.totalSales = (creator.totalSales || 0) + 1;
+            }
+        }
+        save
