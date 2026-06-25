@@ -1,175 +1,343 @@
-<!-- ======= CHILAGU HOME PAGE - FINAL ======= -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body { margin:0; background:#000; color:#fff; font-family:Arial; }
- .container { padding:15px; }
- .hero-banner { position:relative; border-radius:12px; overflow:hidden; margin-bottom:20px; }
- .hero-banner img { width:100%; height:200px; object-fit:cover; }
- .hero-overlay { position:absolute; bottom:0; left:0; right:0; padding:15px; background:linear-gradient(transparent, #000); }
- .hero-title { font-size:24px; font-weight:bold; margin:0; }
- .hero-desc { font-size:14px; color:#ccc; margin:5px 0 15px 0; }
- .btn-tazama { background:#E50914; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; }
- .category-tabs { display:flex; gap:10px; margin:20px 0; overflow-x:auto; }
- .tab { background:#333; padding:8px 16px; border-radius:20px; white-space:nowrap; }
- .tab.active { background:#E50914; }
- .section-title { font-size:18px; font-weight:bold; margin:25px 0 15px 0; }
- .movie-row { display:flex; gap:12px; overflow-x:auto; padding-bottom:10px; }
- .movie-card { min-width:140px; background:#1a1a1a; border-radius:8px; overflow:hidden; }
- .movie-card img { width:140px; height:200px; object-fit:cover; }
- .movie-card p { padding:8px; margin:0; font-size:13px; }
- .watched-badge { position:absolute; top:5px; right:5px; background:#E50914; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; }
-</style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#000; color:#fff; font-family:Arial; }
+.container { padding:15px; overflow-y:auto; height:100vh; }
 
+  /* HEADER NA LOGO YAKO */
+.header {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+  }
+.logo {
+    width:40px;
+    height:40px;
+  }
+.app-name {
+    font-size:14px;
+    color:#fff;
+    font-weight:600;
+  }
+
+  /* HERO BANNER KAMA PICHA YAKO */
+.hero-banner {
+    position:relative;
+    border-radius:12px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+.hero-banner img {
+    width:100%;
+    height:230px;
+    object-fit:cover;
+  }
+.hero-overlay {
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    padding:15px;
+    background:linear-gradient(transparent, #000 80%);
+  }
+.hero-title {
+    font-size:26px;
+    font-weight:bold;
+    margin:0 0 8px 0;
+    line-height:1.2;
+  }
+.hero-desc {
+    font-size:13px;
+    color:#ccc;
+    margin:0 0 12px 0;
+    line-height:1.4;
+  }
+
+  /* BUTTON TAZAMA - PINK/PURPLE KAMA YAKO */
+.btn-tazama {
+    background:linear-gradient(90deg, #C44569, #F8B500);
+    color:#fff;
+    border:none;
+    padding:10px 25px;
+    border-radius:25px;
+    font-weight:bold;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  /* TABS ZA JUU */
+.tabs {
+    display:flex;
+    gap:10px;
+    margin:20px 0;
+    overflow-x:auto;
+  }
+.tab {
+    background:#1a1a1a;
+    color:#ccc;
+    padding:10px 18px;
+    border-radius:25px;
+    border:none;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+  }
+.tab.active {
+    background:linear-gradient(90deg, #C44569, #F8B500);
+    color:#fff;
+  }
+
+  /* ICON ZA CATEGORY KAMA PICHA YAKO */
+.genre-icons {
+    display:flex;
+    gap:25px;
+    margin:15px 0 25px 0;
+    justify-content:center;
+  }
+.genre {
+    text-align:center;
+  }
+.genre-circle {
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#1a1a1a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 5px auto;
+    font-size:28px;
+  }
+.genre.active.genre-circle {
+    background:linear-gradient(135deg, #C44569, #F8B500);
+  }
+.genre p {
+    margin:0;
+    font-size:12px;
+    color:#888;
+  }
+.genre.active p {
+    color:#fff;
+  }
+
+  /* TRENDING */
+.section-title {
+    font-size:18px;
+    font-weight:bold;
+    margin:25px 0 12px 0;
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+
+  /* CARD ZAKO ZILE ZILE */
+.movie-row {
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding-bottom:15px;
+  }
+.movie-card {
+    min-width:150px;
+    background:#1a1a1a;
+    border-radius:10px;
+    overflow:hidden;
+  }
+.movie-card img {
+    width:150px;
+    height:210px;
+    object-fit:cover;
+    display:block;
+  }
+.movie-card p {
+    padding:8px;
+    margin:0;
+    font-size:13px;
+    font-weight:500;
+  }
+
+  /* COMMENT SECTION */
+.comment-section {
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px solid #222;
+  }
+.comment-box {
+    background:#1a1a1a;
+    padding:10px;
+    margin:8px 0;
+    border-radius:8px;
+  }
+.comment-input {
+    width:100%;
+    padding:10px;
+    background:#1a1a1a;
+    border:1px solid #333;
+    color:#fff;
+    border-radius:8px;
+    margin:5px 0;
+  }
+.btn-comment {
+    width:100%;
+    padding:12px;
+    background:linear-gradient(90deg, #C44569, #F8B500);
+    border:none;
+    color:#fff;
+    border-radius:8px;
+    font-weight:bold;
+    margin-top:8px;
+  }
+</style>
+</head>
+<body>
 <div class="container">
-  <!-- HERO BANNER -->
+
+  <!-- HEADER NA LOGO YAKO -->
+  <div class="header">
+    <img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png">
+    <div class="app-name">CHILAGU LEGACY CINEMA</div>
+  </div>
+
+  <!-- HERO BANNER KAMA YAKO -->
   <div class="hero-banner">
-    <img id="heroImage" src="https://via.placeholder.com/400x200">
+    <img id="heroImage" src="https://i.postimg.cc/7Yr5rR8L/yellow-poster.jpg">
     <div class="hero-overlay">
-      <h1 class="hero-title" id="heroTitle">TRAILER | YELLOW RECKONING</h1>
-      <p class="hero-desc" id="heroDesc">kisasi cha Binti Ida, kupoteza family yake...</p>
-      <button class="btn-tazama" onclick="watchMovie(heroMovie)">▶ Tazama</button>
+      <h1 class="hero-title" id="heroTitle">TRAILER | YELLOW RECKONING FULL POWER</h1>
+      <p class="hero-desc" id="heroDesc">kisasi cha Binti Ida, kupoteza family yake, je ataweza kulipa kisasi Kwa huyu shetani Ambae hatazamiki??</p>
+      <button class="btn-tazama" onclick="tazamaMovie()">▶ Tazama</button>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="category-tabs">
-    <div class="tab active">🎬 All Movies</div>
-    <div class="tab">📺 Series</div>
-    <div class="tab">🎵 Singo</div>
+  <!-- TABS ZA JUU -->
+  <div class="tabs">
+    <button class="tab active">🎬 All Movies</button>
+    <button class="tab">📺 Series</button>
+    <button class="tab">🎞️ Singo</button>
   </div>
 
-  <!-- TRENDING NOW - MPYA TU -->
+  <!-- ICON ZA CATEGORY -->
+  <div class="genre-icons">
+    <div class="genre active">
+      <div class="genre-circle">🔥</div>
+      <p>Zote</p>
+    </div>
+    <div class="genre">
+      <div class="genre-circle">⚡</div>
+      <p>Action</p>
+    </div>
+    <div class="genre">
+      <div class="genre-circle">❤️</div>
+      <p>Love</p>
+    </div>
+    <div class="genre">
+      <div class="genre-circle">🎭</div>
+      <p>Drama</p>
+    </div>
+  </div>
+
+  <!-- TRENDING -->
   <h2 class="section-title">TRENDING 🔥</h2>
-  <div class="movie-row" id="trendingRow"></div>
+  <div class="movie-row" id="trendingRow">
+    <div class="movie-card">
+      <img src="https://i.postimg.cc/7Yr5rR8L/yellow-poster.jpg">
+      <p>TRAILER | Yellow...</p>
+    </div>
+    <div class="movie-card">
+      <img src="https://i.postimg.cc/3J4k6Q2B/love-destiny.jpg">
+      <p>LOVE AND DESTINY</p>
+    </div>
+  </div>
 
-  <!-- UMEZITAZAMA - ZILIZOTAZAMIKA -->
-  <h2 class="section-title">Watched ✓</h2>
-  <div class="movie-row" id="watchedRow"></div>
-  <p id="noWatched" style="color:#666; text-align:center; display:none;">Hujatazama movie yoyote bado</p>
+  <!-- COMMENT SECTION - LIVE -->
+  <div class="comment-section">
+    <h3 style="margin-bottom:15px;">Comments</h3>
+    <div id="commentList" style="max-height:250px; overflow-y:auto;"></div>
 
-  <!-- COMMENT SECTION -->
-  <div id="commentSection"></div>
+    <input class="comment-input" id="nameInput" placeholder="Jina lako">
+    <textarea class="comment-input" id="commentInput" placeholder="Andika comment yako..." rows="3"></textarea>
+    <button class="btn-comment" onclick="tumaComment()">Tuma Comment</button>
+  </div>
+
 </div>
 
 <script>
-// ======= 1. DATABASE YA MOVIES =======
-let allMovies = [
-  {id:"yellow1", title:"YELLOW RECKONING", image:"https://via.placeholder.com/140x200/FFD700", desc:"kisasi cha Binti Ida...", trending:true},
-  {id:"love1", title:"LOVE AND DESTINY", image:"https://via.placeholder.com/140x200/FF0000", desc:"Coming soon", trending:true},
-  {id:"action1", title:"ACTION FORCE", image:"https://via.placeholder.com/140x200/0000FF", desc:"Movie ya vita", trending:false}
-];
-
-let heroMovie = allMovies[0]; // Movie ya banner
-
-// ======= 2. WATCHED SYSTEM - LOCALSTORAGE =======
-function getWatchedMovies() {
-  return JSON.parse(localStorage.getItem("chilagu_watched") || "[]");
-}
-
-function markAsWatched(movieId) {
-  let watched = getWatchedMovies();
-  if(!watched.includes(movieId)) {
-    watched.push(movieId);
-    localStorage.setItem("chilagu_watched", JSON.stringify(watched));
-  }
-  renderMovies(); // Onyesha upya
-}
-
-function watchMovie(movie) {
-  markAsWatched(movie.id);
-  alert("Unafungua: " + movie.title);
-  // Hapa weka code yako ya kufungua video player
-}
-
-// ======= 3. ONYESHA MOVIES =======
-function renderMovies() {
-  const watched = getWatchedMovies();
-  const trendingRow = document.getElementById("trendingRow");
-  const watchedRow = document.getElementById("watchedRow");
-  const noWatched = document.getElementById("noWatched");
-  
-  trendingRow.innerHTML = "";
-  watchedRow.innerHTML = "";
-
-  let hasWatched = false;
-
-  allMovies.forEach(movie => {
-    const isWatched = watched.includes(movie.id);
-    
-    const card = `
-      <div class="movie-card" onclick="watchMovie(${JSON.stringify(movie).replace(/"/g, '&quot;')})" style="position:relative;">
-        <img src="${movie.image}">
-        ${isWatched? '<div class="watched-badge">✓</div>' : ''}
-        <p>${movie.title}</p>
-      </div>
-    `;
-
-    // Kama imetazamika → peleka "Umezitazama"
-    // Kama haijatazamika na ni trending → peleka "Trending"
-    if(isWatched) {
-      watchedRow.innerHTML += card;
-      hasWatched = true;
-    } else if(movie.trending) {
-      trendingRow.innerHTML += card;
-    }
-  });
-
-  noWatched.style.display = hasWatched? "none" : "block";
-}
-
-// ======= 4. COMMENT SYSTEM - LIVE =======
+// ======= URL YA GOOGLE SHEET YAKO =======
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
-const movieId = heroMovie.id;
+const movieId = "yellow1"; // ID ya movie hii
 
+// ======= FUNCTION YA TAZAMA =======
+function tazamaMovie() {
+  alert("Unafungua: YELLOW RECKONING");
+  // Weka code yako ya kufungua video hapa
+}
+
+// ======= SOMA COMMENT KUTOKA GOOGLE SHEET =======
 async function loadComments() {
   try {
-    const res = await fetch(SCRIPT_URL);
-    const allComments = await res.json();
-    const comments = allComments[movieId] || [];
-    displayComments(comments);
-  } catch(e) { console.log("Error:", e); }
+    const res = await fetch(SCRIPT_URL + "?movieId=" + movieId);
+    const data = await res.json();
+
+    const commentList = document.getElementById("commentList");
+    commentList.innerHTML = "";
+
+    if(data.length === 0) {
+      commentList.innerHTML = "<p style='color:#666; text-align:center'>Kuwa wa kwanza ku-comment</p>";
+      return;
+    }
+
+    data.reverse().forEach(c => {
+      commentList.innerHTML += `
+        <div class="comment-box">
+          <b style="color:#F8B500">${c.name}</b>
+          <span style="color:#666; font-size:11px; float:right">${c.date}</span>
+          <p style="margin:5px 0 0 0; font-size:13px;">${c.comment}</p>
+        </div>
+      `;
+    });
+  } catch(e) {
+    console.log("Error:", e);
+  }
 }
 
-function displayComments(comments) {
-  const commentList = document.getElementById("commentList");
-  commentList.innerHTML = "";
-  if(comments.length === 0) {
-    commentList.innerHTML = "<p style='color:#888'>Kuwa wa kwanza ku-comment</p>";
+// ======= TUMA COMMENT KWENDA SHEET =======
+async function tumaComment() {
+  const name = document.getElementById("nameInput").value.trim() || "Anonymous";
+  const comment = document.getElementById("commentInput").value.trim();
+
+  if(!comment) {
+    alert("Andika comment kwanza mzee");
     return;
   }
-  comments.reverse().forEach(c => {
-    commentList.innerHTML += `
-      <div style="background:#222; padding:10px; margin:8px 0; border-radius:8px;">
-        <b style="color:#FFD700">${c.name}</b>
-        <span style="color:#666; font-size:12px; float:right">${c.date}</span>
-        <p style="color:#fff; margin:5px 0 0 0;">${c.text}</p>
-      </div>
-    `;
-  });
-}
 
-async function postComment() {
-  const name = document.getElementById("nameInput").value.trim() || "Anonymous";
-  const text = document.getElementById("commentInput").value.trim();
-  if(!text) return alert("Andika comment kwanza");
   try {
-    await fetch(SCRIPT_URL, { method:"POST", body:JSON.stringify({movieId, name, text}) });
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        Content_ID: movieId,
+        Name: name,
+        Comment: comment,
+        Date: new Date().toLocaleString()
+      })
+    });
+
     document.getElementById("commentInput").value = "";
     loadComments();
-  } catch(e) { alert("Imeshindikana kutuma"); }
+    alert("Comment imetumwa!");
+  } catch(e) {
+    alert("Imeshindikana kutuma comment");
+  }
 }
 
-document.getElementById("commentSection").innerHTML = `
-  <h3 style="color:#fff; margin-top:30px;">Comments</h3>
-  <div id="commentList" style="max-height:300px; overflow-y:auto;"></div>
-  <div style="margin-top:15px;">
-    <input id="nameInput" placeholder="Jina lako" style="width:100%; padding:8px; margin-bottom:8px; background:#333; border:none; color:#fff; border-radius:5px;">
-    <textarea id="commentInput" placeholder="Andika comment..." style="width:100%; padding:8px; background:#333; border:none; color:#fff; border-radius:5px;" rows="3"></textarea>
-    <button onclick="postComment()" style="width:100%; padding:10px; margin-top:8px; background:#E50914; border:none; color:#fff; border-radius:5px; font-weight:bold;">Tuma Comment</button>
-  </div>
-`;
-
-// ANZA APP
-renderMovies();
+// LOAD COMMENTS APP INAPOFUNGUKA
 loadComments();
 </script>
-<!-- ======= MWISHO ======= -->
+</body>
+</html>
