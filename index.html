@@ -120,3 +120,93 @@ header{position:sticky;top:0;z-index:100;background:rgba(6,6,16,.95);backdrop-fi
 <button class="btn" onclick="submitCreator()">Tuma Maombi kwa Admin</button>
 </div>
 </div>
+<div id="passwordModal" class="password-modal" onclick="closePass(event)">
+<div class="password-box" onclick="event.stopPropagation()">
+<h3>Admin Login</h3>
+<input type="password" id="passInput" placeholder="Weka password">
+<button class="btn" onclick="checkPass()">Ingia</button>
+</div>
+</div>
+
+<div id="admin" class="admin">
+<header>
+<div style="font-size:18px;font-weight:700">Admin Panel</div>
+<button class="btn" onclick="closeAdmin()">Toka</button>
+</header>
+<div class="wrap">
+<h2>Maombi ya Creators</h2>
+<div id="pendingList"></div>
+<h2 style="margin-top:30px">Movies Zilizo Pitishwa</h2>
+<div id="approvedList"></div>
+</div>
+</div>
+
+<script>
+let movies=JSON.parse(localStorage.getItem('chilagu_movies')||'[]');
+let pending=JSON.parse(localStorage.getItem('chilagu_pending')||'[]');
+let currentMovie=null;
+let logoClicks=0;
+let logoTimer=null;
+
+function saveMovies(){localStorage.setItem('chilagu_movies',JSON.stringify(movies))}
+function savePending(){localStorage.setItem('chilagu_pending',JSON.stringify(pending))}
+
+function renderMovies(){
+const grid=document.getElementById('moviesGrid');
+grid.innerHTML='';
+movies.forEach(m=>{
+grid.innerHTML+=`<div class="card" onclick="openModal(${m.id})">
+${m.payhip?'<div class="paid-badge">⭐</div>':''}
+<img src="${m.thumb}" loading="lazy">
+<div class="info">
+<div class="title">${m.title}</div>
+<div class="meta">TZS ${m.price}</div>
+</div></div>`;
+});
+if(movies.length>0){
+const b=movies[movies.length-1];
+document.getElementById('banner').classList.remove('hidden');
+document.getElementById('bannerImg').src=b.banner||b.thumb;
+document.getElementById('bannerTitle').textContent=b.title;
+document.getElementById('bannerDesc').textContent=b.desc||'';
+}
+}
+
+function openModal(id){
+currentMovie=movies.find(x=>x.id==id);
+document.getElementById('modal').classList.add('active');
+document.getElementById('playerFrame').src='';
+document.getElementById('modalTitle').textContent=currentMovie.title;
+document.getElementById('modalDesc').textContent=currentMovie.desc||'';
+document.getElementById('watchBtn').textContent=currentMovie.payhip?'Nunua TZS '+currentMovie.price:'▶ Cheza Bure';
+loadComments(id);
+}
+
+function closeModal(e){if(!e||e.target.id=='modal')document.getElementById('modal').classList.remove('active')}
+
+function watchMovie(){
+if(currentMovie.payhip){
+window.open(currentMovie.payhip,'_blank');
+alert('Lipa Payhip kwanza, kisha rudi hapa bonyeza Cheza');
+}else{
+document.getElementById('playerFrame').src=currentMovie.stream;
+}
+}
+
+function playBanner(){if(movies.length>0)openModal(movies[movies.length-1].id)}
+
+function addComment(){
+const txt=document.getElementById('commentInput').value.trim();
+if(!txt||!currentMovie)return;
+let comments=JSON.parse(localStorage.getItem('comments_'+currentMovie.id)||'[]');
+comments.push({txt,date:new Date().toLocaleString()});
+localStorage.setItem('comments_'+currentMovie.id,JSON.stringify(comments));
+document.getElementById('commentInput').value='';
+loadComments(currentMovie.id);
+}
+
+function loadComments(id){
+const list=document.getElementById('commentsList');
+let comments=JSON.parse(localStorage.getItem('comments_'+id)||'[]');
+list.innerHTML=comments.map(c=>`<div class="comment">${c.txt}<br><small style="color:#666">${c.date}</small></div>`).join('');
+}
