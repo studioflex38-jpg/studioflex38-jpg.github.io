@@ -11,7 +11,7 @@
 .logo { width:32px; height:32px; }
 .app-name { font-size:18px; font-weight:bold; background:linear-gradient(90deg, #8B5CF6, #EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-/* HERO SLIDER - 16:9 KAMA SCREENSHOT YAKO */
+/* HERO SLIDER - BANA LA JUU TU 180px KAMA YOUTUBE */
 .hero-slider { position:relative; border-radius:12px; overflow:hidden; margin-bottom:18px; background:#000; }
 .hero-slides { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; }
 .hero-slides::-webkit-scrollbar { display:none; }
@@ -21,47 +21,45 @@
   scroll-snap-align:start; 
   flex-shrink:0; 
   background:#000;
-  aspect-ratio:16/9; /* RATIO YA YOUTUBE */
+  height:180px; /* BANA FUPPI JUU TU. BADILI UKITAKA 200px */
   overflow:hidden;
 }
 .hero-slide img { 
   width:100%; 
   height:100%; 
-  object-fit:cover; 
+  object-fit:contain; /* PICHA YOTE IONEKANE BILA KUKATIKA */
   object-position:center; 
   display:block; 
-  filter:brightness(0.6); /* KIZA KIDOGO ILI MAANDISHI YATOKAE */
+  background:#000;
 }
 .hero-text { 
   position:absolute; 
   top:0; left:0; right:0; bottom:0;
-  padding:20px; 
+  padding:15px; 
   display:flex; 
   flex-direction:column; 
-  justify-content:center; /* WEKA MAANDISHI KATI */
-  background:linear-gradient(90deg, rgba(0,0,0,0.8) 40%, transparent 70%); 
+  justify-content:center; 
+  background:linear-gradient(90deg, rgba(0,0,0,0.7) 50%, transparent 70%); 
 }
 .hero-text h1 { 
-  font-size:24px; 
+  font-size:20px; 
   font-weight:bold; 
-  margin:0 0 8px 0; 
-  line-height:1.2;
+  margin:0 0 6px 0; 
 }
 .hero-text p { 
-  font-size:13px; 
+  font-size:12px; 
   color:#ddd; 
-  margin:0 0 15px 0; 
-  max-width:80%;
-  line-height:1.4;
+  margin:0 0 12px 0; 
+  max-width:85%;
 }
 .btn-tazama {
-    background:linear-gradient(90deg, #A855F7, #EC4899); /* PURPLE KAMA YAKO */
-    border:none; color:#fff; padding:10px 24px; border-radius:8px;
-    font-weight:bold; font-size:14px; display:flex; align-items:center; gap:6px; 
+    background:linear-gradient(90deg, #A855F7, #EC4899);
+    border:none; color:#fff; padding:8px 20px; border-radius:8px;
+    font-weight:bold; font-size:13px; display:flex; align-items:center; gap:6px; 
     cursor:pointer; width:fit-content;
   }
-.hero-dots { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
-.dot { width:7px; height:7px; border-radius:50%; background:#666; }
+.hero-dots { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
+.dot { width:6px; height:6px; border-radius:50%; background:#666; }
 .dot.active { background:#EC4899; }
 
 .tabs { display:flex; gap:8px; margin:15px 0; }
@@ -90,7 +88,7 @@
 /* GRID YA HOME - 3X3 */
 .movie-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
 
-/* TRENDING - CARD NDOGO KAMA SCREENSHOT */
+/* TRENDING - CARD NDOGO */
 .trending-slider {
   display:flex; 
   gap:12px; 
@@ -138,10 +136,10 @@
 
   <div class="header">
     <img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png">
-    <div class="app-name">CHILAGU</div>
+    <div class="app-name">Chilagu Cinema</div>
   </div>
 
-  <!-- HERO SLIDER -->
+  <!-- HERO SLIDER BANA -->
   <div class="hero-slider" id="heroSlider">
     <div class="hero-slides" id="heroSlides"></div>
     <div class="hero-dots" id="heroDots"></div>
@@ -328,7 +326,7 @@ function renderMovies() {
     return true;
   }).forEach(movie => {
     const isPaid = movie.price && movie.price.trim()!== "";
-    const isWatched = watchedList.includes(movie.id);
+    const IsWatched = watchedList.includes(movie.id);
     const isTrending = movie.trending?.toLowerCase() === "true";
 
     const cardHome = `
@@ -399,7 +397,7 @@ function openPlayer(movie) {
     document.getElementById("videoBox").innerHTML = "<p style='color:#888; text-align:center; padding-top:80px'>Fungua license kwanza</p>";
   } else {
     document.getElementById("payBox").style.display = "none";
-    document.getElementById="videoBox".innerHTML = `<video controls autoplay style="width:100%; height:100%"><source src="${movie.videoLink}" type="video/mp4"></video>`;
+    document.getElementById("videoBox").innerHTML = `<video controls autoplay style="width:100%; height:100%"><source src="${movie.videoLink}" type="video/mp4"></video>`;
   }
 
   loadComments(movie.id);
