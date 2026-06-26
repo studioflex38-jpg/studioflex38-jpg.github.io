@@ -11,7 +11,7 @@
 .logo { width:32px; height:32px; }
 .app-name { font-size:15px; font-weight:bold; background:linear-gradient(90deg, #8B5CF6, #EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-/* HERO SLIDER - AUTO HEIGHT */
+/* HERO SLIDER - 16:9 RATIO KAMA YOUTUBE */
 .hero-slider { position:relative; border-radius:10px; overflow:hidden; margin-bottom:18px; background:#000; }
 .hero-slides { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; }
 .hero-slides::-webkit-scrollbar { display:none; }
@@ -21,10 +21,14 @@
   scroll-snap-align:start; 
   flex-shrink:0; 
   background:#000;
+  aspect-ratio:16/9; /* UWIANO WA YOUTUBE HAPA */
+  overflow:hidden;
 }
 .hero-slide img { 
   width:100%; 
-  height:auto; 
+  height:100%; 
+  object-fit:cover; 
+  object-position:center; 
   display:block; 
 }
 .hero-text { position:absolute; bottom:0; left:0; right:0; padding:12px; background:linear-gradient(transparent, #000 85%); }
@@ -117,7 +121,7 @@
     <div class="app-name">Chilagu Cinema</div>
   </div>
 
-  <!-- HERO SLIDER - INATEMBEA KIOtomatiki + AUTO HEIGHT -->
+  <!-- HERO SLIDER - 16:9 INATEMBEA KIOtomatiki -->
   <div class="hero-slider" id="heroSlider">
     <div class="hero-slides" id="heroSlides"></div>
     <div class="hero-dots" id="heroDots"></div>
