@@ -11,8 +11,12 @@
 .logo { width:32px; height:32px; }
 .app-name { font-size:15px; font-weight:bold; background:linear-gradient(90deg, #8B5CF6, #EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-.hero { position:relative; border-radius:10px; overflow:hidden; margin-bottom:18px; }
-.hero img { width:100%; height:200px; object-fit:cover; background:#111; }
+/* HERO SLIDER */
+.hero-slider { position:relative; border-radius:10px; overflow:hidden; margin-bottom:18px; }
+.hero-slides { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; }
+.hero-slides::-webkit-scrollbar { display:none; }
+.hero-slide { min-width:100%; position:relative; scroll-snap-align:start; flex-shrink:0; }
+.hero-slide img { width:100%; height:200px; object-fit:cover; background:#111; }
 .hero-text { position:absolute; bottom:0; left:0; right:0; padding:12px; background:linear-gradient(transparent, #000 85%); }
 .hero h1 { font-size:22px; font-weight:bold; margin:0 0 6px 0; }
 .hero p { font-size:12px; color:#ccc; margin:0 0 10px 0; }
@@ -21,6 +25,9 @@
     border:none; color:#fff; padding:8px 22px; border-radius:20px;
     font-weight:bold; font-size:14px; display:flex; align-items:center; gap:5px; cursor:pointer;
   }
+.hero-dots { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
+.dot { width:6px; height:6px; border-radius:50%; background:#555; }
+.dot.active { background:#EC4899; }
 
 .tabs { display:flex; gap:8px; margin:15px 0; }
 .tab { background:#1a1a1a; color:#888; padding:8px 16px; border-radius:20px; border:none; font-size:13px; cursor:pointer; }
@@ -34,7 +41,7 @@
     display:flex; align-items:center; justify-content:center; margin:0 auto 4px;
     border:2px solid #333;
   }
-.icon-box.active.icon-circle {
+.icon-box.active .icon-circle {
     background:linear-gradient(135deg, #8B5CF6, #EC4899);
     border-color:#8B5CF6;
     box-shadow:0 0 10px #8B5CF6;
@@ -45,7 +52,35 @@
 
 .section-title { font-size:16px; font-weight:bold; margin:20px 0 10px 0; }
 
+/* GRID YA HOME - 3X3 */
 .movie-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+
+/* SLIDE YA TRENDING - HORIZONTAL SCROLL */
+.trending-slider {
+  display:flex; 
+  gap:10px; 
+  overflow-x:auto; 
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  padding-bottom:10px;
+}
+.trending-slider::-webkit-scrollbar { display:none; }
+.trending-slider { -ms-overflow-style:none; scrollbar-width:none; }
+
+.trending-card {
+  min-width:140px; 
+  width:140px;
+  background:#111; 
+  border-radius:6px; 
+  overflow:hidden; 
+  cursor:pointer; 
+  position:relative;
+  scroll-snap-align:start;
+  flex-shrink:0;
+}
+.trending-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#222; }
+.trending-card p { padding:6px; margin:0; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
 .movie-card { background:#111; border-radius:6px; overflow:hidden; cursor:pointer; position:relative; }
 .movie-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#222; }
 .movie-card p { padding:6px; margin:0; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -72,13 +107,10 @@
     <div class="app-name">Chilagu Cinema</div>
   </div>
 
-  <div class="hero" id="heroSection">
-    <img id="heroImg" src="">
-    <div class="hero-text">
-      <h1 id="heroTitle">Loading...</h1>
-      <p id="heroDesc">Tafadhali subiri...</p>
-      <button class="btn-tazama" onclick="openPlayer(heroMovie)">▶ Tazama</button>
-    </div>
+  <!-- HERO SLIDER - INATEMBEA KIOtomatiki -->
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slides" id="heroSlides"></div>
+    <div class="hero-dots" id="heroDots"></div>
   </div>
 
   <div class="tabs">
@@ -106,15 +138,14 @@
     </div>
   </div>
 
-  <!-- 1. TRENDING - MOVIE CHACHE TU -->
+  <!-- TRENDING - INASLIDE PEMBENI -->
   <h2 class="section-title">TRENDING 🔥</h2>
-  <div class="movie-grid" id="trendingGrid"></div>
+  <div class="trending-slider" id="trendingGrid"></div>
 
-  <!-- 2. HOME - LIST KUU YA MOVIES ZOTE 1000+ -->
+  <!-- HOME - LIST KUU 3X3 -->
   <h2 class="section-title">HOME</h2>
   <div class="movie-grid" id="homeGrid"></div>
 
-  <!-- 3. WATCHED -->
   <h2 class="section-title">Watched ✓</h2>
   <div class="movie-grid" id="watchedGrid"></div>
   <p id="noWatched" style="color:#666; text-align:center; display:none; margin:20px 0">Bado hujatazama movie</p>
@@ -147,10 +178,11 @@ const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWR
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
 let allMovies = [];
-let heroMovie = null;
 let currentMovie = null;
 let currentCategory = 'all';
 let currentType = 'all';
+let heroSlideIndex = 0;
+let heroSlideInterval;
 
 async function loadMovies() {
   try {
@@ -177,15 +209,63 @@ async function loadMovies() {
     }).filter(m => m.id);
 
     if(allMovies.length > 0) {
-      heroMovie = allMovies[0];
-      document.getElementById("heroImg").src = heroMovie.image;
-      document.getElementById("heroTitle").textContent = heroMovie.title;
-      document.getElementById("heroDesc").textContent = heroMovie.desc;
+      renderHeroSlider();
       renderMovies();
+      startHeroAutoSlide();
     }
   } catch(e) {
     document.getElementById("trendingGrid").innerHTML = "<p style='color:red'>Error: "+e.message+"</p>";
   }
+}
+
+function renderHeroSlider() {
+  const heroSlides = document.getElementById("heroSlides");
+  const heroDots = document.getElementById("heroDots");
+  
+  // Chukua movies 5 za kwanza kwa HERO au zenye Is_Featured = True
+  const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true").slice(0,5);
+  const slides = heroMovies.length > 0 ? heroMovies : allMovies.slice(0,5);
+
+  heroSlides.innerHTML = "";
+  heroDots.innerHTML = "";
+
+  slides.forEach((movie, i) => {
+    heroSlides.innerHTML += `
+      <div class="hero-slide">
+        <img src="${movie.image}">
+        <div class="hero-text">
+          <h1>${movie.title}</h1>
+          <p>${movie.desc}</p>
+          <button class="btn-tazama" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>
+        </div>
+      </div>
+    `;
+    heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`;
+  });
+
+  // Weza kuswipe manual
+  heroSlides.addEventListener('scroll', () => {
+    const index = Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth);
+    updateHeroDots(index);
+  });
+}
+
+function updateHeroDots(index) {
+  heroSlideIndex = index;
+  document.querySelectorAll('.dot').forEach((d,i) => {
+    d.classList.toggle('active', i === index);
+  });
+}
+
+function startHeroAutoSlide() {
+  clearInterval(heroSlideInterval);
+  heroSlideInterval = setInterval(() => {
+    const slides = document.getElementById("heroSlides");
+    const total = slides.children.length;
+    heroSlideIndex = (heroSlideIndex + 1) % total;
+    slides.scrollTo({ left: heroSlideIndex * slides.offsetWidth, behavior: 'smooth' });
+    updateHeroDots(heroSlideIndex);
+  }, 4000); // Badili kila sekunde 4
 }
 
 function getWatched() {
@@ -222,7 +302,7 @@ function renderMovies() {
     const isWatched = watchedList.includes(movie.id);
     const isTrending = movie.trending?.toLowerCase() === "true";
 
-    const card = `
+    const cardHome = `
       <div class="movie-card" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">
         <img src="${movie.image}">
         ${isPaid? '<div class="star-icon">★</div>' : ''}
@@ -231,22 +311,28 @@ function renderMovies() {
       </div>
     `;
 
+    const cardTrending = `
+      <div class="trending-card" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">
+        <img src="${movie.image}">
+        ${isPaid? '<div class="star-icon">★</div>' : ''}
+        ${isWatched? '<div class="watched-badge">✓</div>' : ''}
+        <p>${movie.title}</p>
+      </div>
+    `;
+
     if(isWatched) {
-      watched.innerHTML += card;
+      watched.innerHTML += cardHome;
       hasWatched = true;
     } else {
-      // 1. Onyesha kwenye HOME - movies zote
-      home.innerHTML += card;
-      
-      // 2. Onyesha kwenye TRENDING - movie zenye Is_Trending = True tu
+      home.innerHTML += cardHome;
       if(isTrending) {
-        trending.innerHTML += card;
+        trending.innerHTML += cardTrending;
       }
     }
   });
 
   if(trending.innerHTML === "") {
-    trending.innerHTML = "<p style='color:#666; grid-column:1/4; text-align:center; font-size:12px'>Hakuna movie za Trending sasa hivi</p>";
+    trending.innerHTML = "<p style='color:#666; font-size:12px; padding:20px'>Hakuna movie za Trending</p>";
   }
   
   if(home.innerHTML === "") {
@@ -273,8 +359,9 @@ function switchTab(type, el) {
 function openPlayer(movie) {
   currentMovie = movie;
   markWatched(movie.id);
-  document.getElementById("heroSection").style.display = "none";
+  document.getElementById("heroSlider").style.display = "none";
   document.getElementById("playerSection").style.display = "block";
+  clearInterval(heroSlideInterval);
 
   if(movie.price && movie.price.trim()!== "" &&!hasLicense(movie.id)) {
     document.getElementById("payBox").style.display = "block";
@@ -291,7 +378,8 @@ function openPlayer(movie) {
 
 function closePlayer() {
   document.getElementById("playerSection").style.display = "none";
-  document.getElementById("heroSection").style.display = "block";
+  document.getElementById("heroSlider").style.display = "block";
+  startHeroAutoSlide();
   renderMovies();
 }
 
