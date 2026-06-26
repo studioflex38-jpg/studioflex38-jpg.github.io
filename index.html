@@ -88,8 +88,8 @@ body { background:#000; color:#fff; font-family:Arial; }
     <div class="video-box" id="videoBox"></div>
     <div class="pay-box" id="payBox" style="display:none;">
       <p style="margin:0 0 8px 0; font-size:13px;">Movie hii ni ya kulipia TSH <span id="price"></span></p>
-      <input id="licenseKey" placeholder="Weka license key ya Payhip">
-      <button class="btn-pay" onclick="unlockMovie()">Fungua Movie</button>
+      <input id="licenseKey" placeholder="Weka MASTER KEY ya Payhip">
+      <button class="btn-pay" onclick="unlockMovie()">Fungua Movie Zote</button>
       <a id="payhipLink" href="#" target="_blank" style="display:block; text-align:center; margin-top:8px; color:#10B981; font-size:12px;">Nunua Payhip →</a>
     </div>
     <div class="comment-section">
@@ -106,6 +106,12 @@ body { background:#000; color:#fff; font-family:Arial; }
 <script>
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
+
+// ================== LINE YA KUBADILISHA KEY ==================
+// MSTARI #24 KUTOKA HAPA CHINI. FUTA ILE > WEKA YAKO HAPA KATI YA "
+const MASTER_KEY = "CHILAGU-7K9P-2M4X";
+// Mfano: const MASTER_KEY = "CHILAGU-V2-2026-XYZ";
+// =============================================================
 
 let allMovies = [];
 let currentMovie = null;
@@ -170,7 +176,7 @@ function renderHeroSlider() {
   slides.forEach((movie, i) => {
     const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>` : '';
     heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})"><img src="${movie.image}" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
-    heroDots.innerHTML += `<div class="dot ${i===0?'active':''}</div>`;
+    heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`;
   });
   heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth)));
 }
@@ -186,13 +192,13 @@ function renderMovies() {
 
   filtered.forEach(m=>{
     const paid=m.price&&m.price.trim()!=='';
-    const watched=m.id&&wList.includes(m.id);
+    const isWatched=m.id&&wList.includes(m.id);
     const trend=m.trending?.toLowerCase()==='true';
-    const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${watched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
-    const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${watched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
+    const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
+    const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
 
     home.innerHTML+=card;
-    if(watched){watched.innerHTML+=card;hasWatched=true;}
+    if(isWatched){watched.innerHTML+=card;hasWatched=true;}
     if(trend){trending.innerHTML+=tCard;}
   });
 
@@ -203,35 +209,43 @@ function renderMovies() {
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
 
-// MCHAWI MKUBWA: INAJUA LINK YEYOTE + INABLOCK KUTOKA NJE
 function getPlayerHTML(link){
   link = link.trim();
-  // 1. KAMA NI.MP4,.M3U8,.WEBM = TUMIA VIDEO TAG NDANI
   if(link.endsWith('.mp4') || link.endsWith('.m3u8') || link.endsWith('.webm')){
     return `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${link}" type="video/mp4"></video>`;
   }
-  // 2. KAMA NI STREAMABLE = LAZIMA TUWEKE /e/ KWA EMBED
   else if(link.includes('streamable.com')){
     if(!link.includes('/e/')){ link = link.replace('streamable.com/', 'streamable.com/e/'); }
     return `<iframe src="${link}?s-autoplay=1" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`;
   }
-  // 3. KAMA NI SEVA NYINGINE = IFRAME NDANI
   else {
     return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`;
   }
 }
 
 function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById("heroSlider").style.display="none";document.querySelector(".tabs").style.display="none";document.querySelector(".icons").style.display="none";document.getElementById("playerSection").style.display="block";clearInterval(heroSlideInterval);
-  if(m.price&&m.price.trim()!==''&&!hasLicense(m.id)){document.getElementById("payBox").style.display="block";document.getElementById("price").textContent=m.price;document.getElementById("payhipLink").href=m.payhipLink||'#';document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Fungua license kwanza</p>";}
+  // HAPA NDO INAANGALIA MASTER KEY IMEWEKWA AU LA
+  if(m.price&&m.price.trim()!==''&&!localStorage.getItem("master_unlocked")){
+    document.getElementById("payBox").style.display="block";document.getElementById("price").textContent=m.price;document.getElementById("payhipLink").href=m.payhipLink||'#';document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Fungua license kwanza</p>";
+  }
   else{
     document.getElementById("payBox").style.display="none";
-    document.getElementById("videoBox").innerHTML = getPlayerHTML(m.videoLink); // HAPA NDO SIRI
+    document.getElementById("videoBox").innerHTML = getPlayerHTML(m.videoLink);
   }
   loadComments(m.id);
 }
 function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();renderMovies();}
-function hasLicense(id){return localStorage.getItem("license_"+id);}
-function unlockMovie(){const k=document.getElementById("licenseKey").value.trim();if(k.length<5)return alert("Weka key sahihi");localStorage.setItem("license_"+currentMovie.id,k);openPlayer(currentMovie);}
+
+// ================== HII NDO FUNCTION MPYA YA MASTER KEY ==================
+function unlockMovie(){
+  const k=document.getElementById("licenseKey").value.trim().toUpperCase();
+  if(k!== MASTER_KEY) return alert("❌ KEY SIO SAHI. Nunua KEY halisi Payhip TSH "+currentMovie.price);
+
+  localStorage.setItem("master_unlocked", "true"); // Inafungua zote milele Simu hii
+  openPlayer(currentMovie);
+}
+// ==========================================================================
+
 async function loadComments(id){try{const r=await fetch(COMMENT_URL+"?movieId="+id);const d=await r.json();let h="";d.reverse().forEach(c=>{h+=`<div class="comment"><b>${c.name}</b> <span style="float:right;color:#666;font-size:10px">${c.date}</span><br>${c.comment}</div>`;});document.getElementById("commentList").innerHTML=h||"<p style='color:#666;font-size:12px'>Hakuna comment</p>";}catch(e){}}
 async function sendComment(){const n=document.getElementById("cName").value||"Anonymous";const t=document.getElementById("cText").value;if(!t)return alert("Andika comment");await fetch(COMMENT_URL,{method:"POST",body:JSON.stringify({Content_ID:currentMovie.id,Name:n,Comment:t,Date:new Date().toLocaleString()})});document.getElementById("cText").value="";loadComments(currentMovie.id);}
 loadMovies();
