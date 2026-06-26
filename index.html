@@ -104,7 +104,6 @@ body { background:#000; color:#fff; font-family:Arial; }
 </div>
 
 <script>
-// LINK YAKO YA.CSV - USIIGUSE TENA
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
@@ -134,10 +133,9 @@ async function loadMovies() {
     if(!res.ok) throw new Error(`Sheet Status: ${res.status}`);
     const csv = await res.text();
     const rows = parseCSV(csv);
-    const headers = rows[0].map(h => h.trim()); // Inachukua majina yako halisi
+    const headers = rows[0].map(h => h.trim());
     const data = rows.slice(1);
 
-    // CODE INAJIREKEBISHA KWA MAJINA YAKO: Content_ID, Cover_Image, Video, payhip
     allMovies = data.map(cols => {
       let obj = {};
       headers.forEach((h, i) => { obj[h] = cols[i]?.replace(/"/g,'').trim(); });
@@ -145,15 +143,15 @@ async function loadMovies() {
         id: obj['Content_ID'],
         title: obj['Title'],
         type: obj['Type'],
-        image: obj['Cover_Image'], // Inatumia Cover_Image yako
+        image: obj['Cover_Image'],
         genre: obj['Genre'],
         desc: obj['Description'],
         featured: obj['Is_Featured'],
         trending: obj['Is_Trending'],
         new: obj['Is_New'],
-        videoLink: obj['Video'], // Inatumia Video yako
+        videoLink: obj['Video'],
         price: obj['Price'],
-        payhipLink: obj['payhip'] // Inatumia payhip yako
+        payhipLink: obj['payhip']
       };
     }).filter(m => m.id && m.title && m.image);
 
@@ -172,7 +170,7 @@ function renderHeroSlider() {
   slides.forEach((movie, i) => {
     const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>` : '';
     heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})"><img src="${movie.image}" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
-    heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`;
+    heroDots.innerHTML += `<div class="dot ${i===0?'active':''}</div>`;
   });
   heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth)));
 }
@@ -204,9 +202,31 @@ function renderMovies() {
 }
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
+
+// MCHAWI MKUBWA: INAJUA LINK YEYOTE + INABLOCK KUTOKA NJE
+function getPlayerHTML(link){
+  link = link.trim();
+  // 1. KAMA NI.MP4,.M3U8,.WEBM = TUMIA VIDEO TAG NDANI
+  if(link.endsWith('.mp4') || link.endsWith('.m3u8') || link.endsWith('.webm')){
+    return `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${link}" type="video/mp4"></video>`;
+  }
+  // 2. KAMA NI STREAMABLE = LAZIMA TUWEKE /e/ KWA EMBED
+  else if(link.includes('streamable.com')){
+    if(!link.includes('/e/')){ link = link.replace('streamable.com/', 'streamable.com/e/'); }
+    return `<iframe src="${link}?s-autoplay=1" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`;
+  }
+  // 3. KAMA NI SEVA NYINGINE = IFRAME NDANI
+  else {
+    return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`;
+  }
+}
+
 function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById("heroSlider").style.display="none";document.querySelector(".tabs").style.display="none";document.querySelector(".icons").style.display="none";document.getElementById("playerSection").style.display="block";clearInterval(heroSlideInterval);
   if(m.price&&m.price.trim()!==''&&!hasLicense(m.id)){document.getElementById("payBox").style.display="block";document.getElementById("price").textContent=m.price;document.getElementById("payhipLink").href=m.payhipLink||'#';document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Fungua license kwanza</p>";}
-  else{document.getElementById("payBox").style.display="none";document.getElementById("videoBox").innerHTML=`<video controls autoplay playsinline style="width:100%;height:100%"><source src="${m.videoLink}" type="video/mp4"></video>`;}
+  else{
+    document.getElementById("payBox").style.display="none";
+    document.getElementById("videoBox").innerHTML = getPlayerHTML(m.videoLink); // HAPA NDO SIRI
+  }
   loadComments(m.id);
 }
 function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();renderMovies();}
