@@ -11,7 +11,7 @@
 .logo { width:32px; height:32px; }
 .app-name { font-size:18px; font-weight:bold; background:linear-gradient(90deg, #8B5CF6, #EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-/* HERO SLIDER - BANA LA JUU TU 180px KAMA YOUTUBE */
+/* HERO SLIDER - BANA FUPPI JUU IJAWE FULL WIDTH */
 .hero-slider { position:relative; border-radius:12px; overflow:hidden; margin-bottom:18px; background:#000; }
 .hero-slides { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; }
 .hero-slides::-webkit-scrollbar { display:none; }
@@ -21,16 +21,15 @@
   scroll-snap-align:start; 
   flex-shrink:0; 
   background:#000;
-  height:180px; /* BANA FUPPI JUU TU. BADILI UKITAKA 200px */
+  height:180px; /* UREFU WA BANA KUTOKA JUU KWENDA CHINI */
   overflow:hidden;
 }
 .hero-slide img { 
   width:100%; 
   height:100%; 
-  object-fit:contain; /* PICHA YOTE IONEKANE BILA KUKATIKA */
+  object-fit:cover; /* IJAZE KULIA KWENDA KUSHOTO BILA BLACK BARS */
   object-position:center; 
   display:block; 
-  background:#000;
 }
 .hero-text { 
   position:absolute; 
@@ -39,7 +38,7 @@
   display:flex; 
   flex-direction:column; 
   justify-content:center; 
-  background:linear-gradient(90deg, rgba(0,0,0,0.7) 50%, transparent 70%); 
+  background:linear-gradient(90deg, rgba(0,0,0,0.85) 55%, transparent 80%); /* UWEUSI MWISHO TU KULIA */
 }
 .hero-text h1 { 
   font-size:20px; 
@@ -146,7 +145,7 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('all', this)">📂 All Movies</button>
+    <button class="tab active" onclick="switchTab('all', this)">📁 All Movies</button>
     <button class="tab" onclick="switchTab('Series', this)">💻 Series</button>
     <button class="tab" onclick="switchTab('Singo', this)">🎞️ Singo</button>
   </div>
@@ -219,31 +218,34 @@ async function loadMovies() {
     const csv = await res.text();
     const rows = csv.split('\n').slice(1);
 
+    // COLUMN ZA SHEET YAKO: A=ID, B=Title, C=Type, D=Cover_Image, E=Genre, F=Desc, G=Is_Featured, H=Is_Trending, I=Is_New, J=Video, K=Price, L=Payhip
     allMovies = rows.map(row => {
       const cols = row.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       return {
-        id: cols[0]?.replace(/"/g,''),
-        title: cols[1]?.replace(/"/g,''),
-        type: cols[2]?.replace(/"/g,''),
-        image: cols[3]?.replace(/"/g,''),
-        genre: cols[4]?.replace(/"/g,''),
-        desc: cols[5]?.replace(/"/g,''),
-        featured: cols[6]?.replace(/"/g,''),
-        trending: cols[7]?.replace(/"/g,''),
-        new: cols[8]?.replace(/"/g,''),
-        videoLink: cols[9]?.replace(/"/g,''),
-        price: cols[10]?.replace(/"/g,''),
-        payhipLink: cols[11]?.replace(/"/g,'')
+        id: cols[0]?.replace(/"/g,'').trim(),
+        title: cols[1]?.replace(/"/g,'').trim(),
+        type: cols[2]?.replace(/"/g,'').trim(),
+        image: cols[3]?.replace(/"/g,'').trim(), // Column D = Cover_Image
+        genre: cols[4]?.replace(/"/g,'').trim(),
+        desc: cols[5]?.replace(/"/g,'').trim(),
+        featured: cols[6]?.replace(/"/g,'').trim(), // Column G = Is_Featured
+        trending: cols[7]?.replace(/"/g,'').trim(), // Column H = Is_Trending
+        new: cols[8]?.replace(/"/g,'').trim(),
+        videoLink: cols[9]?.replace(/"/g,'').trim(),
+        price: cols[10]?.replace(/"/g,'').trim(),
+        payhipLink: cols[11]?.replace(/"/g,'').trim()
       };
-    }).filter(m => m.id);
+    }).filter(m => m.id && m.title);
 
     if(allMovies.length > 0) {
       renderHeroSlider();
       renderMovies();
       startHeroAutoSlide();
+    } else {
+      document.getElementById("homeGrid").innerHTML = "<p style='color:#666; grid-column:1/4; text-align:center'>Hakuna movie kwenye Sheet</p>";
     }
   } catch(e) {
-    document.getElementById("trendingGrid").innerHTML = "<p style='color:red'>Error: "+e.message+"</p>";
+    document.getElementById("homeGrid").innerHTML = "<p style='color:red'>Error: "+e.message+"</p>";
   }
 }
 
@@ -251,8 +253,9 @@ function renderHeroSlider() {
   const heroSlides = document.getElementById("heroSlides");
   const heroDots = document.getElementById("heroDots");
   
+  // Chukua zile ziko TRUE kwenye Column G = Is_Featured
   const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true").slice(0,5);
-  const slides = heroMovies.length > 0 ? heroMovies : allMovies.slice(0,5);
+  const slides = heroMovies.length > 0 ? heroMovies : allMovies.slice(0,3);
 
   heroSlides.innerHTML = "";
   heroDots.innerHTML = "";
@@ -260,7 +263,7 @@ function renderHeroSlider() {
   slides.forEach((movie, i) => {
     heroSlides.innerHTML += `
       <div class="hero-slide">
-        <img src="${movie.image}">
+        <img src="${movie.image}" onerror="this.style.display='none'">
         <div class="hero-text">
           <h1>${movie.title}</h1>
           <p>${movie.desc}</p>
@@ -289,9 +292,11 @@ function startHeroAutoSlide() {
   heroSlideInterval = setInterval(() => {
     const slides = document.getElementById("heroSlides");
     const total = slides.children.length;
-    heroSlideIndex = (heroSlideIndex + 1) % total;
-    slides.scrollTo({ left: heroSlideIndex * slides.offsetWidth, behavior: 'smooth' });
-    updateHeroDots(heroSlideIndex);
+    if(total > 0) {
+      heroSlideIndex = (heroSlideIndex + 1) % total;
+      slides.scrollTo({ left: heroSlideIndex * slides.offsetWidth, behavior: 'smooth' });
+      updateHeroDots(heroSlideIndex);
+    }
   }, 4000);
 }
 
@@ -326,12 +331,12 @@ function renderMovies() {
     return true;
   }).forEach(movie => {
     const isPaid = movie.price && movie.price.trim()!== "";
-    const IsWatched = watchedList.includes(movie.id);
-    const isTrending = movie.trending?.toLowerCase() === "true";
+    const isWatched = watchedList.includes(movie.id);
+    const isTrending = movie.trending?.toLowerCase() === "true"; // Column H
 
     const cardHome = `
       <div class="movie-card" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">
-        <img src="${movie.image}">
+        <img src="${movie.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555?text=No+Image'">
         ${isPaid? '<div class="star-icon">★</div>' : ''}
         ${isWatched? '<div class="watched-badge">✓</div>' : ''}
         <p>${movie.title}</p>
@@ -340,7 +345,7 @@ function renderMovies() {
 
     const cardTrending = `
       <div class="trending-card" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">
-        <img src="${movie.image}">
+        <img src="${movie.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555?text=No+Image'">
         ${isPaid? '<div class="star-icon">★</div>' : ''}
         ${isWatched? '<div class="watched-badge">✓</div>' : ''}
         <p>${movie.title}</p>
@@ -352,7 +357,7 @@ function renderMovies() {
       hasWatched = true;
     } else {
       home.innerHTML += cardHome;
-      if(isTrending) {
+      if(isTrending) { // Kama Column H = TRUE
         trending.innerHTML += cardTrending;
       }
     }
