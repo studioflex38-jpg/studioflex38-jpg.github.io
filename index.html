@@ -113,8 +113,8 @@
 </div>
 
 <script>
-// TRICK YA KUVUNJA CACHE:?v= + TAREHE
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv&v=" + new Date().getTime();
+// HII NDIO LINK MPYA INAYOVUNJA CORS
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/gviz/tq?tqx=out:csv&gid=0";
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
 let allMovies = [];
@@ -139,12 +139,9 @@ function parseCSV(text) {
 
 async function loadMovies() {
   try {
-    console.log("INAJARIBU LINK:", SHEET_CSV);
-    const res = await fetch(SHEET_CSV, {method:'GET', mode:'cors', cache: "no-store"});
+    const res = await fetch(SHEET_CSV);
     if(!res.ok) throw new Error(`Sheet Status: ${res.status}. Hakikisha Share = Anyone with link`);
-
     const csv = await res.text();
-    console.log("CSV IMELETWA:", csv.substring(0, 100));
     const rows = parseCSV(csv).slice(1);
     allMovies = rows.map(cols => ({
         id: cols[0]?.replace(/"/g,'').trim(), title: cols[1]?.replace(/"/g,'').trim(), type: cols[2]?.replace(/"/g,'').trim(),
@@ -153,20 +150,12 @@ async function loadMovies() {
         videoLink: cols[9]?.replace(/"/g,'').trim(), price: cols[10]?.replace(/"/g,'').trim(), payhipLink: cols[11]?.replace(/"/g,'').trim()
       })).filter(m => m.id && m.title && m.image);
 
-    console.log("MOVIES ZILIZOPATIKANA:", allMovies.length);
-
     if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
-    else {
-      const msg = `Hakuna movie. Angalia: 1. Column A,B,D zimejawa? 2. Kuna row tupu?`;
-      document.getElementById("homeGrid").innerHTML = `<div class="error">${msg}</div>`;
-      document.getElementById("heroSlides").innerHTML = `<div class="error">${msg}</div>`;
-    }
+    else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D zimejawa?</div>"; }
   } catch(e) {
-    console.error("ERROR KUBWA:", e);
-    const msg = `ERROR: ${e.message}. Suluhisho: 1. Share Sheet = Anyone 2. Publish to.csv 3. Fanya Clear Cache`;
-    document.getElementById("homeGrid").innerHTML = `<div class="error">${msg}</div>`;
-    document.getElementById("trendingGrid").innerHTML = `<div class="error">${msg}</div>`;
-    document.getElementById("heroSlides").innerHTML = `<div class="error">${msg}</div>`;
+    document.getElementById("homeGrid").innerHTML = `<div class='error'>ERROR: ${e.message}. Suluhisho: 1. Sheet > Share > Anyone 2. Tumia link ya gviz</div>`;
+    document.getElementById("trendingGrid").innerHTML = `<div class='error'>${e.message}</div>`;
+    document.getElementById("heroSlides").innerHTML = `<div class='error'>${e.message}</div>`;
   }
 }
 
