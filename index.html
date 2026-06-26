@@ -69,7 +69,7 @@
 
   <div class="header">
     <img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png">
-    <div class="app-name">Chilagu Cinema</div>
+    <div class="app-name">CHILAGU LEGACY CINEMA</div>
   </div>
 
   <div class="hero" id="heroSection">
@@ -77,12 +77,12 @@
     <div class="hero-text">
       <h1 id="heroTitle">Loading...</h1>
       <p id="heroDesc">Tafadhali subiri...</p>
-      <button class="btn-tazama" onclick="openPlayer(heroMovie)">▶ Watching</button>
+      <button class="btn-tazama" onclick="openPlayer(heroMovie)">▶ Tazama</button>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('all', this)">🎥 All Movies</button>
+    <button class="tab active" onclick="switchTab('all', this)">🎦 All Movies</button>
     <button class="tab" onclick="switchTab('Series', this)">📺 Series</button>
     <button class="tab" onclick="switchTab('Singo', this)">🎞️ Singo</button>
   </div>
@@ -106,9 +106,15 @@
     </div>
   </div>
 
+  <!-- 1. TRENDING - MOVIE CHACHE TU -->
   <h2 class="section-title">TRENDING 🔥</h2>
   <div class="movie-grid" id="trendingGrid"></div>
 
+  <!-- 2. HOME - LIST KUU YA MOVIES ZOTE 1000+ -->
+  <h2 class="section-title">HOME / FILAMU ZOTE 🎥</h2>
+  <div class="movie-grid" id="homeGrid"></div>
+
+  <!-- 3. WATCHED -->
   <h2 class="section-title">Watched ✓</h2>
   <div class="movie-grid" id="watchedGrid"></div>
   <p id="noWatched" style="color:#666; text-align:center; display:none; margin:20px 0">Bado hujatazama movie</p>
@@ -153,7 +159,7 @@ async function loadMovies() {
     const rows = csv.split('\n').slice(1);
 
     allMovies = rows.map(row => {
-      const cols = row.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/); // split kwa comma lakini iheshimu "
+      const cols = row.split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/);
       return {
         id: cols[0]?.replace(/"/g,''),
         title: cols[1]?.replace(/"/g,''),
@@ -196,11 +202,13 @@ function markWatched(id) {
 
 function renderMovies() {
   const trending = document.getElementById("trendingGrid");
+  const home = document.getElementById("homeGrid");
   const watched = document.getElementById("watchedGrid");
   const noWatched = document.getElementById("noWatched");
   const watchedList = getWatched();
 
   trending.innerHTML = "";
+  home.innerHTML = "";
   watched.innerHTML = "";
 
   let hasWatched = false;
@@ -226,10 +234,24 @@ function renderMovies() {
     if(isWatched) {
       watched.innerHTML += card;
       hasWatched = true;
-    } else if(isTrending) {
-      trending.innerHTML += card;
+    } else {
+      // 1. Onyesha kwenye HOME - movies zote
+      home.innerHTML += card;
+      
+      // 2. Onyesha kwenye TRENDING - movie zenye Is_Trending = True tu
+      if(isTrending) {
+        trending.innerHTML += card;
+      }
     }
   });
+
+  if(trending.innerHTML === "") {
+    trending.innerHTML = "<p style='color:#666; grid-column:1/4; text-align:center; font-size:12px'>Hakuna movie za Trending sasa hivi</p>";
+  }
+  
+  if(home.innerHTML === "") {
+    home.innerHTML = "<p style='color:#666; grid-column:1/4; text-align:center; font-size:12px'>Hakuna movie</p>";
+  }
 
   noWatched.style.display = hasWatched? "none" : "block";
 }
