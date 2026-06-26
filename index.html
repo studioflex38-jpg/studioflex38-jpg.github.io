@@ -14,7 +14,7 @@
 .hero-slides::-webkit-scrollbar { display:none; }
 .hero-slide { min-width:100%; position:relative; scroll-snap-align:start; flex-shrink:0; background:#000; height:180px; overflow:hidden; cursor:pointer; }
 .hero-slide img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-.hero-text { position:absolute; left:0; right:0; bottom:0; padding:15px; display:flex; flex-direction:column; justify-content:flex-end; background:linear-gradient(0deg, rgba(0,0,0,0.4) 40%, transparent 100%); pointer-events:none; } /* WEUSI UMEPUNGUA 40% TU */
+.hero-text { position:absolute; left:0; right:0; bottom:0; padding:15px; display:flex; flex-direction:column; justify-content:flex-end; background:linear-gradient(0deg, rgba(0,0,0,0.4) 40%, transparent 100%); pointer-events:none; }
 .hero-text h1 { font-size:20px; font-weight:bold; margin:0 0 6px 0; text-shadow:0 2px 8px #000; }
 .hero-text p { font-size:12px; color:#ddd; margin:0 0 12px 0; max-width:85%; text-shadow:0 2px 8px #000; }
 .btn-tazama { background:linear-gradient(90deg, #A855F7, #EC4899); border:none; color:#fff; padding:8px 20px; border-radius:8px; font-weight:bold; font-size:13px; display:flex; align-items:center; gap:6px; cursor:pointer; width:fit-content; pointer-events:auto; }
@@ -112,7 +112,7 @@
 </div>
 
 <script>
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?output=csv";
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
 let allMovies = [];
@@ -186,7 +186,7 @@ function renderMovies() {
     const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${watched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
     const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${watched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
 
-    home.innerHTML+=card; // FIX: HOME = MOVIE ZOTE SASA
+    home.innerHTML+=card;
     if(watched){watched.innerHTML+=card;hasWatched=true;}
     if(trend){trending.innerHTML+=tCard;}
   });
