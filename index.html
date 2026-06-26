@@ -3,85 +3,70 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body { margin:0; background:#000; color:#fff; font-family:Arial; padding:15px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#000; color:#fff; font-family:Arial; }
+ .container { padding:12px; }
 
-  /* HEADER - LOGO + JINA KAMA YAKO */
-  .header { display:flex; align-items:center; gap:8px; margin-bottom:15px; }
-  .logo { width:35px; height:35px; }
-  .app-name { font-size:15px; font-weight:bold; color:#fff; }
+  /* HEADER */
+ .header { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+ .logo { width:32px; height:32px; }
+ .app-name { font-size:15px; font-weight:bold; }
 
-  /* HERO - PICHA + TEXT + BUTTON PINK KAMA YAKO */
-  .hero { position:relative; border-radius:12px; overflow:hidden; margin-bottom:20px; }
-  .hero img { width:100%; height:240px; object-fit:cover; }
-  .hero-text { position:absolute; bottom:0; left:0; right:0; padding:15px; background:linear-gradient(transparent, rgba(0,0,0,0.9)); }
-  .hero h1 { font-size:28px; font-weight:bold; margin:0 0 8px 0; line-height:1.2; }
-  .hero p { font-size:13px; color:#ddd; margin:0 0 12px 0; line-height:1.4; }
-  .btn-tazama { 
-    background:linear-gradient(90deg, #FF00FF, #FF1493); 
-    border:none; 
-    color:#fff; 
-    padding:10px 28px; 
-    border-radius:25px; 
-    font-weight:bold; 
-    font-size:15px;
-    display:flex;
-    align-items:center;
-    gap:6px;
+  /* HERO */
+ .hero { position:relative; border-radius:10px; overflow:hidden; margin-bottom:18px; }
+ .hero img { width:100%; height:200px; object-fit:cover; }
+ .hero-text { position:absolute; bottom:0; left:0; right:0; padding:12px; background:linear-gradient(transparent, #000 85%); }
+ .hero h1 { font-size:22px; font-weight:bold; margin:0 0 6px 0; }
+ .hero p { font-size:12px; color:#ccc; margin:0 0 10px 0; }
+ .btn-tazama {
+    background:linear-gradient(90deg, #FF1493, #C44569);
+    border:none; color:#fff; padding:8px 22px; border-radius:20px;
+    font-weight:bold; font-size:14px; display:flex; align-items:center; gap:5px;
   }
 
-  /* TABS - PINK ACTIVE KAMA YAKO */
-  .tabs { display:flex; gap:10px; margin:20px 0; }
-  .tab { 
-    background:#1a1a1a; 
-    color:#888; 
-    padding:10px 18px; 
-    border-radius:25px; 
-    border:none; 
-    font-size:14px;
-    display:flex;
-    align-items:center;
-    gap:6px;
-  }
-  .tab.active { 
-    background:linear-gradient(90deg, #FF1493, #FF00FF); 
-    color:#fff; 
-  }
+  /* TABS */
+ .tabs { display:flex; gap:8px; margin:15px 0; overflow-x:auto; }
+ .tab { background:#1a1a1a; color:#888; padding:8px 16px; border-radius:20px; border:none; font-size:13px; white-space:nowrap; }
+ .tab.active { background:linear-gradient(90deg, #FF1493, #C44569); color:#fff; }
 
-  /* ICON - DUARA LA PINK KAMA YAKO */
-  .icons { display:flex; justify-content:space-around; margin:20px 0; }
-  .icon-box { text-align:center; }
-  .icon-circle { 
-    width:55px; 
-    height:55px; 
-    border-radius:50%; 
-    background:#1a1a1a; 
-    display:flex; 
-    align-items:center; 
-    justify-content:center; 
-    font-size:26px; 
-    margin:0 auto 5px;
+  /* ICON ZA CINEMA - SVG HALISI */
+ .icons { display:flex; justify-content:space-around; margin:15px 0; }
+ .icon-box { text-align:center; cursor:pointer; }
+ .icon-circle {
+    width:50px; height:50px; border-radius:50%; background:#1a1a1a;
+    display:flex; align-items:center; justify-content:center; margin:0 auto 4px;
   }
-  .icon-box.active .icon-circle { 
-    background:linear-gradient(135deg, #FF1493, #FF00FF); 
-  }
-  .icon-box p { margin:0; font-size:12px; color:#888; }
-  .icon-box.active p { color:#fff; }
+ .icon-box.active.icon-circle { background:linear-gradient(135deg, #FF1493, #C44569); }
+ .icon-circle svg { width:24px; height:24px; fill:#fff; }
+ .icon-box p { margin:0; font-size:11px; color:#888; }
+ .icon-box.active p { color:#fff; }
 
-  /* TRENDING */
-  .section-title { font-size:18px; font-weight:bold; margin:25px 0 12px 0; }
-  .movies { display:flex; gap:12px; overflow-x:auto; padding-bottom:10px; }
-  .card { min-width:140px; background:#1a1a1a; border-radius:10px; overflow:hidden; }
-  .card img { width:140px; height:200px; object-fit:cover; }
-  .card p { padding:8px; margin:0; font-size:13px; }
+  /* SECTION TITLE */
+ .section-title { font-size:16px; font-weight:bold; margin:20px 0 10px 0; }
 
-  /* COMMENT */
-  .comment-section { margin-top:30px; border-top:1px solid #222; padding-top:20px; }
-  .comment { background:#1a1a1a; padding:10px; margin:8px 0; border-radius:8px; }
-  input, textarea { width:100%; padding:10px; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:8px; margin:5px 0; }
-  .btn-comment { width:100%; padding:12px; background:linear-gradient(90deg, #FF1493, #FF00FF); border:none; color:#fff; border-radius:8px; font-weight:bold; }
+  /* MOVIE GRID - LANDSCAPE 3 KWA SAFU */
+ .movie-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+ .movie-card { background:#111; border-radius:6px; overflow:hidden; cursor:pointer; }
+ .movie-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+ .movie-card p { padding:6px; margin:0; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+ .star-icon { position:absolute; top:4px; right:4px; background:#FFD700; color:#000; padding:2px 4px; border-radius:3px; font-size:9px; font-weight:bold; }
+
+  /* VIDEO PLAYER + COMMENT + PAY */
+ .player-section { display:none; margin-top:20px; }
+ .video-box { width:100%; aspect-ratio:16/9; background:#000; border-radius:8px; margin-bottom:15px; display:flex; align-items:center; justify-content:center; }
+ .pay-box { background:#1a1a1a; padding:12px; border-radius:8px; margin-bottom:15px; border:2px solid #FF1493; }
+ .pay-box input { width:100%; padding:8px; background:#000; border:1px solid #333; color:#fff; border-radius:5px; margin:6px 0; }
+ .btn-pay { width:100%; padding:10px; background:linear-gradient(90deg, #FF1493, #C44569); border:none; color:#fff; border-radius:5px; font-weight:bold; }
+
+  /* COMMENT NDANI YA PLAYER */
+ .comment-section { margin-top:15px; }
+ .comment { background:#1a1a1a; padding:8px; margin:6px 0; border-radius:6px; font-size:12px; }
+ .comment b { color:#FF1493; }
+ .comment input,.comment textarea { width:100%; padding:8px; background:#000; border:1px solid #333; color:#fff; border-radius:5px; margin:5px 0; font-size:12px; }
 </style>
 </head>
 <body>
+<div class="container">
 
   <!-- HEADER -->
   <div class="header">
@@ -89,13 +74,13 @@
     <div class="app-name">CHILAGU LEGACY CINEMA</div>
   </div>
 
-  <!-- HERO KAMA PICHA YAKO -->
-  <div class="hero">
-    <img src="https://i.postimg.cc/7Yr5rR8L/yellow.jpg">
+  <!-- HERO -->
+  <div class="hero" id="heroSection">
+    <img id="heroImg" src="">
     <div class="hero-text">
-      <h1>TRAILER | YELLOW RECKONING FULL POWER</h1>
-      <p>kisasi cha Binti Ida, kupoteza family yake, je ataweza kulipa kisasi Kwa huyu shetani Ambae hatazamiki??</p>
-      <button class="btn-tazama">▶ Tazama</button>
+      <h1 id="heroTitle">Loading...</h1>
+      <p id="heroDesc">Tafadhali subiri...</p>
+      <button class="btn-tazama" onclick="openPlayer(heroMovie)">▶ Tazama</button>
     </div>
   </div>
 
@@ -106,79 +91,168 @@
     <button class="tab">🎞️ Singo</button>
   </div>
 
-  <!-- ICON KAMA YAKO -->
+  <!-- ICON ZA CINEMA -->
   <div class="icons">
-    <div class="icon-box active">
-      <div class="icon-circle">🔥</div>
+    <div class="icon-box active" onclick="filter('all', this)">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <p>Zote</p>
     </div>
-    <div class="icon-box">
-      <div class="icon-circle">⚡</div>
+    <div class="icon-box" onclick="filter('action', this)">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
       <p>Action</p>
     </div>
-    <div class="icon-box">
-      <div class="icon-circle">❤️</div>
+    <div class="icon-box" onclick="filter('love', this)">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
       <p>Love</p>
     </div>
-    <div class="icon-box">
-      <div class="icon-circle">🎭</div>
+    <div class="icon-box" onclick="filter('drama', this)">
+      <div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg></div>
       <p>Drama</p>
     </div>
   </div>
 
   <!-- TRENDING -->
   <h2 class="section-title">TRENDING 🔥</h2>
-  <div class="movies">
-    <div class="card">
-      <img src="https://i.postimg.cc/7Yr5rR8L/yellow.jpg">
-      <p>TRAILER | Yellow...</p>
+  <div class="movie-grid" id="movieGrid"></div>
+
+  <!-- PLAYER SECTION - HAPA NDIO COMMENT + PAY INAONEKANA -->
+  <div class="player-section" id="playerSection">
+    <div class="video-box" id="videoBox">Video Player Hapa</div>
+
+    <!-- PAYHIP IKIWA NI MOVIE YA KULIPIA -->
+    <div class="pay-box" id="payBox" style="display:none;">
+      <p style="margin:0 0 8px 0; font-size:13px;">Movie hii ni ya kulipia. Nunua license:</p>
+      <input id="licenseKey" placeholder="Weka license key ya Payhip">
+      <button class="btn-pay" onclick="unlockMovie()">Fungua Movie</button>
+      <a id="payhipLink" href="#" target="_blank" style="display:block; text-align:center; margin-top:8px; color:#00FF00; font-size:12px;">Nunua Payhip →</a>
     </div>
-    <div class="card">
-      <img src="https://i.postimg.cc/3J4k6Q2B/love.jpg">
-      <p>LOVE AND DESTINY</p>
+
+    <!-- COMMENT SECTION NDANI YA MOVIE -->
+    <div class="comment-section">
+      <h3 style="font-size:15px; margin-bottom:10px;">Comments</h3>
+      <div id="commentList"></div>
+      <input id="cName" placeholder="Jina lako">
+      <textarea id="cText" placeholder="Andika comment..." rows="2"></textarea>
+      <button class="btn-pay" onclick="sendComment()">Tuma Comment</button>
     </div>
+
+    <button onclick="closePlayer()" style="width:100%; margin-top:15px; padding:10px; background:#333; border:none; color:#fff; border-radius:5px;">↩ Rudi Nyuma</button>
   </div>
 
-  <!-- COMMENT LIVE -->
-  <div class="comment-section">
-    <h3>Comments</h3>
-    <div id="comments"></div>
-    <input id="name" placeholder="Jina lako">
-    <textarea id="comment" placeholder="Andika comment..." rows="3"></textarea>
-    <button class="btn-comment" onclick="sendComment()">Tuma Comment</button>
-  </div>
+</div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
-const movieId = "yellow1";
+let allMovies = [];
+let heroMovie = null;
+let currentMovie = null;
 
-// Load comments
-async function loadComments() {
-  const res = await fetch(SCRIPT_URL + "?id=" + movieId);
+// SOMA MOVIES KUTOKA GOOGLE SHEET YAKO
+async function loadMovies() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    allMovies = data.movies || [];
+
+    if(allMovies.length > 0) {
+      heroMovie = allMovies[0];
+      document.getElementById("heroImg").src = heroMovie.image;
+      document.getElementById("heroTitle").textContent = heroMovie.title;
+      document.getElementById("heroDesc").textContent = heroMovie.desc;
+      renderMovies();
+    }
+  } catch(e) {
+    document.getElementById("movieGrid").innerHTML = "<p style='color:red'>Imeshindikana kupakia movies</p>";
+  }
+}
+
+// ONYESHA MOVIES GRID 3 KWA SAFU
+function renderMovies(filterGenre = 'all') {
+  const grid = document.getElementById("movieGrid");
+  grid.innerHTML = "";
+
+  allMovies.filter(m => filterGenre === 'all' || m.genre === filterGenre).forEach(movie => {
+    const isPaid = movie.paid === "TRUE";
+    grid.innerHTML += `
+      <div class="movie-card" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})" style="position:relative">
+        <img src="${movie.image}">
+        ${isPaid? '<div class="star-icon">★</div>' : ''}
+        <p>${movie.title}</p>
+      </div>
+    `;
+  });
+}
+
+// FUNGUA PLAYER - HAPA NDIO COMMENT + PAY INAANZA
+function openPlayer(movie) {
+  currentMovie = movie;
+  document.getElementById("heroSection").style.display = "none";
+  document.getElementById("playerSection").style.display = "block";
+
+  // IKIWA NI YA KULIPIA ONYESHA PAYHIP
+  if(movie.paid === "TRUE" &&!hasLicense(movie.id)) {
+    document.getElementById("payBox").style.display = "block";
+    document.getElementById("payhipLink").href = movie.payhipLink;
+    document.getElementById("videoBox").innerHTML = "<p style='color:#888'>Fungua license kwanza</p>";
+  } else {
+    document.getElementById("payBox").style.display = "none";
+    document.getElementById("videoBox").innerHTML = `<video controls style="width:100%; height:100%"><source src="${movie.videoLink}" type="video/mp4"></video>`;
+  }
+
+  loadComments(movie.id);
+}
+
+// FUNGA PLAYER
+function closePlayer() {
+  document.getElementById("playerSection").style.display = "none";
+  document.getElementById("heroSection").style.display = "block";
+}
+
+// LICENSE
+function hasLicense(id) {
+  return localStorage.getItem("license_" + id);
+}
+function unlockMovie() {
+  const key = document.getElementById("licenseKey").value.trim();
+  if(key.length < 5) return alert("Weka key sahihi");
+  localStorage.setItem("license_" + currentMovie.id, key);
+  openPlayer(currentMovie);
+  alert("Movie imefunguka!");
+}
+
+// COMMENT
+async function loadComments(movieId) {
+  const res = await fetch(SCRIPT_URL + "?movieId=" + movieId);
   const data = await res.json();
   let html = "";
   data.reverse().forEach(c => {
-    html += `<div class="comment"><b style="color:#FF1493">${c.name}</b> <span style="float:right; color:#666; font-size:11px">${c.date}</span><p>${c.comment}</p></div>`;
+    html += `<div class="comment"><b>${c.name}</b> <span style="float:right; color:#666; font-size:10px">${c.date}</span><br>${c.comment}</div>`;
   });
-  document.getElementById("comments").innerHTML = html || "<p style='color:#666'>Hakuna comment</p>";
+  document.getElementById("commentList").innerHTML = html || "<p style='color:#666; font-size:12px'>Hakuna comment</p>";
 }
 
-// Send comment
 async function sendComment() {
-  const name = document.getElementById("name").value || "Anonymous";
-  const comment = document.getElementById("comment").value;
-  if(!comment) return alert("Andika comment");
-  
+  const name = document.getElementById("cName").value || "Anonymous";
+  const text = document.getElementById("cText").value;
+  if(!text) return alert("Andika comment");
+
   await fetch(SCRIPT_URL, {
     method:"POST",
-    body:JSON.stringify({Content_ID:movieId, Name:name, Comment:comment, Date:new Date().toLocaleString()})
+    body:JSON.stringify({Content_ID:currentMovie.id, Name:name, Comment:text, Date:new Date().toLocaleString()})
   });
-  
-  document.getElementById("comment").value = "";
-  loadComments();
+
+  document.getElementById("cText").value = "";
+  loadComments(currentMovie.id);
 }
 
-loadComments();
+// FILTER
+function filter(genre, el) {
+  document.querySelectorAll('.icon-box').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderMovies(genre);
+}
+
+loadMovies();
 </script>
 </body>
 </html>
