@@ -53,7 +53,6 @@
 .comment b { color:#EC4899; }
 .comment input,.comment textarea { width:100%; padding:8px; background:#000; border:1px solid #333; color:#fff; border-radius:5px; margin:5px 0; font-size:12px; }
 .loading { color:#888; text-align:center; padding:20px; font-size:13px; }
-.error { color:#ff5555; text-align:center; padding:20px; font-size:12px; background:#1a0000; border-radius:8px; margin:10px 0; }
 </style>
 </head>
 <body>
@@ -123,27 +122,14 @@ let currentType = 'all';
 let heroSlideIndex = 0;
 let heroSlideInterval;
 
-// CSV PARSER HALISI - INASOMA HATA KAMA KUNA KOMA NDANI YA ""
 function parseCSV(text) {
-  const rows = [];
-  let row = [];
-  let cell = '';
-  let inQuotes = false;
-
+  const rows = []; let row = []; let cell = ''; let inQuotes = false;
   for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const nextChar = text[i + 1];
-
-    if (char === '"') {
-      if (inQuotes && nextChar === '"') { cell += '"'; i++; }
-      else { inQuotes =!inQuotes; }
-    } else if (char === ',' &&!inQuotes) {
-      row.push(cell.trim()); cell = '';
-    } else if (char === '\n' &&!inQuotes) {
-      row.push(cell.trim()); rows.push(row); row = []; cell = '';
-    } else {
-      cell += char;
-    }
+    const char = text[i]; const nextChar = text[i + 1];
+    if (char === '"') { if (inQuotes && nextChar === '"') { cell += '"'; i++; } else { inQuotes =!inQuotes; } }
+    else if (char === ',' &&!inQuotes) { row.push(cell.trim()); cell = ''; }
+    else if (char === '\n' &&!inQuotes) { row.push(cell.trim()); rows.push(row); row = []; cell = ''; }
+    else { cell += char; }
   }
   if (cell) { row.push(cell.trim()); rows.push(row); }
   return rows;
@@ -151,63 +137,34 @@ function parseCSV(text) {
 
 async function loadMovies() {
   try {
-    console.log("1. Inajaribu kupakia:", SHEET_CSV);
     const res = await fetch(SHEET_CSV, {cache: "no-store"});
-    if(!res.ok) throw new Error(`Sheet haipatikani: ${res.status}. Hakikisha umePublish to web`);
-
+    if(!res.ok) throw new Error(`Sheet haipatikani: ${res.status}`);
     const csv = await res.text();
-    console.log("2. CSV imeletwa, urefu:", csv.length);
-
-    const rows = parseCSV(csv).slice(1); // Kata header row 1
-    console.log("3. Rows zilizopatikana:", rows.length);
-
-    allMovies = rows.map((cols, idx) => ({
-        id: cols[0]?.replace(/"/g,'').trim(), // A
-        title: cols[1]?.replace(/"/g,'').trim(), // B
-        type: cols[2]?.replace(/"/g,'').trim(), // C
-        image: cols[3]?.replace(/"/g,'').trim(), // D
-        genre: cols[4]?.replace(/"/g,'').trim(), // E
-        desc: cols[5]?.replace(/"/g,'').trim(), // F
-        featured: cols[6]?.replace(/"/g,'').trim(), // G
-        trending: cols[7]?.replace(/"/g,'').trim(), // H
-        new: cols[8]?.replace(/"/g,'').trim(), // I
-        videoLink: cols[9]?.replace(/"/g,'').trim(), // J
-        price: cols[10]?.replace(/"/g,'').trim(), // K
-        payhipLink: cols[11]?.replace(/"/g,'').trim() // L
+    const rows = parseCSV(csv).slice(1);
+    allMovies = rows.map(cols => ({
+        id: cols[0]?.replace(/"/g,'').trim(), title: cols[1]?.replace(/"/g,'').trim(), type: cols[2]?.replace(/"/g,'').trim(),
+        image: cols[3]?.replace(/"/g,'').trim(), genre: cols[4]?.replace(/"/g,'').trim(), desc: cols[5]?.replace(/"/g,'').trim(),
+        featured: cols[6]?.replace(/"/g,'').trim(), trending: cols[7]?.replace(/"/g,'').trim(), new: cols[8]?.replace(/"/g,'').trim(),
+        videoLink: cols[9]?.replace(/"/g,'').trim(), price: cols[10]?.replace(/"/g,'').trim(), payhipLink: cols[11]?.replace(/"/g,'').trim()
       })).filter(m => m.id && m.title && m.image);
 
-    console.log("4. Movies valid:", allMovies.length, allMovies);
-
-    if(allMovies.length > 0) {
-      renderHeroSlider();
-      renderMovies();
-      startHeroAutoSlide();
-    } else {
-      const msg = `Hakuna movie kwenye Sheet. Angalia: 1. Umepublish? 2. Column A,B,D zimejawa? 3. Kuna row tupu?`;
-      document.getElementById("homeGrid").innerHTML = `<div class="error">${msg}</div>`;
-      document.getElementById("heroSlides").innerHTML = `<div class="error">${msg}</div>`;
-    }
+    if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
+    else { document.getElementById("homeGrid").innerHTML = "<p style='color:#ff5555; grid-column:1/4; text-align:center'>Hakuna movie kwenye Sheet</p>"; }
   } catch(e) {
-    console.error("ERROR KUBWA:", e);
-    const msg = `ERROR: ${e.message}. Suluhisho: 1. Angalia Internet 2. Publish Sheet to Web 3. Fanya refresh`;
-    document.getElementById("homeGrid").innerHTML = `<div class="error">${msg}</div>`;
-    document.getElementById("trendingGrid").innerHTML = `<div class="error">${msg}</div>`;
-    document.getElementById("heroSlides").innerHTML = `<div class="error">${msg}</div>`;
+    document.getElementById("homeGrid").innerHTML = `<p style='color:red; grid-column:1/4'>ERROR: ${e.message}</p>`;
+    document.getElementById("trendingGrid").innerHTML = `<p style='color:red'>ERROR: ${e.message}</p>`;
+    document.getElementById("heroSlides").innerHTML = `<p style='color:red; padding:20px'>ERROR: ${e.message}</p>`;
   }
 }
 
 function renderHeroSlider() {
-  const heroSlides = document.getElementById("heroSlides");
-  const heroDots = document.getElementById("heroDots");
+  const heroSlides = document.getElementById("heroSlides"); const heroDots = document.getElementById("heroDots");
   const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true").slice(0,5);
   const slides = heroMovies.length > 0? heroMovies : allMovies.slice(0,3);
-
-  heroSlides.innerHTML = "";
-  heroDots.innerHTML = "";
-
+  heroSlides.innerHTML = ""; heroDots.innerHTML = "";
   slides.forEach((movie, i) => {
     const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>` : '';
-    heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})"><img src="${movie.image}" onerror="this.src='https://via.placeholder.com/600x300/111/555?text=No+Image'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
+    heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})"><img src="${movie.image}" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
     heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`;
   });
   heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth)));
@@ -216,7 +173,6 @@ function updateHeroDots(index) { heroSlideIndex = index; document.querySelectorA
 function startHeroAutoSlide() { clearInterval(heroSlideInterval); heroSlideInterval = setInterval(() => { const s = document.getElementById("heroSlides"); const t = s.children.length; if(t>0){ heroSlideIndex=(heroSlideIndex+1)%t; s.scrollTo({left:heroSlideIndex*s.offsetWidth,behavior:'smooth'}); updateHeroDots(heroSlideIndex); }}, 4000); }
 function getWatched() { return JSON.parse(localStorage.getItem("watched_movies") || "[]"); }
 function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);localStorage.setItem("watched_movies",JSON.stringify(w));} }
-
 function renderMovies() {
   const trending=document.getElementById("trendingGrid"); const home=document.getElementById("homeGrid"); const watched=document.getElementById("watchedGrid"); const noWatched=document.getElementById("noWatched"); const wList=getWatched();
   trending.innerHTML=""; home.innerHTML=""; watched.innerHTML=""; let hasWatched=false;
@@ -243,7 +199,6 @@ function hasLicense(id){return localStorage.getItem("license_"+id);}
 function unlockMovie(){const k=document.getElementById("licenseKey").value.trim();if(k.length<5)return alert("Weka key sahihi");localStorage.setItem("license_"+currentMovie.id,k);openPlayer(currentMovie);}
 async function loadComments(id){try{const r=await fetch(COMMENT_URL+"?movieId="+id);const d=await r.json();let h="";d.reverse().forEach(c=>{h+=`<div class="comment"><b>${c.name}</b> <span style="float:right;color:#666;font-size:10px">${c.date}</span><br>${c.comment}</div>`;});document.getElementById("commentList").innerHTML=h||"<p style='color:#666;font-size:12px'>Hakuna comment</p>";}catch(e){}}
 async function sendComment(){const n=document.getElementById("cName").value||"Anonymous";const t=document.getElementById("cText").value;if(!t)return alert("Andika comment");await fetch(COMMENT_URL,{method:"POST",body:JSON.stringify({Content_ID:currentMovie.id,Name:n,Comment:t,Date:new Date().toLocaleString()})});document.getElementById("cText").value="";loadComments(currentMovie.id);}
-
 loadMovies();
 </script>
 </body>
