@@ -3,8 +3,8 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#000; color:#fff; font-family:Arial; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; color:#fff; font-family:Arial; }
 .container { padding:12px; padding-bottom:40px; }
 .header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
 .logo { width:32px; height:32px; }
@@ -58,40 +58,32 @@
 </head>
 <body>
 <div class="container">
-
   <div class="header">
     <img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png">
     <div class="app-name">Chilagu Cinema</div>
   </div>
-
   <div class="hero-slider" id="heroSlider">
     <div class="hero-slides" id="heroSlides"><p class="loading">Inapakia Bana...</p></div>
     <div class="hero-dots" id="heroDots"></div>
   </div>
-
   <div class="tabs">
     <button class="tab active" onclick="switchTab('all', this)">📁 All Movies</button>
     <button class="tab" onclick="switchTab('Series', this)">💻 Series</button>
     <button class="tab" onclick="switchTab('Singo', this)">🎞️ Singo</button>
   </div>
-
   <div class="icons">
     <div class="icon-box active" onclick="filterCategory('all', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Zote</p></div>
     <div class="icon-box" onclick="filterCategory('Action', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div><p>Action</p></div>
     <div class="icon-box" onclick="filterCategory('Love', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><p>Love</p></div>
     <div class="icon-box" onclick="filterCategory('Drama', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Drama</p></div>
   </div>
-
   <h2 class="section-title">TRENDING 🔥</h2>
   <div class="trending-slider" id="trendingGrid"><p class="loading">Inapakia...</p></div>
-
   <h2 class="section-title">HOME</h2>
   <div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Inapakia movie...</p></div>
-
   <h2 class="section-title">Watched ✓</h2>
   <div class="movie-grid" id="watchedGrid"></div>
   <p id="noWatched" style="color:#666; text-align:center; display:none; margin:20px 0">Bado hujatazama movie</p>
-
   <div class="player-section" id="playerSection">
     <div class="video-box" id="videoBox"></div>
     <div class="pay-box" id="payBox" style="display:none;">
@@ -109,12 +101,11 @@
     </div>
     <button onclick="closePlayer()" style="width:100%; margin-top:15px; padding:10px; background:#333; border:none; color:#fff; border-radius:5px;">↩ Rudi Nyuma</button>
   </div>
-
 </div>
 
 <script>
-// HII NDIO LINK MPYA INAYOVUNJA CORS
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/gviz/tq?tqx=out:csv&gid=0";
+// LINK YAKO YA.CSV - USIIGUSE TENA
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
 let allMovies = [];
@@ -140,22 +131,36 @@ function parseCSV(text) {
 async function loadMovies() {
   try {
     const res = await fetch(SHEET_CSV);
-    if(!res.ok) throw new Error(`Sheet Status: ${res.status}. Hakikisha Share = Anyone with link`);
+    if(!res.ok) throw new Error(`Sheet Status: ${res.status}`);
     const csv = await res.text();
-    const rows = parseCSV(csv).slice(1);
-    allMovies = rows.map(cols => ({
-        id: cols[0]?.replace(/"/g,'').trim(), title: cols[1]?.replace(/"/g,'').trim(), type: cols[2]?.replace(/"/g,'').trim(),
-        image: cols[3]?.replace(/"/g,'').trim(), genre: cols[4]?.replace(/"/g,'').trim(), desc: cols[5]?.replace(/"/g,'').trim(),
-        featured: cols[6]?.replace(/"/g,'').trim(), trending: cols[7]?.replace(/"/g,'').trim(), new: cols[8]?.replace(/"/g,'').trim(),
-        videoLink: cols[9]?.replace(/"/g,'').trim(), price: cols[10]?.replace(/"/g,'').trim(), payhipLink: cols[11]?.replace(/"/g,'').trim()
-      })).filter(m => m.id && m.title && m.image);
+    const rows = parseCSV(csv);
+    const headers = rows[0].map(h => h.trim()); // Inachukua majina yako halisi
+    const data = rows.slice(1);
+
+    // CODE INAJIREKEBISHA KWA MAJINA YAKO: Content_ID, Cover_Image, Video, payhip
+    allMovies = data.map(cols => {
+      let obj = {};
+      headers.forEach((h, i) => { obj[h] = cols[i]?.replace(/"/g,'').trim(); });
+      return {
+        id: obj['Content_ID'],
+        title: obj['Title'],
+        type: obj['Type'],
+        image: obj['Cover_Image'], // Inatumia Cover_Image yako
+        genre: obj['Genre'],
+        desc: obj['Description'],
+        featured: obj['Is_Featured'],
+        trending: obj['Is_Trending'],
+        new: obj['Is_New'],
+        videoLink: obj['Video'], // Inatumia Video yako
+        price: obj['Price'],
+        payhipLink: obj['payhip'] // Inatumia payhip yako
+      };
+    }).filter(m => m.id && m.title && m.image);
 
     if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
-    else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D zimejawa?</div>"; }
+    else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D,J zimejawa?</div>"; }
   } catch(e) {
-    document.getElementById("homeGrid").innerHTML = `<div class='error'>ERROR: ${e.message}. Suluhisho: 1. Sheet > Share > Anyone 2. Tumia link ya gviz</div>`;
-    document.getElementById("trendingGrid").innerHTML = `<div class='error'>${e.message}</div>`;
-    document.getElementById("heroSlides").innerHTML = `<div class='error'>${e.message}</div>`;
+    document.getElementById("homeGrid").innerHTML = `<div class='error'>ERROR: ${e.message}</div>`;
   }
 }
 
@@ -200,7 +205,7 @@ function renderMovies() {
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
 function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById("heroSlider").style.display="none";document.querySelector(".tabs").style.display="none";document.querySelector(".icons").style.display="none";document.getElementById("playerSection").style.display="block";clearInterval(heroSlideInterval);
-  if(m.price&&m.price.trim()!==''&&!hasLicense(m.id)){document.getElementById("payBox").style.display="block";document.getElementById("price").textContent=m.price;document.getElementById("payhipLink").href=m.payhipLink;document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Fungua license kwanza</p>";}
+  if(m.price&&m.price.trim()!==''&&!hasLicense(m.id)){document.getElementById("payBox").style.display="block";document.getElementById("price").textContent=m.price;document.getElementById("payhipLink").href=m.payhipLink||'#';document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Fungua license kwanza</p>";}
   else{document.getElementById("payBox").style.display="none";document.getElementById("videoBox").innerHTML=`<video controls autoplay playsinline style="width:100%;height:100%"><source src="${m.videoLink}" type="video/mp4"></video>`;}
   loadComments(m.id);
 }
