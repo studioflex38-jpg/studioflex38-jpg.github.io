@@ -158,7 +158,7 @@ async function loadMovies() {
         price: obj['price'],
         payhipLink: obj['payhip']
       };
-    }).filter(m => m.id && m.title && m.image && m.videoLink); // FIX 1: Sasa haipunguzi idadi. Row 1M zote zinapita
+    }).filter(m => m.id && m.title && m.image && m.videoLink); // HAIWEKI LIMIT. Row 1M zote zinapita
 
     if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
     else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D,J zimejawa?</div>"; }
@@ -169,8 +169,8 @@ async function loadMovies() {
 
 function renderHeroSlider() {
   const heroSlides = document.getElementById("heroSlides"); const heroDots = document.getElementById("heroDots");
-  const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true"); // FIX 1: Niliondoa.slice(0,5)
-  const slides = heroMovies.length > 0? heroMovies : allMovies; // FIX 1: Niliondoa.slice(0,3)
+  const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true");
+  const slides = heroMovies.length > 0? heroMovies : allMovies;
   heroSlides.innerHTML = ""; heroDots.innerHTML = "";
   slides.forEach((movie, i) => {
     const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>` : '';
@@ -208,11 +208,11 @@ function renderMovies() {
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
 
-// FIX 2: SASA INAPOKEA LINK ZOTE: MP4, M3U8, STREAMABLE, DRIVE
+// INAPOKEA LINK ZOTE: MP4, M3U8, STREAMABLE, DRIVE, ARCHIVE
 function getPlayerHTML(link){
   link = link.trim();
   if(link.includes('drive.google.com/file/d/')){
-    link = link.replace('/view','').replace('/preview','') + '/preview'; // Inabadilisha /d/ID/view > /preview
+    link = link.replace('/view','').replace('/preview','') + '/preview';
     return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
   }
   if(link.endsWith('.mp4') || link.endsWith('.m3u8') || link.endsWith('.webm')){
@@ -244,7 +244,7 @@ function unlockMovie(){
   openPlayer(currentMovie);
 }
 
-// FIX 3: COMMENTS SASA ZINAHIFADHIWA. Nimetumia movieId sawa na GAS
+// COMMENTS SASA ZINAHIFADHIWA 100%
 async function loadComments(id){
   try{
     const r=await fetch(COMMENT_URL+"?movieId="+id+"&t="+Date.now(), {cache: "no-store"});
@@ -253,14 +253,16 @@ async function loadComments(id){
     d.reverse().forEach(c=>{h+=`<div class="comment"><b>${c.name}</b> <span style="float:right;color:#666;font-size:10px">${c.date}</span><br>${c.comment}</div>`;});
     document.getElementById("commentList").innerHTML=h||"<p style='color:#666;font-size:12px'>Hakuna comment. Kua wa kwanza.</p>";
   }catch(e){document.getElementById("commentList").innerHTML="<p style='color:#ff5555;font-size:12px'>Comments zimefail kupakia</p>";}
+} // <-- HII BRACKET ILIKUWA IMEKOSAA
+
 async function sendComment(){
   const n=document.getElementById("cName").value||"Anonymous";
   const t=document.getElementById("cText").value;
   if(!t)return alert("Andika comment");
   document.getElementById("cText").value="Tumatuma...";
   try{
-    await fetch(COMMENT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({movieId:currentMovie.id,Name:n,Comment:t,Date:new Date().toLocaleString()})}); // FIX 3: Nimebadilisha Content_ID > movieId
-    setTimeout(()=>{document.getElementById("cText").value="";loadComments(currentMovie.id);}, 1500); // Ngoja GAS ikae 1.5s
+    await fetch(COMMENT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({movieId:currentMovie.id,name:n,Comment:t,Date:new Date().toLocaleString('sw-TZ')})});
+    setTimeout(()=>{document.getElementById("cText").value="";loadComments(currentMovie.id);}, 1500);
   }catch(e){alert("Comment imeshindikana kutuma");}
 }
 loadMovies();
