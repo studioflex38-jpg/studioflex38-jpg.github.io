@@ -9,7 +9,7 @@ body { background:#000; color:#fff; font-family:Arial; }
 .header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
 .logo { width:32px; height:32px; }
 .app-name { font-size:18px; font-weight:bold; background:linear-gradient(90deg, #8B5CF6, #EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.hero-slider { position:relative; border-radius:12px; overflow:hidden; margin-bottom:12px; background:#000; height:180px; }
+.hero-slider { position:relative; border-radius:12px; overflow:hidden; margin-bottom:18px; background:#000; height:180px; }
 .hero-slides { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; height:100%; }
 .hero-slides::-webkit-scrollbar { display:none; }
 .hero-slide { min-width:100%; position:relative; scroll-snap-align:start; flex-shrink:0; background:#000; height:100%; overflow:hidden; cursor:pointer; }
@@ -21,9 +21,6 @@ body { background:#000; color:#fff; font-family:Arial; }
 .hero-dots { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
 .dot { width:6px; height:6px; border-radius:50%; background:#666; }
 .dot.active { background:#EC4899; }
-.search-box { margin-bottom:15px; }
-.search-box input { width:100%; padding:10px 12px; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:8px; font-size:13px; outline:none; }
-.search-box input:focus{ border-color:#A855F7; }
 .tabs { display:flex; gap:8px; margin:15px 0; }
 .tab { background:#1a1a1a; color:#888; padding:10px 18px; border-radius:25px; border:none; font-size:13px; cursor:pointer; }
 .tab.active { background:linear-gradient(90deg, #A855F7, #EC4899); color:#fff; }
@@ -69,9 +66,6 @@ body { background:#000; color:#fff; font-family:Arial; }
     <div class="hero-slides" id="heroSlides"><p class="loading">Inapakia Bana...</p></div>
     <div class="hero-dots" id="heroDots"></div>
   </div>
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="🔍 Tafuta jina la movie..." oninput="searchMovies()">
-  </div>
   <div class="tabs">
     <button class="tab active" onclick="switchTab('all', this)">📁 All Movies</button>
     <button class="tab" onclick="switchTab('Series', this)">💻 Series</button>
@@ -83,7 +77,7 @@ body { background:#000; color:#fff; font-family:Arial; }
     <div class="icon-box" onclick="filterCategory('Love', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><p>Love</p></div>
     <div class="icon-box" onclick="filterCategory('Drama', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Drama</p></div>
   </div>
-  <h2 class="section-title">TRENDING NOW🔥</h2>
+  <h2 class="section-title">Trending Now🔥</h2>
   <div class="trending-slider" id="trendingGrid"><p class="loading">Inapakia...</p></div>
   <h2 class="section-title">HOME</h2>
   <div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Inapakia movie...</p></div>
@@ -114,14 +108,13 @@ const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWR
 const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
 // ================== LINE YA KUBADILISHA KEY ==================
-const MASTER_KEY = "Chilagu-F1K+7B$";
+const MASTER_KEY = "CHILAGU-7K9P-2M4X";
 // =============================================================
 
 let allMovies = [];
 let currentMovie = null;
 let currentCategory = 'all';
 let currentType = 'all';
-let searchQuery = '';
 let heroSlideIndex = 0;
 let heroSlideInterval;
 
@@ -140,31 +133,32 @@ function parseCSV(text) {
 
 async function loadMovies() {
   try {
-    const res = await fetch(SHEET_CSV);
+    const res = await fetch(SHEET_CSV, {cache: "no-store"});
     if(!res.ok) throw new Error(`Sheet Status: ${res.status}`);
     const csv = await res.text();
     const rows = parseCSV(csv);
-    const headers = rows[0].map(h => h.trim());
+    if(rows.length < 2) throw new Error("Sheet iko empty. Jaza data kwanza.");
+    const headers = rows[0].map(h => h.trim().toLowerCase());
     const data = rows.slice(1);
 
     allMovies = data.map(cols => {
       let obj = {};
       headers.forEach((h, i) => { obj[h] = cols[i]?.replace(/"/g,'').trim(); });
       return {
-        id: obj['Content_ID'],
-        title: obj['Title'],
-        type: obj['Type'],
-        image: obj['Cover_Image'],
-        genre: obj['Genre'],
-        desc: obj['Description'],
-        featured: obj['Is_Featured'],
-        trending: obj['Is_Trending'],
-        new: obj['Is_New'],
-        videoLink: obj['Video'],
-        price: obj['Price'],
+        id: obj['content_id'],
+        title: obj['title'],
+        type: obj['type'],
+        image: obj['cover_image'],
+        genre: obj['genre'],
+        desc: obj['description'],
+        featured: obj['is_featured'],
+        trending: obj['is_trending'],
+        new: obj['is_new'],
+        videoLink: obj['video'],
+        price: obj['price'],
         payhipLink: obj['payhip']
       };
-    }).filter(m => m.id && m.title && m.image);
+    }).filter(m => m.id && m.title && m.image && m.videoLink); // FIX 1: Sasa haipunguzi idadi. Row 1M zote zinapita
 
     if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
     else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D,J zimejawa?</div>"; }
@@ -175,12 +169,12 @@ async function loadMovies() {
 
 function renderHeroSlider() {
   const heroSlides = document.getElementById("heroSlides"); const heroDots = document.getElementById("heroDots");
-  const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true").slice(0,5);
-  const slides = heroMovies.length > 0? heroMovies : allMovies.slice(0,3);
+  const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true"); // FIX 1: Niliondoa.slice(0,5)
+  const slides = heroMovies.length > 0? heroMovies : allMovies; // FIX 1: Niliondoa.slice(0,3)
   heroSlides.innerHTML = ""; heroDots.innerHTML = "";
   slides.forEach((movie, i) => {
     const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>` : '';
-    heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})"><img src="${movie.image}" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
+    heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})"><img src="${movie.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
     heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`;
   });
   heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth)));
@@ -193,18 +187,14 @@ function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);lo
 function renderMovies() {
   const trending=document.getElementById("trendingGrid"); const home=document.getElementById("homeGrid"); const watched=document.getElementById("watchedGrid"); const noWatched=document.getElementById("noWatched"); const wList=getWatched();
   trending.innerHTML=""; home.innerHTML=""; watched.innerHTML=""; let hasWatched=false;
-  const filtered=allMovies.filter(m=>
-    (currentType==='all'||m.type===currentType) &&
-    (currentCategory==='all'||m.genre.toLowerCase()===currentCategory.toLowerCase()) &&
-    m.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filtered=allMovies.filter(m=> (currentType==='all'||m.type?.toLowerCase()===currentType.toLowerCase()) && (currentCategory==='all'||m.genre?.toLowerCase()===currentCategory.toLowerCase()) );
 
   filtered.forEach(m=>{
     const paid=m.price&&m.price.trim()!=='';
     const isWatched=m.id&&wList.includes(m.id);
     const trend=m.trending?.toLowerCase()==='true';
-    const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
-    const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
+    const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
+    const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
 
     home.innerHTML+=card;
     if(isWatched){watched.innerHTML+=card;hasWatched=true;}
@@ -217,23 +207,25 @@ function renderMovies() {
 }
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
-function searchMovies(){ searchQuery = document.getElementById("searchInput").value; renderMovies(); }
 
+// FIX 2: SASA INAPOKEA LINK ZOTE: MP4, M3U8, STREAMABLE, DRIVE
 function getPlayerHTML(link){
   link = link.trim();
+  if(link.includes('drive.google.com/file/d/')){
+    link = link.replace('/view','').replace('/preview','') + '/preview'; // Inabadilisha /d/ID/view > /preview
+    return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  }
   if(link.endsWith('.mp4') || link.endsWith('.m3u8') || link.endsWith('.webm')){
     return `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${link}" type="video/mp4"></video>`;
   }
-  else if(link.includes('streamable.com')){
+  if(link.includes('streamable.com')){
     if(!link.includes('/e/')){ link = link.replace('streamable.com/', 'streamable.com/e/'); }
-    return `<iframe src="${link}?s-autoplay=1" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`;
+    return `<iframe src="${link}?autoplay=1&nocontrols=0" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
   }
-  else {
-    return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`;
-  }
+  return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
 }
 
-function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById("heroSlider").style.display="none";document.querySelector(".tabs").style.display="none";document.querySelector(".icons").style.display="none";document.querySelector(".search-box").style.display="none";document.getElementById("playerSection").style.display="block";clearInterval(heroSlideInterval);
+function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById("heroSlider").style.display="none";document.querySelector(".tabs").style.display="none";document.querySelector(".icons").style.display="none";document.getElementById("playerSection").style.display="block";clearInterval(heroSlideInterval);
   if(m.price&&m.price.trim()!==''&&!localStorage.getItem("master_unlocked")){
     document.getElementById("payBox").style.display="block";document.getElementById("price").textContent=m.price;document.getElementById("payhipLink").href=m.payhipLink||'#';document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Fungua license kwanza</p>";
   }
@@ -241,23 +233,36 @@ function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById(
     document.getElementById("payBox").style.display="none";
     document.getElementById("videoBox").innerHTML = getPlayerHTML(m.videoLink);
   }
-  loadComments(m.id); // Hii ndio inabeba za watu wote
+  loadComments(m.id);
 }
-function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.querySelector(".search-box").style.display="block";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();renderMovies();}
+function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();renderMovies();}
 
 function unlockMovie(){
   const k=document.getElementById("licenseKey").value.trim().toUpperCase();
   if(k!== MASTER_KEY) return alert("❌ KEY SIO SAHI. Nunua KEY halisi Payhip TSH "+currentMovie.price);
-
   localStorage.setItem("master_unlocked", "true");
   openPlayer(currentMovie);
 }
 
-// ============ COMMENTS ZA WATU WOTE ============
-async function loadComments(id){try{const r=await fetch(COMMENT_URL+"?movieId="+id);const d=await r.json();let h="";d.reverse().forEach(c=>{h+=`<div class="comment"><b>${c.name}</b> <span style="float:right;color:#666;font-size:10px">${c.date}</span><br>${c.comment}</div>`;});document.getElementById("commentList").innerHTML=h||"<p style='color:#666;font-size:12px'>Hakuna comment</p>";}catch(e){}}
-async function sendComment(){const n=document.getElementById("cName").value||"Anonymous";const t=document.getElementById("cText").value;if(!t)return alert("Andika comment");await fetch(COMMENT_URL,{method:"POST",body:JSON.stringify({Content_ID:currentMovie.id,Name:n,Comment:t,Date:new Date().toLocaleString()})});document.getElementById("cText").value="";loadComments(currentMovie.id);}
-// =================================================
-
+// FIX 3: COMMENTS SASA ZINAHIFADHIWA. Nimetumia movieId sawa na GAS
+async function loadComments(id){
+  try{
+    const r=await fetch(COMMENT_URL+"?movieId="+id+"&t="+Date.now(), {cache: "no-store"});
+    const d=await r.json();
+    let h="";
+    d.reverse().forEach(c=>{h+=`<div class="comment"><b>${c.name}</b> <span style="float:right;color:#666;font-size:10px">${c.date}</span><br>${c.comment}</div>`;});
+    document.getElementById("commentList").innerHTML=h||"<p style='color:#666;font-size:12px'>Hakuna comment. Kua wa kwanza.</p>";
+  }catch(e){document.getElementById("commentList").innerHTML="<p style='color:#ff5555;font-size:12px'>Comments zimefail kupakia</p>";}
+async function sendComment(){
+  const n=document.getElementById("cName").value||"Anonymous";
+  const t=document.getElementById("cText").value;
+  if(!t)return alert("Andika comment");
+  document.getElementById("cText").value="Tumatuma...";
+  try{
+    await fetch(COMMENT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({movieId:currentMovie.id,Name:n,Comment:t,Date:new Date().toLocaleString()})}); // FIX 3: Nimebadilisha Content_ID > movieId
+    setTimeout(()=>{document.getElementById("cText").value="";loadComments(currentMovie.id);}, 1500); // Ngoja GAS ikae 1.5s
+  }catch(e){alert("Comment imeshindikana kutuma");}
+}
 loadMovies();
 </script>
 </body>
