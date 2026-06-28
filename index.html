@@ -48,10 +48,6 @@ body { background:#000; color:#fff; font-family:Arial; }
 .pay-box { background:#1a1a1a; padding:12px; border-radius:8px; margin-bottom:15px; border:2px solid #A855F7; }
 .pay-box input { width:100%; padding:8px; background:#000; border:1px solid #333; color:#fff; border-radius:5px; margin:6px 0; }
 .btn-pay { width:100%; padding:10px; background:linear-gradient(90deg, #A855F7, #EC4899); border:none; color:#fff; border-radius:5px; font-weight:bold; cursor:pointer; }
-.comment-section { margin-top:15px; padding-top:15px; border-top:1px solid #222; }
-.comment { background:#1a1a1a; padding:8px; margin:6px 0; border-radius:6px; font-size:12px; }
-.comment b { color:#EC4899; }
-.comment input,.comment textarea { width:100%; padding:8px; background:#000; border:1px solid #333; color:#fff; border-radius:5px; margin:5px 0; font-size:12px; }
 .loading { color:#888; text-align:center; padding:20px; font-size:13px; }
 .error { color:#ff5555; text-align:center; padding:20px; font-size:12px; background:#1a0000; border-radius:8px; margin:10px 0; }
 </style>
@@ -92,20 +88,12 @@ body { background:#000; color:#fff; font-family:Arial; }
       <button class="btn-pay" onclick="unlockMovie()">Fungua Movie Zote</button>
       <a id="payhipLink" href="#" target="_blank" style="display:block; text-align:center; margin-top:8px; color:#10B981; font-size:12px;">Nunua Payhip →</a>
     </div>
-    <div class="comment-section">
-      <h3 style="font-size:15px; margin-bottom:10px;">Live Comments</h3>
-      <div id="commentList" style="max-height:200px; overflow-y:auto;"></div>
-      <input id="cName" placeholder="Jina lako">
-      <textarea id="cText" placeholder="Andika comment..." rows="2"></textarea>
-      <button class="btn-pay" onclick="sendComment()">Tuma Comment</button>
-    </div>
     <button onclick="closePlayer()" style="width:100%; margin-top:15px; padding:10px; background:#333; border:none; color:#fff; border-radius:5px;">↩ Rudi Nyuma</button>
   </div>
 </div>
 
 <script>
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
-const COMMENT_URL = "https://script.google.com/macros/s/AKfycbxdUjSRj9jp-ZJvpYdGAtelC4yuTkD5azCOE2FPVdBBMGlSeNO6_ZhzjJ67LMfGfZUr/exec";
 
 // ================== LINE YA KUBADILISHA KEY ==================
 const MASTER_KEY = "CHILAGU-7K9P-2M4X";
@@ -158,7 +146,7 @@ async function loadMovies() {
         price: obj['price'],
         payhipLink: obj['payhip']
       };
-    }).filter(m => m.id && m.title && m.image && m.videoLink); // HAIWEKI LIMIT. Row 1M zote zinapita
+    }).filter(m => m.id && m.title && m.image && m.videoLink);
 
     if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
     else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D,J zimejawa?</div>"; }
@@ -208,7 +196,6 @@ function renderMovies() {
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
 
-// INAPOKEA LINK ZOTE: MP4, M3U8, STREAMABLE, DRIVE, ARCHIVE
 function getPlayerHTML(link){
   link = link.trim();
   if(link.includes('drive.google.com/file/d/')){
@@ -233,7 +220,6 @@ function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById(
     document.getElementById("payBox").style.display="none";
     document.getElementById("videoBox").innerHTML = getPlayerHTML(m.videoLink);
   }
-  loadComments(m.id);
 }
 function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();renderMovies();}
 
@@ -244,27 +230,6 @@ function unlockMovie(){
   openPlayer(currentMovie);
 }
 
-// COMMENTS SASA ZINAHIFADHIWA 100%
-async function loadComments(id){
-  try{
-    const r=await fetch(COMMENT_URL+"?movieId="+id+"&t="+Date.now(), {cache: "no-store"});
-    const d=await r.json();
-    let h="";
-    d.reverse().forEach(c=>{h+=`<div class="comment"><b>${c.name}</b> <span style="float:right;color:#666;font-size:10px">${c.date}</span><br>${c.comment}</div>`;});
-    document.getElementById("commentList").innerHTML=h||"<p style='color:#666;font-size:12px'>Hakuna comment. Kua wa kwanza.</p>";
-  }catch(e){document.getElementById("commentList").innerHTML="<p style='color:#ff5555;font-size:12px'>Comments zimefail kupakia</p>";}
-} // <-- HII BRACKET ILIKUWA IMEKOSAA
-
-async function sendComment(){
-  const n=document.getElementById("cName").value||"Anonymous";
-  const t=document.getElementById("cText").value;
-  if(!t)return alert("Andika comment");
-  document.getElementById("cText").value="Tumatuma...";
-  try{
-    await fetch(COMMENT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify({movieId:currentMovie.id,name:n,Comment:t,Date:new Date().toLocaleString('sw-TZ')})});
-    setTimeout(()=>{document.getElementById("cText").value="";loadComments(currentMovie.id);}, 1500);
-  }catch(e){alert("Comment imeshindikana kutuma");}
-}
 loadMovies();
 </script>
 </body>
