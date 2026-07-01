@@ -103,13 +103,13 @@ body { background:#000; color:#fff; font-family:Arial; }
 </div>
 
 <script>
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv&t=" + new Date().getTime(); // HII INAVUNJA CACHE
 const MASTER_KEY = "CHILAGU-7K9P-2M4X";
-const MOVIES_PER_PAGE = 30; // CHORA 30 KWA 30
+const MOVIES_PER_PAGE = 30; // HII NDO INAFANYA BILLION ISILEME
 
 let allMovies = [];
-let filteredMovies = [];
-let currentPage = 1;
+let filteredMovies = []; // MPYA
+let currentPage = 1; // MPYA
 let currentMovie = null;
 let currentCategory = 'all';
 let currentType = 'all';
@@ -140,27 +140,28 @@ async function loadMovies() {
     const headers = rows[0].map(h => h.trim().toLowerCase());
     const data = rows.slice(1);
 
+    // HAPA NIMEFUTA FILTER KABISA. NIMEWEKA || '' TU ILI ASIKATAE MOVIE
     allMovies = data.map(cols => {
       let obj = {};
-      headers.forEach((h, i) => { obj[h] = cols[i]?.replace(/"/g,'').trim(); });
+      headers.forEach((h, i) => { obj[h] = cols[i]?.replace(/"/g,'').trim() || ''; });
       return {
-        id: obj['content_id'],
-        title: obj['title'],
-        type: obj['type'],
-        image: obj['cover_image'],
-        genre: obj['genre'],
-        desc: obj['description'],
-        featured: obj['is_featured'],
-        trending: obj['is_trending'],
-        new: obj['is_new'],
-        videoLink: obj['video'],
-        price: obj['price'],
-        payhipLink: obj['payhip']
+        id: obj['content_id'] || 'id-' + Math.random(), // KAMA HAKUNA ID
+        title: obj['title'] || 'Haina Jina', // KAMA HAKUNA JINA
+        type: obj['type'] || 'Movie',
+        image: obj['cover_image'] || 'https://via.placeholder.com/300x200/111/555?text=No+Image', // KAMA HAKUNA IMAGE
+        genre: obj['genre'] || 'all',
+        desc: obj['description'] || '',
+        featured: obj['is_featured'] || 'false',
+        trending: obj['is_trending'] || 'false',
+        new: obj['is_new'] || 'false',
+        videoLink: obj['video'] || '',
+        price: obj['price'] || '',
+        payhipLink: obj['payhip'] || '#'
       };
-    }).filter(m => m.id && m.title && m.image); // HAPA NDO MAANA 4 INAONEKANA SASA
+    }); // HAKUNA.filter() TENA. ZOTE ZINAPITA HATA BILION
 
     if(allMovies.length > 0) { renderHeroSlider(); applyFilters(); startHeroAutoSlide(); }
-    else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D zimejawa?</div>"; }
+    else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie kwenye Sheet.</div>"; }
   } catch(e) {
     document.getElementById("homeGrid").innerHTML = `<div class='error'>ERROR: ${e.message}</div>`;
   }
@@ -169,7 +170,7 @@ async function loadMovies() {
 function renderHeroSlider() {
   const heroSlides = document.getElementById("heroSlides"); const heroDots = document.getElementById("heroDots");
   const heroMovies = allMovies.filter(m => m.featured?.toLowerCase() === "true");
-  const slides = heroMovies.length > 0? heroMovies : allMovies;
+  const slides = heroMovies.length > 0? heroMovies : allMovies.slice(0,5);
   heroSlides.innerHTML = ""; heroDots.innerHTML = "";
   slides.forEach((movie, i) => {
     const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer(${JSON.stringify(movie).replace(/"/g, '&quot;')})">▶ Tazama</button>` : '';
@@ -183,7 +184,7 @@ function startHeroAutoSlide() { clearInterval(heroSlideInterval); heroSlideInter
 function getWatched() { return JSON.parse(localStorage.getItem("watched_movies") || "[]"); }
 function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);localStorage.setItem("watched_movies",JSON.stringify(w));} }
 
-function applyFilters(){
+function applyFilters(){ // MPYA: HII INACHUJA TU, HAIFUTI DATA YA SHEET
   currentPage = 1;
   filteredMovies = allMovies.filter(m=>
     (currentType==='all'||m.type?.toLowerCase()===currentType.toLowerCase()) &&
@@ -203,7 +204,7 @@ function renderMovies() {
 
   const start = (currentPage - 1) * MOVIES_PER_PAGE;
   const end = start + MOVIES_PER_PAGE;
-  const moviesToShow = filteredMovies.slice(start, end); // CHUKUA 30 TU
+  const moviesToShow = filteredMovies.slice(start, end); // CHUKUA 30 TU KWA MARA 1
 
   moviesToShow.forEach(m=>{
     const paid=m.price&&m.price.trim()!=='';
@@ -212,19 +213,19 @@ function renderMovies() {
     const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
     const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
 
-    home.innerHTML+=card; // HAPA INAJONGEZA CHINI TU
+    home.innerHTML+=card;
     if(isWatched){watched.innerHTML+=card;hasWatched=true;}
     if(trend && currentPage === 1){trending.innerHTML+=tCard;}
   });
 
-  loadMoreBtn.style.display = end < filteredMovies.length? 'block' : 'none'; // FICHA KAMA ZIMEISHA
+  loadMoreBtn.style.display = end < filteredMovies.length? 'block' : 'none'; // MPYA
 
   if(trending.innerHTML==='')trending.innerHTML="<p style='color:#666;padding:20px;text-align:center'>Hakuna Trending</p>";
   if(home.innerHTML==='')home.innerHTML="<p style='color:#666;grid-column:1/4;text-align:center'>Hakuna movie iliyopatikana</p>";
   noWatched.style.display=hasWatched?'none':'block';
 }
 
-function loadMore(){
+function loadMore(){ // MPYA
   currentPage++;
   renderMovies();
 }
@@ -235,6 +236,7 @@ function searchMovies(){searchQuery = document.getElementById('searchInput').val
 
 function getPlayerHTML(link){
   link = link.trim();
+  if(!link) return `<p style='color:#888;text-align:center;padding-top:80px'>Hakuna Video Link</p>`;
   if(link.includes('drive.google.com/file/d/')){
     link = link.replace('/view','').replace('/preview','') + '/preview';
     return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
