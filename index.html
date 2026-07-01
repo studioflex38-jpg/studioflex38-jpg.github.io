@@ -21,7 +21,7 @@ body { background:#000; color:#fff; font-family:Arial; }
 .hero-dots { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
 .dot { width:6px; height:6px; border-radius:50%; background:#666; }
 .dot.active { background:#EC4899; }
-.search-box { position:relative; margin:12px 0 15px 0; } /* HII NDO MPYA */
+.search-box { position:relative; margin:12px 0 15px 0; }
 .search-box input { width:100%; padding:12px 40px 12px 15px; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:25px; font-size:13px; outline:none; }
 .search-box input:focus { border-color:#A855F7; }
 .search-box svg { position:absolute; right:15px; top:50%; transform:translateY(-50%); width:20px; height:20px; fill:#888; pointer-events:none; }
@@ -54,6 +54,7 @@ body { background:#000; color:#fff; font-family:Arial; }
 .btn-pay { width:100%; padding:10px; background:linear-gradient(90deg, #A855F7, #EC4899); border:none; color:#fff; border-radius:5px; font-weight:bold; cursor:pointer; }
 .loading { color:#888; text-align:center; padding:20px; font-size:13px; }
 .error { color:#ff5555; text-align:center; padding:20px; font-size:12px; background:#1a0000; border-radius:8px; margin:10px 0; }
+.load-more { color:#A855F7; text-align:center; padding:15px; font-size:13px; border:1px solid #333; border-radius:8px; margin-top:10px; cursor:pointer; } /* MPYA */
 </style>
 </head>
 <body>
@@ -66,13 +67,10 @@ body { background:#000; color:#fff; font-family:Arial; }
     <div class="hero-slides" id="heroSlides"><p class="loading">Inapakia Bana...</p></div>
     <div class="hero-dots" id="heroDots"></div>
   </div>
-
-  <!-- HII NDO SEARCH BAR MPYA. CHINI YA BANA, JUU YA CATEGORY -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Tafuta movie hapa..." oninput="searchMovies()">
     <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
   </div>
-
   <div class="tabs">
     <button class="tab active" onclick="switchTab('all', this)">📁 All Movies</button>
     <button class="tab" onclick="switchTab('Series', this)">💻 Series</button>
@@ -88,6 +86,7 @@ body { background:#000; color:#fff; font-family:Arial; }
   <div class="trending-slider" id="trendingGrid"><p class="loading">Inapakia...</p></div>
   <h2 class="section-title">HOME</h2>
   <div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Inapakia movie...</p></div>
+  <div id="loadMoreBtn" class="load-more" onclick="loadMore()" style="display:none;">Inapakia zaidi ↓</div> <!-- MPYA -->
   <h2 class="section-title">Watched ✓</h2>
   <div class="movie-grid" id="watchedGrid"></div>
   <p id="noWatched" style="color:#666; text-align:center; display:none; margin:20px 0">Bado hujatazama movie</p>
@@ -105,16 +104,16 @@ body { background:#000; color:#fff; font-family:Arial; }
 
 <script>
 const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv";
-
-// ================== LINE YA KUBADILISHA KEY ==================
 const MASTER_KEY = "CHILAGU-7K9P-2M4X";
-// =============================================================
+const MOVIES_PER_PAGE = 30; // CHORA 30 KWA 30
 
 let allMovies = [];
+let filteredMovies = [];
+let currentPage = 1;
 let currentMovie = null;
 let currentCategory = 'all';
 let currentType = 'all';
-let searchQuery = ''; // HII NDO MPYA
+let searchQuery = '';
 let heroSlideIndex = 0;
 let heroSlideInterval;
 
@@ -158,9 +157,9 @@ async function loadMovies() {
         price: obj['price'],
         payhipLink: obj['payhip']
       };
-    }).filter(m => m.id && m.title && m.image);
+    }).filter(m => m.id && m.title && m.image); // HAPA NDO MAANA 4 INAONEKANA SASA
 
-    if(allMovies.length > 0) { renderHeroSlider(); renderMovies(); startHeroAutoSlide(); }
+    if(allMovies.length > 0) { renderHeroSlider(); applyFilters(); startHeroAutoSlide(); }
     else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie. Angalia Column A,B,D zimejawa?</div>"; }
   } catch(e) {
     document.getElementById("homeGrid").innerHTML = `<div class='error'>ERROR: ${e.message}</div>`;
@@ -184,41 +183,55 @@ function startHeroAutoSlide() { clearInterval(heroSlideInterval); heroSlideInter
 function getWatched() { return JSON.parse(localStorage.getItem("watched_movies") || "[]"); }
 function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);localStorage.setItem("watched_movies",JSON.stringify(w));} }
 
-function renderMovies() {
-  const trending=document.getElementById("trendingGrid"); const home=document.getElementById("homeGrid"); const watched=document.getElementById("watchedGrid"); const noWatched=document.getElementById("noWatched"); const wList=getWatched();
-  trending.innerHTML=""; home.innerHTML=""; watched.innerHTML=""; let hasWatched=false;
-
-  // HII NDO IMEBADILIKA: NIMEONGEZA SEARCH FILTER
-  const filtered=allMovies.filter(m=>
+function applyFilters(){
+  currentPage = 1;
+  filteredMovies = allMovies.filter(m=>
     (currentType==='all'||m.type?.toLowerCase()===currentType.toLowerCase()) &&
     (currentCategory==='all'||m.genre?.toLowerCase()===currentCategory.toLowerCase()) &&
     (searchQuery==='' || m.title.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+  renderMovies();
+}
 
-  filtered.forEach(m=>{
+function renderMovies() {
+  const trending=document.getElementById("trendingGrid"); const home=document.getElementById("homeGrid"); const watched=document.getElementById("watchedGrid"); const noWatched=document.getElementById("noWatched"); const loadMoreBtn=document.getElementById("loadMoreBtn"); const wList=getWatched();
+
+  if(currentPage === 1){
+    trending.innerHTML=""; home.innerHTML=""; watched.innerHTML="";
+  }
+  let hasWatched=false;
+
+  const start = (currentPage - 1) * MOVIES_PER_PAGE;
+  const end = start + MOVIES_PER_PAGE;
+  const moviesToShow = filteredMovies.slice(start, end); // CHUKUA 30 TU
+
+  moviesToShow.forEach(m=>{
     const paid=m.price&&m.price.trim()!=='';
     const isWatched=m.id&&wList.includes(m.id);
     const trend=m.trending?.toLowerCase()==='true';
     const card=`<div class="movie-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
     const tCard=`<div class="trending-card" onclick="openPlayer(${JSON.stringify(m).replace(/"/g,'&quot;')})"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
 
-    home.innerHTML+=card;
+    home.innerHTML+=card; // HAPA INAJONGEZA CHINI TU
     if(isWatched){watched.innerHTML+=card;hasWatched=true;}
-    if(trend){trending.innerHTML+=tCard;}
+    if(trend && currentPage === 1){trending.innerHTML+=tCard;}
   });
 
+  loadMoreBtn.style.display = end < filteredMovies.length? 'block' : 'none'; // FICHA KAMA ZIMEISHA
+
   if(trending.innerHTML==='')trending.innerHTML="<p style='color:#666;padding:20px;text-align:center'>Hakuna Trending</p>";
-  if(home.innerHTML==='')home.innerHTML="<p style='color:#666;grid-column:1/4;text-align:center'>Hakuna movie iliyopatikana</p>"; // IMEBADILIKA
+  if(home.innerHTML==='')home.innerHTML="<p style='color:#666;grid-column:1/4;text-align:center'>Hakuna movie iliyopatikana</p>";
   noWatched.style.display=hasWatched?'none':'block';
 }
-function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;renderMovies();}
-function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;renderMovies();}
 
-// HII NDO FUNCTION MPYA YA SEARCH
-function searchMovies(){
-  searchQuery = document.getElementById('searchInput').value;
+function loadMore(){
+  currentPage++;
   renderMovies();
 }
+
+function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;applyFilters();}
+function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;applyFilters();}
+function searchMovies(){searchQuery = document.getElementById('searchInput').value;applyFilters();}
 
 function getPlayerHTML(link){
   link = link.trim();
@@ -245,7 +258,7 @@ function openPlayer(m){currentMovie=m;markWatched(m.id);document.getElementById(
     document.getElementById("videoBox").innerHTML = getPlayerHTML(m.videoLink);
   }
 }
-function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.querySelector(".search-box").style.display="block";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();renderMovies();}
+function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.querySelector(".search-box").style.display="block";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();applyFilters();}
 
 function unlockMovie(){
   const k=document.getElementById("licenseKey").value.trim().toUpperCase();
