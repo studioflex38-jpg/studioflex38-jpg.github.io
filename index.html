@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chilagu Cinema</title>
+<title>Chilagu Legacy Cinema</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:#000; color:#fff; font-family:Arial; }
@@ -56,14 +56,14 @@ body { background:#000; color:#fff; font-family:Arial; }
 .loading { color:#888; text-align:center; padding:20px; font-size:13px; }
 .error { color:#ff5555; text-align:center; padding:20px; font-size:12px; background:#1a0000; border-radius:8px; margin:10px 0; }
 .load-more { color:#A855F7; text-align:center; padding:15px; font-size:13px; border:1px solid #333; border-radius:8px; margin-top:10px; cursor:pointer; }
-.count { color:#888; font-size:12px; text-align:center; margin:10px 0; }
+.count { color:#10B981; font-size:12px; text-align:center; margin:10px 0; font-weight:bold; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
     <img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png">
-    <div class="app-name">Chilagu Cinema</div>
+    <div class="app-name">Chilagu Legacy Cinema</div>
   </div>
   <div class="hero-slider" id="heroSlider">
     <div class="hero-slides" id="heroSlides"><p class="loading">Inapakia Bana...</p></div>
@@ -87,7 +87,7 @@ body { background:#000; color:#fff; font-family:Arial; }
   <h2 class="section-title">Trending Now🔥</h2>
   <div class="trending-slider" id="trendingGrid"><p class="loading">Inapakia...</p></div>
   <h2 class="section-title">HOME</h2>
-  <div class="count" id="movieCount"></div> <!-- HII INAONYESHA JINSI MOVIE ZILIVYO MINGI -->
+  <div class="count" id="movieCount"></div>
   <div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Inapakia movie...</p></div>
   <div id="loadMoreBtn" class="load-more" onclick="loadMore()" style="display:none;">Inapakia zaidi ↓</div>
   <h2 class="section-title">Watched ✓</h2>
@@ -106,9 +106,9 @@ body { background:#000; color:#fff; font-family:Arial; }
 </div>
 
 <script>
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv?v=" + Date.now(); // BUST CACHE KILA MARA
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv&v=" + Date.now(); // LINK YAKO MPYA + BUST CACHE
 const MASTER_KEY = "CHILAGU-7K9P-2M4X";
-const MOVIES_PER_PAGE = 30; // 30 KWA 30 ILI ISILEME. BADILI 100 KAMA UNATAKA HARAKA ZAIDI
+const MOVIES_PER_PAGE = 50; // 50 KWA 50
 
 let allMovies = [];
 let filteredMovies = [];
@@ -124,7 +124,7 @@ function parseCSV(text) {
   const rows = []; let row = []; let cell = ''; let inQuotes = false;
   for (let i = 0; i < text.length; i++) {
     const char = text[i]; const nextChar = text[i + 1];
-    if (char === '"') { if (inQuotes && nextChar === '"') { cell += '"'; i++; } else { inQuotes =!inQuotes; } }
+    if (char === '"') { if (inQuotes && nextChar === '"') { cell += '"'; i++; } else { inQuotes =!inQuotes; }
     else if (char === ',' &&!inQuotes) { row.push(cell.trim()); cell = ''; }
     else if (char === '\n' &&!inQuotes) { row.push(cell.trim()); rows.push(row); row = []; cell = ''; }
     else { cell += char; }
@@ -143,7 +143,7 @@ async function loadMovies() {
     const headers = rows[0].map(h => h.trim().toLowerCase());
     const data = rows.slice(1);
 
-    // MUHIMU SANA: HAPA HAKUNA FILTER KABISA. KILA ROW INAPITA
+    // HAKUNA FILTER KABISA. KILA ROW INAPITA
     allMovies = data.map((cols, index) => {
       let obj = {};
       headers.forEach((h, i) => { obj[h] = cols[i]?.replace(/"/g,'').trim() || ''; });
@@ -163,8 +163,8 @@ async function loadMovies() {
       };
     });
 
-    console.log('Jumla ya movie zilizoletwa kutoka Sheet:', allMovies.length); // KUANGALIA CONSOLE
-    document.getElementById("movieCount").textContent = `Jumla ya Movie: ${allMovies.length}`; // IONYESHE APP
+    console.log('Jumla ya movie:', allMovies.length);
+    document.getElementById("movieCount").textContent = `Jumla ya Movie: ${allMovies.length} 🔥`;
 
     if(allMovies.length > 0) { renderHeroSlider(); applyFilters(); startHeroAutoSlide(); }
     else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Hakuna movie kwenye Sheet.</div>"; }
@@ -192,12 +192,12 @@ function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);lo
 
 function applyFilters(){
   currentPage = 1;
-  filteredMovies = allMovies.filter(m=> // HII FILTER NI YA SEARCH + CATEGORY TU
+  filteredMovies = allMovies.filter(m=>
     (currentType==='all'||m.type?.toLowerCase()===currentType.toLowerCase()) &&
     (currentCategory==='all'||m.genre?.toLowerCase()===currentCategory.toLowerCase()) &&
     (searchQuery==='' || m.title.toLowerCase().includes(searchQuery.toLowerCase()))
   );
-  document.getElementById("movieCount").textContent = `Inaonyesha: ${filteredMovies.length} / Jumla: ${allMovies.length}`;
+  document.getElementById("movieCount").textContent = `Inaonyesha: ${filteredMovies.length} / Jumla: ${allMovies.length} 🔥`;
   renderMovies();
 }
 
