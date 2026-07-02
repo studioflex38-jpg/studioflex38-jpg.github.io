@@ -51,133 +51,73 @@ body { background:#000; color:#fff; font-family:Arial; }
 .player-section { display:none; margin-top:20px; }
 .video-box { width:100%; aspect-ratio:16/9; background:#000; border-radius:8px; margin-bottom:15px; overflow:hidden; }
 .pay-box { background:#1a1a1a; padding:12px; border-radius:8px; margin-bottom:15px; border:2px solid #A855F7; }
-.pay-box input { width:100%; padding:8px; background:#000; border:1px solid #333; color:#fff; border-radius:5px; margin:6px 0; }
 .btn-pay { width:100%; padding:10px; background:linear-gradient(90deg, #A855F7, #EC4899); border:none; color:#fff; border-radius:5px; font-weight:bold; cursor:pointer; }
 .loading { color:#888; text-align:center; padding:20px; font-size:13px; }
-.error { color:#ff5555; text-align:center; padding:20px; font-size:12px; background:#1a0000; border-radius:8px; margin:10px 0; border:1px solid #ff5555; }
+.user-error { color:#FFA500; text-align:center; padding:20px; font-size:14px; background:#1a1a1a; border-radius:8px; margin:10px 0; }
 .count { color:#10B981; font-size:12px; text-align:center; margin:10px 0; font-weight:bold; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header"><img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png"><div class="app-name">Chilagu Legacy Cinema</div></div>
-  <div class="hero-slider" id="heroSlider"><div class="hero-slides" id="heroSlides"><p class="loading">Inapakia Bana...</p></div><div class="hero-dots" id="heroDots"></div></div>
+  <div class="hero-slider" id="heroSlider"><div class="hero-slides" id="heroSlides"><p class="loading">Tunaweka movie mpya...</p></div><div class="hero-dots" id="heroDots"></div></div>
   <div class="search-box"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." oninput="searchMovies()"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
   <div class="tabs"><button class="tab active" onclick="switchTab('all', this)">📁 All Movies</button><button class="tab" onclick="switchTab('Series', this)">💻 Series</button><button class="tab" onclick="switchTab('Singo', this)">🎞️ Singo</button></div>
   <div class="icons"><div class="icon-box active" onclick="filterCategory('all', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Zote</p></div><div class="icon-box" onclick="filterCategory('Action', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div><p>Action</p></div><div class="icon-box" onclick="filterCategory('Love', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><p>Love</p></div><div class="icon-box" onclick="filterCategory('Drama', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Drama</p></div></div>
-  <h2 class="section-title">Trending Now🔥</h2><div class="trending-slider" id="trendingGrid"><p class="loading">Inapakia...</p></div>
-  <h2 class="section-title">HOME</h2><div class="count" id="movieCount"></div><div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Inapakia movie...</p></div>
+  <h2 class="section-title">Trending Now🔥</h2><div class="trending-slider" id="trendingGrid"><p class="loading">Tafadhali subiri...</p></div>
+  <h2 class="section-title">HOME</h2><div class="count" id="movieCount"></div><div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Tunaweka movie mpya...</p></div>
   <h2 class="section-title">Watched ✓</h2><div class="movie-grid" id="watchedGrid"></div><p id="noWatched" style="color:#666; text-align:center; display:none; margin:20px 0">Bado hujatazama movie</p>
   <div class="player-section" id="playerSection"><div class="video-box" id="videoBox"></div><div class="pay-box" id="payBox" style="display:none;"><p style="margin:0 0 8px 0; font-size:13px;">Movie hii ni TSH <span id="price"></span></p><p style="font-size:12px; color:#aaa;">Lipa Airtel Money: 078XXXXXXX <br> Ref: <b id="refCode"></b></p><p style="font-size:12px; color:#10B981;">Baada ya kulipa bonyeza hapa chini. Bot itakufungulia AUTOMATIC.</p><button class="btn-pay" onclick="checkAutoPay()">Nimeshalipa - Angalia</button><p id="payStatus" style="font-size:11px; color:#EC4899; text-align:center; margin-top:5px;"></p></div><button onclick="closePlayer()" style="width:100%; margin-top:15px; padding:10px; background:#333; border:none; color:#fff; border-radius:5px;">↩ Rudi Nyuma</button></div>
 </div>
 <script>
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/pub?gid=0&single=true&output=csv&v=" + Date.now();
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSt7bqQdW-jWRmH6PzhumapSpuxoEA73v6vSqvy5BIyWZ8w-pKGPdq6lA1Wl5k7piIszoMgGh41ze2S/gviz/tq?tqx=out:json";
 const BOT_API_URL = "https://script.google.com/macros/s/AKfycbxjnHGI1rHCV6XHbWzZ8vlZgWw7mq2HqO9e3LSLKfE5pblPhCdelRrqKn5u8daLaIAD/exec";
-
+const DEBUG_MODE = window.location.search.includes("debug=1"); // WEWE TU UTAONA ERROR
 let allMovies = []; let filteredMovies = []; let currentMovie = null; let currentCategory = 'all'; let currentType = 'all'; let searchQuery = ''; let heroSlideIndex = 0; let heroSlideInterval;
-
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.trim()); // Sasa tunatumia jina halisi
-  return lines.slice(1).filter(line => line.trim()!== '').map(line => {
-    const values = line.split(',');
-    let obj = {};
-    headers.forEach((h, i) => { obj[h] = values[i]? values[i].replace(/"/g,'').trim() : ''; });
-    return obj;
-  });
-}
-
 async function loadMovies() {
   try {
-    const res = await fetch(SHEET_CSV, {cache: "no-store"});
-    if(!res.ok) throw new Error('Sheet haipatikani. Angalia kama imewekwa Public');
-    const csv = await res.text();
-    const data = parseCSV(csv);
-    // FIX KUBWA: Sasa inatumia Majina halisi ya Column zako: Content_ID, Title, Type...
-    allMovies = data.filter(row => row.Content_ID && row.Title).map(row => ({
-      id: row['Content_ID'],
-      title: row['Title'] || 'Haina Jina',
-      type: row['Type'] || 'Movie',
-      image: row['Cover_Image'] || 'https://via.placeholder.com/300x200/111/555?text=No+Image',
-      genre: row['Genre'] || 'all',
-      desc: row['Description'] || '',
-      featured: row['Is_Featured'],
-      trending: row['Is_Trending'],
-      new: row['Is_New'],
-      videoLink: row['Video'] || '',
-      price: row['Price'] || ''
+    const res = await fetch(SHEET_URL);
+    if(!res.ok) throw new Error('Sheet Error');
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+    allMovies = rows.filter(r => r.c[0] && r.c[0].v).map(r => ({
+      id: r.c[0]? r.c[0].v : '', title: r.c[1]? r.c[1].v : 'Haina Jina', type: r.c[2]? r.c[2].v : 'Movie', image: r.c[3]? r.c[3].v : 'https://via.placeholder.com/300x200/111/555?text=No+Image', genre: r.c[4]? r.c[4].v : 'all', desc: r.c[5]? r.c[5].v : '', featured: r.c[6]? r.c[6].v : false, trending: r.c[7]? r.c[7].v : false, new: r.c[8]? r.c[8].v : false, videoLink: r.c[9]? r.c[9].v : '', price: r.c[10]? r.c[10].v : ''
     }));
     document.getElementById("movieCount").textContent = `Jumla ya Movie: ${allMovies.length} 🔥`;
-    if(allMovies.length > 0) {
-      renderHeroSlider();
-      applyFilters();
-      startHeroAutoSlide();
-    } else {
-      document.getElementById("homeGrid").innerHTML = "<div class='error'>Sheet imefunguka, lakini hakuna movie. Angalia kama Content_ID na Title zimejazwa.</div>";
-    }
+    if(allMovies.length > 0) { renderHeroSlider(); applyFilters(); startHeroAutoSlide(); }
+    else { document.getElementById("homeGrid").innerHTML = "<div class='user-error'>😅 Tunaweka movie mpya. Rudi baada ya dakika 5.</div>"; }
   } catch(e) {
-    document.getElementById("homeGrid").innerHTML = `<div class='error'>ERROR KUBWA: ${e.message} <br> Sababu 90%: Sheet yako sio 'Public on the web' au majina ya Column hayafanani.</div>`;
+    console.log("ADMIN ERROR:", e.message); // Hii wewe tu ukiweka?debug=1
+    document.getElementById("homeGrid").innerHTML = "<div class='user-error'>😅 Tafadhali jaribu tena baadaye. Tunaifanya App iwe bora zaidi.</div>";
   }
 }
-
-function renderHeroSlider() {
-  const heroSlides = document.getElementById("heroSlides");
-  const heroDots = document.getElementById("heroDots");
-  const heroMovies = allMovies.filter(m => m.featured && m.featured.toLowerCase() === "true");
-  const slides = heroMovies.length > 0? heroMovies : allMovies.slice(0,5);
-  heroSlides.innerHTML = "";
-  heroDots.innerHTML = "";
-  slides.forEach((movie, i) => {
-    const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer('${movie.id}')">▶ Tazama</button>` : '';
-    heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer('${movie.id}')"><img src="${movie.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`;
-    heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`;
-  });
-  heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth)));
-}
+function renderHeroSlider() { const heroSlides = document.getElementById("heroSlides"); const heroDots = document.getElementById("heroDots"); const heroMovies = allMovies.filter(m => m.featured == true || m.featured == 'TRUE'); const slides = heroMovies.length > 0? heroMovies : allMovies.slice(0,5); heroSlides.innerHTML = ""; heroDots.innerHTML = ""; slides.forEach((movie, i) => { const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer('${movie.id}')">▶ Tazama</button>` : ''; heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer('${movie.id}')"><img src="${movie.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`; heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`; }); heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth))); }
 function updateHeroDots(index) { heroSlideIndex = index; document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === index)); }
 function startHeroAutoSlide() { clearInterval(heroSlideInterval); heroSlideInterval = setInterval(() => { const s = document.getElementById("heroSlides"); const t = s.children.length; if(t>0){ heroSlideIndex=(heroSlideIndex+1)%t; s.scrollTo({left:heroSlideIndex*s.offsetWidth,behavior:'smooth'}); updateHeroDots(heroSlideIndex); }}, 4000); }
 function getWatched() { return JSON.parse(localStorage.getItem("watched_movies") || "[]"); }
 function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);localStorage.setItem("watched_movies",JSON.stringify(w));} }
-
 function applyFilters(){ filteredMovies = allMovies.filter(m=> (currentType==='all'||m.type?.toLowerCase()===currentType.toLowerCase()) && (currentCategory==='all'||m.genre?.toLowerCase()===currentCategory.toLowerCase()) && (searchQuery==='' || m.title.toLowerCase().includes(searchQuery.toLowerCase())) ); document.getElementById("movieCount").textContent = `Inaonyesha: ${filteredMovies.length} / Jumla: ${allMovies.length} 🔥`; renderMovies(); }
-
-function renderMovies() {
-  const trending=document.getElementById("trendingGrid");
-  const home=document.getElementById("homeGrid");
-  const watched=document.getElementById("watchedGrid");
-  const noWatched=document.getElementById("noWatched");
-  const wList=getWatched();
-  trending.innerHTML="";
-  home.innerHTML="";
-  watched.innerHTML="";
-  let hasWatched=false;
-  filteredMovies.forEach(m=>{
-    const paid=m.price&&m.price.trim()!=='';
-    const isWatched=m.id&&wList.includes(m.id);
-    const trend=m.trending && m.trending.toLowerCase()==='true';
+function renderMovies() { const trending=document.getElementById("trendingGrid"); const home=document.getElementById("homeGrid"); const watched=document.getElementById("watchedGrid"); const noWatched=document.getElementById("noWatched"); const wList=getWatched(); trending.innerHTML=""; home.innerHTML=""; watched.innerHTML=""; let hasWatched=false; filteredMovies.forEach(m=>{ const paid=m.price&&m.price.toString().trim()!=='';
+const isWatched=m.id&&wList.includes(m.id);
+    const trend=m.trending == true || m.trending == 'TRUE';
     const card=`<div class="movie-card" onclick="openPlayer('${m.id}')"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
     const tCard=`<div class="trending-card" onclick="openPlayer('${m.id}')"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`;
     home.innerHTML+=card;
     if(isWatched){watched.innerHTML+=card;hasWatched=true;}
     if(trend){trending.innerHTML+=tCard;}
   });
-  if(trending.innerHTML==='')trending.innerHTML="<p style='color:#666;padding:20px;text-align:center'>Hakuna Trending</p>";
-  if(home.innerHTML==='')home.innerHTML="<p style='color:#666;grid-column:1/4;text-align:center'>Hakuna movie iliyopatikana</p>";
+  if(trending.innerHTML==='')trending.innerHTML="<p style='color:#666;padding:20px;text-align:center'>Hakuna Trending kwa sasa 😊</p>";
+  if(home.innerHTML==='')home.innerHTML="<p style='color:#666;grid-column:1/4;text-align:center'>Hakuna movie iliyopatikana 😊</p>";
   noWatched.style.display=hasWatched?'none':'block';
 }
-
 function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;applyFilters();}
 function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;applyFilters();}
 function searchMovies(){searchQuery = document.getElementById('searchInput').value;applyFilters();}
-
-function getPlayerHTML(link){ link = link.trim(); if(!link) return `<p style='color:#888;text-align:center;padding-top:80px'>Hakuna Video Link</p>`; if(link.includes('drive.google.com/file/d/')){ link = link.replace('/view','').replace('/preview','') + '/preview'; return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`; } return `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${link}" type="video/mp4"></video>`; }
-
-function openPlayer(id){ currentMovie = allMovies.find(m => m.id === id); if(!currentMovie) return alert('Movie haipatikani'); markWatched(currentMovie.id); document.getElementById("heroSlider").style.display="none"; document.querySelector(".tabs").style.display="none"; document.querySelector(".icons").style.display="none"; document.querySelector(".search-box").style.display="none"; document.getElementById("playerSection").style.display="block"; clearInterval(heroSlideInterval); if(currentMovie.price && currentMovie.price.trim()!=='' &&!localStorage.getItem("paid_"+currentMovie.id)){ const ref = 'CHILAGU_' + Math.random().toString(36).substr(2, 5).toUpperCase(); localStorage.setItem("pending_ref", ref); document.getElementById("payBox").style.display="block"; document.getElementById("price").textContent=currentMovie.price; document.getElementById="refCode").textContent=ref; document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Lipa na Ref: "+ref+"</p>"; } else { document.getElementById("payBox").style.display="none"; document.getElementById("videoBox").innerHTML = getPlayerHTML(currentMovie.videoLink); } }
+function getPlayerHTML(link){ link = link.trim(); if(!link) return `<p style='color:#888;text-align:center;padding-top:80px'>Video bado haijawekwa 😅</p>`; if(link.includes('drive.google.com/file/d/')){ link = link.replace('/view','').replace('/preview','') + '/preview'; return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`; } return `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${link}" type="video/mp4"></video>`; }
+function openPlayer(id){ currentMovie = allMovies.find(m => m.id === id); if(!currentMovie) return alert('Samahani, movie haipatikani'); markWatched(currentMovie.id); document.getElementById("heroSlider").style.display="none"; document.querySelector(".tabs").style.display="none"; document.querySelector(".icons").style.display="none"; document.querySelector(".search-box").style.display="none"; document.getElementById("playerSection").style.display="block"; clearInterval(heroSlideInterval); if(currentMovie.price && currentMovie.price.toString().trim()!=='' &&!localStorage.getItem("paid_"+currentMovie.id)){ const ref = 'CHILAGU_' + Math.random().toString(36).substr(2, 5).toUpperCase(); localStorage.setItem("pending_ref", ref); document.getElementById("payBox").style.display="block"; document.getElementById("price").textContent=currentMovie.price; document.getElementById("refCode").textContent=ref; document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Lipa na Ref: "+ref+"</p>"; } else { document.getElementById("payBox").style.display="none"; document.getElementById("videoBox").innerHTML = getPlayerHTML(currentMovie.videoLink); } }
 function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.querySelector(".search-box").style.display="block";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();applyFilters();}
-
-// AUTOMATIC 100%
 async function checkAutoPay(){ const ref = localStorage.getItem("pending_ref"); const status = document.getElementById("payStatus"); status.textContent = "Tunakagua malipo yako..."; try{ const res = await fetch(BOT_API_URL + "?ref=" + ref); const data = await res.json(); if(data.paid === true){ localStorage.setItem("paid_"+currentMovie.id, "true"); status.textContent = "✅ Malipo yamepatikana!"; setTimeout(()=> openPlayer(currentMovie.id), 1000); } else { status.textContent = "Bado hatujapata malipo. Subiri sekunde 30 jaribu tena."; } catch(e){ status.textContent = "Kuna shida mtandao. Jaribu tena."; } }
-
 loadMovies();
 </script>
 </body>
