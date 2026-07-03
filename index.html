@@ -67,7 +67,7 @@
 <body>
 
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
-<p class="sub-text">Tunaweka movie mpya kila siku 🔥</p>
+<p class="sub-text">Pata kilicho Bora kwa Ubora</p>
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
@@ -110,20 +110,20 @@
 
 <script>
 /* ================== WEKA MIPANGILIO YAKO HAPA ================== */
-const WEEKLY_KEY = "CHILAGU-$1KyW"; 
+const WEEKLY_KEY = "CHILAGU-WK43"; 
 const WEEKLY_PRICE = 2000;         
 const ADMIN_WHATSAPP = "255686436004"; 
-const ADMIN_NAME = "MOSHI IDD";
+const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004"; // WEKA NAMBA YAKO HAPA
 const PAYMENT_NETWORK = "Airtel Money"; // WEKA AIRTEL MONEY AU MPESA
 /* =============================================================== */
 
 /* ============= WEKA MOVIE 4 ZAKO HAPA ============= */
 const movies = [
-  {id:1,title:"Mpanda Mnazi FREE",type:"all",cat:"action",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/5yR5Vq8L/fastx.jpg",link:"WEKA_LINK_1"},
+  {id:1,title:"Mpanda mnazi FREE",type:"all",cat:"action",price:0,trending:true,slide:true,thumbnail:"https://i.postimg.cc/5yR5Vq8L/fastx.jpg",link:"WEKA_LINK_1"},
   {id:2,title:"Love And Destiny VIP",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/3JzW3k0g/loveagain.jpg",link:"WEKA_LINK_2"},
-  {id:3,title:"Appocul FREE",type:"singo",cat:"drama",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/GhGz3b0k/singo.jpg",link:"WEKA_LINK_3"},
-  {id:4,title:"Yellow RECKONING FREE",type:"all",cat:"thriller",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/8cR1jB2L/equalizer.jpg",link:"WEKA_LINK_4"},
+  {id:3,title:"Yellow RECKONING FREE",type:"singo",cat:"drama",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/GhGz3b0k/singo.jpg",link:"WEKA_LINK_3"},
+  {id:4,title:"Appocul FREE",type:"all",cat:"thriller",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/8cR1jB2L/equalizer.jpg",link:"WEKA_LINK_4"},
 ];
 /* ================================================== */
 
