@@ -8,7 +8,7 @@
 <style>
   :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
   *{box-sizing:border-box} 
-  html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden} /* SCROLL JUU CHINI TU */
+  html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
   .header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
   .header img{width:32px;height:32px}
   .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
@@ -16,7 +16,7 @@
   .search-wrap{padding:10px 15px}.search{position:relative}
   .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
   .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
-  .main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto} /* Hii tu inabaki ya kuteleza kidogo */
+  .main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
   .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
   .main-tab.active{background:var(--gradient);color:#fff}
   .cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
@@ -24,12 +24,14 @@
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
   
-  /* IMEONDOLEWA SCROLL YA PANDE KATIKA SLIDE */
-  .slide-wrap{padding:0 15px 10px}
-  .slide{display:grid;gap:8px} /* Imebadilishwa kutoka flex kwenda grid */
-  .slide-card{width:100%;aspect-ratio:16/9;border-radius:10px;position:relative;cursor:pointer}
+  /* BANNER SLIDE IMEFUNGWA TENA */
+  .slide-wrap{padding:0 15px 10px;position:relative}
+  .slide{display:flex;overflow-x:auto;gap:8px;scroll-snap-type:x mandatory;scroll-behavior:smooth} 
+  .slide::-webkit-scrollbar{display:none}
+  .slide-card{min-width:100%;aspect-ratio:16/9;border-radius:10px;position:relative;scroll-snap-align:start;cursor:pointer;flex-shrink:0}
   .slide-card img{width:100%;height:100%;object-fit:cover;border-radius:10px}
-  .slide-title{position:absolute;bottom:0;left:0;right:0;padding:20px 10px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.8));font-size:14px;font-weight:700}
+  .slide-title{position:absolute;bottom:0;left:0;right:0;padding:40px 10px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.8));font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .watch-btn{padding:4px 10px;background:var(--gradient);border-radius:15px;font-size:10px;font-weight:700}
   
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
   .card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative}
@@ -91,7 +93,7 @@
 
 <script>
 /* ================== WEKA MIPANGILIO YAKO HAPA ================== */
-const WEEKLY_KEY = "CHILAGU-$1KyW"; 
+const WEEKLY_KEY = "CHILAGU-WK43"; 
 const WEEKLY_PRICE = 2000;         
 const ADMIN_WHATSAPP = "255686436004"; 
 const ADMIN_NAME = "yStar pro";
@@ -108,10 +110,21 @@ const movies = [
 
 let mainType='all', activeCat='all', currentMovie=null;
 let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
+let slideIndex = 0; let slideInterval;
 
 function makeCard(m){const div=document.createElement("div");div.className="card";let star=m.price>0?'<div class="star-badge">★</div>':'';div.innerHTML=`<div class="thumb-wrap"><img class="thumb" src="${m.thumbnail}" alt="${m.title}">${star}</div><div class="card-body"><p>${m.title}</p></div>`;div.onclick=()=>openMovie(m);return div}
-function makeSlideCard(m){const div=document.createElement("div");div.className="slide-card";div.innerHTML=`<img src="${m.thumbnail}" alt="${m.title}"><div class="slide-title">${m.title}</div>`;div.onclick=()=>openMovie(m);return div}
-function loadMovies(){const homeGrid=document.getElementById("homeGrid");const trendGrid=document.getElementById("trendGrid");const slideGrid=document.getElementById("slideGrid");homeGrid.innerHTML="";trendGrid.innerHTML="";slideGrid.innerHTML="";let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase()));filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));let trend=filtered.filter(m=>m.trending===true);trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';trend.forEach(m=>trendGrid.appendChild(makeCard(m)));let slide=filtered.filter(m=>m.slide===true);slide.forEach(m=>slideGrid.appendChild(makeSlideCard(m)))}
+function makeSlideCard(m){const div=document.createElement("div");div.className="slide-card";div.innerHTML=`<img src="${m.thumbnail}" alt="${m.title}"><div class="slide-title">${m.title} <span class="watch-btn">WATCH</span></div>`;div.onclick=()=>openMovie(m);return div}
+function loadMovies(){const homeGrid=document.getElementById("homeGrid");const trendGrid=document.getElementById("trendGrid");const slideGrid=document.getElementById("slideGrid");homeGrid.innerHTML="";trendGrid.innerHTML="";slideGrid.innerHTML="";let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase()));filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));let trend=filtered.filter(m=>m.trending===true);trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';trend.forEach(m=>trendGrid.appendChild(makeCard(m)));let slide=filtered.filter(m=>m.slide===true);slide.forEach(m=>slideGrid.appendChild(makeSlideCard(m))); startAutoSlide(slide.length)}
+
+function startAutoSlide(total){
+  clearInterval(slideInterval);
+  if(total<=1) return;
+  slideInterval = setInterval(()=>{
+    const slide = document.getElementById("slideGrid");
+    slideIndex = (slideIndex + 1) % total;
+    slide.scrollTo({left: slideIndex * slide.offsetWidth, behavior: 'smooth'});
+  }, 4000); // Inabadilika kila sekunde 4
+}
 
 function openMovie(m){
   currentMovie=m;
@@ -133,6 +146,7 @@ function checkKey(){
 }
 
 function playMovie(link){
+  clearInterval(slideInterval); // Simamisha auto slide akiingia movie
   document.getElementById("videoFrame").src=link;
   document.getElementById("playerBox").style.display="flex";
 }
@@ -155,7 +169,7 @@ function pay(network){
   },3000)
 }
 
-function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src=""}
+function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src=""; loadMovies()} // Anza tena auto slide
 function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
