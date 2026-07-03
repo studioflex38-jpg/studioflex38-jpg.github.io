@@ -1,139 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="sw">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chilagu Legacy Cinema</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:#000; color:#fff; font-family:Arial; }
-.container { padding:12px; padding-bottom:40px; }
-.header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-.logo { width:32px; height:32px; }
-.app-name { font-size:18px; font-weight:bold; background:linear-gradient(90deg, #8B5CF6, #EC4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-.hero-slider { position:relative; border-radius:12px; overflow:hidden; margin-bottom:18px; background:#000; height:180px; }
-.hero-slides { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; height:100%; }
-.hero-slides::-webkit-scrollbar { display:none; }
-.hero-slide { min-width:100%; position:relative; scroll-snap-align:start; flex-shrink:0; background:#000; height:100%; overflow:hidden; cursor:pointer; }
-.hero-slide img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-.hero-text { position:absolute; left:0; right:0; bottom:0; padding:15px; display:flex; flex-direction:column; justify-content:flex-end; background:linear-gradient(0deg, rgba(0,0,0,0.4) 40%, transparent 100%); pointer-events:none; }
-.hero-text h1 { font-size:20px; font-weight:bold; margin:0 0 6px 0; text-shadow:0 2px 8px #000; }
-.hero-text p { font-size:12px; color:#ddd; margin:0 0 12px 0; max-width:85%; text-shadow:0 2px 8px #000; }
-.btn-tazama { background:linear-gradient(90deg, #A855F7, #EC4899); border:none; color:#fff; padding:8px 20px; border-radius:8px; font-weight:bold; font-size:13px; display:flex; align-items:center; gap:6px; cursor:pointer; width:fit-content; pointer-events:auto; }
-.hero-dots { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); display:flex; gap:6px; }
-.dot { width:6px; height:6px; border-radius:50%; background:#666; }
-.dot.active { background:#EC4899; }
-.search-box { position:relative; margin:12px 0 15px 0; }
-.search-box input { width:100%; padding:12px 40px 12px 15px; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:25px; font-size:13px; outline:none; }
-.search-box input:focus { border-color:#A855F7; }
-.search-box svg { position:absolute; right:15px; top:50%; transform:translateY(-50%); width:20px; height:20px; fill:#888; pointer-events:none; }
-.tabs { display:flex; gap:8px; margin:15px 0; }
-.tab { background:#1a1a1a; color:#888; padding:10px 18px; border-radius:25px; border:none; font-size:13px; cursor:pointer; }
-.tab.active { background:linear-gradient(90deg, #A855F7, #EC4899); color:#fff; }
-.icons { display:flex; justify-content:space-around; margin:15px 0; }
-.icon-box { text-align:center; cursor:pointer; }
-.icon-circle { width:55px; height:55px; border-radius:50%; background:#1a1a1a; display:flex; align-items:center; justify-content:center; margin:0 auto 5px; border:2px solid #222; }
-.icon-box.active .icon-circle { background:linear-gradient(135deg, #A855F7, #EC4899); border-color:#A855F7; box-shadow:0 0 15px #A855F7; }
-.icon-circle svg { width:26px; height:26px; fill:#fff; }
-.icon-box p { margin:0; font-size:12px; color:#888; }
-.icon-box.active p { color:#fff; font-weight:bold; }
-.section-title { font-size:17px; font-weight:bold; margin:20px 0 12px 0; }
-.movie-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
-.trending-slider { display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:10px; }
-.trending-slider::-webkit-scrollbar { display:none; }
-.trending-card { min-width:130px; width:130px; background:#111; border-radius:8px; overflow:hidden; cursor:pointer; position:relative; flex-shrink:0; }
-.trending-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#222; }
-.trending-card p { padding:8px; margin:0; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.movie-card { background:#111; border-radius:8px; overflow:hidden; cursor:pointer; position:relative; }
-.movie-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#222; }
-.movie-card p { padding:8px; margin:0; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.star-icon { position:absolute; top:6px; right:6px; background:linear-gradient(90deg, #A855F7, #EC4899); color:#fff; padding:3px 5px; border-radius:4px; font-size:10px; font-weight:bold; }
-.watched-badge { position:absolute; top:6px; left:6px; background:#10B981; color:#fff; padding:3px 5px; border-radius:4px; font-size:10px; }
-.player-section { display:none; margin-top:20px; }
-.video-box { width:100%; aspect-ratio:16/9; background:#000; border-radius:8px; margin-bottom:15px; overflow:hidden; }
-.pay-box { background:#1a1a1a; padding:12px; border-radius:8px; margin-bottom:15px; border:2px solid #A855F7; }
-.btn-pay { width:100%; padding:10px; background:linear-gradient(90deg, #A855F7, #EC4899); border:none; color:#fff; border-radius:5px; font-weight:bold; cursor:pointer; }
-.loading { color:#888; text-align:center; padding:20px; font-size:13px; }
-.error { color:#ff5555; text-align:center; padding:20px; font-size:12px; background:#1a0000; border-radius:8px; margin:10px 0; }
-.count { color:#10B981; font-size:12px; text-align:center; margin:10px 0; font-weight:bold; }
+  :root { --bg: #0a0a0a; --card: #1a1a1a; --pink: #ff2d92; --purple: #a855f7; --airtel: #e60000; }
+  body { margin: 0; font-family: Arial; background: var(--bg); color: #fff; }
+  .header { padding: 20px 15px 10px; }
+  .header h1 { margin: 0; font-size: 28px; font-weight: 800; }
+  .header p { margin: 5px 0 15px; color: #ccc; font-size: 14px; }
+  .dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 15px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
+  .dot.active { background: var(--pink); }
+  .search { margin: 0 15px 15px; position: relative; }
+  .search input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: none; background: #222; color: #fff; font-size: 15px; box-sizing: border-box; }
+  .search span { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); }
+  .tabs { display: flex; gap: 10px; padding: 0 15px; overflow-x: auto; }
+  .tab { padding: 10px 18px; border-radius: 20px; background: #222; font-size: 14px; white-space: nowrap; cursor: pointer; }
+  .tab.active { background: linear-gradient(90deg, var(--pink), var(--purple)); font-weight: bold; }
+  .cat-nav { display: flex; justify-content: space-around; padding: 20px 15px 10px; }
+  .cat { text-align: center; cursor: pointer; }
+  .cat .icon { width: 60px; height: 60px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; margin: auto; font-size: 24px; }
+  .cat.active .icon { background: linear-gradient(135deg, var(--pink), var(--purple)); box-shadow: 0 0 15px var(--pink); }
+  .cat p { margin: 8px 0 0; font-size: 13px; }
+  .section { padding: 20px 15px; }
+  .section h2 { margin: 0 0 5px; font-size: 20px; }
+  .sub { color: #00ffb3; font-size: 14px; margin-bottom: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .card { background: var(--card); border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; }
+  .card .thumb { width: 100%; height: 160px; background: #333; }
+  .star { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; background: linear-gradient(135deg, var(--pink), var(--purple)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .price-tag { position: absolute; bottom: 35px; right: 8px; background: #000c; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+  .card p { margin: 0; padding: 10px; font-size: 14px; }
+  .watched { padding: 20px 15px; color: #aaa; }
+  
+  /* POPUP YA AIRTEL MONEY */
+  #paymentBox, #resultBox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; align-items: center; justify-content: center; }
+  .pay-card { background: #1e1e1e; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
+  .pay-card .airtel { font-size: 22px; color: var(--airtel); font-weight: bold; margin: 10px 0; }
+  .pay-card .ref { font-size: 18px; color: #00ffb3; font-weight: bold; word-break: break-all; }
+  .pay-card button { width: 100%; padding: 14px; margin-top: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+  .check-btn { background: #00c853; color: #fff; }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header"><img class="logo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png"><div class="app-name">Chilagu Legacy Cinema</div></div>
-  <div class="hero-slider" id="heroSlider"><div class="hero-slides" id="heroSlides"><p class="loading">Inapakia Bana...</p></div><div class="hero-dots" id="heroDots"></div></div>
-  
-  <!-- SEARCH BAR IKO HAPA CHINI YA BANNER NA JUU YA CATEGORY -->
-  <div class="search-box"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." oninput="searchMovies()"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
 
-  <div class="tabs"><button class="tab active" onclick="switchTab('all', this)">📁 All Movies</button><button class="tab" onclick="switchTab('Series', this)">💻 Series</button><button class="tab" onclick="switchTab('Singo', this)">🎞️ Singo</button></div>
-  <div class="icons"><div class="icon-box active" onclick="filterCategory('all', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Zote</p></div><div class="icon-box" onclick="filterCategory('Action', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div><p>Action</p></div><div class="icon-box" onclick="filterCategory('Love', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div><p>Love</p></div><div class="icon-box" onclick="filterCategory('Drama', this)"><div class="icon-circle"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><p>Drama</p></div></div>
-  <h2 class="section-title">Trending Now🔥</h2><div class="trending-slider" id="trendingGrid"><p class="loading">Inapakia...</p></div>
-  <h2 class="section-title">HOME</h2><div class="count" id="movieCount"></div><div class="movie-grid" id="homeGrid"><p class="loading" style="grid-column:1/4">Inapakia movie...</p></div>
-  <h2 class="section-title">Watched ✓</h2><div class="movie-grid" id="watchedGrid"></div><p id="noWatched" style="color:#666; text-align:center; display:none; margin:20px 0">Bado hujatazama movie</p>
-  <div class="player-section" id="playerSection"><div class="video-box" id="videoBox"></div><div class="pay-box" id="payBox" style="display:none;"><p style="margin:0 0 8px 0; font-size:13px;">Movie hii ni TSH <span id="price"></span></p><p style="font-size:12px; color:#aaa;">Lipa Airtel Money: 078XXXXXXX <br> Ref: <b id="refCode"></b></p><p style="font-size:12px; color:#10B981;">Baada ya kulipa bonyeza hapa chini. Bot itakufungulia AUTOMATIC.</p><button class="btn-pay" onclick="checkAutoPay()">Nimeshalipa - Angalia</button><p id="payStatus" style="font-size:11px; color:#EC4899; text-align:center; margin-top:5px;"></p></div><button onclick="closePlayer()" style="width:100%; margin-top:15px; padding:10px; background:#333; border:none; color:#fff; border-radius:5px;">↩ Rudi Nyuma</button></div>
+<div class="header">
+  <h1>The Equalizer</h1>
+  <p>Haki kwa mkono wake.</p>
+  <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot active"></span></div>
 </div>
+
+<div class="search">
+  <input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="filterMovies()">
+  <span>🔍</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active">📁 All Movies</div>
+  <div class="tab">💻 Series</div>
+  <div class="tab">📼 Singo</div>
+</div>
+
+<div class="cat-nav">
+  <div class="cat active" onclick="filterCat('all')"><div class="icon">⚪</div><p>Zote</p></div>
+  <div class="cat" onclick="filterCat('action')"><div class="icon">⚡</div><p>Action</p></div>
+  <div class="cat" onclick="filterCat('love')"><div class="icon">❤️</div><p>Love</p></div>
+  <div class="cat" onclick="filterCat('drama')"><div class="icon">⚪</div><p>Drama</p></div>
+</div>
+
+<div class="section">
+  <h2>Trending Now🔥</h2>
+  <div class="sub">Inaonyesha: <span id="count">4</span> / Jumla: <span id="total">14</span> 🔥</div>
+  <div class="grid" id="homeGrid"></div>
+</div>
+
+<div class="watched">Watched ✓<br><br>Bado hujatazama movie</div>
+
+<!-- POPUP YA MALIPO AIRTEL MONEY -->
+<div id="paymentBox"><div class="pay-card">
+  <h3>Lipa Airtel Money Ku Fungua</h3>
+  <p>Tuma <b>Tsh <span id="amount">2000</span></b> kwa:</p>
+  <p class="airtel">0686436004</p> 
+  <p>Jina: CHILAGU M</p>
+  <p>Andika Ref hii: <br><span class="ref" id="refCode"></span></p>
+  <button class="check-btn" onclick="checkPayment()">Nimeshalipa - Angalia</button>
+</div></div>
+<div id="resultBox"></div>
+
 <script>
-// ========= LINK YA BOT YAKO TU NDIO NIMECHUKUA =========
-const BOT_API_URL = "https://script.google.com/macros/s/AKfycbxjnHGI1rHCV6XHbWzZ8vlZgWw7mq2HqO9e3LSLKfE5pblPhCdelRrqKn5u8daLaIAD/exec";
-// =======================================================
+// ========= KILA KITU KIMEWEKWA HAPA =========
+const BOT_API_URL = "https://script.google.com/macros/s/AKfycbwE_84hlGHKhKXp2uvAB4RjxRI4bLqgADi1Lzws8G8GI5DwtcJxFGy_Tm6ADBaMCYGp/exec"; 
+const AIRTEL_NUMBER = "0686436004"; 
+// ============================================
 
-// ========== GHALA LA MOVIE 4 LIVE / 10 PRIVATE ==========
-const allMovies = [
-  // ========== MOVIE 4 LIVE ========== WEKA LINK ZAKO HALISI HAPA
-  {id: "M001", title: "Fast X", type: "Movie", image: "https://i.postimg.cc/xyz1.jpg", genre: "Action", desc: "Dom anarudi tena.", featured: "true", trending: "true", new: "true", videoLink: "WEKA_LINK_YA_FASTX_HAPA", price: "500", status: "live"},
-  {id: "M002", title: "Love Again", type: "Movie", image: "https://i.postimg.cc/xyz2.jpg", genre: "Love", desc: "Mapenzi ya kisasa.", featured: "true", trending: "false", new: "true", videoLink: "WEKA_LINK_YA_LOVE_HAPA", price: "300", status: "live"},
-  {id: "M003", title: "Singo Mzito Ep1", type: "Singo", image: "https://i.postimg.cc/xyz3.jpg", genre: "Drama", desc: "Series kali ya Bongo.", featured: "false", trending: "true", new: "true", videoLink: "WEKA_LINK_YA_SINGO_HAPA", price: "", status: "live"},
-  {id: "M004", title: "The Equalizer", type: "Movie", image: "https://i.postimg.cc/xyz4.jpg", genre: "Action", desc: "Haki kwa mkono wake.", featured: "false", trending: "false", new: "false", videoLink: "WEKA_LINK_YA_EQUALIZER_HAPA", price: "500", status: "live"},
+let currentRef = "";
+let selectedMovie = null;
+let currentPrice = 0;
+let activeCat = 'all';
 
-  // ========== MOVIE 10 PRIVATE ========== ZISIONEKANE APP MPKA UWEKE status:'live'
-  {id: "M005", title: "Joker 2", type: "Movie", image: "https://i.postimg.cc/xyz5.jpg", genre: "Drama", desc: "Joker anarudi.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "500", status: "private"},
-  {id: "M006", title: "Series Kali Ep1", type: "Series", image: "https://i.postimg.cc/xyz6.jpg", genre: "Action", desc: "Series mpya.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "300", status: "private"},
-  {id: "M007", title: "Romance Bongo", type: "Movie", image: "https://i.postimg.cc/xyz7.jpg", genre: "Love", desc: "Mapenzi Bongo.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "", status: "private"},
-  {id: "M008", title: "Action Pack", type: "Movie", image: "https://i.postimg.cc/xyz8.jpg", genre: "Action", desc: "Bomu la Action.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "500", status: "private"},
-  {id: "M009", title: "Singo Ep2", type: "Singo", image: "https://i.postimg.cc/xyz9.jpg", genre: "Drama", desc: "Sehemu ya pili.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "", status: "private"},
-  {id: "M010", title: "Movie Kali 1", type: "Movie", image: "https://i.postimg.cc/xyz10.jpg", genre: "Action", desc: "Movie kali.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "500", status: "private"},
-  {id: "M011", title: "Movie Kali 2", type: "Movie", image: "https://i.postimg.cc/xyz11.jpg", genre: "Drama", desc: "Drama kali.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "300", status: "private"},
-  {id: "M012", title: "Series Ep2", type: "Series", image: "https://i.postimg.cc/xyz12.jpg", genre: "Action", desc: "Episode 2.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "300", status: "private"},
-  {id: "M013", title: "Love Story", type: "Movie", image: "https://i.postimg.cc/xyz13.jpg", genre: "Love", desc: "Hadithi ya mapenzi.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "", status: "private"},
-  {id: "M014", title: "Final Movie", type: "Movie", image: "https://i.postimg.cc/xyz14.jpg", genre: "Action", desc: "Mwisho wa msimu.", featured: "false", trending: "false", new: "true", videoLink: "WEKA_LINK_YAKO_BADAE", price: "500", status: "private"},
+// ========= HAPA NDO CONTROL PANEL YAKO YA BEI MZEE 👇 =========
+// SHERIA: price: 0 = BURE. price: 1000, 2000, 5000 = INALIPWA + INAONYESHA NYOTA ★
+const movies = [
+  // 4 LIVE - WEKA price: 0 KWA BURE
+  {id: 1, title: "Fast X", cat: "action", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  {id: 2, title: "Love Again", cat: "love", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  {id: 3, title: "Singo Mzito Ep1", cat: "drama", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  {id: 4, title: "The Equalizer", cat: "action", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+
+  // 10 PRIVATE - WEKA price: 2000 AU CHOCHOTE. ZITAKUWA NA NYOTA ★
+  {id: 5, title: "John Wick 4", cat: "action", price: 2000},
+  {id: 6, title: "Dune 2", cat: "action", price: 1500}, // Mfano bei tofauti
+  {id: 7, title: "Avatar 2", cat: "action", price: 2000},
+  {id: 8, title: "Deadpool 3", cat: "action", price: 3000}, // Bei ghali
+  {id: 9, title: "Titanic Love", cat: "love", price: 1000},  // Bei nafuu
+  {id: 10, title: "After Love", cat: "love", price: 2000},
+  {id: 11, title: "Singo Kali Ep2", cat: "drama", price: 2000},
+  {id: 12, title: "Mapenzi Hard", cat: "drama", price: 2000},
+  {id: 13, title: "Mission Impo", cat: "action", price: 2000},
+  {id: 14, title: "Bongo Movie", cat: "drama", price: 2000},
 ];
-// ========================================================
-
-let filteredMovies = []; let currentMovie = null; let currentCategory = 'all'; let currentType = 'all'; let searchQuery = ''; let heroSlideIndex = 0; let heroSlideInterval;
+// ============================================================
 
 function loadMovies() {
-  const liveMovies = allMovies.filter(m => m.status === 'live');
-  document.getElementById("movieCount").textContent = `Jumla ya Movie: ${liveMovies.length} 🔥`;
-  if(liveMovies.length > 0) { renderHeroSlider(liveMovies); applyFilters(liveMovies); startHeroAutoSlide(); }
-  else { document.getElementById("homeGrid").innerHTML = "<div class='error'>Bado hujaweka movie za 'live'</div>"; }
+  const grid = document.getElementById("homeGrid");
+  grid.innerHTML = "";
+  let filtered = movies.filter(m => 
+    (activeCat === 'all' || m.cat === activeCat) &&
+    m.title.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase())
+  );
+  document.getElementById("count").innerText = filtered.length;
+  document.getElementById("total").innerText = movies.length;
+  filtered.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "card";
+    let star = m.price > 0 ? '<div class="star">★</div>' : ''; // Nyota ikiwa inalipwa
+    let tag = m.price > 0 ? `<div class="price-tag">Tsh ${m.price}</div>` : ''; // Tag ya bei
+    div.innerHTML = `<div class="thumb"></div> ${star} ${tag} <p>${m.title}</p>`;
+    div.onclick = () => openMovie(m);
+    grid.appendChild(div);
+  });
 }
 
-function renderHeroSlider(movies) { const heroSlides = document.getElementById("heroSlides"); const heroDots = document.getElementById("heroDots"); const heroMovies = movies.filter(m => m.featured == true || m.featured == 'TRUE'); const slides = heroMovies.length > 0? heroMovies : movies.slice(0,5); heroSlides.innerHTML = ""; heroDots.innerHTML = ""; slides.forEach((movie, i) => { const buttonHtml = i === 0? `<button class="btn-tazama" onclick="event.stopPropagation(); openPlayer('${movie.id}')">▶ Tazama</button>` : ''; heroSlides.innerHTML += `<div class="hero-slide" onclick="openPlayer('${movie.id}')"><img src="${movie.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/600x300/111/555'"><div class="hero-text"><h1>${movie.title}</h1><p>${movie.desc}</p>${buttonHtml}</div></div>`; heroDots.innerHTML += `<div class="dot ${i===0?'active':''}"></div>`; }); heroSlides.addEventListener('scroll', () => updateHeroDots(Math.round(heroSlides.scrollLeft / heroSlides.offsetWidth))); }
-function updateHeroDots(index) { heroSlideIndex = index; document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === index)); }
-function startHeroAutoSlide() { clearInterval(heroSlideInterval); heroSlideInterval = setInterval(() => { const s = document.getElementById("heroSlides"); const t = s.children.length; if(t>0){ heroSlideIndex=(heroSlideIndex+1)%t; s.scrollTo({left:heroSlideIndex*s.offsetWidth,behavior:'smooth'}); updateHeroDots(heroSlideIndex); }}, 4000); }
-function getWatched() { return JSON.parse(localStorage.getItem("watched_movies") || "[]"); }
-function markWatched(id) { let w=getWatched(); if(!w.includes(id)){w.push(id);localStorage.setItem("watched_movies",JSON.stringify(w));} }
-
-function applyFilters(movies=allMovies.filter(m=>m.status==='live')){ 
-  filteredMovies = movies.filter(m=> (currentType==='all'||m.type?.toLowerCase()===currentType.toLowerCase()) && (currentCategory==='all'||m.genre?.toLowerCase()===currentCategory.toLowerCase()) && (searchQuery==='' || m.title.toLowerCase().includes(searchQuery.toLowerCase())) ); 
-  document.getElementById("movieCount").textContent = `Inaonyesha: ${filteredMovies.length} / Jumla: ${movies.length} 🔥`; 
-  renderMovies(); 
+function openMovie(m) {
+  if(m.price === 0){ // KAMA NI BURE
+    window.open(m.link, "_blank");
+  } else { // KAMA INALIPWA
+    selectedMovie = m;
+    currentPrice = m.price;
+    currentRef = "CHILAGU_" + Math.random().toString(36).substr(2, 9).toUpperCase();
+    document.getElementById("amount").innerText = currentPrice; // Weka bei hapa
+    document.getElementById("refCode").innerText = currentRef;
+    document.getElementById("paymentBox").style.display = "flex";
+  }
 }
 
-function renderMovies() { const trending=document.getElementById("trendingGrid"); const home=document.getElementById("homeGrid"); const watched=document.getElementById("watchedGrid"); const noWatched=document.getElementById("noWatched"); const wList=getWatched(); trending.innerHTML=""; home.innerHTML=""; watched.innerHTML=""; let hasWatched=false; filteredMovies.forEach(m=>{ const paid=m.price&&m.price.trim()!==''; const isWatched=m.id&&wList.includes(m.id); const trend=m.trending==true||m.trending=='TRUE'; const card=`<div class="movie-card" onclick="openPlayer('${m.id}')"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`; const tCard=`<div class="trending-card" onclick="openPlayer('${m.id}')"><img src="${m.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200/111/555'">${paid?'<div class="star-icon">★</div>':''}${isWatched?'<div class="watched-badge">✓</div>':''}<p>${m.title}</p></div>`; home.innerHTML+=card; if(isWatched){watched.innerHTML+=card;hasWatched=true;} if(trend){trending.innerHTML+=tCard;} }); if(trending.innerHTML==='')trending.innerHTML="<p style='color:#666;padding:20px;text-align:center'>Hakuna Trending</p>"; if(home.innerHTML==='')home.innerHTML="<p style='color:#666;grid-column:1/4;text-align:center'>Hakuna movie</p>"; noWatched.style.display=hasWatched?'none':'block'; }
+async function checkPayment() {
+  const resultBox = document.getElementById("resultBox");
+  resultBox.style.display = "flex";
+  resultBox.innerHTML = `<div class="pay-card">⏳ Tunakagua Tsh ${currentPrice} ya Airtel...<br><br><button onclick="document.getElementById('resultBox').style.display='none'">Funga</button></div>`;
+  try {
+    const res = await fetch(BOT_API_URL + "?ref=" + currentRef);
+    const data = await res.json();
+    if (data.paid === true) {
+      resultBox.innerHTML = `<div class="pay-card">✅ Malipo ya Tsh ${currentPrice} yamepatikana!<br><br><button class="check-btn" onclick="alert('Tuma link ya ${selectedMovie.title} kwa admin'); document.getElementById('paymentBox').style.display='none'; document.getElementById('resultBox').style.display='none'">Sawa</button></div>`;
+    } else {
+      resultBox.innerHTML = `<div class="pay-card">❌ Bado hatujapata Tsh ${currentPrice}<br>Ref: ${currentRef}<br><br><button onclick="document.getElementById('resultBox').style.display='none'">Jaribu Tena</button></div>`;
+    }
+  } catch (err) {
+    resultBox.innerHTML = `<div class="pay-card">⚠️ Mtandao umekatika</div>`;
+  }
+}
 
-function filterCategory(c,e){document.querySelectorAll('.icon-box').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentCategory=c;loadMovies();}
-function switchTab(t,e){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));e.classList.add('active');currentType=t;loadMovies();}
-function searchMovies(){searchQuery=document.getElementById("searchInput").value;loadMovies();}
-
-function getPlayerHTML(link){ link = link.trim(); if(link.endsWith('.mp4') || link.endsWith('.m3u8') || link.endsWith('.webm')){ return `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${link}" type="video/mp4"></video>`; } else if(link.includes('streamable.com')){ if(!link.includes('/e/')){ link = link.replace('streamable.com/', 'streamable.com/e/'); } return `<iframe src="${link}?s-autoplay=1" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`; } else { return `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-same-origin allow-scripts allow-pointer-lock allow-forms"></iframe>`; } }
-
-function openPlayer(id){currentMovie=allMovies.find(m=>m.id===id);if(!currentMovie)return;markWatched(currentMovie.id);document.getElementById("heroSlider").style.display="none";document.querySelector(".tabs").style.display="none";document.querySelector(".icons").style.display="none";document.querySelector(".search-box").style.display="none";document.getElementById("playerSection").style.display="block";clearInterval(heroSlideInterval); if(currentMovie.price&&currentMovie.price.trim()!==''&&!localStorage.getItem("paid_"+currentMovie.id)){ const ref="CHILAGU_"+Math.random().toString(36).substr(2,5).toUpperCase(); localStorage.setItem("pending_ref", ref); document.getElementById("payBox").style.display="block"; document.getElementById("price").textContent=currentMovie.price; document.getElementById("refCode").textContent=ref; document.getElementById("videoBox").innerHTML="<p style='color:#888;text-align:center;padding-top:80px'>Lipa na Ref: "+ref+"</p>"; } else{ document.getElementById("payBox").style.display="none"; document.getElementById("videoBox").innerHTML = getPlayerHTML(currentMovie.videoLink); } }
-
-function closePlayer(){document.getElementById("playerSection").style.display="none";document.getElementById("heroSlider").style.display="block";document.querySelector(".tabs").style.display="flex";document.querySelector(".icons").style.display="flex";document.querySelector(".search-box").style.display="block";document.getElementById("videoBox").innerHTML="";startHeroAutoSlide();loadMovies();}
-
-async function checkAutoPay(){ const ref = localStorage.getItem("pending_ref"); const t = document.getElementById("payStatus"); t.textContent = "Tunakagua malipo yako..."; try{ const res = await fetch(BOT_API_URL+"?ref="+ref); const data = await res.json(); if(data.paid === true){ localStorage.setItem("paid_"+currentMovie.id, "true"); t.textContent = "✅ Malipo yamepatikana!"; setTimeout(()=> openPlayer(currentMovie.id), 1000); } else { t.textContent = "Bado hatujapata malipo. Subiri sekunde 30 jaribu tena."; } }catch(e){ t.textContent = "Kuna shida mtandao. Jaribu tena."; } }
-
+function filterCat(cat) {
+  activeCat = cat;
+  document.querySelectorAll(".cat").forEach(c => c.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  loadMovies();
+}
+function filterMovies() { loadMovies(); }
 loadMovies();
 </script>
 </body>
