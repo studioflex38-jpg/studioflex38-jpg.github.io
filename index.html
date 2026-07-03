@@ -27,12 +27,14 @@
   .section { padding: 20px 15px; }
   .section h2 { margin: 0 0 5px; font-size: 20px; }
   .sub { color: #00ffb3; font-size: 14px; margin-bottom: 15px; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .card { background: var(--card); border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; }
-  .card .thumb { width: 100%; height: 160px; background: #333; }
-  .star { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; background: linear-gradient(135deg, var(--pink), var(--purple)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-  .price-tag { position: absolute; bottom: 35px; right: 8px; background: #000c; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-  .card p { margin: 0; padding: 10px; font-size: 14px; }
+  
+  /* CARDS 3 NDOGO RATIO 19:6 SAFI */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } 
+  .card { background: var(--card); border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; }
+  .card .thumb { width: 100%; aspect-ratio: 19/6; background: #333; } 
+  .star { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: linear-gradient(135deg, var(--pink), var(--purple)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  /* .price-tag IMEFUTWA HAPA KWA SABABU INACHAFUA */
+  .card p { margin: 0; padding: 8px 6px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .watched { padding: 20px 15px; color: #aaa; }
   
   /* POPUP YA AIRTEL MONEY */
@@ -71,14 +73,14 @@
 </div>
 
 <div class="section">
-  <h2>Trending Now🔥</h2>
-  <div class="sub">Inaonyesha: <span id="count">4</span> / Jumla: <span id="total">14</span> 🔥</div>
+  <h2>HOME</h2>
+  <div class="sub">Inaonyesha: <span id="count">4</span> / Jumla: <span id="total">4</span> 🔥</div>
   <div class="grid" id="homeGrid"></div>
 </div>
 
 <div class="watched">Watched ✓<br><br>Bado hujatazama movie</div>
 
-<!-- POPUP YA MALIPO AIRTEL MONEY -->
+<!-- POPUP YA MALIPO AIRTEL MONEY - BEI IKO HAPA TU -->
 <div id="paymentBox"><div class="pay-card">
   <h3>Lipa Airtel Money Ku Fungua</h3>
   <p>Tuma <b>Tsh <span id="amount">2000</span></b> kwa:</p>
@@ -90,67 +92,72 @@
 <div id="resultBox"></div>
 
 <script>
-// ========= KILA KITU KIMEWEKWA HAPA =========
 const BOT_API_URL = "https://script.google.com/macros/s/AKfycbwE_84hlGHKhKXp2uvAB4RjxRI4bLqgADi1Lzws8G8GI5DwtcJxFGy_Tm6ADBaMCYGp/exec"; 
 const AIRTEL_NUMBER = "0686436004"; 
-// ============================================
 
 let currentRef = "";
 let selectedMovie = null;
 let currentPrice = 0;
 let activeCat = 'all';
 
-// ========= HAPA NDO CONTROL PANEL YAKO YA BEI MZEE 👇 =========
-// SHERIA: price: 0 = BURE. price: 1000, 2000, 5000 = INALIPWA + INAONYESHA NYOTA ★
+// ========= ADMIN PANEL - DRAFT MODE =========
+// visible: true = Mtumiaji anaona. visible: false = Draft kwako tu.
 const movies = [
-  // 4 LIVE - WEKA price: 0 KWA BURE
-  {id: 1, title: "Fast X", cat: "action", status: "live", price: 40, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
-  {id: 2, title: "Love Again", cat: "love", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
-  {id: 3, title: "Singo Mzito Ep1", cat: "drama", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
-  {id: 4, title: "The Equalizer", cat: "action", status: "live", price: 0, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  // 4 LIVE - ZINAZOONEKANA
+  {id: 1, title: "Fast X", cat: "action", price: 40, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  {id: 2, title: "Love Again", cat: "love", price: 0, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  {id: 3, title: "Singo Mzito Ep1", cat: "drama", price: 0, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
+  {id: 4, title: "The Equalizer", cat: "action", price: 0, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
 
-  // 10 PRIVATE - WEKA price: 2000 AU CHOCHOTE. ZITAKUWA NA NYOTA ★
-  {id: 5, title: "John Wick 4", cat: "action", price: 2000},
-  {id: 6, title: "Dune 2", cat: "action", price: 1500}, // Mfano bei tofauti
-  {id: 7, title: "Avatar 2", cat: "action", price: 2000},
-  {id: 8, title: "Deadpool 3", cat: "action", price: 3000}, // Bei ghali
-  {id: 9, title: "Titanic Love", cat: "love", price: 1000},  // Bei nafuu
-  {id: 10, title: "After Love", cat: "love", price: 2000},
-  {id: 11, title: "Singo Kali Ep2", cat: "drama", price: 2000},
-  {id: 12, title: "Mapenzi Hard", cat: "drama", price: 2000},
-  {id: 13, title: "Mission Impo", cat: "action", price: 2000},
-  {id: 14, title: "Bongo Movie", cat: "drama", price: 2000},
+  // 10 PRIVATE - DRAFT. ZIKIRUHUSIWA WEKA visible: true + link
+  {id: 5, title: "John Wick 4", cat: "action", price: 2000, visible: false},
+  {id: 6, title: "Dune 2", cat: "action", price: 1500, visible: false},
+  {id: 7, title: "Avatar 2", cat: "action", price: 2000, visible: false},
+  {id: 8, title: "Deadpool 3", cat: "action", price: 3000, visible: false},
+  {id: 9, title: "Titanic Love", cat: "love", price: 1000, visible: false},
+  {id: 10, title: "After Love", cat: "love", price: 2000, visible: false},
+  {id: 11, title: "Singo Kali Ep2", cat: "drama", price: 2000, visible: false},
+  {id: 12, title: "Mapenzi Hard", cat: "drama", price: 2000, visible: false},
+  {id: 13, title: "Mission Impo", cat: "action", price: 2000, visible: false},
+  {id: 14, title: "Bongo Movie", cat: "drama", price: 2000, visible: false},
 ];
-// ============================================================
+// ============================================
 
 function loadMovies() {
   const grid = document.getElementById("homeGrid");
   grid.innerHTML = "";
   let filtered = movies.filter(m => 
+    m.visible === true && 
     (activeCat === 'all' || m.cat === activeCat) &&
     m.title.toLowerCase().includes(document.getElementById("searchInput").value.toLowerCase())
   );
   document.getElementById("count").innerText = filtered.length;
-  document.getElementById("total").innerText = movies.length;
+  document.getElementById("total").innerText = filtered.length;
+  
+  if(filtered.length === 0) {
+    grid.innerHTML = `<p style="grid-column: 1/4; text-align:center; color:#777;">Hakuna Trending</p>`;
+    return;
+  }
+
   filtered.forEach(m => {
     const div = document.createElement("div");
     div.className = "card";
-    let star = m.price > 0 ? '<div class="star">★</div>' : ''; // Nyota ikiwa inalipwa
-    let tag = m.price > 0 ? `<div class="price-tag">Tsh ${m.price}</div>` : ''; // Tag ya bei
-    div.innerHTML = `<div class="thumb"></div> ${star} ${tag} <p>${m.title}</p>`;
+    let star = m.price > 0 ? '<div class="star">★</div>' : ''; // Nyota tu, hakuna bei
+    // let tag = m.price > 0 ? `<div class="price-tag">Tsh ${m.price}</div>` : ''; // HII NDO TUMEIFUTA
+    div.innerHTML = `<div class="thumb"></div> ${star} <p>${m.title}</p>`; // BEI IMEONDOLEWA HAPA
     div.onclick = () => openMovie(m);
     grid.appendChild(div);
   });
 }
 
 function openMovie(m) {
-  if(m.price === 0){ // KAMA NI BURE
+  if(m.price === 0){
     window.open(m.link, "_blank");
-  } else { // KAMA INALIPWA
+  } else {
     selectedMovie = m;
     currentPrice = m.price;
     currentRef = "CHILAGU_" + Math.random().toString(36).substr(2, 9).toUpperCase();
-    document.getElementById("amount").innerText = currentPrice; // Weka bei hapa
+    document.getElementById("amount").innerText = currentPrice; // BEI INATOKA HAPA POPUP TU
     document.getElementById("refCode").innerText = currentRef;
     document.getElementById("paymentBox").style.display = "flex";
   }
