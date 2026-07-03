@@ -4,45 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chilagu Legacy Cinema</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
   :root { --bg: #0a0a0a; --card: #1a1a1a; --pink: #ff2d92; --purple: #a855f7; --airtel: #e60000; }
-  body { margin: 0; font-family: Arial; background: var(--bg); color: #fff; }
+  body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg); color: #fff; }
   .header { padding: 20px 15px 10px; }
   .header h1 { margin: 0; font-size: 28px; font-weight: 800; }
-  .header p { margin: 5px 0 15px; color: #ccc; font-size: 14px; }
+  .header p { margin: 5px 0 15px; color: #ccc; font-size: 14px; font-weight: 400; }
   .dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 15px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: #555; }
   .dot.active { background: var(--pink); }
   .search { margin: 0 15px 15px; position: relative; }
-  .search input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: none; background: #222; color: #fff; font-size: 15px; box-sizing: border-box; }
-  .search span { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); }
+  .search input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: none; background: #222; color: #fff; font-size: 15px; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+  .search svg { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #888; }
   .tabs { display: flex; gap: 10px; padding: 0 15px; overflow-x: auto; }
-  .tab { padding: 10px 18px; border-radius: 20px; background: #222; font-size: 14px; white-space: nowrap; cursor: pointer; }
-  .tab.active { background: linear-gradient(90deg, var(--pink), var(--purple)); font-weight: bold; }
-  .cat-nav { display: flex; justify-content: space-around; padding: 20px 15px 10px; }
+  .tab { padding: 10px 18px; border-radius: 20px; background: #222; font-size: 14px; white-space: nowrap; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .tab.active { background: linear-gradient(90deg, var(--pink), var(--purple)); font-weight: 700; }
+  .tab svg { width: 16px; height: 16px; }
+
+  /* HII NDIO SAFU NDOGO YA ICONS 44PX */
+  .cat-nav { display: flex; justify-content: space-around; padding: 15px 15px 5px; } 
   .cat { text-align: center; cursor: pointer; }
-  .cat .icon { width: 60px; height: 60px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; margin: auto; font-size: 24px; }
+  .cat .icon { width: 44px; height: 44px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; margin: auto; } /* 44PX NDOGO */
+  .cat .icon svg { width: 22px; height: 22px; stroke-width: 2.5; } /* ICON NDOGO NDANI */
   .cat.active .icon { background: linear-gradient(135deg, var(--pink), var(--purple)); box-shadow: 0 0 15px var(--pink); }
-  .cat p { margin: 8px 0 0; font-size: 13px; }
+  .cat p { margin: 8px 0 0; font-size: 13px; font-weight: 600; }
   .section { padding: 20px 15px; }
-  .section h2 { margin: 0 0 5px; font-size: 20px; }
-  .sub { color: #00ffb3; font-size: 14px; margin-bottom: 15px; }
+  .section h2 { margin: 0 0 5px; font-size: 20px; font-weight: 700; }
+  .sub { color: #00ffb3; font-size: 14px; margin-bottom: 15px; font-weight: 600; }
   
-  /* CARDS 3 NDOGO RATIO 19:6 SAFI */
+  /* CARDS 3 NDOGO RATIO 19:6 */
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } 
   .card { background: var(--card); border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; }
   .card .thumb { width: 100%; aspect-ratio: 19/6; background: #333; } 
-  .star { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: linear-gradient(135deg, var(--pink), var(--purple)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-  /* .price-tag IMEFUTWA HAPA KWA SABABU INACHAFUA */
-  .card p { margin: 0; padding: 8px 6px; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .watched { padding: 20px 15px; color: #aaa; }
+  .star { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: linear-gradient(135deg, var(--pink), var(--purple)); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .star svg { width: 14px; height: 14px; fill: #fff; }
+  .card p { margin: 0; padding: 8px 6px; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .watched { padding: 20px 15px; color: #aaa; font-weight: 600; }
   
   /* POPUP YA AIRTEL MONEY */
   #paymentBox, #resultBox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; align-items: center; justify-content: center; }
-  .pay-card { background: #1e1e1e; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
-  .pay-card .airtel { font-size: 22px; color: var(--airtel); font-weight: bold; margin: 10px 0; }
-  .pay-card .ref { font-size: 18px; color: #00ffb3; font-weight: bold; word-break: break-all; }
-  .pay-card button { width: 100%; padding: 14px; margin-top: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+  .pay-card { background: #1e1e1e; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; font-weight: 600; }
+  .pay-card .airtel { font-size: 22px; color: var(--airtel); font-weight: 800; margin: 10px 0; }
+  .pay-card .ref { font-size: 18px; color: #00ffb3; font-weight: 700; word-break: break-all; }
+  .pay-card button { width: 100%; padding: 14px; margin-top: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; }
   .check-btn { background: #00c853; color: #fff; }
 </style>
 </head>
@@ -56,20 +62,20 @@
 
 <div class="search">
   <input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="filterMovies()">
-  <span>🔍</span>
+  <i data-lucide="search"></i>
 </div>
 
 <div class="tabs">
-  <div class="tab active">📁 All Movies</div>
-  <div class="tab">💻 Series</div>
-  <div class="tab">📼 Singo</div>
+  <div class="tab active"><i data-lucide="folder"></i> All Movies</div>
+  <div class="tab"><i data-lucide="monitor-play"></i> Series</div>
+  <div class="tab"><i data-lucide="film"></i> Singo</div>
 </div>
 
 <div class="cat-nav">
-  <div class="cat active" onclick="filterCat('all')"><div class="icon">⚪</div><p>Zote</p></div>
-  <div class="cat" onclick="filterCat('action')"><div class="icon">⚡</div><p>Action</p></div>
-  <div class="cat" onclick="filterCat('love')"><div class="icon">❤️</div><p>Love</p></div>
-  <div class="cat" onclick="filterCat('drama')"><div class="icon">⚪</div><p>Drama</p></div>
+  <div class="cat active" onclick="filterCat('all')"><div class="icon"><i data-lucide="grid"></i></div><p>Zote</p></div>
+  <div class="cat" onclick="filterCat('action')"><div class="icon"><i data-lucide="zap"></i></div><p>Action</p></div>
+  <div class="cat" onclick="filterCat('love')"><div class="icon"><i data-lucide="heart"></i></div><p>Love</p></div>
+  <div class="cat" onclick="filterCat('drama')"><div class="icon"><i data-lucide="theater"></i></div><p>Drama</p></div>
 </div>
 
 <div class="section">
@@ -80,7 +86,7 @@
 
 <div class="watched">Watched ✓<br><br>Bado hujatazama movie</div>
 
-<!-- POPUP YA MALIPO AIRTEL MONEY - BEI IKO HAPA TU -->
+<!-- POPUP YA MALIPO AIRTEL MONEY -->
 <div id="paymentBox"><div class="pay-card">
   <h3>Lipa Airtel Money Ku Fungua</h3>
   <p>Tuma <b>Tsh <span id="amount">2000</span></b> kwa:</p>
@@ -92,6 +98,8 @@
 <div id="resultBox"></div>
 
 <script>
+lucide.createIcons(); // ANZISHA ICONS ZOTE
+
 const BOT_API_URL = "https://script.google.com/macros/s/AKfycbwE_84hlGHKhKXp2uvAB4RjxRI4bLqgADi1Lzws8G8GI5DwtcJxFGy_Tm6ADBaMCYGp/exec"; 
 const AIRTEL_NUMBER = "0686436004"; 
 
@@ -100,16 +108,11 @@ let selectedMovie = null;
 let currentPrice = 0;
 let activeCat = 'all';
 
-// ========= ADMIN PANEL - DRAFT MODE =========
-// visible: true = Mtumiaji anaona. visible: false = Draft kwako tu.
 const movies = [
-  // 4 LIVE - ZINAZOONEKANA
   {id: 1, title: "Fast X", cat: "action", price: 40, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
   {id: 2, title: "Love Again", cat: "love", price: 0, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
   {id: 3, title: "Singo Mzito Ep1", cat: "drama", price: 0, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
   {id: 4, title: "The Equalizer", cat: "action", price: 0, visible: true, link: "https://drive.google.com/file/d/WEKA_LINK_HAPA/view"},
-
-  // 10 PRIVATE - DRAFT. ZIKIRUHUSIWA WEKA visible: true + link
   {id: 5, title: "John Wick 4", cat: "action", price: 2000, visible: false},
   {id: 6, title: "Dune 2", cat: "action", price: 1500, visible: false},
   {id: 7, title: "Avatar 2", cat: "action", price: 2000, visible: false},
@@ -121,7 +124,6 @@ const movies = [
   {id: 13, title: "Mission Impo", cat: "action", price: 2000, visible: false},
   {id: 14, title: "Bongo Movie", cat: "drama", price: 2000, visible: false},
 ];
-// ============================================
 
 function loadMovies() {
   const grid = document.getElementById("homeGrid");
@@ -135,19 +137,19 @@ function loadMovies() {
   document.getElementById("total").innerText = filtered.length;
   
   if(filtered.length === 0) {
-    grid.innerHTML = `<p style="grid-column: 1/4; text-align:center; color:#777;">Hakuna Trending</p>`;
+    grid.innerHTML = `<p style="grid-column: 1/4; text-align:center; color:#777; font-weight:600;">Hakuna Trending</p>`;
     return;
   }
 
   filtered.forEach(m => {
     const div = document.createElement("div");
     div.className = "card";
-    let star = m.price > 0 ? '<div class="star">★</div>' : ''; // Nyota tu, hakuna bei
-    // let tag = m.price > 0 ? `<div class="price-tag">Tsh ${m.price}</div>` : ''; // HII NDO TUMEIFUTA
-    div.innerHTML = `<div class="thumb"></div> ${star} <p>${m.title}</p>`; // BEI IMEONDOLEWA HAPA
+    let star = m.price > 0 ? '<div class="star"><i data-lucide="star"></i></div>' : ''; 
+    div.innerHTML = `<div class="thumb"></div> ${star} <p>${m.title}</p>`;
     div.onclick = () => openMovie(m);
     grid.appendChild(div);
   });
+  lucide.createIcons(); // REFRESH ICONS ZENYE STAR
 }
 
 function openMovie(m) {
@@ -157,7 +159,7 @@ function openMovie(m) {
     selectedMovie = m;
     currentPrice = m.price;
     currentRef = "CHILAGU_" + Math.random().toString(36).substr(2, 9).toUpperCase();
-    document.getElementById("amount").innerText = currentPrice; // BEI INATOKA HAPA POPUP TU
+    document.getElementById("amount").innerText = currentPrice;
     document.getElementById("refCode").innerText = currentRef;
     document.getElementById("paymentBox").style.display = "flex";
   }
