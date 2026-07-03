@@ -6,7 +6,7 @@
 <title>Chilagu Legacy Cinema</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#000; --card:#1a1a1a; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
+  :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
   *{box-sizing:border-box} body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;padding-bottom:40px}
   .header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
   .header img{width:32px;height:32px}
@@ -59,18 +59,16 @@
 <h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
 
-<!-- POPUP 1: WEKA KEY -->
 <div class="overlay" id="keyBox"><div class="box">
-  <h2>Fungua kwa Key</h2>
-  <p style="font-size:12px;color:#aaa">Ingiza Key ya wiki hapa chini</p>
+  <h2>Fungua kwa Access Key</h2>
+  <p style="font-size:12px;color:#aaa">Ingiza Key ya wiki ili ufungue movie</p>
   <input type="text" id="keyInput" placeholder="Mf: CHILAGU-WK43">
   <p class="error" id="keyError">❌ Key sio sahihi au imeshatumiwa</p>
-  <button class="btn-grad" onclick="checkKey()">THIBITISHA KEY</button>
+  <button class="btn-grad" onclick="checkKey()">FUNGUA MOVIE</button>
   <button class="btn-green" onclick="showPayment()">NUNUA KEY Tsh 2000</button>
   <button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button>
 </div></div>
 
-<!-- POPUP 2: CHAGUA MTANDAO -->
 <div class="overlay" id="payBox"><div class="box">
   <h2>Chagua Mtandao wa Kulipia</h2>
   <p style="font-size:12px;color:#aaa">Tsh 2000 kwa wiki 1. Lipia kisha utapata key WhatsApp</p>
@@ -83,23 +81,24 @@
   <button class="btn-gray" onclick="closeOverlay('payBox')">Rudi Nyuma</button>
 </div></div>
 
-<!-- POPUP 3: PLAYER -->
-<div class="overlay" id="playerBox"><span style="position:absolute;top:15px;right:15px;font-size:30px;cursor:pointer;z-index:1000" onclick="closePlayer()">×</span><iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe></div>
+<div class="overlay" id="playerBox"><span style="position:absolute;top:15px;right:15px;font-size:30px;cursor:pointer;z-index:1000" onclick="closePlayer()">×</span><iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>
 
 <script>
-/* ================== WEKA MIPANGILIO YAKO HAPA TU MZEE ================== */
-const WEEKLY_KEY = "CHILAGU-WK43"; // BADILISHA HII KILA WIKI: WK44, WK45...
+/* ================== WEKA MIPANGILIO YAKO HAPA ================== */
+const WEEKLY_KEY = "CHILAGU-WK43"; // BADILISHA HII KILA WIKI
 const WEEKLY_PRICE = 2000;         
-const ADMIN_WHATSAPP = "255686436004"; // WEKA NAMBA YAKO BILA +
-const ADMIN_NAME = "Chilagu CEO";
-/* ======================================================================= */
+const ADMIN_WHATSAPP = "255686436004"; 
+const ADMIN_NAME = "Moshi Idd";
+/* =============================================================== */
 
+/* ============= WEKA MOVIE 4 ZAKO HAPA - LINK ZOTE ZINAKUBALIWA ============= */
 const movies = [
-  {id:1,title:"Fast X",type:"all",cat:"action",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/5yR5Vq8L/fastx.jpg",link:"https://drive.google.com/file/d/VIDEO_ID/preview"},
-  {id:2,title:"Love Again",type:"all",cat:"love",price:WEEKLY_PRICE,trending:false,slide:true,thumbnail:"https://i.postimg.cc/3JzW3k0g/loveagain.jpg",link:"https://streamable.com/e/VIDEO_ID"},
-  {id:3,title:"Singo Mzito Ep1",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/GhGz3b0k/singo.jpg",link:"https://cutbox.com/embed/VIDEO_ID"},
-  {id:4,title:"The Equalizer 3",type:"all",cat:"action",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/8cR1jB2L/equalizer.jpg",link:"https://yourserver.com/video.mp4"},
+  {id:1,title:"Fast X VIP",type:"all",cat:"action",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/5yR5Vq8L/fastx.jpg",link:"https://drive.google.com/file/d/WEKA_ID_YAKO/preview"}, // Drive
+  {id:2,title:"Love Again VIP",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/3JzW3k0g/loveagain.jpg",link:"https://streamable.com/e/WEKA_ID_YAKO"}, // Streamable
+  {id:3,title:"Singo Mzito Ep1 FREE",type:"singo",cat:"drama",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/GhGz3b0k/singo.jpg",link:"https://cutbox.com/embed/WEKA_ID_YAKO"}, // Cutbox Bure
+  {id:4,title:"The Equalizer 3 VIP",type:"all",cat:"thriller",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/8cR1jB2L/equalizer.jpg",link:"https://server-yako.com/movies/equalizer.mp4"}, // Link direct ya server yako
 ];
+/* ========================================================================== */
 
 let mainType='all', activeCat='all', currentMovie=null;
 let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
@@ -110,8 +109,13 @@ function loadMovies(){const homeGrid=document.getElementById("homeGrid");const t
 
 function openMovie(m){
   currentMovie=m;
-  if(m.price===0){document.getElementById("videoFrame").src=m.link;document.getElementById("playerBox").style.display="flex"}
-  else{document.getElementById("keyBox").style.display="flex";document.getElementById("keyError").style.display="none";document.getElementById("keyInput").value=""}
+  if(m.price===0){
+    playMovie(m.link)
+  } else {
+    document.getElementById("keyBox").style.display="flex";
+    document.getElementById("keyError").style.display="none";
+    document.getElementById("keyInput").value=""
+  }
 }
 
 function checkKey(){
@@ -119,12 +123,16 @@ function checkKey(){
   if(key===WEEKLY_KEY && !usedKeys.includes(key)){
     usedKeys.push(key);localStorage.setItem('usedKeys',JSON.stringify(usedKeys));
     closeOverlay('keyBox');
-    document.getElementById("videoFrame").src=currentMovie.link;
-    document.getElementById("playerBox").style.display="flex";
+    playMovie(currentMovie.link);
   }else{document.getElementById("keyError").style.display="block"}
 }
 
-funtion showPayment(){closeOverlay('keyBox');document.getElementById("payBox").style.display="flex"}
+function playMovie(link){
+  document.getElementById("videoFrame").src=link;
+  document.getElementById("playerBox").style.display="flex";
+}
+
+function showPayment(){closeOverlay('keyBox');document.getElementById("payBox").style.display="flex"}
 
 function pay(network){
   let ussd="";
