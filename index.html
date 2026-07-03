@@ -2,12 +2,13 @@
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Chilagu Legacy Cinema</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
-  *{box-sizing:border-box} body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;padding-bottom:40px}
+  *{box-sizing:border-box} 
+  html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden} /* SCROLL JUU CHINI TU */
   .header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
   .header img{width:32px;height:32px}
   .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
@@ -15,16 +16,21 @@
   .search-wrap{padding:10px 15px}.search{position:relative}
   .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
   .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
-  .main-tabs{display:flex;gap:8px;padding:0 15px 10px}.main-tab{flex:1;padding:9px 8px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
+  .main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto} /* Hii tu inabaki ya kuteleza kidogo */
+  .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
   .main-tab.active{background:var(--gradient);color:#fff}
   .cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
   .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
-  .slide-wrap{padding:0 15px 10px}.slide{display:flex;overflow-x:auto;gap:8px;scroll-snap-type:x mandatory}.slide::-webkit-scrollbar{display:none}
-  .slide-card{min-width:90%;aspect-ratio:16/9;border-radius:10px;position:relative;scroll-snap-align:start;cursor:pointer}
+  
+  /* IMEONDOLEWA SCROLL YA PANDE KATIKA SLIDE */
+  .slide-wrap{padding:0 15px 10px}
+  .slide{display:grid;gap:8px} /* Imebadilishwa kutoka flex kwenda grid */
+  .slide-card{width:100%;aspect-ratio:16/9;border-radius:10px;position:relative;cursor:pointer}
   .slide-card img{width:100%;height:100%;object-fit:cover;border-radius:10px}
   .slide-title{position:absolute;bottom:0;left:0;right:0;padding:20px 10px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.8));font-size:14px;font-weight:700}
+  
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
   .card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative}
   .thumb-wrap{position:relative;border-radius:8px;overflow:hidden}
@@ -85,20 +91,20 @@
 
 <script>
 /* ================== WEKA MIPANGILIO YAKO HAPA ================== */
-const WEEKLY_KEY = "CHILAGU-WK43"; // BADILISHA HII KILA WIKI
+const WEEKLY_KEY = "CHILAGU-$1KyW"; 
 const WEEKLY_PRICE = 2000;         
 const ADMIN_WHATSAPP = "255686436004"; 
-const ADMIN_NAME = "Moshi Idd";
+const ADMIN_NAME = "yStar pro";
 /* =============================================================== */
 
-/* ============= WEKA MOVIE 4 ZAKO HAPA - LINK ZOTE ZINAKUBALIWA ============= */
+/* ============= WEKA MOVIE 4 ZAKO HAPA ============= */
 const movies = [
-  {id:1,title:"Fast X VIP",type:"all",cat:"action",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/5yR5Vq8L/fastx.jpg",link:"https://drive.google.com/file/d/WEKA_ID_YAKO/preview"}, // Drive
-  {id:2,title:"Love Again VIP",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/3JzW3k0g/loveagain.jpg",link:"https://streamable.com/e/WEKA_ID_YAKO"}, // Streamable
-  {id:3,title:"Singo Mzito Ep1 FREE",type:"singo",cat:"drama",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/GhGz3b0k/singo.jpg",link:"https://cutbox.com/embed/WEKA_ID_YAKO"}, // Cutbox Bure
-  {id:4,title:"The Equalizer 3 VIP",type:"all",cat:"thriller",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/8cR1jB2L/equalizer.jpg",link:"https://server-yako.com/movies/equalizer.mp4"}, // Link direct ya server yako
+  {id:1,title:"Fast X VIP",type:"all",cat:"action",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/5yR5Vq8L/fastx.jpg",link:"WEKA_LINK_1"},
+  {id:2,title:"Love Again VIP",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/3JzW3k0g/loveagain.jpg",link:"WEKA_LINK_2"},
+  {id:3,title:"Singo Mzito Ep1 FREE",type:"singo",cat:"drama",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/GhGz3b0k/singo.jpg",link:"WEKA_LINK_3"},
+  {id:4,title:"The Equalizer 3 VIP",type:"all",cat:"thriller",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/8cR1jB2L/equalizer.jpg",link:"WEKA_LINK_4"},
 ];
-/* ========================================================================== */
+/* ================================================== */
 
 let mainType='all', activeCat='all', currentMovie=null;
 let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
@@ -109,9 +115,8 @@ function loadMovies(){const homeGrid=document.getElementById("homeGrid");const t
 
 function openMovie(m){
   currentMovie=m;
-  if(m.price===0){
-    playMovie(m.link)
-  } else {
+  if(m.price===0){playMovie(m.link)} 
+  else {
     document.getElementById("keyBox").style.display="flex";
     document.getElementById("keyError").style.display="none";
     document.getElementById("keyInput").value=""
