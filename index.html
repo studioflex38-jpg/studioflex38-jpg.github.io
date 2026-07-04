@@ -24,19 +24,18 @@
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
   
-  /* BANA YA MOVIE BOX STYLE 2:3 */
+  /* BANNER 16:9 STRICT */
   .slide-wrap{padding:0 15px 15px;position:relative}
   .slide-title{font-size:16px;font-weight:700;margin:0 0 10px;color:#fff}
-  .slide{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:5px}
+  .slide{display:flex;overflow-x:auto;gap:12px;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:8px}
   .slide::-webkit-scrollbar{display:none}
-  .slide-item{min-width:70%;flex-shrink:0;scroll-snap-align:start;position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
-  .slide-card{width:100%;aspect-ratio:2/3;position:relative;background:#000} /* IMEBADILIKA HAPA 16/9 > 2/3 */
+  .slide-item{min-width:90%;flex-shrink:0;scroll-snap-align:start;position:relative;border-radius:14px;overflow:hidden;cursor:pointer}
+  .slide-card{width:100%;aspect-ratio:16/9;position:relative;background:#000}
   .slide-card img{width:100%;height:100%;object-fit:cover;display:block}
-  .slide-info{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.9))}
-  .slide-info h3{margin:0;font-size:15px;font-weight:700;color:#fff}
-  .slide-dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
-  .dot{width:6px;height:6px;border-radius:50%;background:#333}
-  .dot.active{background:var(--gradient)}
+  .slide-info{position:absolute;bottom:0;left:0;right:0;padding:15px;background:linear-gradient(transparent,rgba(0,0,0,0.85))}
+  .slide-info h3{margin:0;font-size:16px;font-weight:700;color:#fff}
+  .slide-badge{position:absolute;top:10px;left:10px;background:var(--gradient);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700}
+  .banner-error{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,0,0,0.8);color:#fff;font-size:10px;padding:4px 8px;border-radius:4px;display:none}
   
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 15px}
   .card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative;display:flex;flex-direction:column}
@@ -79,16 +78,15 @@
 <body>
 
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
-<p class="sub-text">Pata Kilicho Bora Kwa Ubora</p>
+<p class="sub-text">Pata Kilicho Bora Kwa Ubora ✅</p>
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
 
-<!-- BANA YA MOVIE BOX IMEANZA HAPA -->
+<!-- BANNER 16:9 NAFASI YAKE HII HII -->
 <div class="slide-wrap">
   <h3 class="slide-title">Featured 🔥</h3>
   <div class="slide" id="slideGrid"></div>
-  <div class="slide-dots" id="slideDots"></div>
 </div>
 
 <h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
@@ -141,6 +139,8 @@ const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004"; 
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004"; 
+const BANNER_RATIO = 16/9; // Ratio sahihi ya banner
+const RATIO_TOLERANCE = 0.1; // Ruhusu tofauti ndogo ya 10%
 
 const movies = [
   {id:1,title:"Mpanda Mnazi",type:"all",cat:"drama",price:0,trending:true,slide:true,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
@@ -164,12 +164,30 @@ function makeCard(m){
 function makeSlideItem(m){
   const div=document.createElement("div");
   div.className="slide-item";
+  const img = new Image();
+  img.src = m.thumbnail;
+  img.loading = "lazy";
+  
+  // CHECK RATIO YA PICHA KABLA HAIONYESHWI
+  img.onload = function(){
+    const actualRatio = img.naturalWidth / img.naturalHeight;
+    const errorDiv = div.querySelector('.banner-error');
+    if(Math.abs(actualRatio - BANNER_RATIO) > RATIO_TOLERANCE){
+      errorDiv.style.display = 'block'; // Onyesha error ndogo
+      div.style.display = 'none'; // FICHA BANNER YOTE
+      console.log(`Banner Error: ${m.title} ratio ${actualRatio.toFixed(2)} sio 16:9`);
+    }
+  }
+  
   div.innerHTML=`
-    <div class="slide-card" onclick="openMovie(movies.find(x=>x.id==${m.id}))">
-      <img src="${m.thumbnail}" alt="${m.title}" loading="lazy">
+    <div class="slide-card">
+      <img src="${m.thumbnail}" alt="${m.title}">
+      <div class="banner-error">SI BANNER 16:9</div>
+      <div class="slide-badge">VIP</div>
       <div class="slide-info"><h3>${m.title}</h3></div>
     </div>
   `;
+  div.onclick=()=>openMovie(m);
   return div
 }
 
