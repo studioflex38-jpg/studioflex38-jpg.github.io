@@ -24,13 +24,13 @@
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
   
-  /* BANA YA MOVIE BOX STYLE - IMEONGEZWA TU */
+  /* BANA YA MOVIE BOX STYLE 2:3 */
   .slide-wrap{padding:0 15px 15px;position:relative}
   .slide-title{font-size:16px;font-weight:700;margin:0 0 10px;color:#fff}
   .slide{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:5px}
   .slide::-webkit-scrollbar{display:none}
-  .slide-item{min-width:75%;flex-shrink:0;scroll-snap-align:start;position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
-  .slide-card{width:100%;aspect-ratio:16/9;position:relative;background:#000}
+  .slide-item{min-width:70%;flex-shrink:0;scroll-snap-align:start;position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
+  .slide-card{width:100%;aspect-ratio:2/3;position:relative;background:#000} /* IMEBADILIKA HAPA 16/9 > 2/3 */
   .slide-card img{width:100%;height:100%;object-fit:cover;display:block}
   .slide-info{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.9))}
   .slide-info h3{margin:0;font-size:15px;font-weight:700;color:#fff}
@@ -82,7 +82,7 @@
 <p class="sub-text">Pata Kilicho Bora Kwa Ubora</p>
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
-<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><dot class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
+<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
 
 <!-- BANA YA MOVIE BOX IMEANZA HAPA -->
 <div class="slide-wrap">
