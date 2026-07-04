@@ -1,0 +1,229 @@
+‎<!DOCTYPE html>
+‎<html lang="sw">
+‎<head>
+‎<meta charset="UTF-8">
+‎<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+‎<title>Chilagu Legacy Cinema</title>
+‎<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+‎<style>
+‎  :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
+‎  *{box-sizing:border-box} 
+‎  html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
+‎  .header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
+‎  .header img{width:32px;height:32px}
+‎  .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
+‎  .sub-text{padding:10px 15px 0;font-size:13px;color:#777}
+‎  .search-wrap{padding:10px 15px}.search{position:relative}
+‎  .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
+‎  .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
+‎  .main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
+‎  .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
+‎  .main-tab.active{background:var(--gradient);color:#fff}
+‎  .cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
+‎  .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
+‎  .cat-box.active{background:var(--gradient);color:#fff}
+‎  .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
+‎  
+‎  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 15px}
+‎  .card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative;display:flex;flex-direction:column}
+‎  .thumb-wrap{position:relative;border-radius:8px;overflow:hidden;width:100%;aspect-ratio:16/9;background:#000}
+‎  .card .thumb{width:100%;height:100%;background:#000;object-fit:cover;display:block}
+‎  .star-badge{position:absolute;top:6px;right:6px;width:20px;height:20px;background:var(--gradient);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;z-index:2}
+‎  .card-body{padding:6px 0 0}
+‎  .card p{margin:0;font-size:12px;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
+‎  
+‎  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;align-items:center;justify-content:center;padding:15px}
+‎  .box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center}
+‎  .box h2{margin:0 0 10px;font-size:18px;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+‎  .box input{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;margin:10px 0;font-size:14px}
+‎  .box button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
+‎  .btn-green{background:var(--green);color:#fff}
+‎  .btn-grad{background:var(--gradient);color:#fff}
+‎  .btn-gray{background:#333;color:#fff}
+‎  .error{color:#ff4d4d;font-size:12px;margin-top:5px;display:none}
+‎  
+‎  .payment-alert{background:var(--gradient);padding:15px;border-radius:10px;margin-bottom:12px;text-align:center;border:2px solid #fff}
+‎  .payment-alert .top{font-size:13px;font-weight:600;color:#fff;opacity:0.9}
+‎  .payment-alert .mtandao{font-size:15px;font-weight:700;color:#fff}
+‎  .payment-alert .namba{font-size:22px;letter-spacing:2px;font-weight:900;color:#fff;margin:4px 0}
+‎  .payment-alert .jina{font-size:15px;font-weight:700;color:#fff}
+‎  
+‎  .networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+‎  .net-btn{background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
+‎  .net-btn:hover{border-color:#A855F7}
+‎  .airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
+‎  
+‎  .whatsapp-step{display:none;margin-top:10px}
+‎  .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
+‎  
+‎  #playerBox{background:rgba(0,0,0,0.95);padding:0;align-items:flex-start}
+‎  #playerBox .player-container{width:100%;background:#000;position:relative}
+‎  #playerBox .close-btn{position:absolute;top:10px;right:15px;font-size:35px;cursor:pointer;z-index:1001;color:#fff}
+‎  #playerBox iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
+‎</style>
+‎</head>
+‎<body>
+‎
+‎<div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
+‎<p class="sub-text">Pata Kilicho Bora Kwa Ubora ✅</p>
+‎<div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
+‎<div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
+‎<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
+‎
+‎<!-- BANA IMEONDOLEWA HAPA -->
+‎
+‎<h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
+‎<h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
+‎
+‎<div class="overlay" id="keyBox"><div class="box">
+‎  <h2>Fungua kwa Access Key</h2>
+‎  <p style="font-size:12px;color:#aaa">Ingiza Key ya wiki ili ufungue movie</p>
+‎  <input type="text" id="keyInput" placeholder="Mf: CHILAGU-WK43">
+‎  <p class="error" id="keyError">❌ Key sio sahihi au imeshatumiwa</p>
+‎  <button class="btn-grad" onclick="checkKey()">FUNGUA MOVIE</button>
+‎  <button class="btn-green" onclick="showPayment()">NUNUA KEY Tsh 2000</button>
+‎  <button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button>
+‎</div></div>
+‎
+‎<div class="overlay" id="payBox"><div class="box">
+‎  <h2>Chagua Mtandao wa Kulipia</h2>
+‎  <div class="payment-alert">
+‎    <p class="top">Lipa Tsh 2000 kwenda</p>
+‎    <p class="mtandao">Airtel Money</p>
+‎    <p class="namba" id="payNumber">0686436004</p>
+‎    <p class="jina" id="payName">Moshi Idd</p>
+‎  </div>
+‎  <p style="font-size:12px;color:#aaa;margin-bottom:8px">Baada ya kulipa chagua mtandao uliotumia hapa chini</p>
+‎  <div class="networks" id="networkButtons">
+‎    <div class="net-btn airtel" onclick="pay('airtel')">Airtel Money</div>
+‎    <div class="net-btn mpesa" onclick="pay('mpesa')">M-Pesa</div>
+‎    <div class="net-btn tigo" onclick="pay('tigo')">Tigo Pesa</div>
+‎    <div class="net-btn halo" onclick="pay('halo')">HaloPesa</div>
+‎  </div>
+‎  <div class="whatsapp-step" id="whatsappStep">
+‎    <p style="font-size:12px;color:#aaa">Hatua ya mwisho 👇</p>
+‎    <button class="btn-whatsapp" onclick="goToWhatsapp()"> 
+‎      <span>💬</span> TUMA MUAMALA WHATSAPP
+‎    </button>
+‎  </div>
+‎  <button class="btn-gray" onclick="closeOverlay('payBox')">Rudi Nyuma</button>
+‎</div></div>
+‎
+‎<div class="overlay" id="playerBox">
+‎  <div class="player-container">
+‎    <span class="close-btn" onclick="closePlayer()">×</span>
+‎    <iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+‎  </div>
+‎</div>
+‎
+‎<script>
+‎const WEEKLY_KEY = "CHILAGU-WK43"; 
+‎const WEEKLY_PRICE = 2000;         
+‎const ADMIN_WHATSAPP = "255686436004"; 
+‎const ADMIN_NAME = "Moshi Idd";
+‎const PAYMENT_NUMBER = "0686436004"; 
+‎
+‎const movies = [
+‎  {id:1,title:"Mpanda Mnazi",type:"all",cat:"drama",price:0,trending:true,slide:true,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
+‎  {id:2,title:"Yellow RECKONING",type:"all",cat:"action",price:0,trending:true,slide:true,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4"},
+‎  {id:3,title:"Love and destiny VIP",type:"all",cat:"love",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/XJhSBwT7/file-00069471f4adf0af6d550602bb.png",link:"https://streamable.com/e/sye93q"},
+‎  {id:4,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4"},
+‎];
+‎
+‎let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
+‎let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
+‎
+‎function makeCard(m){
+‎  const div=document.createElement("div");
+‎  div.className="card";
+‎  let star=m.price>0?'<div class="star-badge">★</div>':'';
+‎  div.innerHTML=`<div class="thumb-wrap"><img class="thumb" src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}</div><div class="card-body"><p>${m.title}</p></div>`;
+‎  div.onclick=()=>openMovie(m);
+‎  return div
+‎}
+‎
+‎function loadMovies(){
+‎  const homeGrid=document.getElementById("homeGrid");
+‎  const trendGrid=document.getElementById("trendGrid");
+‎  homeGrid.innerHTML="";
+‎  trendGrid.innerHTML="";
+‎  
+‎  let searchVal = document.getElementById("searchInput").value.toLowerCase();
+‎  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
+‎  
+‎  filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
+‎  
+‎  let trend=filtered.filter(m=>m.trending===true);
+‎  trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';
+‎  trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
+‎}
+‎
+‎function openMovie(m){
+‎  currentMovie=m;
+‎  if(m.price===0){playMovie(m.link)} 
+‎  else {
+‎    document.getElementById("keyBox").style.display="flex";
+‎    document.getElementById("keyError").style.display="none";
+‎    document.getElementById("keyInput").value=""
+‎  }
+‎}
+‎
+‎function checkKey(){
+‎  const key=document.getElementById("keyInput").value.trim().toUpperCase();
+‎  if(key===WEEKLY_KEY && !usedKeys.includes(key)){
+‎    usedKeys.push(key);localStorage.setItem('usedKeys',JSON.stringify(usedKeys));
+‎    closeOverlay('keyBox');
+‎    playMovie(currentMovie.link);
+‎  }else{document.getElementById("keyError").style.display="block"}
+‎}
+‎
+‎function playMovie(link){
+‎  let finalLink = link;
+‎  if(link.includes("streamable.com/") && !link.includes("/e/")){
+‎    finalLink = link.replace("streamable.com/", "streamable.com/e/");
+‎  }
+‎  document.getElementById("videoFrame").src = finalLink;
+‎  document.getElementById("playerBox").style.display="flex";
+‎}
+‎
+‎function showPayment(){
+‎  closeOverlay('keyBox');
+‎  document.getElementById("payNumber").innerText = PAYMENT_NUMBER;
+‎  document.getElementById("payName").innerText = ADMIN_NAME;
+‎  document.getElementById("whatsappStep").style.display="none";
+‎  document.getElementById("networkButtons").style.display="grid";
+‎  document.getElementById("payBox").style.display="flex"
+‎}
+‎
+‎function pay(network){
+‎  selectedNetwork = network.toUpperCase();
+‎  let ussd="";
+‎  if(network==='airtel') ussd="*150*60#";
+‎  if(network==='mpesa') ussd="*150*00#";
+‎  if(network==='tigo') ussd="*150*01#";
+‎  if(network==='halo') ussd="*150*88#";
+‎  window.location.href=`tel:${encodeURIComponent(ussd)}`;
+‎  setTimeout(()=>{
+‎    document.getElementById("networkButtons").style.display="none";
+‎    document.getElementById("whatsappStep").style.display="block";
+‎  },1000)
+‎}
+‎
+‎function goToWhatsapp(){
+‎  const msg=`SALAMU ${ADMIN_NAME}. NIMELIPA Tsh${WEEKLY_PRICE} KWA ${selectedNetwork} KWENDA ${PAYMENT_NUMBER}. TAFADHALI NITUMIE KEY YA WIKI HII: ${WEEKLY_KEY}`;
+‎  window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');
+‎  closeOverlay('payBox');
+‎}
+‎
+‎function closePlayer(){
+‎  document.getElementById("playerBox").style.display="none";
+‎  document.getElementById("videoFrame").src="";
+‎  loadMovies()
+‎}
+‎function closeOverlay(id){document.getElementById(id).style.display="none"}
+‎function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
+‎function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
+‎loadMovies();
+‎</script>
+‎</body>
+‎</html>
