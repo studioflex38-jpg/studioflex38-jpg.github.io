@@ -24,11 +24,11 @@
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
   
-  /* BANA IJAZE YOTE KAMA YOUTUBE */
+  /* BANA IMEBADILISHWA KUWA 16:9 KAMA POSTER */
   .slide-wrap{padding:0 0 10px 0;position:relative}
   .slide{
     display:flex;
-    overflow-x:auto; /* SLIDE KWA MKONO TU */
+    overflow-x:auto;
     gap:0;
     scroll-snap-type:x mandatory;
     scroll-behavior:smooth;
@@ -40,19 +40,19 @@
   }
   .slide-card{
     width:100%;
-    aspect-ratio:16/5; /* HII NDIO BANA YA YOUTUBE */
+    aspect-ratio:16/9; /* HII NDIO SIRI - SAWA NA POSTER */
     position:relative;
     background:#000;
     overflow:hidden;
   }
   .slide-card img{
-    width:100%;  /* ILI IANZIE MWANZO KULIA */
-    height:100%; /* ILI IANZIE JUU MPKA CHINI */
-    object-fit:cover; /* SIRI YOTE IKO HAPA - IJAZE BILA BLACK */
-    object-position:center; /* IKATI KATI KWA ULAMBO */
+    width:100%;
+    height:100%;
+    object-fit:cover; /* ITAJAZA YOTE BILA KUKATA MUHIMU */
+    object-position:center top; /* ANZIA JUU ILI MAANDISHI YAONEKANE */
     display:block;
   }
-  .slide-caption{ /* JINA KATI CHINI */
+  .slide-caption{
     padding:8px 15px 0;
     font-size:15px;
     font-weight:700;
@@ -63,7 +63,7 @@
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 15px}
   .card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative;display:flex;flex-direction:column}
   .thumb-wrap{position:relative;border-radius:8px;overflow:hidden;width:100%;aspect-ratio:16/9;background:#000}
-  .card .thumb{width:100%;height:100%;background:#000;object-fit:cover;display:block} /* NA HAPA TUBADILISHE KUWA COVER */
+  .card .thumb{width:100%;height:100%;background:#000;object-fit:cover;display:block}
   .star-badge{position:absolute;top:6px;right:6px;width:20px;height:20px;background:var(--gradient);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;z-index:2}
   .card-body{padding:6px 0 0}
   .card p{margin:0;font-size:12px;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
@@ -101,7 +101,7 @@
 <body>
 
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
-<p class="sub-text">Pata Kilicho Bora Kwa Ubora ✅</p>
+<p class="sub-text">Pata Kilicho Bora Kwa Ubora</p>
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
