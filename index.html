@@ -24,45 +24,42 @@
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
   
-  /* BANA IMEFANYWA KAMA YOUTUBE BANNER */
+  /* BANA YA YOUTUBE BANNER - FIXED */
   .slide-wrap{padding:0 15px 10px;position:relative}
-  .slide{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x mandatory;scroll-behavior:smooth} 
+  .slide{display:flex;overflow-x:auto;gap:0;scroll-snap-type:x mandatory;scroll-behavior:smooth} 
   .slide::-webkit-scrollbar{display:none}
   .slide-card{
     min-width:100%;
     aspect-ratio:16/5; 
-    max-height:170px;
+    max-height:160px;
     border-radius:10px;
     position:relative;
     scroll-snap-align:start;
     cursor:pointer;
     flex-shrink:0;
     background:#000;
-    display:flex; /* IMEONGELWA ILI KITULIE KATI */
-    align-items:center;
-    justify-content:center;
     overflow:hidden;
   }
   .slide-card img{
     width:100%;
     height:100%;
-    object-fit:contain; /* PICHA YOTE IINGIE */
-    border-radius:10px;
-    flex-shrink:0;
+    object-fit:contain !important; /* LAZIMA IINGIE YOTE */
+    background:#000;
+    display:block;
   }
   .slide-title{
     position:absolute;
     bottom:0;
     left:0;
     right:0;
-    padding:30px 10px 8px;
-    background:linear-gradient(transparent,rgba(0,0,0,0.85));
+    padding:25px 12px 8px;
+    background:linear-gradient(transparent,rgba(0,0,0,0.9));
     font-size:14px;
     font-weight:700;
     display:flex;
-    justify-content:space-between; /* WATCH IKO PEMBENI KULIA KWA ZOTE MBILI */
+    justify-content:space-between;
     align-items:center;
-    z-index:2
+    z-index:3
   }
   .watch-btn{padding:5px 12px;background:var(--gradient);border-radius:15px;font-size:10px;font-weight:700}
   
@@ -107,7 +104,7 @@
 <body>
 
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
-<p class="sub-text">Pata Kilicho Bora Kwa Ubora✅</p>
+<p class="sub-text">Pata Kilicho Bora Kwa Ubora ✅</p>
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
@@ -188,8 +185,8 @@ function makeCard(m){
 function makeSlideCard(m){
   const div=document.createElement("div");
   div.className="slide-card";
-  /* WATCH IMEWEKWA NDANI YA .slide-title ILI ZIONEKANE ZOTE MBILI */
-  div.innerHTML=`<img src="${m.thumbnail}" alt="${m.title}" loading="lazy"><div class="slide-title">${m.title} <span class="watch-btn">WATCH</span></div>`;
+  /* HAPA NDIO WATCH INAINGIA KWA ZOTE */
+  div.innerHTML=`<img src="${m.thumbnail}" alt="${m.title}" loading="lazy"><div class="slide-title"><span>${m.title}</span> <span class="watch-btn">WATCH</span></div>`;
   div.onclick=()=>openMovie(m);
   return div
 }
@@ -219,7 +216,7 @@ function loadMovies(){
 
 function startAutoSlide(total){
   clearInterval(slideInterval);
-  if(total<=1) return; /* KAMA NI MOJA TU HAISLIDE */
+  if(total<=1) return; /* KAMA NI MOJA TU ISISLAIDE */
   slideInterval = setInterval(()=>{
     const slide = document.getElementById("slideGrid");
     slideIndex = (slideIndex + 1) % total;
