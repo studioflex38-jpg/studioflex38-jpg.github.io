@@ -14,7 +14,7 @@
   .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
   .sub-text{padding:10px 15px 0;font-size:13px;color:#777}
   .search-wrap{padding:10px 15px}.search{position:relative}
-  .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font.mpya;font-size:13px}
+  .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
   .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
   .main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
   .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
@@ -24,41 +24,43 @@
   .cat-box.active{background:var(--gradient);color:#fff}
   .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
   
-  /* BANA YA YOUTUBE PROFILE - IJAZE UPANA WOTE */
-  .slide-wrap{padding:0 0 10px 0;position:relative} /* padding 0 ili ijaze */
+  /* BANA IMEFANYWA PICHA IWE KATI */
+  .slide-wrap{padding:0 0 10px 0;position:relative}
   .slide{
     display:flex;
     overflow-x:auto; /* SLIDE KWA MKONO TU */
-    gap:0; /* Hakuna gap kati ya slides */
+    gap:0;
     scroll-snap-type:x mandatory;
     scroll-behavior:smooth;
   } 
   .slide::-webkit-scrollbar{display:none}
-  .slide-item{ /* TUMEBADILISHA JINA ILI KUEPUKA KUCHANGANYIKIWA */
+  .slide-item{
     min-width:100%;
     flex-shrink:0;
   }
   .slide-card{
     width:100%;
-    aspect-ratio:16/5; /* BANA NDEFU YA YOUTUBE */
+    aspect-ratio:16/5; /* BANA YA YOUTUBE */
     max-height:180px;
     position:relative;
     background:#000;
     overflow:hidden;
+    display:flex; /* IMEONGELWA ILI PICHA IKAE KATI */
+    align-items:center;
+    justify-content:center;
   }
   .slide-card img{
-    width:100%;
-    height:100%;
-    object-fit:contain; /* PICHA YOTE IINGIE */
-    background:#000;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain; 
     display:block;
   }
-  .slide-caption{ /* JINA LIKAE CHINI YA PICHA */
+  .slide-caption{ /* JINA KATI CHINI */
     padding:8px 15px 0;
-    font-size:14px;
+    font-size:15px;
     font-weight:700;
     color:#fff;
-    text-align:left;
+    text-align:center; /* KATI */
   }
   
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 15px}
@@ -102,7 +104,7 @@
 <body>
 
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
-<p class="sub-text">Pata Kilicho Bora Kwa Ubora ✅</p>
+<p class="sub-text">Pata Kilicho Bora Kwa Ubora</p>
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
@@ -182,7 +184,6 @@ function makeCard(m){
 function makeSlideItem(m){
   const div=document.createElement("div");
   div.className="slide-item";
-  /* JINA LIMEHAMIA CHINI YA PICHA SASA */
   div.innerHTML=`
     <div class="slide-card" onclick="openMovie(movies.find(x=>x.id==${m.id}))">
       <img src="${m.thumbnail}" alt="${m.title}" loading="lazy">
