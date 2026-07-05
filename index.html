@@ -9,68 +9,66 @@
   :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
   *{box-sizing:border-box}
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
-.header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
-.header img{width:32px;height:32px}
-.header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
-.sub-text{padding:10px 15px 0;font-size:13px;color:#777}
-.search-wrap{padding:10px 15px}.search{position:relative}
-.search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
-.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
-.main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
-.main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
-.main-tab.active{background:var(--gradient);color:#fff}
-.cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
-.cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
-.cat-box.active{background:var(--gradient);color:#fff}
-.section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
+ .header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
+ .header img{width:32px;height:32px}
+ .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
+ .sub-text{padding:10px 15px 0;font-size:13px;color:#777}
+ .search-wrap{padding:10px 15px}.search{position:relative}
+ .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
+ .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
+ .main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
+ .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
+ .main-tab.active{background:var(--gradient);color:#fff}
+ .cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
+ .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
+ .cat-box.active{background:var(--gradient);color:#fff}
+ .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
 
-  /* === HERO BANNER SLIDER === */
-.hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
-.hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease-in-out}
-.hero-slide.active{opacity:1}
-.hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.2) 60%)}
-.hero-content{position:absolute;bottom:20px;left:15px;right:15px;z-index:2}
-.hero-content h2{margin:0 0 8px;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-btn{display:inline-block;padding:10px 20px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border:none;cursor:pointer}
-.hero-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
-.dot{width:8px;height:8px;border-radius:50%;background:#555;cursor:pointer}
-.dot.active{background:var(--gradient);width:20px;border-radius:10px}
-  /* === MWISHO WA HERO BANNER === */
+  /* === BANNER MPYA ILIYOONGEZWA TU === */
+ .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
+ .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease-in-out}
+ .hero-slide.active{opacity:1}
+ .hero-slide img{width:100%;height:100%;object-fit:cover}
+ .hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.2) 60%)}
+ .hero-content{position:absolute;bottom:20px;left:15px;right:15px;z-index:2}
+ .hero-content h2{margin:0 0 8px;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+ .hero-btn{display:inline-block;padding:10px 20px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border:none;cursor:pointer}
+ .hero-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
+ .dot{width:8px;height:8px;border-radius:50%;background:#555;cursor:pointer}
+ .dot.active{background:var(--gradient);width:20px;border-radius:10px}
+  /* === MWISHO WA BANNER === */
 
-  /* === CARD ZA YOUTUBE CINEMA 16:9 - 3 KWA SAFU === */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
-.card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative;display:flex;flex-direction:column}
-.thumb-wrap{position:relative;border-radius:8px;overflow:hidden;width:100%;aspect-ratio:16/9;background:#000} /* 16:9 ULALO */
-.card.thumb{width:100%;height:100%;background:#000;object-fit:cover;display:block} /* HAPA NDIO NILIKOSEA AWALI */
-.star-badge{position:absolute;top:6px;right:6px;width:18px;height:18px;background:var(--gradient);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;z-index:2}
-.card-body{padding:5px 0 0}
-.card p{margin:0;font-size:11px;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
-  /* === MWISHO WA CARD === */
+ .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 15px}
+ .card{background:transparent;border-radius:8px;overflow:visible;cursor:pointer;position:relative;display:flex;flex-direction:column}
+ .thumb-wrap{position:relative;border-radius:8px;overflow:hidden;width:100%;aspect-ratio:16/9;background:#000}
+ .card.thumb{width:100%;height:100%;background:#000;object-fit:cover;display:block}
+ .star-badge{position:absolute;top:6px;right:6px;width:20px;height:20px;background:var(--gradient);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;z-index:2}
+ .card-body{padding:6px 0 0}
+ .card p{margin:0;font-size:12px;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
 
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;align-items:center;justify-content:center;padding:15px}
-.box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center}
-.box h2{margin:0 0 10px;font-size:18px;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.box input{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;margin:10px 0;font-size:14px}
-.box button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
-.btn-green{background:var(--green);color:#fff}
-.btn-grad{background:var(--gradient);color:#fff}
-.btn-gray{background:#333;color:#fff}
-.error{color:#ff4d4d;font-size:12px;margin-top:5px;display:none}
+ .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;align-items:center;justify-content:center;padding:15px}
+ .box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center}
+ .box h2{margin:0 0 10px;font-size:18px;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+ .box input{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;margin:10px 0;font-size:14px}
+ .box button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
+ .btn-green{background:var(--green);color:#fff}
+ .btn-grad{background:var(--gradient);color:#fff}
+ .btn-gray{background:#333;color:#fff}
+ .error{color:#ff4d4d;font-size:12px;margin-top:5px;display:none}
 
-.payment-alert{background:var(--gradient);padding:15px;border-radius:10px;margin-bottom:12px;text-align:center;border:2px solid #fff}
-.payment-alert.top{font-size:13px;font-weight:600;color:#fff;opacity:0.9}
-.payment-alert.mtandao{font-size:15px;font-weight:700;color:#fff}
-.payment-alert.namba{font-size:22px;letter-spacing:2px;font-weight:900;color:#fff;margin:4px 0}
-.payment-alert.jina{font-size:15px;font-weight:700;color:#fff}
+ .payment-alert{background:var(--gradient);padding:15px;border-radius:10px;margin-bottom:12px;text-align:center;border:2px solid #fff}
+ .payment-alert.top{font-size:13px;font-weight:600;color:#fff;opacity:0.9}
+ .payment-alert.mtandao{font-size:15px;font-weight:700;color:#fff}
+ .payment-alert.namba{font-size:22px;letter-spacing:2px;font-weight:900;color:#fff;margin:4px 0}
+ .payment-alert.jina{font-size:15px;font-weight:700;color:#fff}
 
-.networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.net-btn{background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
-.net-btn:hover{border-color:#A855F7}
-.airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
+ .networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+ .net-btn{background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
+ .net-btn:hover{border-color:#A855F7}
+ .airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
 
-.whatsapp-step{display:none;margin-top:10px}
-.btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
+ .whatsapp-step{display:none;margin-top:10px}
+ .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
 
   #playerBox{background:rgba(0,0,0,0.95);padding:0;align-items:flex-start}
   #playerBox.player-container{width:100%;background:#000;position:relative}
@@ -83,6 +81,7 @@
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
 <p class="sub-text">Pata Kilicho Bora Kwa Ubora ✅</p>
 
+<!-- === BANNER IMEONGEZWA HAPA === -->
 <div class="hero-banner" id="heroBanner"></div>
 
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
@@ -150,52 +149,26 @@ const movies = [
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
 let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
-let slideIndex = 0;
-let slideInterval;
+let slideIndex = 0; let slideInterval;
 
+// === FUNCTION ZA BANNER ZILIZOONGEZWA TU ===
 function loadHeroBanner(){
   const banner = document.getElementById("heroBanner");
   const slideMovies = movies.filter(m => m.slide === true);
-
   if(slideMovies.length === 0){ banner.style.display = "none"; return; }
   banner.style.display = "block";
-
-  let slidesHTML = '';
-  let dotsHTML = '';
-
+  let slidesHTML = ''; let dotsHTML = '';
   slideMovies.forEach((m, index)=>{
-    slidesHTML += `
-    <div class="hero-slide ${index===0?'active':''}">
-      <img src="${m.thumbnail}" alt="${m.title}">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <h2>${m.title}</h2>
-        <button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Tazama Sasa</button>
-      </div>
-    </div>`;
+    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Tazama Sasa</button></div></div>`;
     dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="goToSlide(${index})"></span>`;
   });
-
   banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
   startSlideAuto();
 }
-
-function showSlide(n){
-  const slides = document.querySelectorAll('.hero-slide');
-  const dots = document.querySelectorAll('.dot');
-  slides.forEach(s=>s.classList.remove('active'));
-  dots.forEach(d=>d.classList.remove('active'));
-  slides[n].classList.add('active');
-  dots[n].classList.add('active');
-  slideIndex = n;
-}
+function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
 function goToSlide(n){clearInterval(slideInterval); showSlide(n); startSlideAuto()}
-function startSlideAuto(){
-  const slides = document.querySelectorAll('.hero-slide');
-  if(slides.length <= 1) return;
-  clearInterval(slideInterval);
-  slideInterval = setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex)},5000);
-}
+function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide');if(slides.length <= 1) return;clearInterval(slideInterval);slideInterval = setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex)},5000);}
+// === MWISHO WA FUNCTION ZA BANNER ===
 
 function makeCard(m){
   const div=document.createElement("div");
@@ -288,8 +261,7 @@ function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 
-// Anzisha yote
-loadHeroBanner();
+loadHeroBanner(); // ANZISHA BANNER
 loadMovies();
 </script>
 </body>
