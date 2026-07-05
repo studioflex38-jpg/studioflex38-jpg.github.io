@@ -24,7 +24,7 @@
  .cat-box.active{background:var(--gradient);color:#fff}
  .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
 
-  /* === BANNER MPYA ILIYOONGEZWA TU === */
+  /* === BANNER ILIYOONGEZWA TU === */
  .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
  .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease-in-out}
  .hero-slide.active{opacity:1}
@@ -81,7 +81,7 @@
 <div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
 <p class="sub-text">Pata Kilicho Bora Kwa Ubora</p>
 
-<!-- === BANNER IMEONGEZWA HAPA === -->
+<!-- BANNER IMEONGEZWA HAPA -->
 <div class="hero-banner" id="heroBanner"></div>
 
 <div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
@@ -133,7 +133,7 @@
 </div>
 
 <script>
-const WEEKLY_KEY = "CHILAGU-WK43";
+const WEEKLY_KEY = "CHiLAGU-WK43";
 const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
@@ -151,7 +151,7 @@ let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
 let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
 let slideIndex = 0; let slideInterval;
 
-// === FUNCTION ZA BANNER ZILIZOONGEZWA TU ===
+// === JS YA BANNER ILIYOONGEZWA TU ===
 function loadHeroBanner(){
   const banner = document.getElementById("heroBanner");
   const slideMovies = movies.filter(m => m.slide === true);
@@ -168,7 +168,7 @@ function loadHeroBanner(){
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
 function goToSlide(n){clearInterval(slideInterval); showSlide(n); startSlideAuto()}
 function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide');if(slides.length <= 1) return;clearInterval(slideInterval);slideInterval = setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex)},5000);}
-// === MWISHO WA FUNCTION ZA BANNER ===
+// === MWISHO WA JS YA BANNER ===
 
 function makeCard(m){
   const div=document.createElement("div");
@@ -260,9 +260,8 @@ function closePlayer(){
 function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
-
-loadHeroBanner(); // ANZISHA BANNER
+loadHeroBanner(); // IMEONGEZWA TU HII
 loadMovies();
 </script>
 </body>
-</html>
+    </html>
