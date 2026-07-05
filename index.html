@@ -9,14 +9,21 @@
   :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
   *{box-sizing:border-box}
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
-.header{display:flex;align-items:center;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
+.header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
+.header-left{display:flex;align-items:center;gap:10px}
 .header img{width:32px;height:32px}
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
-.sub-text{padding:10px 15px 0;font-size:13px;color:#777}
-.search-wrap{padding:10px 15px}.search{position:relative}
+
+  /* === SEARCH ICON MPYA === */
+.search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
+.search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
+.search-wrap.active{display:block}
+.search{position:relative}
 .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
-.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666}
-.main-tabs{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
+.search-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666;cursor:pointer}
+  /* === MWISHO WA SEARCH === */
+
+.main-tabs{display:flex;gap:8px;padding:10px 15px 10px;overflow-x:auto}
 .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
 .main-tab.active{background:var(--gradient);color:#fff}
 .cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
@@ -72,22 +79,34 @@
 .whatsapp-step{display:none;margin-top:10px}
 .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
 
-  /* === PLAYER FULLSCREEN ILIYOREKEBISHWA === */
+  /* === PLAYER FULLSCREEN 100% === */
   #playerBox{background:#000;padding:0;align-items:center;justify-content:center}
-  #playerBox.player-container{width:100vw;height:100vh;background:#000;position:relative;display:flex;align-items:center;justify-content:center}
-  #playerBox.close-btn{position:absolute;top:15px;right:20px;font-size:40px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.5);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
-  #playerBox iframe{width:100%;height:100%;aspect-ratio:16/9;border:none;display:block}
+  #playerBox.player-container{width:100vw;height:100vh;background:#000;position:fixed;top:0;left:0;display:flex;align-items:center;justify-content:center}
+  #playerBox.close-btn{position:absolute;top:15px;right:20px;font-size:40px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.6);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+  #playerBox iframe{width:100vw;height:100vh;border:none;display:block}
   /* === MWISHO WA PLAYER === */
 </style>
 </head>
 <body>
 
-<div class="header"><img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"><h1>Chilagu Legacy Cinema</h1></div>
-<p class="sub-text"></p>
+<div class="header">
+  <div class="header-left">
+    <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
+    <h1>Chilagu Legacy Cinema</h1>
+  </div>
+  <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
+</div>
+
+<!-- SEARCH INAFUNGUKA HAPA -->
+<div class="search-wrap" id="searchWrap">
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()">
+    <span class="search-close" onclick="toggleSearch()">×</span>
+  </div>
+</div>
 
 <div class="hero-banner" id="heroBanner"></div>
 
-<div class="search-wrap"><div class="search"><input type="text" id="searchInput" placeholder="Tafuta movie hapa..." onkeyup="loadMovies()"><span class="search-icon">🔍</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
 
@@ -153,6 +172,13 @@ const movies = [
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
 let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
 let slideIndex = 0; let slideInterval;
+
+function toggleSearch(){
+  document.getElementById("searchWrap").classList.toggle("active");
+  if(document.getElementById("searchWrap").classList.contains("active")){
+    document.getElementById("searchInput").focus();
+  }
+}
 
 function loadHeroBanner(){
   const banner = document.getElementById("heroBanner");
