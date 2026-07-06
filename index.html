@@ -42,10 +42,11 @@
 .thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:6px;overflow:hidden}
 .thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .star-badge{position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--gradient);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;z-index:2}
+.ep-badge{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,0.7);padding:3px 6px;border-radius:4px;font-size:9px;font-weight:700;color:#fff;z-index:2}
 .card-body{padding:4px 2px 0}
 .card p{margin:0;font-size:11px;font-weight:500;line-height:1.3;color:#ddd;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;align-items:center;justify-content:center;padding:15px}
-.box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center}
+.box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center;max-height:80vh;overflow-y:auto}
 .box h2{margin:0 0 10px;font-size:18px;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .box input{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;margin:10px 0;font-size:14px}
 .box button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
@@ -64,6 +65,15 @@
 .airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
 .whatsapp-step{display:none;margin-top:10px}
 .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
+
+  /* === EPISODE LIST === */
+ .episode-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;text-align:left}
+ .episode-item{background:#222;padding:12px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+ .episode-item:hover{background:#2a2a2a}
+ .episode-item span{font-size:13px;font-weight:600}
+ .episode-item small{font-size:10px;color:#aaa}
+  /* === MWISHO === */
+
   #playerBox{background:#000;padding:0;align-items:flex-start;justify-content:center}
   #playerBox.player-container{width:100vw;height:100vh;background:#000;position:fixed;top:0;left:0;display:flex;align-items:flex-start;justify-content:center}
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
@@ -95,6 +105,13 @@
 
 <h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
+
+<!-- OVERLAY YA EPISODES -->
+<div class="overlay" id="episodeBox"><div class="box">
+  <h2 id="episodeTitle">Chagua Episode</h2>
+  <div class="episode-list" id="episodeList"></div>
+  <button class="btn-gray" onclick="closeOverlay('episodeBox')">Funga</button>
+</div></div>
 
 <div class="overlay" id="keyBox"><div class="box">
   <h2>Fungua kwa Access Key</h2>
@@ -145,12 +162,27 @@ const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
 
+// === DATA MPYA: SERIES INA EPISODES NDANI ===
 const movies = [
-  {id:1,title:"Mpanda Mnazi",type:"all",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
-  {id:2,title:"Yellow RECKONING",type:"all",cat:"action",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4"},
-  {id:3,title:"Love and destiny",type:"all",cat:"love",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",link:"https://streamable.com/e/sye93q"},
-  {id:4,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4"},
-  {id:5,title:"Love and Destiny S01E01",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",link:"https://streamable.com/e/8326lw"},
+  {id:1,title:"Mpanda Mnazi",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
+  {id:2,title:"Yellow RECKONING",type:"singo",cat:"action",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4"},
+  {id:3,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4"},
+  // HII HAPA NI SERIES
+  {
+    id:4,
+    title:"Love and Destiny",
+    type:"series",
+    cat:"love",
+    price:WEEKLY_PRICE,
+    trending:true,
+    slide:true,
+    thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",
+    episodes:[
+      {ep:1, title:"Episode 1", link:"https://streamable.com/e/8326lw"},
+      {ep:2, title:"Episode 2", link:"https://streamable.com/e/sye93q"},
+      {ep:3, title:"Episode 3", link:"https://streamable.com/e/8326lw"}
+    ]
+  },
 ];
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
@@ -192,7 +224,8 @@ function makeCard(m){
   const div=document.createElement("div");
   div.className="card";
   let star=m.price>0?'<div class="star-badge">★</div>':'';
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}</div><div class="card-body"><p>${m.title}</p></div>`;
+  let epCount = m.episodes? `<div class="ep-badge">${m.episodes.length} Episodes</div>` : '';
+  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p></div>`;
   div.onclick=()=>openMovie(m);
   return div
 }
@@ -212,25 +245,48 @@ function loadMovies(){
 
 function openMovie(m){
   currentMovie=m;
-  if(m.price===0){playMovie(m.link)}
+  // KAMA NI SERIES FUNUA LIST YA EPISODE
+  if(m.episodes){
+    document.getElementById("episodeTitle").innerText = m.title;
+    const list = document.getElementById("episodeList");
+    list.innerHTML = '';
+    m.episodes.forEach(e=>{
+      let item = document.createElement('div');
+      item.className = 'episode-item';
+      item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;
+      item.onclick = () => {
+        closeOverlay('episodeBox');
+        handlePlay(e.link, m.price);
+      }
+      list.appendChild(item);
+    });
+    document.getElementById("episodeBox").style.display="flex";
+  }
+  // KAMA NI SINGO CHEZA DIRECT
   else {
+    handlePlay(m.link, m.price);
+  }
+}
+
+function handlePlay(link, price){
+  if(price===0){
+    playMovie(link)
+  } else {
     document.getElementById("keyBox").style.display="flex";
     document.getElementById("keyError").style.display="none";
     document.getElementById("keyInput").value=""
   }
 }
 
-// === HII HAPA NDO IMEBADILISHWA ===
 function checkKey(){
   const key=document.getElementById("keyInput").value.trim();
   if(key===WEEKLY_KEY){
     closeOverlay('keyBox');
-    playMovie(currentMovie.link);
+    playMovie(currentMovie.link || currentMovie.episodes[0].link);
   }else{
     document.getElementById("keyError").style.display="block"
   }
 }
-// ===================================
 
 function playMovie(link){
   let finalLink = link;
