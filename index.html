@@ -13,16 +13,12 @@
 .header-left{display:flex;align-items:center;gap:10px}
 .header img{width:32px;height:32px}
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
-
-  /* === SEARCH ICON MPYA === */
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
 .search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
 .search-wrap.active{display:block}
 .search{position:relative}
 .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
 .search-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666;cursor:pointer}
-  /* === MWISHO WA SEARCH === */
-
 .main-tabs{display:flex;gap:8px;padding:10px 15px 10px;overflow-x:auto}
 .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
 .main-tab.active{background:var(--gradient);color:#fff}
@@ -30,8 +26,6 @@
 .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
 .cat-box.active{background:var(--gradient);color:#fff}
 .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
-
-  /* === BANNER === */
 .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease-in-out}
 .hero-slide.active{opacity:1}
@@ -43,9 +37,6 @@
 .hero-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
 .dot{width:8px;height:8px;border-radius:50%;background:#555;cursor:pointer}
 .dot.active{background:var(--gradient);width:20px;border-radius:10px}
-  /* === MWISHO WA BANNER === */
-
-  /* === CARD ZA MOVIEBOX STYLE === */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
 .card{background:transparent;border-radius:6px;overflow:hidden;cursor:pointer;position:relative}
 .thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:6px;overflow:hidden}
@@ -53,8 +44,6 @@
 .star-badge{position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--gradient);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;z-index:2}
 .card-body{padding:4px 2px 0}
 .card p{margin:0;font-size:11px;font-weight:500;line-height:1.3;color:#ddd;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
-  /* === MWISHO WA CARD === */
-
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;align-items:center;justify-content:center;padding:15px}
 .box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center}
 .box h2{margin:0 0 10px;font-size:18px;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -64,28 +53,22 @@
 .btn-grad{background:var(--gradient);color:#fff}
 .btn-gray{background:#333;color:#fff}
 .error{color:#ff4d4d;font-size:12px;margin-top:5px;display:none}
-
 .payment-alert{background:var(--gradient);padding:15px;border-radius:10px;margin-bottom:12px;text-align:center;border:2px solid #fff}
 .payment-alert.top{font-size:13px;font-weight:600;color:#fff;opacity:0.9}
 .payment-alert.mtandao{font-size:15px;font-weight:700;color:#fff}
 .payment-alert.namba{font-size:22px;letter-spacing:2px;font-weight:900;color:#fff;margin:4px 0}
 .payment-alert.jina{font-size:15px;font-weight:700;color:#fff}
-
 .networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .net-btn{background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
 .net-btn:hover{border-color:#A855F7}
 .airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
-
 .whatsapp-step{display:none;margin-top:10px}
 .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
-
-  /* === PLAYER FULLSCREEN IKO JUU === */
   #playerBox{background:#000;padding:0;align-items:flex-start;justify-content:center}
   #playerBox.player-container{width:100vw;height:100vh;background:#000;position:fixed;top:0;left:0;display:flex;align-items:flex-start;justify-content:center}
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox.fullscreen-btn{position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox iframe{width:100vw;height:56.25vw;max-height:100vh;border:none;display:block;object-fit:cover}
-  /* === MWISHO WA PLAYER === */
 </style>
 </head>
 <body>
@@ -98,7 +81,6 @@
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
 
-<!-- SEARCH INAFUNGUKA HAPA -->
 <div class="search-wrap" id="searchWrap">
   <div class="search">
     <input type="text" id="searchInput" placeholder="" onkeyup="loadMovies()">
@@ -118,7 +100,7 @@
   <h2>Fungua kwa Access Key</h2>
   <p style="font-size:12px;color:#aaa">Ingiza Key ya wiki ili ufungue movie</p>
   <input type="text" id="keyInput" placeholder="Mf: CHILAGU-WK43">
-  <p class="error" id="keyError">❌ Key sio sahihi au imeshatumiwa</p>
+  <p class="error" id="keyError">❌ Key sio sahihi</p>
   <button class="btn-grad" onclick="checkKey()">FUNGUA MOVIE</button>
   <button class="btn-green" onclick="showPayment()">NUNUA KEY Tsh 2000</button>
   <button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button>
@@ -166,14 +148,12 @@ const PAYMENT_NUMBER = "0686436004";
 const movies = [
   {id:1,title:"Mpanda Mnazi",type:"all",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
   {id:2,title:"Yellow RECKONING",type:"all",cat:"action",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4"},
-  {id:3,title:"Love and destiny",type:"all",cat:"love",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000000003a3471f4a4cf845850d73ed4-(1).jpg",link:"https://streamable.com/e/sye93q"},
+  {id:3,title:"Love and destiny",type:"all",cat:"love",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",link:"https://streamable.com/e/sye93q"},
   {id:4,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4"},
-  {id:5,title:"Love and Destiny S01E01",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000000003a3471f4a4cf845850d73ed4-(1).jpg",link:"https://streamable.com/e/8326lw"},
+  {id:5,title:"Love and Destiny S01E01",type:"all",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",link:"https://streamable.com/e/8326lw"},
 ];
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
-let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
-let slideIndex = 0; let slideInterval;
 
 function toggleSearch(){
   document.getElementById("searchWrap").classList.toggle("active");
@@ -222,12 +202,9 @@ function loadMovies(){
   const trendGrid=document.getElementById("trendGrid");
   homeGrid.innerHTML="";
   trendGrid.innerHTML="";
-
   let searchVal = document.getElementById("searchInput").value.toLowerCase();
   let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
-
   filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
-
   let trend=filtered.filter(m=>m.trending===true);
   trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';
   trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
@@ -243,14 +220,17 @@ function openMovie(m){
   }
 }
 
+// === HII HAPA NDO IMEBADILISHWA ===
 function checkKey(){
-  const key=document.getElementById("keyInput").value.trim().toUpperCase();
-  if(key===WEEKLY_KEY &&!usedKeys.includes(key)){
-    usedKeys.push(key);localStorage.setItem('usedKeys',JSON.stringify(usedKeys));
+  const key=document.getElementById("keyInput").value.trim();
+  if(key===WEEKLY_KEY){
     closeOverlay('keyBox');
     playMovie(currentMovie.link);
-  }else{document.getElementById("keyError").style.display="block"}
+  }else{
+    document.getElementById("keyError").style.display="block"
+  }
 }
+// ===================================
 
 function playMovie(link){
   let finalLink = link;
@@ -264,7 +244,7 @@ function playMovie(link){
 function showPayment(){
   closeOverlay('keyBox');
   document.getElementById("payNumber").innerText = PAYMENT_NUMBER;
-  document.getElementById="payName".innerText = ADMIN_NAME;
+  document.getElementById("payName").innerText = ADMIN_NAME;
   document.getElementById("whatsappStep").style.display="none";
   document.getElementById("networkButtons").style.display="grid";
   document.getElementById("payBox").style.display="flex"
