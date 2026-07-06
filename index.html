@@ -93,7 +93,7 @@
 <div class="header">
   <div class="header-left">
     <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
-    <h1>Chilagu Cinema</h1>
+    <h1>Chilagu Legacy Cinema</h1>
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
@@ -157,7 +157,7 @@
 </div>
 
 <script>
-const WEEKLY_KEY = "CHiLAGU-WK43";
+const WEEKLY_KEY = "CHILAGU-WK43";
 const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
@@ -198,7 +198,7 @@ function loadHeroBanner(){
   banner.style.display = "block";
   let slidesHTML = ''; let dotsHTML = '';
   slideMovies.forEach((m, index)=>{
-    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Tazama Sasa</button></div></div>`;
+    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Watching Now</button></div></div>`;
     dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="goToSlide(${index})"></span>`;
   });
   banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
@@ -264,7 +264,7 @@ function playMovie(link){
 function showPayment(){
   closeOverlay('keyBox');
   document.getElementById("payNumber").innerText = PAYMENT_NUMBER;
-  document.getElementById("payName").innerText = ADMIN_NAME;
+  document.getElementById="payName".innerText = ADMIN_NAME;
   document.getElementById("whatsappStep").style.display="none";
   document.getElementById("networkButtons").style.display="grid";
   document.getElementById("payBox").style.display="flex"
