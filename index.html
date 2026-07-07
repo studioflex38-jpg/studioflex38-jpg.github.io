@@ -65,15 +65,12 @@
 .airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
 .whatsapp-step{display:none;margin-top:10px}
 .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
-
-  /* === EPISODE LIST === */
- .episode-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;text-align:left}
- .episode-item{background:#222;padding:12px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
- .episode-item:hover{background:#2a2a2a}
- .episode-item span{font-size:13px;font-weight:600}
- .episode-item small{font-size:10px;color:#aaa}
-  /* === MWISHO === */
-
+.episode-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;text-align:left}
+.episode-item{background:#222;padding:12px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.episode-item:hover{background:#2a2a2a}
+.episode-item span{font-size:13px;font-weight:600}
+.episode-item small{font-size:10px;color:#aaa}
+.episode-item.coming{background:#111;cursor:not-allowed;color:#666}
   #playerBox{background:#000;padding:0;align-items:flex-start;justify-content:center}
   #playerBox.player-container{width:100vw;height:100vh;background:#000;position:fixed;top:0;left:0;display:flex;align-items:flex-start;justify-content:center}
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
@@ -86,7 +83,7 @@
 <div class="header">
   <div class="header-left">
     <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
-    <h1>Chilagu Legacy Cinema</h1>
+    <h1>Chilagu Cinema</h1>
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
@@ -106,7 +103,6 @@
 <h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
 
-<!-- OVERLAY YA EPISODES -->
 <div class="overlay" id="episodeBox"><div class="box">
   <h2 id="episodeTitle">Chagua Episode</h2>
   <div class="episode-list" id="episodeList"></div>
@@ -162,12 +158,16 @@ const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
 
-// === DATA MPYA: SERIES INA EPISODES NDANI ===
+// ========= HAPA NDO UNAONGEZA MOVIE ZAKO =========
 const movies = [
+  // 1. SINGO MOVIE - Rahisi
   {id:1,title:"Mpanda Mnazi",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
+
   {id:2,title:"Yellow RECKONING",type:"singo",cat:"action",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4"},
+
   {id:3,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4"},
-  // HII HAPA NI SERIES
+
+  // 2. SERIES ILIYOKAMILIKA NUSU - Weka episodes ulizonazo tu
   {
     id:4,
     title:"Love and Destiny",
@@ -177,23 +177,23 @@ const movies = [
     trending:true,
     slide:true,
     thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",
-    episodes:[
-      {ep:1, title:"Episode 1", link:"https://streamable.com/e/8326lw"}
+    episodes:[] // Weka [] kama huna episode bado. Weka link ukishoot
+  },
 
-          id:4,
+  // 3. SERIES IJAYO - "Coming Soon"
+  {
+    id:5,
     title:"Inevitable",
     type:"series",
     cat:"thriller",
     price:WEEKLY_PRICE,
-    trending:true,
-    slide:true,
-    thumbnail:"https://i.postimg.cc/tTF2wQn1/file-00000000416071f4bd5300709267e951-(1).jpg",
-    episodes:[
-      {ep:1, title:"Episode 1", link:"https://streamable.com/e/8326lw"}
-
-    ]
+    trending:false,
+    slide:false,
+    thumbnail:"https://i.postimg.cc/tTF2wQn1/file-00000416071f4bd5300709267e951-(1).jpg",
+    episodes:[] // Acha hivi mpaka mwakani
   },
 ];
+// ========= MWISHO WA KUONGEZA MOVIE =========
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
 
@@ -226,6 +226,7 @@ function loadHeroBanner(){
   banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
   startSlideAuto();
 }
+let slideIndex = 0; let slideInterval;
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
 function goToSlide(n){clearInterval(slideInterval); showSlide(n); startSlideAuto()}
 function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide');if(slides.length <= 1) return;clearInterval(slideInterval);slideInterval = setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex)},5000);}
@@ -234,7 +235,11 @@ function makeCard(m){
   const div=document.createElement("div");
   div.className="card";
   let star=m.price>0?'<div class="star-badge">★</div>':'';
-  let epCount = m.episodes? `<div class="ep-badge">${m.episodes.length} Episodes</div>` : '';
+  let epCount = '';
+  if(m.type === 'series'){
+    let count = m.episodes.length;
+    epCount = count > 1? `<div class="ep-badge">1+</div>` : `<div class="ep-badge">${count}</div>`;
+  }
   div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p></div>`;
   div.onclick=()=>openMovie(m);
   return div
@@ -255,25 +260,26 @@ function loadMovies(){
 
 function openMovie(m){
   currentMovie=m;
-  // KAMA NI SERIES FUNUA LIST YA EPISODE
-  if(m.episodes){
+  if(m.type === 'series'){
     document.getElementById("episodeTitle").innerText = m.title;
     const list = document.getElementById("episodeList");
     list.innerHTML = '';
-    m.episodes.forEach(e=>{
-      let item = document.createElement('div');
-      item.className = 'episode-item';
-      item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;
-      item.onclick = () => {
-        closeOverlay('episodeBox');
-        handlePlay(e.link, m.price);
-      }
-      list.appendChild(item);
-    });
+    if(m.episodes.length === 0){
+      list.innerHTML = `<div class="episode-item coming"><span>Coming Soon...</span><small>Tafadhali subiri</small></div>`;
+    } else {
+      m.episodes.forEach(e=>{
+        let item = document.createElement('div');
+        item.className = 'episode-item';
+        item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;
+        item.onclick = () => {
+          closeOverlay('episodeBox');
+          handlePlay(e.link, m.price);
+        }
+        list.appendChild(item);
+      });
+    }
     document.getElementById("episodeBox").style.display="flex";
-  }
-  // KAMA NI SINGO CHEZA DIRECT
-  else {
+  } else {
     handlePlay(m.link, m.price);
   }
 }
@@ -292,7 +298,8 @@ function checkKey(){
   const key=document.getElementById("keyInput").value.trim();
   if(key===WEEKLY_KEY){
     closeOverlay('keyBox');
-    playMovie(currentMovie.link || currentMovie.episodes[0].link);
+    let linkToPlay = currentMovie.link || currentMovie.episodes[0]?.link;
+    playMovie(linkToPlay);
   }else{
     document.getElementById("keyError").style.display="block"
   }
