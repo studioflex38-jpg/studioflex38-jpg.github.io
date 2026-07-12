@@ -115,17 +115,17 @@
   </div>
   <div id="adminAnalytics"></div>
   <div id="adminUpload" style="display:none;text-align:left">
-    <input type="text" id="mTitle" placeholder="Movie Title. Ex: Love and Destiny Ep 1" required>
+    <input type="text" id="mTitle" placeholder="Movie Title. Ex: Love and Destiny Ep 1">
     <select id="mType"><option value="singo">Single Movie</option><option value="series">Series Episode</option></select>
     <select id="mCat"><option value="drama">Drama</option><option value="action">Action</option><option value="love">Love</option><option value="thriller">Thriller</option></select>
     <select id="mPrice"><option value="0">Free Episode</option><option value="2000">Paid Episode Tsh 2000</option></select>
-    <input type="text" id="mThumb" placeholder="Thumbnail Link - https://..." required>
-    <input type="text" id="mLink" placeholder="Video Link - https://..." required>
+    <input type="text" id="mThumb" placeholder="Thumbnail Link">
+    <input type="text" id="mLink" placeholder="Video Link">
     <label><input type="checkbox" id="mTrending"> Add to Trending Now</label>
     <label><input type="checkbox" id="mBanner"> Add to Watching Now Banner</label>
     <button class="btn-green" id="saveMovieBtn" onclick="saveMovie()">SAVE EPISODE/MOVIE</button>
   </div>
-  <div id="adminControl" style="display:none;text-align:left"><h3>Manage All Movies & Episodes</h3><div id="manageList"><div class="empty-state">Loading...</div></div></div>
+  <div id="adminControl" style="display:none;text-align:left"><h3>Manage All Movies & Episodes</h3><div id="manageList"></div></div>
   <div id="adminSettings" style="display:none;text-align:left">
     <h3>Settings</h3>
     <input type="text" id="settingKey" placeholder="New Weekly Key">
@@ -138,7 +138,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
   import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, onSnapshot, doc, updateDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, onSnapshot, doc, updateDoc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",
@@ -153,11 +153,6 @@
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
   window.db = db;
-
-  window.trackEvent = async function(eventName, data) {
-    logEvent(analytics, eventName, data);
-    await addDoc(collection(db, "chilagu_events"), {event: eventName,...data,time: serverTimestamp()});
-  }
 </script>
 
 <script>
@@ -172,16 +167,16 @@ const PAYMENT_NUMBER = "0686436004";
 let movies = [];
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='', currentSeries=[];
 
-// SOMA SETTINGS LIVE
-onSnapshot(doc(window.db, "settings", SETTINGS_DOC_ID), (docSnap) => {
+// LOAD SETTINGS MARA 1 TU WAKATI WA KUANZA
+async function loadSettings(){
+  const docSnap = await getDoc(doc(window.db, "settings", SETTINGS_DOC_ID));
   if(docSnap.exists()){
     const d = docSnap.data();
     if(d.key) WEEKLY_KEY = d.key;
     if(d.pass) ADMIN_PASS = d.pass;
-    if(document.getElementById("settingKey")) document.getElementById("settingKey").value = WEEKLY_KEY;
-    if(document.getElementById("settingPass")) document.getElementById("settingPass").value = ADMIN_PASS;
   }
-});
+}
+loadSettings();
 
 // SOMA MOVIES LIVE
 onSnapshot(collection(window.db, "movies"), (snapshot) => {
@@ -189,45 +184,35 @@ onSnapshot(collection(window.db, "movies"), (snapshot) => {
   snapshot.forEach(doc => { movies.push({id: doc.id,...doc.data()}) });
   loadMovies();
   loadBanner();
-  loadManageList(); // Reload control pia
+  loadManageList();
 });
 
 function loadBanner(){
   const bannerSlider = document.getElementById("bannerSlider");
   bannerSlider.innerHTML = "";
   const bannerMovies = movies.filter(m => m.banner === true);
-
   if(bannerMovies.length === 0){
-    bannerSlider.innerHTML = `<div class="empty-state">No Banner Set. Go to Upload > Check "Add to Banner"</div>`;
+    bannerSlider.innerHTML = `<div class="empty-state">No Banner Set</div>`;
     return;
   }
-
   bannerMovies.forEach(m => {
     const div = document.createElement("div");
     div.className = "banner-card";
-    div.innerHTML = `
-      <img src="${m.thumbnail}" onerror="this.src='https://via.placeholder.com/400x225/111/555?text=No+Image'">
-      <div class="banner-overlay">
-        <div class="watching">WATCHING NOW</div>
-        <div class="title">${m.title}</div>
-      </div>
-    `;
+    div.innerHTML = `<img src="${m.thumbnail}"><div class="banner-overlay"><div class="watching">WATCHING NOW</div><div class="title">${m.title}</div></div>`;
     div.onclick = () => openMovie(m);
     bannerSlider.appendChild(div);
   });
 }
 
-function getSeriesName(title){
-  return title.replace(/ep(isode)?\.?\s*\d+/i, '').trim();
-}
-
+function getSeriesName(title){ return title.replace(/ep(isode)?\.?\s*\d+/i, '').trim(); }
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");}
+
 function makeCard(m, isGroup=false, count=1, hasPaid=false, isTrending=false){
   const div=document.createElement("div");div.className="card";
   let star=hasPaid?'<div class="star-badge">★</div>':'';
   let trend=isTrending?'<div class="trending-badge">TREND</div>':'';
   let epBadge = isGroup? `<div class="episode-count">${count} Eps</div>` : '';
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x225/111/555?text=No+Image'">${star}${trend}${epBadge}</div><div class="card-body"><p>${m.displayTitle}</p></div>`;
+  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}">${star}${trend}${epBadge}</div><div class="card-body"><p>${m.displayTitle}</p></div>`;
   div.onclick=()=>isGroup? openEpisodeList(m.seriesName) : openMovie(m);
   return div
 }
@@ -252,58 +237,29 @@ function loadMovies(){
   Object.keys(seriesMap).forEach(name => {
     let s = seriesMap[name];
     let hasPaid = s.episodes.some(e => e.price > 0);
-    displayList.push({
-      type:'series',
-      seriesName:name,
-      displayTitle:name,
-      thumbnail:s.thumbnail,
-      cat:s.cat,
-      count:s.episodes.length,
-      hasPaid:hasPaid,
-      trending:s.trending
-    });
+    displayList.push({type:'series',seriesName:name,displayTitle:name,thumbnail:s.thumbnail,cat:s.cat,count:s.episodes.length,hasPaid:hasPaid,trending:s.trending});
   });
 
   let filtered=displayList.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.displayTitle.toLowerCase().includes(searchVal));
-
-  if(filtered.filter(m=>m.trending).length === 0){
-    trendingGrid.innerHTML = `<div class="empty-state">No Trending Movies</div>`;
-  } else {
-    filtered.filter(m=>m.trending).forEach(m=>trendingGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, true)));
-  }
-
-  if(filtered.length === 0){
-    homeGrid.innerHTML = `<div class="empty-state">No Movies Found</div>`;
-  } else {
-    filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, m.trending)));
-  }
+  filtered.filter(m=>m.trending).forEach(m=>trendingGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, true)));
+  filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, m.trending)));
 }
 
 function openEpisodeList(seriesName){
   currentSeries = movies.filter(m => m.type==='series' && getSeriesName(m.title) === seriesName).sort((a,b) => a.title.localeCompare(b.title));
   document.getElementById("episodeTitle").innerText = seriesName;
   let html = '';
-  currentSeries.forEach(ep => {
-    html += `<div class="episode-item">
-      <span>${ep.title} ${ep.price>0?'★':''}</span>
-      <button class="btn-grad" style="width:auto;padding:6px 12px" onclick='playEpisode("${ep.id}")'>Play</button>
-    </div>`
-  });
+  currentSeries.forEach(ep => { html += `<div class="episode-item"><span>${ep.title} ${ep.price>0?'★':''}</span><button class="btn-grad" style="width:auto;padding:6px 12px" onclick='playEpisode("${ep.id}")'>Play</button></div>` });
   document.getElementById("episodeList").innerHTML = html;
   document.getElementById("episodeBox").style.display="flex";
 }
 
-function playEpisode(id){
-  currentMovie = movies.find(m => m.id === id);
-  closeOverlay('episodeBox');
-  if(currentMovie.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(currentMovie.link)}
-}
-
-function openMovie(m){trackEvent("view_movie", {title: m.title});currentMovie=m;if(m.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(m.link)}}
-function checkKey(){if(document.getElementById("keyInput").value.trim()===WEEKLY_KEY){trackEvent("key_used", {movie: currentMovie.title});closeOverlay('keyBox');playMovie(currentMovie.link)}else{document.getElementById("keyError").style.display="block"}}
-function playMovie(link){trackEvent("play_movie", {title: currentMovie.title});document.getElementById("videoFrame").src = link;document.getElementById("playerBox").style.display="flex";}
+function playEpisode(id){ currentMovie = movies.find(m => m.id === id); closeOverlay('episodeBox'); if(currentMovie.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(currentMovie.link)} }
+function openMovie(m){currentMovie=m;if(m.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(m.link)}}
+function checkKey(){if(document.getElementById("keyInput").value.trim()===WEEKLY_KEY){closeOverlay('keyBox');playMovie(currentMovie.link)}else{document.getElementById("keyError").style.display="block"}}
+function playMovie(link){document.getElementById("videoFrame").src = link;document.getElementById("playerBox").style.display="flex";}
 function showPayment(){closeOverlay('keyBox');document.getElementById("payBox").style.display="flex"}
-function pay(network){trackEvent("buy_key_click", {movie: currentMovie.title, network: network});selectedNetwork = network;document.getElementById("networkButtons").style.display="none";document.getElementById("whatsappStep").style.display="block";}
+function pay(network){selectedNetwork = network;document.getElementById("networkButtons").style.display="none";document.getElementById("whatsappStep").style.display="block";}
 function goToWhatsapp(){const msg=`HELLO ${ADMIN_NAME}. I PAID Tsh${WEEKLY_PRICE} VIA ${selectedNetwork.toUpperCase()} TO ${PAYMENT_NUMBER}. PLEASE SEND ME THIS WEEK'S KEY: ${WEEKLY_KEY}`;window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');closeOverlay('payBox');}
 function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";}
 function closeOverlay(id){document.getElementById(id).style.display="none"}
@@ -316,131 +272,54 @@ function showAdminTab(tab,el){
   el.classList.add('active');
   ['adminAnalytics','adminUpload','adminControl','adminSettings'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('admin'+tab.charAt(0).toUpperCase()+tab.slice(1)).style.display='block';
+  if(tab==='settings'){ document.getElementById("settingKey").value = WEEKLY_KEY; document.getElementById("settingPass").value = ADMIN_PASS; }
 }
 
 async function loadAnalytics(){
-  document.getElementById("adminAnalytics").innerHTML = `<div class="empty-state">Loading Analytics...</div>`;
   const snapshot = await getDocs(collection(window.db, "chilagu_events"));
   let plays = {}; let payments = {};
   snapshot.forEach(doc=>{const d = doc.data(); if(d.event === "play_movie") plays[d.title] = (plays[d.title]||0)+1; if(d.event === "buy_key_click") payments[d.movie] = (payments[d.movie]||0)+1;});
-
-  if(Object.keys(plays).length === 0){
-    document.getElementById("adminAnalytics").innerHTML = `<div class="empty-state">No Analytics Data Yet</div>`;
-    return;
-  }
-
-  let html = `<h3>Analytics</h3><table><tr><th>Movie</th><th>Plays</th><th>Buys</th><th>Revenue</th></tr>`;
-  movies.forEach(m=>{html += `<tr><td>${m.title}</td><td>${plays[m.title]||0}</td><td>${payments[m.title]||0}</td><td>Tsh ${(payments[m.title]||0)*WEEKLY_PRICE}</td></tr>`;});
-  html += `</table>`; document.getElementById("adminAnalytics").innerHTML = html;
+  let html = `<h3>Analytics</h3>`;
+  if(Object.keys(plays).length === 0){ html += `<div class="empty-state">No Analytics Data Yet</div>`; }
+  else { html += `<table><tr><th>Movie</th><th>Plays</th><th>Revenue</th></tr>`; movies.forEach(m=>{html += `<tr><td>${m.title}</td><td>${plays[m.title]||0}</td><td>Tsh ${(payments[m.title]||0)*WEEKLY_PRICE}</td></tr>`;}); html += `</table>`; }
+  document.getElementById("adminAnalytics").innerHTML = html;
 }
 
 async function saveMovie(){
   const btn = document.getElementById("saveMovieBtn");
-  btn.innerText = "SAVING...";
-  btn.disabled = true;
-
+  btn.innerText = "SAVING..."; btn.disabled = true;
   const title = document.getElementById("mTitle").value.trim();
   const thumb = document.getElementById("mThumb").value.trim();
   const link = document.getElementById("mLink").value.trim();
-
-  if(!title ||!thumb ||!link){
-    alert("❌ Please fill Title, Thumbnail and Video Link");
-    btn.innerText = "SAVE EPISODE/MOVIE";
-    btn.disabled = false;
-    return;
-  }
-
-  const seriesName = getSeriesName(title);
-  const newMovie = {
-    title: title,
-    seriesName: seriesName,
-    type: document.getElementById("mType").value,
-    cat: document.getElementById("mCat").value,
-    price: parseInt(document.getElementById("mPrice").value),
-    thumbnail: thumb,
-    link: link,
-    trending: document.getElementById("mTrending").checked,
-    banner: document.getElementById("mBanner").checked,
-    createdAt: serverTimestamp()
-  };
-  try{
-    await addDoc(collection(window.db, "movies"), newMovie);
-    alert("✅ Movie Uploaded Successfully!");
-    // FUTA FORM
-    document.getElementById("mTitle").value = "";
-    document.getElementById("mThumb").value = "";
-    document.getElementById("mLink").value = "";
-    document.getElementById("mTrending").checked = false;
-    document.getElementById("mBanner").checked = false;
-  }catch(e){
-    alert("❌ Error: " + e.message);
-  }
-  btn.innerText = "SAVE EPISODE/MOVIE";
-  btn.disabled = false;
+  if(!title ||!thumb ||!link){ alert("❌ Jaza Title, Thumbnail na Video Link"); btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false; return; }
+  const newMovie = { title: title, type: document.getElementById("mType").value, cat: document.getElementById("mCat").value, price: parseInt(document.getElementById("mPrice").value), thumbnail: thumb, link: link, trending: document.getElementById("mTrending").checked, banner: document.getElementById("mBanner").checked };
+  await addDoc(collection(window.db, "movies"), newMovie);
+  alert("✅ Movie Uploaded Successfully!");
+  document.getElementById("mTitle").value = ""; document.getElementById("mThumb").value = ""; document.getElementById("mLink").value = "";
+  btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false;
 }
 
 function loadManageList(){
   const list = document.getElementById("manageList");
-  if(movies.length === 0){
-    list.innerHTML = `<div class="empty-state">No Movies Uploaded Yet</div>`;
-    return;
-  }
+  if(movies.length === 0){ list.innerHTML = `<div class="empty-state">No Movies Uploaded Yet</div>`; return; }
   list.innerHTML = "";
-  movies.sort((a,b)=>a.title.localeCompare(b.title)).forEach(m=>{
-    list.innerHTML += `
-    <div class="admin-movie-item">
-      <img src="${m.thumbnail}" onerror="this.src='https://via.placeholder.com/80x45/111/555'">
-      <div class="admin-movie-info">
-        <b>${m.title}</b><br>
-        <small>${m.type} | ${m.price==0?'Free':'Paid Tsh '+m.price} ${m.trending?'| TRENDING':''} ${m.banner?'| BANNER':''}</small>
-      </div>
-      <div class="admin-btns">
-        <button class="btn-blue" onclick='editMovie("${m.id}")'>Edit</button>
-        <button class="btn-red" onclick='deleteMovie("${m.id}")'>Delete</button>
-      </div>
-    </div>`;
-  });
+  movies.forEach(m=>{ list.innerHTML += `<div class="admin-movie-item"><img src="${m.thumbnail}"><div class="admin-movie-info"><b>${m.title}</b><br><small>${m.type} | ${m.price==0?'Free':'Paid'} ${m.trending?'| TREND':''} ${m.banner?'| BANNER':''}</small></div><div class="admin-btns"><button class="btn-red" onclick='deleteMovie("${m.id}")'>Delete</button></div></div>`; });
 }
 
-function editMovie(id){
-  const m = movies.find(x=>x.id==id);
-  document.getElementById("mTitle").value = m.title;
-  document.getElementById("mType").value = m.type;
-  document.getElementById("mCat").value = m.cat;
-  document.getElementById("mPrice").value = m.price;
-  document.getElementById("mThumb").value = m.thumbnail;
-  document.getElementById("mLink").value = m.link;
-  document.getElementById("mTrending").checked = m.trending;
-  document.getElementById("mBanner").checked = m.banner;
-  showAdminTab('upload',document.querySelector('.admin-tab-btn'));
-  document.querySelector("#adminUpload button").innerText = "UPDATE MOVIE";
-  document.querySelector("#adminUpload button").onclick = async () => {
-    await updateDoc(doc(window.db, "movies", id), {
-      title: document.getElementById("mTitle").value,
-      price: parseInt(document.getElementById("mPrice").value),
-      thumbnail: document.getElementById("mThumb").value,
-      link: document.getElementById("mLink").value,
-      trending: document.getElementById("mTrending").checked,
-      banner: document.getElementById("mBanner").checked
-    });
-    alert("✅ Updated Successfully!");
-    document.querySelector("#adminUpload button").innerText = "SAVE EPISODE/MOVIE";
-    document.querySelector("#adminUpload button").onclick = saveMovie;
-    showAdminTab('control',document.querySelectorAll('.admin-tab-btn')[2]);
-  }
-}
 async function deleteMovie(id){if(confirm("Delete this movie?")){await deleteDoc(doc(window.db, "movies", id)); alert("✅ Deleted!");}}
 
+// FIX KUBWA: TUMIA UPDATE NA MERGE
 async function saveSettings(){
   const newKey = document.getElementById("settingKey").value.trim();
   const newPass = document.getElementById("settingPass").value.trim();
-  if(!newKey ||!newPass){ alert("❌ Fill both Key and Password"); return; }
-  await setDoc(doc(window.db, "settings", SETTINGS_DOC_ID), {
-    key: newKey,
-    pass: newPass,
-    time: serverTimestamp()
-  });
-  alert("✅ Settings Updated Successfully!");
+  if(!newKey ||!newPass){ alert("❌ Jaza Key na Password zote mbili"); return; }
+
+  const settingsRef = doc(window.db, "settings", SETTINGS_DOC_ID);
+  await setDoc(settingsRef, { key: newKey, pass: newPass }, { merge: true }); // {merge:true} ndio siri
+
+  WEEKLY_KEY = newKey;
+  ADMIN_PASS = newPass;
+  alert("✅ Settings Updated! Fungua tena app na tumia password mpya: " + newPass);
 }
 </script>
 </body>
