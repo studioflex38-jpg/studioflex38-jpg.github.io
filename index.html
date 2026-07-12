@@ -88,7 +88,7 @@
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
 
-<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="handleSearch(event)"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
+<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." oninput="handleSearch()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
 
 <div class="banner-section">
@@ -197,21 +197,17 @@ function loadBanner(){
 
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active"); document.getElementById("searchInput").value = "";}
 
-function handleSearch(event){
-  let val = document.getElementById("searchInput").value.trim().toLowerCase(); // NIMEWEKA TRIM NA LOWERCASE
+function handleSearch(){
+  let val = document.getElementById("searchInput").value.trim().toLowerCase();
   
-  // SIRI: UKIANDIKA ADMIN PANEL
+  // UKIMALIZA KUANDIKA "ADMIN PANEL" NDIO ITAFUNGUA
   if(val === "admin panel"){
     toggleSearch();
-    setTimeout(openAdmin, 100); // Nimechelewesha kidogo ili ifunguke vizuri
+    setTimeout(openAdmin, 100);
     return;
   }
   
-  if(event.key === "Enter"){ // Ukibonyeza Enter
-    loadMovies();
-  } else {
-    loadMovies(); // Ita-search live
-  }
+  loadMovies(); // Kama si admin panel fanya search kawaida
 }
 
 function loadMovies(){
@@ -237,7 +233,7 @@ function checkKey(){if(document.getElementById("keyInput").value.trim()===WEEKLY
 function playMovie(link){document.getElementById("videoFrame").src = link;document.getElementById("playerBox").style.display="flex";}
 function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";}
 function closeOverlay(id){document.getElementById(id).style.display="none"}
-function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
+function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add('active');loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 
 async function openAdmin(){
