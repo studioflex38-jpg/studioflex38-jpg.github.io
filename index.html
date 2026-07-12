@@ -1,293 +1,359 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Chilagu Legacy Cinema - Pro Admin</title>
+<title>Chilagu Legacy Cinema</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; --card:#111; }
+  :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
   *{box-sizing:border-box}
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
 .header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
 .header-left{display:flex;align-items:center;gap:10px}
-.header img{width:32px;height:32px;cursor:pointer;}
+.header img{width:32px;height:32px}
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
 .search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
 .search-wrap.active{display:block}
+.search{position:relative}
 .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
 .search-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#666;cursor:pointer}
-.main-tabs{display:flex;gap:8px;padding:10px 15px;overflow-x:auto}
-.main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;cursor:pointer;font-weight:600;color:#aaa}
+.main-tabs{display:flex;gap:8px;padding:10px 15px 10px;overflow-x:auto}
+.main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;text-align:center;cursor:pointer;font-weight:600;color:#aaa}
 .main-tab.active{background:var(--gradient);color:#fff}
-.banner-section{margin:10px 0}
-.banner-title{padding:0 15px;font-size:14px;font-weight:700;color:#A855F7;margin-bottom:8px;letter-spacing:1px}
-.banner-slider{display:flex;overflow-x:auto;gap:10px;padding:0 15px;scroll-snap-type:x mandatory}
-.banner-card{flex:0 0 85%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;scroll-snap-align:start}
-.banner-card img{width:100%;height:100%;object-fit:cover}
-.banner-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px}
-.banner-overlay.watching{font-size:10px;color:#A855F7;font-weight:700}
-.banner-overlay.title{font-size:13px;font-weight:700}
-.cat-wrap{padding:15px 15px 18px;overflow-x:auto;white-space:nowrap}
-.cat-row{display:flex;gap:6px}
+.cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
 .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
 .cat-box.active{background:var(--gradient);color:#fff}
 .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
+.hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
+.hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease-in-out}
+.hero-slide.active{opacity:1}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.2) 60%)}
+.hero-content{position:absolute;bottom:20px;left:15px;right:15px;z-index:2}
+.hero-content h2{margin:0 0 8px;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-btn{display:inline-block;padding:10px 20px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:13px;text-decoration:none;border:none;cursor:pointer}
+.hero-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
+.dot{width:8px;height:8px;border-radius:50%;background:#555;cursor:pointer}
+.dot.active{background:var(--gradient);width:20px;border-radius:10px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
 .card{background:transparent;border-radius:6px;overflow:hidden;cursor:pointer;position:relative}
 .thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:6px;overflow:hidden}
 .thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .star-badge{position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--gradient);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;z-index:2}
-.trending-badge{position:absolute;top:4px;left:4px;background:var(--gradient);font-size:9px;padding:2px 5px;border-radius:4px;font-weight:700}
-.episode-count{position:absolute;bottom:4px;right:4px;background:#000a;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px}
+.ep-badge{position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,0.7);padding:3px 6px;border-radius:4px;font-size:9px;font-weight:700;color:#fff;z-index:2}
 .card-body{padding:4px 2px 0}
-.card p{margin:0;font-size:11px;font-weight:500;line-height:1.3;color:#ddd;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-align:left}
+.card p{margin:0;font-size:11px;font-weight:500;line-height:1.3;color:#ddd;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;text-align:left}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;align-items:center;justify-content:center;padding:15px}
-.box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:500px;text-align:center;max-height:90vh;overflow-y:auto}
+.box{background:#181818;padding:20px;border-radius:12px;width:100%;max-width:360px;text-align:center;max-height:80vh;overflow-y:auto}
 .box h2{margin:0 0 10px;font-size:18px;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.box input,.box select,.box textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;margin:8px 0;font-size:14px}
-.box button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+.box input{width:100%;padding:12px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;margin:10px 0;font-size:14px}
+.box button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
 .btn-green{background:var(--green);color:#fff}
 .btn-grad{background:var(--gradient);color:#fff}
 .btn-gray{background:#333;color:#fff}
-.btn-red{background:#ff3333;color:#fff}
-.btn-blue{background:#007AFF;color:#fff}
 .error{color:#ff4d4d;font-size:12px;margin-top:5px;display:none}
 .payment-alert{background:var(--gradient);padding:15px;border-radius:10px;margin-bottom:12px;text-align:center;border:2px solid #fff}
-.payment-alert.namba{font-size:22px;letter-spacing:2px;font-weight:900}
+.payment-alert.top{font-size:13px;font-weight:600;color:#fff;opacity:0.9}
+.payment-alert.mtandao{font-size:15px;font-weight:700;color:#fff}
+.payment-alert.namba{font-size:22px;letter-spacing:2px;font-weight:900;color:#fff;margin:4px 0}
+.payment-alert.jina{font-size:15px;font-weight:700;color:#fff}
 .networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .net-btn{background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
+.net-btn:hover{border-color:#A855F7}
+.airtel{color:#e60000}.mpesa{color:#00A651}.tigo{color:#0033A0}.halo{color:#FF6600}
 .whatsapp-step{display:none;margin-top:10px}
 .btn-whatsapp{background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
-  table{width:100%;border-collapse:collapse;font-size:11px}
-  th,td{padding:6px;border-bottom:1px solid #333;text-align:left}
-.admin-movie-item{background:var(--card);padding:10px;border-radius:8px;margin-bottom:8px;text-align:left;display:flex;gap:10px;align-items:center}
-.admin-movie-item img{width:80px;height:45px;border-radius:4px;object-fit:cover}
-.admin-movie-info{flex:1}
-.admin-movie-info b{font-size:13px}
-.admin-movie-info small{color:#aaa;font-size:10px}
-.admin-btns{display:flex;gap:5px}
-.admin-btns button{width:auto;padding:6px 10px;font-size:11px}
-.admin-tabs{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
-.admin-tab-btn{flex:1;padding:10px;border:none;border-radius:8px;background:#222;color:#aaa;font-weight:600;cursor:pointer}
-.admin-tab-btn.active{background:var(--gradient);color:#fff}
-.episode-list{max-height:400px;overflow-y:auto;text-align:left}
-.episode-item{display:flex;justify-content:space-between;align-items:center;padding:8px;background:#222;margin-bottom:5px;border-radius:6px}
-.empty-state{color:#666;text-align:center;padding:20px;font-size:12px}
-.no-results{color:#A855F7;text-align:center;padding:40px 15px;font-size:14px;font-weight:600}
+.episode-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;text-align:left}
+.episode-item{background:#222;padding:12px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.episode-item:hover{background:#2a2a2a}
+.episode-item span{font-size:13px;font-weight:600}
+.episode-item small{font-size:10px;color:#aaa}
+.episode-item.coming{background:#111;cursor:not-allowed;color:#666}
+  #playerBox{background:#000;padding:0;align-items:flex-start;justify-content:center}
+  #playerBox.player-container{width:100vw;height:100vh;background:#000;position:fixed;top:0;left:0;display:flex;align-items:flex-start;justify-content:center}
+  #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+  #playerBox.fullscreen-btn{position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+  #playerBox iframe{width:100vw;height:56.25vw;max-height:100vh;border:none;display:block;object-fit:cover}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="header-left">
-    <img id="logoBtn" onclick="openAdmin()" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
+    <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
     <h1>Chilagu Cinema</h1>
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
 
-<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." oninput="loadMovies()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
-<div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
-
-<div class="banner-section">
-  <div class="banner-title">WATCHING NOW</div>
-  <div class="banner-slider" id="bannerSlider"></div>
+<div class="search-wrap" id="searchWrap">
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="" onkeyup="loadMovies()">
+    <span class="search-close" onclick="toggleSearch()">×</span>
+  </div>
 </div>
 
-<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">All</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
+<div class="hero-banner" id="heroBanner"></div>
 
-<h2 class="section-title">TRENDING NOW</h2><div class="grid" id="trendingGrid"></div>
+<div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All Movies</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Singo</div></div>
+<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">Zote</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
+
+<h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
 
-<div class="overlay" id="keyBox"><div class="box"><h2>Enter Access Key</h2><input type="text" id="keyInput" placeholder="Ex: CHILAGU-F1K"><p class="error" id="keyError">❌ Wrong Key</p><button class="btn-grad" onclick="checkKey()">UNLOCK MOVIE</button><button class="btn-green" onclick="showPayment()">BUY KEY Tsh 2000</button><button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button></div></div>
-<div class="overlay" id="payBox"><div class="box"><h2>Choose Network</h2><div class="payment-alert"><p>Pay Tsh 2000 to</p><p class="namba">0686436004</p><p>Moshi Idd</p></div><div class="networks" id="networkButtons"><div class="net-btn" onclick="pay('airtel')">Airtel Money</div><div class="net-btn" onclick="pay('mpesa')">M-Pesa</div><div class="net-btn" onclick="pay('tigo')">Tigo Pesa</div><div class="net-btn" onclick="pay('halo')">HaloPesa</div></div><div class="whatsapp-step" id="whatsappStep"><button class="btn-whatsapp" onclick="goToWhatsapp()">💬 SEND PAYMENT VIA WHATSAPP</button></div><button class="btn-gray" onclick="closeOverlay('payBox')">Go Back</button></div></div>
-<div class="overlay" id="playerBox"><div class="box" style="max-width:100vw;max-height:100vh;padding:0"><span style="position:absolute;top:10px;right:10px;font-size:35px;cursor:pointer;z-index:1001" onclick="closePlayer()">×</span><iframe id="videoFrame" src="" style="width:100vw;height:100vh;border:none" allowfullscreen></iframe></div></div>
-<div class="overlay" id="episodeBox"><div class="box"><h2 id="episodeTitle"></h2><div class="episode-list" id="episodeList"></div><button class="btn-gray" onclick="closeOverlay('episodeBox')">Close</button></div></div>
-
-<div class="overlay" id="adminBox"><div class="box">
-  <h2>👑 Pro Admin Panel</h2>
-  <div class="admin-tabs">
-    <button class="admin-tab-btn active" onclick="showAdminTab('analytics',this)">Analytics</button>
-    <button class="admin-tab-btn" onclick="showAdminTab('upload',this)">Upload</button>
-    <button class="admin-tab-btn" onclick="showAdminTab('control',this)">Control</button>
-    <button class="admin-tab-btn" onclick="showAdminTab('settings',this)">Settings</button>
-  </div>
-  <div id="adminAnalytics"></div>
-  <div id="adminUpload" style="display:none;text-align:left">
-    <input type="text" id="mTitle" placeholder="Movie Title. Ex: Love and Destiny Ep 1">
-    <select id="mType"><option value="singo">Single Movie</option><option value="series">Series Episode</option></select>
-    <select id="mCat"><option value="drama">Drama</option><option value="action">Action</option><option value="love">Love</option><option value="thriller">Thriller</option></select>
-    <select id="mPrice"><option value="0">Free Episode</option><option value="2000">Paid Episode Tsh 2000</option></select>
-    <input type="text" id="mThumb" placeholder="Thumbnail Link">
-    <input type="text" id="mLink" placeholder="Video Link">
-    <label><input type="checkbox" id="mTrending"> Add to Trending Now</label>
-    <label><input type="checkbox" id="mBanner"> Add to Watching Now Banner</label>
-    <button class="btn-green" id="saveMovieBtn" onclick="saveMovie()">SAVE EPISODE/MOVIE</button>
-  </div>
-  <div id="adminControl" style="display:none;text-align:left"><h3>Manage All Movies & Episodes</h3><div id="manageList"></div></div>
-  <div id="adminSettings" style="display:none;text-align:left">
-    <h3>Settings</h3>
-    <input type="text" id="settingKey" placeholder="New Weekly Key">
-    <input type="text" id="settingPass" placeholder="New Admin Password">
-    <button class="btn-grad" id="saveSettingsBtn" onclick="saveSettings()">SAVE SETTINGS</button>
-  </div>
-  <button class="btn-gray" onclick="closeOverlay('adminBox')">Close</button>
+<div class="overlay" id="episodeBox"><div class="box">
+  <h2 id="episodeTitle">Chagua Episode</h2>
+  <div class="episode-list" id="episodeList"></div>
+  <button class="btn-gray" onclick="closeOverlay('episodeBox')">Funga</button>
 </div></div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, onSnapshot, doc, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+<div class="overlay" id="keyBox"><div class="box">
+  <h2>Fungua kwa Access Key</h2>
+  <p style="font-size:12px;color:#aaa">Ingiza Key ya wiki ili ufungue movie</p>
+  <input type="text" id="keyInput" placeholder="Mf: CHILAGU-WK43">
+  <p class="error" id="keyError">❌ Key sio sahihi</p>
+  <button class="btn-grad" onclick="checkKey()">FUNGUA MOVIE</button>
+  <button class="btn-green" onclick="showPayment()">NUNUA KEY Tsh 2000</button>
+  <button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button>
+</div></div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",
-    authDomain: "chilagu-update.firebaseapp.com",
-    projectId: "chilagu-update",
-    storageBucket: "chilagu-update.firebasestorage.app",
-    messagingSenderId: "1007502056082",
-    appId: "1:1007502056082:web:c20c43601cdae50059244b"
-  };
+<div class="overlay" id="payBox"><div class="box">
+  <h2>Chagua Mtandao wa Kulipia</h2>
+  <div class="payment-alert">
+    <p class="top">Lipa Tsh 2000 kwenda</p>
+    <p class="mtandao">Airtel Money</p>
+    <p class="namba" id="payNumber">0686436004</p>
+    <p class="jina" id="payName">Moshi Idd</p>
+  </div>
+  <p style="font-size:12px;color:#aaa;margin-bottom:8px">Baada ya kulipa chagua mtandao uliotumia hapa chini</p>
+  <div class="networks" id="networkButtons">
+    <div class="net-btn airtel" onclick="pay('airtel')">Airtel Money</div>
+    <div class="net-btn mpesa" onclick="pay('mpesa')">M-Pesa</div>
+    <div class="net-btn tigo" onclick="pay('tigo')">Tigo Pesa</div>
+    <div class="net-btn halo" onclick="pay('halo')">HaloPesa</div>
+  </div>
+  <div class="whatsapp-step" id="whatsappStep">
+    <p style="font-size:12px;color:#aaa">Hatua ya mwisho 👇</p>
+    <button class="btn-whatsapp" onclick="goToWhatsapp()">
+      <span>💬</span> TUMA MUAMALA WHATSAPP
+    </button>
+  </div>
+  <button class="btn-gray" onclick="closeOverlay('payBox')">Rudi Nyuma</button>
+</div></div>
 
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const db = getFirestore(app);
-  window.db = db;
-</script>
+<div class="overlay" id="playerBox">
+  <div class="player-container">
+    <span class="close-btn" onclick="closePlayer()">×</span>
+    <span class="fullscreen-btn" onclick="toggleFullscreen()">⛶</span>
+    <iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>
+  </div>
+</div>
 
 <script>
-let WEEKLY_KEY = "Chilagu-F1K";
-let ADMIN_PASS = "CHILAGU2026";
-let SETTINGS_DOC_ID = "main";
+const WEEKLY_KEY = "Chilagu-F1K";
+const WEEKLY_PRICE = 2000;
+const ADMIN_WHATSAPP = "255686436004";
+const ADMIN_NAME = "Moshi Idd";
+const PAYMENT_NUMBER = "0686436004";
 
-let movies = [];
-let mainType='all', activeCat='all', currentMovie=null;
+// ========= HAPA NDO UNAONGEZA MOVIE ZAKO =========
+const movies = [
+  // 1. SINGO MOVIE - Rahisi
+  {id:1,title:"Mpanda Mnazi",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw"},
 
-async function loadSettings(){
-  const docSnap = await getDoc(doc(window.db, "settings", SETTINGS_DOC_ID));
-  if(docSnap.exists()){
-    const d = docSnap.data();
-    if(d.key) WEEKLY_KEY = d.key;
-    if(d.pass) ADMIN_PASS = d.pass;
+  {id:2,title:"Yellow RECKONING",type:"singo",cat:"action",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4"},
+
+  {id:3,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4"},
+
+  // 2. SERIES ILIYOKAMILIKA NUSU - Weka episodes ulizonazo tu
+  {
+    id:4,
+    title:"Love and Destiny",
+    type:"series",
+    cat:"love",
+    price:WEEKLY_PRICE,
+    trending:true,
+    slide:true,
+    thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",
+    episodes:[] // Weka [] kama huna episode bado. Weka link ukishoot
+  },
+
+  // 3. SERIES IJAYO - "Coming Soon"
+  {
+    id:5,
+    title:"Inevitable",
+    type:"series",
+    cat:"thriller",
+    price:WEEKLY_PRICE,
+    trending:false,
+    slide:false,
+    thumbnail:"https://i.postimg.cc/tTF2wQn1/file-00000416071f4bd5300709267e951-(1).jpg",
+    episodes:[] // Acha hivi mpaka mwakani
+  },
+];
+// ========= MWISHO WA KUONGEZA MOVIE =========
+
+let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
+
+function toggleSearch(){
+  document.getElementById("searchWrap").classList.toggle("active");
+  if(document.getElementById("searchWrap").classList.contains("active")){
+    document.getElementById("searchInput").focus();
   }
 }
 
-onSnapshot(collection(window.db, "movies"), (snapshot) => {
-  movies = [];
-  snapshot.forEach(doc => { movies.push({id: doc.id,...doc.data()}) });
-  loadMovies();
-  loadBanner();
-  loadManageList();
-});
+function toggleFullscreen(){
+  const elem = document.getElementById("playerBox");
+  if (!document.fullscreenElement) {
+    elem.requestFullscreen().catch(err => console.log(err));
+  } else {
+    document.exitFullscreen();
+  }
+}
 
-function loadBanner(){
-  const bannerSlider = document.getElementById("bannerSlider");
-  bannerSlider.innerHTML = "";
-  const bannerMovies = movies.filter(m => m.banner === true);
-  if(bannerMovies.length === 0){ bannerSlider.innerHTML = `<div class="empty-state">No Banner Set</div>`; return; }
-  bannerMovies.forEach(m => {
-    const div = document.createElement("div");
-    div.className = "banner-card";
-    div.innerHTML = `<img src="${m.thumbnail}"><div class="banner-overlay"><div class="watching">WATCHING NOW</div><div class="title">${m.title}</div></div>`;
-    div.onclick = () => openMovie(m);
-    bannerSlider.appendChild(div);
+function loadHeroBanner(){
+  const banner = document.getElementById("heroBanner");
+  const slideMovies = movies.filter(m => m.slide === true);
+  if(slideMovies.length === 0){ banner.style.display = "none"; return; }
+  banner.style.display = "block";
+  let slidesHTML = ''; let dotsHTML = '';
+  slideMovies.forEach((m, index)=>{
+    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Watching Now</button></div></div>`;
+    dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="goToSlide(${index})"></span>`;
   });
+  banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
+  startSlideAuto();
 }
+let slideIndex = 0; let slideInterval;
+function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
+function goToSlide(n){clearInterval(slideInterval); showSlide(n); startSlideAuto()}
+function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide');if(slides.length <= 1) return;clearInterval(slideInterval);slideInterval = setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex)},5000);}
 
-function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active"); document.getElementById("searchInput").value = ""; loadMovies();}
-
-function loadMovies(){
-  const homeGrid=document.getElementById("homeGrid");homeGrid.innerHTML="";
-  let searchVal = document.getElementById("searchInput").value.toLowerCase();
-  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
-  
-  if(filtered.length === 0 && searchVal !== ""){
-    homeGrid.innerHTML = `<div class="no-results">No Results Found<br><small>"${searchVal}"</small></div>`;
-    return;
-  }
-  
-  filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
-}
 function makeCard(m){
-  const div=document.createElement("div");div.className="card";
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}"></div><div class="card-body"><p>${m.title}</p></div>`;
+  const div=document.createElement("div");
+  div.className="card";
+  let star=m.price>0?'<div class="star-badge">★</div>':'';
+  let epCount = '';
+  if(m.type === 'series'){
+    let count = m.episodes.length;
+    epCount = count > 1? `<div class="ep-badge">1+</div>` : `<div class="ep-badge">${count}</div>`;
+  }
+  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p></div>`;
   div.onclick=()=>openMovie(m);
   return div
 }
-function openMovie(m){currentMovie=m;if(m.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(m.link)}}
-function checkKey(){if(document.getElementById("keyInput").value.trim()===WEEKLY_KEY){closeOverlay('keyBox');playMovie(currentMovie.link)}else{document.getElementById("keyError").style.display="block"}}
-function playMovie(link){document.getElementById("videoFrame").src = link;document.getElementById("playerBox").style.display="flex";}
-function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";}
-function closeOverlay(id){document.getElementById(id).style.display="none"}
-function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add('active');loadMovies()}
-function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 
-async function openAdmin(){
-  await loadSettings();
-  const pass = prompt("Enter Admin Password:");
-  if(pass!== ADMIN_PASS){ alert("Wrong Password!"); return; }
-  document.getElementById("adminBox").style.display="flex";
-  loadAnalytics();
-  loadManageList();
+function loadMovies(){
+  const homeGrid=document.getElementById("homeGrid");
+  const trendGrid=document.getElementById("trendGrid");
+  homeGrid.innerHTML="";
+  trendGrid.innerHTML="";
+  let searchVal = document.getElementById("searchInput").value.toLowerCase();
+  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
+  filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
+  let trend=filtered.filter(m=>m.trending===true);
+  trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';
+  trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
 }
 
-function showAdminTab(tab,el){
-  document.querySelectorAll('.admin-tab-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  ['adminAnalytics','adminUpload','adminControl','adminSettings'].forEach(id=>document.getElementById(id).style.display='none');
-  document.getElementById('admin'+tab.charAt(0).toUpperCase()+tab.slice(1)).style.display='block';
-  if(tab==='settings'){
-    document.getElementById("settingKey").value = WEEKLY_KEY;
-    document.getElementById("settingPass").value = ADMIN_PASS;
+function openMovie(m){
+  currentMovie=m;
+  if(m.type === 'series'){
+    document.getElementById("episodeTitle").innerText = m.title;
+    const list = document.getElementById("episodeList");
+    list.innerHTML = '';
+    if(m.episodes.length === 0){
+      list.innerHTML = `<div class="episode-item coming"><span>Coming Soon...</span><small>Tafadhali subiri</small></div>`;
+    } else {
+      m.episodes.forEach(e=>{
+        let item = document.createElement('div');
+        item.className = 'episode-item';
+        item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;
+        item.onclick = () => {
+          closeOverlay('episodeBox');
+          handlePlay(e.link, m.price);
+        }
+        list.appendChild(item);
+      });
+    }
+    document.getElementById("episodeBox").style.display="flex";
+  } else {
+    handlePlay(m.link, m.price);
   }
 }
 
-async function loadAnalytics(){
-  const snapshot = await getDocs(collection(window.db, "chilagu_events"));
-  let plays = {};
-  snapshot.forEach(doc=>{const d = doc.data(); if(d.event === "play_movie") plays[d.title] = (plays[d.title]||0)+1; });
-  let html = `<h3>Analytics</h3>`;
-  if(Object.keys(plays).length === 0){ html += `<div class="empty-state">No Analytics Data Yet</div>`; }
-  else { html += `<table><tr><th>Movie</th><th>Plays</th></tr>`; movies.forEach(m=>{html += `<tr><td>${m.title}</td><td>${plays[m.title]||0}</td></tr>`;}); html += `</table>`; }
-  document.getElementById("adminAnalytics").innerHTML = html;
+function handlePlay(link, price){
+  if(price===0){
+    playMovie(link)
+  } else {
+    document.getElementById("keyBox").style.display="flex";
+    document.getElementById("keyError").style.display="none";
+    document.getElementById("keyInput").value=""
+  }
 }
 
-async function saveMovie(){
-  const btn = document.getElementById("saveMovieBtn");
-  btn.innerText = "SAVING..."; btn.disabled = true;
-  const title = document.getElementById("mTitle").value.trim();
-  const thumb = document.getElementById("mThumb").value.trim();
-  const link = document.getElementById("mLink").value.trim();
-  if(!title ||!thumb ||!link){ alert("❌ Jaza Title, Thumbnail na Video Link"); btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false; return; }
-  await addDoc(collection(window.db, "movies"), { title: title, type: document.getElementById("mType").value, cat: document.getElementById("mCat").value, price: parseInt(document.getElementById("mPrice").value), thumbnail: thumb, link: link, trending: document.getElementById("mTrending").checked, banner: document.getElementById("mBanner").checked });
-  alert("✅ Movie Uploaded Successfully!");
-  document.getElementById("mTitle").value = ""; document.getElementById("mThumb").value = ""; document.getElementById("mLink").value = "";
-  btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false;
+function checkKey(){
+  const key=document.getElementById("keyInput").value.trim();
+  if(key===WEEKLY_KEY){
+    closeOverlay('keyBox');
+    let linkToPlay = currentMovie.link || currentMovie.episodes[0]?.link;
+    playMovie(linkToPlay);
+  }else{
+    document.getElementById("keyError").style.display="block"
+  }
 }
 
-function loadManageList(){
-  const list = document.getElementById("manageList");
-  if(movies.length === 0){ list.innerHTML = `<div class="empty-state">No Movies Uploaded Yet</div>`; return; }
-  list.innerHTML = "";
-  movies.forEach(m=>{ list.innerHTML += `<div class="admin-movie-item"><img src="${m.thumbnail}"><div class="admin-movie-info"><b>${m.title}</b></div><div class="admin-btns"><button class="btn-red" onclick='deleteMovie("${m.id}")'>Delete</button></div></div>`; });
+function playMovie(link){
+  let finalLink = link;
+  if(link.includes("streamable.com/") &&!link.includes("/e/")){
+    finalLink = link.replace("streamable.com/", "streamable.com/e/");
+  }
+  document.getElementById("videoFrame").src = finalLink;
+  document.getElementById("playerBox").style.display="flex";
 }
 
-async function deleteMovie(id){if(confirm("Delete this movie?")){await deleteDoc(doc(window.db, "movies", id)); alert("✅ Deleted!");}}
-
-async function saveSettings(){
-  const btn = document.getElementById("saveSettingsBtn");
-  btn.innerText = "SAVING..."; btn.disabled = true;
-  const newKey = document.getElementById("settingKey").value.trim();
-  const newPass = document.getElementById("settingPass").value.trim();
-  if(!newKey ||!newPass){ alert("❌ Jaza Key na Password zote mbili"); btn.innerText = "SAVE SETTINGS"; btn.disabled = false; return; }
-  await setDoc(doc(window.db, "settings", SETTINGS_DOC_ID), { key: newKey, pass: newPass }, { merge: true });
-  WEEKLY_KEY = newKey;
-  ADMIN_PASS = newPass;
-  alert("✅ Settings Updated Successfully!");
-  closeOverlay('adminBox');
-  btn.innerText = "SAVE SETTINGS"; btn.disabled = false;
+function showPayment(){
+  closeOverlay('keyBox');
+  document.getElementById("payNumber").innerText = PAYMENT_NUMBER;
+  document.getElementById("payName").innerText = ADMIN_NAME;
+  document.getElementById("whatsappStep").style.display="none";
+  document.getElementById("networkButtons").style.display="grid";
+  document.getElementById("payBox").style.display="flex"
 }
+
+function pay(network){
+  selectedNetwork = network.toUpperCase();
+  let ussd="";
+  if(network==='airtel') ussd="*150*60#";
+  if(network==='mpesa') ussd="*150*00#";
+  if(network==='tigo') ussd="*150*01#";
+  if(network==='halo') ussd="*150*88#";
+  window.location.href=`tel:${encodeURIComponent(ussd)}`;
+  setTimeout(()=>{
+    document.getElementById("networkButtons").style.display="none";
+    document.getElementById("whatsappStep").style.display="block";
+  },1000)
+}
+
+function goToWhatsapp(){
+  const msg=`SALAMU ${ADMIN_NAME}. NIMELIPA Tsh${WEEKLY_PRICE} KWA ${selectedNetwork} KWENDA ${PAYMENT_NUMBER}. TAFADHALI NITUMIE KEY YA WIKI HII: ${WEEKLY_KEY}`;
+  window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeOverlay('payBox');
+}
+
+function closePlayer(){
+  document.getElementById("playerBox").style.display="none";
+  document.getElementById("videoFrame").src="";
+  if(document.fullscreenElement){document.exitFullscreen();}
+  loadMovies()
+}
+function closeOverlay(id){document.getElementById(id).style.display="none"}
+function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
+function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
+loadHeroBanner();
+loadMovies();
 </script>
 </body>
 </html>
