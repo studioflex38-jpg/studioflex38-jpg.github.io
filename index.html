@@ -21,19 +21,25 @@
 .main-tabs{display:flex;gap:8px;padding:10px 15px;overflow-x:auto}
 .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;cursor:pointer;font-weight:600;color:#aaa}
 .main-tab.active{background:var(--gradient);color:#fff}
-.cat-wrap{padding:10px 15px 18px;overflow-x:auto;white-space:nowrap}
+.banner-section{margin:10px 0}
+.banner-title{padding:0 15px;font-size:14px;font-weight:700;color:#A855F7;margin-bottom:8px;letter-spacing:1px}
+.banner-slider{display:flex;overflow-x:auto;gap:10px;padding:0 15px;scroll-snap-type:x mandatory}
+.banner-card{flex:0 0 85%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;scroll-snap-align:start}
+.banner-card img{width:100%;height:100%;object-fit:cover}
+.banner-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.9));padding:10px}
+.banner-overlay.watching{font-size:10px;color:#A855F7;font-weight:700}
+.banner-overlay.title{font-size:13px;font-weight:700}
+.cat-wrap{padding:15px 15px 18px;overflow-x:auto;white-space:nowrap}
 .cat-row{display:flex;gap:6px}
 .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
 .cat-box.active{background:var(--gradient);color:#fff}
 .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
-.banner{margin:10px 15px;border-radius:10px;overflow:hidden;cursor:pointer;background:#111;min-height:180px;display:flex;align-items:center;justify-content:center}
-.banner img{width:100%;display:block}
-.banner-text{color:#555;font-size:12px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
 .card{background:transparent;border-radius:6px;overflow:hidden;cursor:pointer;position:relative}
 .thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:6px;overflow:hidden}
 .thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .star-badge{position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--gradient);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;z-index:2}
+.trending-badge{position:absolute;top:4px;left:4px;background:var(--gradient);font-size:9px;padding:2px 5px;border-radius:4px;font-weight:700}
 .episode-count{position:absolute;bottom:4px;right:4px;background:#000a;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px}
 .card-body{padding:4px 2px 0}
 .card p{margin:0;font-size:11px;font-weight:500;line-height:1.3;color:#ddd;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-align:left}
@@ -83,15 +89,16 @@
 <div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="loadMovies()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
 
-<!-- BANNER IMEHAMIA JUU HAPA -->
-<div class="banner" id="bannerArea" onclick="openAdmin()">
-  <img id="bannerImg" src="" alt="" style="display:none">
-  <div class="banner-text" id="bannerText">No Banner Set. Go to Upload > Check "Add to Banner"</div>
+<!-- BANNER SECTION JUU KABISA -->
+<div class="banner-section">
+  <div class="banner-title">WATCHING NOW</div>
+  <div class="banner-slider" id="bannerSlider"></div>
 </div>
 
-<!-- CATEGORIES ZIMEKUJA CHINI YA BANNER -->
+<!-- CATEGORIES ZIKO CHINI YA BANNER -->
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">All</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
 
+<h2 class="section-title">TRENDING NOW</h2><div class="grid" id="trendingGrid"></div>
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
 
 <div class="overlay" id="keyBox"><div class="box"><h2>Enter Access Key</h2><input type="text" id="keyInput" placeholder="Ex: CHILAGU-F1K"><p class="error" id="keyError">❌ Wrong Key</p><button class="btn-grad" onclick="checkKey()">UNLOCK MOVIE</button><button class="btn-green" onclick="showPayment()">BUY KEY Tsh 2000</button><button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button></div></div>
@@ -115,8 +122,8 @@
     <select id="mPrice"><option value="0">Free Episode</option><option value="2000">Paid Episode Tsh 2000</option></select>
     <input type="text" id="mThumb" placeholder="Thumbnail Link">
     <input type="text" id="mLink" placeholder="Video Link">
-    <label><input type="checkbox" id="mTrending"> Add to Trending</label>
-    <label><input type="checkbox" id="mBanner"> Add to Banner</label>
+    <label><input type="checkbox" id="mTrending"> Add to Trending Now</label>
+    <label><input type="checkbox" id="mBanner"> Add to Watching Now Banner</label>
     <button class="btn-green" onclick="saveMovie()">SAVE EPISODE/MOVIE</button>
   </div>
   <div id="adminControl" style="display:none;text-align:left"><h3>Manage All Movies & Episodes</h3><div id="manageList"></div></div>
@@ -175,20 +182,34 @@ onSnapshot(collection(window.db, "movies"), (snapshot) => {
   loadBanner();
 });
 
+// LOGO INAFUNGUA ADMIN
 document.getElementById("adminLogo").addEventListener('click', () => {
   openAdmin();
 });
 
 function loadBanner(){
-  const bannerMovie = movies.find(m => m.banner === true);
-  if(bannerMovie){
-    document.getElementById("bannerImg").src = bannerMovie.thumbnail;
-    document.getElementById("bannerImg").style.display = "block";
-    document.getElementById("bannerText").style.display = "none";
-  } else {
-    document.getElementById("bannerImg").style.display = "none";
-    document.getElementById("bannerText").style.display = "block";
+  const bannerSlider = document.getElementById("bannerSlider");
+  bannerSlider.innerHTML = "";
+  const bannerMovies = movies.filter(m => m.banner === true);
+
+  if(bannerMovies.length === 0){
+    bannerSlider.innerHTML = `<div style="color:#555;padding:20px">No Banner Set. Go to Upload > Check "Add to Banner"</div>`;
+    return;
   }
+
+  bannerMovies.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "banner-card";
+    div.innerHTML = `
+      <img src="${m.thumbnail}">
+      <div class="banner-overlay">
+        <div class="watching">WATCHING NOW</div>
+        <div class="title">${m.title}</div>
+      </div>
+    `;
+    div.onclick = () => openMovie(m);
+    bannerSlider.appendChild(div);
+  });
 }
 
 function getSeriesName(title){
@@ -196,25 +217,28 @@ function getSeriesName(title){
 }
 
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");}
-function makeCard(m, isGroup=false, count=1, hasPaid=false){
+function makeCard(m, isGroup=false, count=1, hasPaid=false, isTrending=false){
   const div=document.createElement("div");div.className="card";
   let star=hasPaid?'<div class="star-badge">★</div>':'';
+  let trend=isTrending?'<div class="trending-badge">TREND</div>':'';
   let epBadge = isGroup? `<div class="episode-count">${count} Eps</div>` : '';
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" loading="lazy">${star}${epBadge}</div><div class="card-body"><p>${m.displayTitle}</p></div>`;
+  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" loading="lazy">${star}${trend}${epBadge}</div><div class="card-body"><p>${m.displayTitle}</p></div>`;
   div.onclick=()=>isGroup? openEpisodeList(m.seriesName) : openMovie(m);
   return div
 }
 
 function loadMovies(){
   const homeGrid=document.getElementById("homeGrid");homeGrid.innerHTML="";
+  const trendingGrid=document.getElementById("trendingGrid");trendingGrid.innerHTML="";
   let searchVal = document.getElementById("searchInput").value.toLowerCase();
 
   let seriesMap = {};
   movies.forEach(m => {
     if(m.type === 'series'){
       let seriesName = getSeriesName(m.title);
-      if(!seriesMap[seriesName]) seriesMap[seriesName] = {episodes:[], thumbnail:m.thumbnail, cat:m.cat};
+      if(!seriesMap[seriesName]) seriesMap[seriesName] = {episodes:[], thumbnail:m.thumbnail, cat:m.cat, trending:m.trending};
       seriesMap[seriesName].episodes.push(m);
+      if(m.trending) seriesMap[seriesName].trending = true;
     }
   });
 
@@ -230,12 +254,18 @@ function loadMovies(){
       thumbnail:s.thumbnail,
       cat:s.cat,
       count:s.episodes.length,
-      hasPaid:hasPaid
+      hasPaid:hasPaid,
+      trending:s.trending
     });
   });
 
   let filtered=displayList.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.displayTitle.toLowerCase().includes(searchVal));
-  filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid)));
+
+  // TRENDING NOW SECTION
+  filtered.filter(m=>m.trending).forEach(m=>trendingGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, true)));
+
+  // HOME SECTION
+  filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, m.trending)));
 }
 
 function openEpisodeList(seriesName){
@@ -310,7 +340,7 @@ function loadManageList(){
       <img src="${m.thumbnail}">
       <div class="admin-movie-info">
         <b>${m.title}</b><br>
-        <small>${m.type} | ${m.price==0?'Free':'Paid Tsh '+m.price} ${m.banner?'| BANNER':''}</small>
+        <small>${m.type} | ${m.price==0?'Free':'Paid Tsh '+m.price} ${m.trending?'| TRENDING':''} ${m.banner?'| BANNER':''}</small>
       </div>
       <div class="admin-btns">
         <button class="btn-blue" onclick='editMovie("${m.id}")'>Edit</button>
@@ -325,7 +355,7 @@ function editMovie(id){
   document.getElementById("mType").value = m.type;
   document.getElementById("mCat").value = m.cat;
   document.getElementById("mPrice").value = m.price;
-  document.getElementById("mThumb").value = m.thumbnail;
+  document.getElementById="mThumb".value = m.thumbnail;
   document.getElementById("mLink").value = m.link;
   document.getElementById("mTrending").checked = m.trending;
   document.getElementById("mBanner").checked = m.banner;
