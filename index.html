@@ -25,7 +25,7 @@
   transition:0.3s;
   -webkit-tap-highlight-color: transparent;
 }
-.admin-icon:hover{opacity:1; transform:scale(1.1);}
+.admin-icon:active{opacity:1; transform:scale(1.2);} /* IKIWABONGEZA INANG'ARA ZAIDI */
 
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
 .search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
@@ -97,7 +97,7 @@
   <div class="header-left">
     <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
     <h1>Chilagu Cinema</h1>
-    <div class="admin-icon" id="secretAdmin"></div> <!-- HII NDIO ICON YA SIRI -->
+    <div class="admin-icon" onclick="openAdmin()"></div> <!-- HAPA NDIO SIRI: NIMEWEKA ONCLICK MOJA KWA MOJA -->
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
@@ -177,11 +177,6 @@ let SETTINGS_DOC_ID = "main";
 
 let movies = [];
 let mainType='all', activeCat='all', currentMovie=null;
-
-// HII NDIO INAFANYA ICON NDOGO IFANYE KAZI
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('secretAdmin').addEventListener('click', openAdmin);
-});
 
 async function loadSettings(){
   const docSnap = await getDoc(doc(window.db, "settings", SETTINGS_DOC_ID));
