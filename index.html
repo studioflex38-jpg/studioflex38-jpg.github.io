@@ -88,7 +88,7 @@
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
 
-<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="handleSearch()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
+<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="handleSearch(event)"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
 
 <div class="banner-section">
@@ -197,17 +197,21 @@ function loadBanner(){
 
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active"); document.getElementById("searchInput").value = "";}
 
-function handleSearch(){
-  let val = document.getElementById("searchInput").value.trim();
+function handleSearch(event){
+  let val = document.getElementById("searchInput").value.trim().toLowerCase(); // NIMEWEKA TRIM NA LOWERCASE
   
-  // HII NDIO SIRI YA ADMIN
-  if(val.toLowerCase() === "admin panel"){
-    toggleSearch(); // Funga search bar
-    openAdmin(); // Fungua admin
+  // SIRI: UKIANDIKA ADMIN PANEL
+  if(val === "admin panel"){
+    toggleSearch();
+    setTimeout(openAdmin, 100); // Nimechelewesha kidogo ili ifunguke vizuri
     return;
   }
   
-  loadMovies(); // Kama si admin, fanya search kawaida
+  if(event.key === "Enter"){ // Ukibonyeza Enter
+    loadMovies();
+  } else {
+    loadMovies(); // Ita-search live
+  }
 }
 
 function loadMovies(){
