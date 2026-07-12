@@ -11,7 +11,7 @@
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
 .header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
 .header-left{display:flex;align-items:center;gap:10px}
-.header img{width:32px;height:32px;cursor:pointer;-webkit-tap-highlight-color: transparent; z-index:999; position:relative;}
+.header img{width:32px;height:32px;cursor:pointer;-webkit-tap-highlight-color: transparent; z-index:9999; position:relative;} /* NIMEONGEZA Z-INDEX */
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
 .search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
@@ -81,7 +81,7 @@
 
 <div class="header">
   <div class="header-left">
-    <img id="adminLogo" onclick="openAdmin()" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
+    <img id="adminLogo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo"> <!-- NIMEONDOA ONCLICK HAPA -->
     <h1>Chilagu Cinema</h1>
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
@@ -162,6 +162,11 @@ let SETTINGS_DOC_ID = "main";
 
 let movies = [];
 let mainType='all', activeCat='all', currentMovie=null;
+
+// HII NDIO SIRI YA LOGO KUBONYEZEKA
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('adminLogo').addEventListener('click', openAdmin);
+});
 
 async function loadSettings(){
   const docSnap = await getDoc(doc(window.db, "settings", SETTINGS_DOC_ID));
@@ -253,7 +258,7 @@ async function saveMovie(){
   if(!title ||!thumb ||!link){ alert("❌ Jaza Title, Thumbnail na Video Link"); btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false; return; }
   await addDoc(collection(window.db, "movies"), { title: title, type: document.getElementById("mType").value, cat: document.getElementById("mCat").value, price: parseInt(document.getElementById("mPrice").value), thumbnail: thumb, link: link, trending: document.getElementById("mTrending").checked, banner: document.getElementById("mBanner").checked });
   alert("✅ Movie Uploaded Successfully!");
-  document.getElementById("mTitle").value = ""; document.getElementById("mThumb").value = ""; document.getElementById("mLink").value = ""; // HAPA NDIO NILIREKEBISHA
+  document.getElementById("mTitle").value = ""; document.getElementById("mThumb").value = ""; document.getElementById("mLink").value = "";
   btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false;
 }
 
