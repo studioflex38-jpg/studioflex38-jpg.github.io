@@ -11,7 +11,7 @@
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
 .header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
 .header-left{display:flex;align-items:center;gap:10px}
-.header img{width:32px;height:32px;cursor:pointer;-webkit-tap-highlight-color: transparent;}
+.header img{width:32px;height:32px;cursor:pointer;-webkit-tap-highlight-color: transparent; z-index:999; position:relative;} /* FIX HAPA */
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
 .search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
@@ -80,7 +80,8 @@
 
 <div class="header">
   <div class="header-left">
-    <img id="adminLogo" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
+    <!-- FIX HAPA: NIMEWEKA ONCLICK DIRECT -->
+    <img id="adminLogo" onclick="openAdmin()" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
     <h1>Chilagu Cinema</h1>
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
@@ -89,13 +90,11 @@
 <div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="loadMovies()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
 
-<!-- BANNER SECTION JUU KABISA -->
 <div class="banner-section">
   <div class="banner-title">WATCHING NOW</div>
   <div class="banner-slider" id="bannerSlider"></div>
 </div>
 
-<!-- CATEGORIES ZIKO CHINI YA BANNER -->
 <div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">All</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
 
 <h2 class="section-title">TRENDING NOW</h2><div class="grid" id="trendingGrid"></div>
@@ -158,7 +157,7 @@
 
 <script>
 let WEEKLY_KEY = "Chilagu-F1K";
-let ADMIN_PASS = "ChilaguCinemaPro";
+let ADMIN_PASS = "CHILAGU2026";
 const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
@@ -180,11 +179,6 @@ onSnapshot(collection(window.db, "movies"), (snapshot) => {
   snapshot.forEach(doc => { movies.push({id: doc.id,...doc.data()}) });
   loadMovies();
   loadBanner();
-});
-
-// LOGO INAFUNGUA ADMIN
-document.getElementById("adminLogo").addEventListener('click', () => {
-  openAdmin();
 });
 
 function loadBanner(){
@@ -260,11 +254,7 @@ function loadMovies(){
   });
 
   let filtered=displayList.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.displayTitle.toLowerCase().includes(searchVal));
-
-  // TRENDING NOW SECTION
   filtered.filter(m=>m.trending).forEach(m=>trendingGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, true)));
-
-  // HOME SECTION
   filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, m.trending)));
 }
 
@@ -309,7 +299,7 @@ function showAdminTab(tab,el){
 async function loadAnalytics(){
   const snapshot = await getDocs(collection(window.db, "chilagu_events"));
   let plays = {}; let payments = {};
-  snapshot.forEach(doc=>{const d = doc.data(); if(d.event === "play_movie") plays[d.title] = (plays[d.title]||0)+1; if(d.event === "buy_key_click") payments[d.movie] = (payments[d.movie]||0)+1;});
+  snapshot.forEach(doc=>{const d = doc.data(); if(d.event === "play_movie") plays[d.title] = (plays[d.title]||0)+1; if(d.event === "buy_key_click") payments[d.movie] = (payments[movie]||0)+1;});
   let html = `<h3>Analytics</h3><table><tr><th>Movie</th><th>Plays</th><th>Buy Attempts</th><th>Revenue</th></tr>`;
   movies.forEach(m=>{html += `<tr><td>${m.title}</td><td>${plays[m.title]||0}</td><td>${payments[m.title]||0}</td><td>Tsh ${(payments[m.title]||0)*WEEKLY_PRICE}</td></tr>`;});
   html += `</table>`; document.getElementById("adminAnalytics").innerHTML = html;
@@ -355,7 +345,7 @@ function editMovie(id){
   document.getElementById("mType").value = m.type;
   document.getElementById("mCat").value = m.cat;
   document.getElementById("mPrice").value = m.price;
-  document.getElementById="mThumb".value = m.thumbnail;
+  document.getElementById("mThumb").value = m.thumbnail;
   document.getElementById("mLink").value = m.link;
   document.getElementById("mTrending").checked = m.trending;
   document.getElementById("mBanner").checked = m.banner;
