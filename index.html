@@ -21,11 +21,12 @@
 .main-tabs{display:flex;gap:8px;padding:10px 15px;overflow-x:auto}
 .main-tab{flex:0 0 auto;padding:9px 16px;border-radius:20px;background:#1a1a1a;font-size:13px;cursor:pointer;font-weight:600;color:#aaa}
 .main-tab.active{background:var(--gradient);color:#fff}
-.cat-wrap{padding:0 15px 18px;overflow-x:auto;white-space:nowrap}.cat-row{display:flex;gap:6px}
+.cat-wrap{padding:10px 15px 18px;overflow-x:auto;white-space:nowrap}
+.cat-row{display:flex;gap:6px}
 .cat-box{padding:7px 12px;border-radius:16px;background:#1a1a1a;font-size:11px;cursor:pointer;font-weight:600;color:#aaa;display:inline-block}
 .cat-box.active{background:var(--gradient);color:#fff}
 .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
-.banner{margin:0 15px 15px;border-radius:10px;overflow:hidden;cursor:pointer;background:#111;min-height:150px;display:flex;align-items:center;justify-content:center}
+.banner{margin:10px 15px;border-radius:10px;overflow:hidden;cursor:pointer;background:#111;min-height:180px;display:flex;align-items:center;justify-content:center}
 .banner img{width:100%;display:block}
 .banner-text{color:#555;font-size:12px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
@@ -81,12 +82,16 @@
 
 <div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="loadMovies()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
-<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">All</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
 
+<!-- BANNER IMEHAMIA JUU HAPA -->
 <div class="banner" id="bannerArea" onclick="openAdmin()">
   <img id="bannerImg" src="" alt="" style="display:none">
   <div class="banner-text" id="bannerText">No Banner Set. Go to Upload > Check "Add to Banner"</div>
 </div>
+
+<!-- CATEGORIES ZIMEKUJA CHINI YA BANNER -->
+<div class="cat-wrap"><div class="cat-row"><div class="cat-box active" onclick="filterCat('all',this)">All</div><div class="cat-box" onclick="filterCat('action',this)">Action</div><div class="cat-box" onclick="filterCat('love',this)">Love</div><div class="cat-box" onclick="filterCat('drama',this)">Drama</div><div class="cat-box" onclick="filterCat('thriller',this)">Thriller</div></div></div>
+
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
 
 <div class="overlay" id="keyBox"><div class="box"><h2>Enter Access Key</h2><input type="text" id="keyInput" placeholder="Ex: CHILAGU-F1K"><p class="error" id="keyError">❌ Wrong Key</p><button class="btn-grad" onclick="checkKey()">UNLOCK MOVIE</button><button class="btn-green" onclick="showPayment()">BUY KEY Tsh 2000</button><button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button></div></div>
@@ -157,8 +162,8 @@ let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='', curr
 
 onSnapshot(collection(window.db, "settings"), (snapshot) => {
   snapshot.forEach(doc => {
-    const d = doc.data(); 
-    if(d.key) WEEKLY_KEY = d.key; 
+    const d = doc.data();
+    if(d.key) WEEKLY_KEY = d.key;
     if(d.pass) ADMIN_PASS = d.pass;
   });
 });
@@ -170,9 +175,8 @@ onSnapshot(collection(window.db, "movies"), (snapshot) => {
   loadBanner();
 });
 
-// FIX: LOGO CLICK INAFUNGUKA SASA
-document.getElementById("adminLogo").addEventListener('click', () => { 
-  openAdmin(); 
+document.getElementById("adminLogo").addEventListener('click', () => {
+  openAdmin();
 });
 
 function loadBanner(){
@@ -204,7 +208,7 @@ function makeCard(m, isGroup=false, count=1, hasPaid=false){
 function loadMovies(){
   const homeGrid=document.getElementById("homeGrid");homeGrid.innerHTML="";
   let searchVal = document.getElementById("searchInput").value.toLowerCase();
-  
+
   let seriesMap = {};
   movies.forEach(m => {
     if(m.type === 'series'){
@@ -213,7 +217,7 @@ function loadMovies(){
       seriesMap[seriesName].episodes.push(m);
     }
   });
-  
+
   let displayList = [];
   movies.filter(m => m.type!== 'series').forEach(m => displayList.push({...m, displayTitle: m.title}));
   Object.keys(seriesMap).forEach(name => {
@@ -229,7 +233,7 @@ function loadMovies(){
       hasPaid:hasPaid
     });
   });
-  
+
   let filtered=displayList.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.displayTitle.toLowerCase().includes(searchVal));
   filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid)));
 }
@@ -269,37 +273,37 @@ function openAdmin(){const pass = prompt("Enter Admin Password:"); if(pass!== AD
 function showAdminTab(tab,el){
   document.querySelectorAll('.admin-tab-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  ['adminAnalytics','adminUpload','adminControl','adminSettings'].forEach(id=>document.getElementById(id).style.display='none'); 
+  ['adminAnalytics','adminUpload','adminControl','adminSettings'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('admin'+tab.charAt(0).toUpperCase()+tab.slice(1)).style.display='block';
 }
 async function loadAnalytics(){
-  const snapshot = await getDocs(collection(window.db, "chilagu_events")); 
-  let plays = {}; let payments = {}; 
-  snapshot.forEach(doc=>{const d = doc.data(); if(d.event === "play_movie") plays[d.title] = (plays[d.title]||0)+1; if(d.event === "buy_key_click") payments[d.movie] = (payments[d.movie]||0)+1;}); 
-  let html = `<h3>Analytics</h3><table><tr><th>Movie</th><th>Plays</th><th>Buy Attempts</th><th>Revenue</th></tr>`; 
-  movies.forEach(m=>{html += `<tr><td>${m.title}</td><td>${plays[m.title]||0}</td><td>${payments[m.title]||0}</td><td>Tsh ${(payments[m.title]||0)*WEEKLY_PRICE}</td></tr>`;}); 
+  const snapshot = await getDocs(collection(window.db, "chilagu_events"));
+  let plays = {}; let payments = {};
+  snapshot.forEach(doc=>{const d = doc.data(); if(d.event === "play_movie") plays[d.title] = (plays[d.title]||0)+1; if(d.event === "buy_key_click") payments[d.movie] = (payments[d.movie]||0)+1;});
+  let html = `<h3>Analytics</h3><table><tr><th>Movie</th><th>Plays</th><th>Buy Attempts</th><th>Revenue</th></tr>`;
+  movies.forEach(m=>{html += `<tr><td>${m.title}</td><td>${plays[m.title]||0}</td><td>${payments[m.title]||0}</td><td>Tsh ${(payments[m.title]||0)*WEEKLY_PRICE}</td></tr>`;});
   html += `</table>`; document.getElementById("adminAnalytics").innerHTML = html;
 }
 async function saveMovie(){
   const title = document.getElementById("mTitle").value;
   const seriesName = getSeriesName(title);
   const newMovie = {
-    title: title, 
+    title: title,
     seriesName: seriesName,
-    type: document.getElementById("mType").value, 
-    cat: document.getElementById("mCat").value, 
-    price: parseInt(document.getElementById("mPrice").value), 
-    thumbnail: document.getElementById("mThumb").value, 
-    link: document.getElementById("mLink").value, 
+    type: document.getElementById("mType").value,
+    cat: document.getElementById("mCat").value,
+    price: parseInt(document.getElementById("mPrice").value),
+    thumbnail: document.getElementById("mThumb").value,
+    link: document.getElementById("mLink").value,
     trending: document.getElementById("mTrending").checked,
     banner: document.getElementById("mBanner").checked
-  }; 
-  await addDoc(collection(window.db, "movies"), newMovie); 
-  alert("Episode/Movie Saved!"); 
+  };
+  await addDoc(collection(window.db, "movies"), newMovie);
+  alert("Episode/Movie Saved!");
   document.getElementById("mTitle").value = "";
 }
 function loadManageList(){
-  const list = document.getElementById("manageList"); list.innerHTML = ""; 
+  const list = document.getElementById("manageList"); list.innerHTML = "";
   movies.sort((a,b)=>a.title.localeCompare(b.title)).forEach(m=>{
     list.innerHTML += `
     <div class="admin-movie-item">
@@ -316,29 +320,29 @@ function loadManageList(){
   });
 }
 function editMovie(id){
-  const m = movies.find(x=>x.id==id); 
-  document.getElementById("mTitle").value = m.title; 
-  document.getElementById("mType").value = m.type; 
-  document.getElementById("mCat").value = m.cat; 
-  document.getElementById("mPrice").value = m.price; 
-  document.getElementById("mThumb").value = m.thumbnail; 
-  document.getElementById("mLink").value = m.link; 
-  document.getElementById("mTrending").checked = m.trending; 
+  const m = movies.find(x=>x.id==id);
+  document.getElementById("mTitle").value = m.title;
+  document.getElementById("mType").value = m.type;
+  document.getElementById("mCat").value = m.cat;
+  document.getElementById("mPrice").value = m.price;
+  document.getElementById("mThumb").value = m.thumbnail;
+  document.getElementById("mLink").value = m.link;
+  document.getElementById("mTrending").checked = m.trending;
   document.getElementById("mBanner").checked = m.banner;
-  showAdminTab('upload',document.querySelector('.admin-tab-btn')); 
-  document.querySelector("#adminUpload button").innerText = "UPDATE MOVIE"; 
+  showAdminTab('upload',document.querySelector('.admin-tab-btn'));
+  document.querySelector("#adminUpload button").innerText = "UPDATE MOVIE";
   document.querySelector("#adminUpload button").onclick = async () => {
     await updateDoc(doc(window.db, "movies", id), {
-      title: document.getElementById("mTitle").value, 
-      price: parseInt(document.getElementById("mPrice").value), 
-      thumbnail: document.getElementById("mThumb").value, 
-      link: document.getElementById("mLink").value, 
+      title: document.getElementById("mTitle").value,
+      price: parseInt(document.getElementById("mPrice").value),
+      thumbnail: document.getElementById("mThumb").value,
+      link: document.getElementById("mLink").value,
       trending: document.getElementById("mTrending").checked,
       banner: document.getElementById("mBanner").checked
-    }); 
-    alert("Updated!"); 
-    document.querySelector("#adminUpload button").innerText = "SAVE EPISODE/MOVIE"; 
-    document.querySelector("#adminUpload button").onclick = saveMovie; 
+    });
+    alert("Updated!");
+    document.querySelector("#adminUpload button").innerText = "SAVE EPISODE/MOVIE";
+    document.querySelector("#adminUpload button").onclick = saveMovie;
     showAdminTab('control',document.querySelectorAll('.admin-tab-btn')[2]);
   }
 }
