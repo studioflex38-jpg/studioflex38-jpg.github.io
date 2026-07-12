@@ -71,11 +71,14 @@
 .episode-item span{font-size:13px;font-weight:600}
 .episode-item small{font-size:10px;color:#aaa}
 .episode-item.coming{background:#111;cursor:not-allowed;color:#666}
-  #playerBox{background:#000;padding:0;align-items:flex-start;justify-content:center}
-  #playerBox.player-container{width:100vw;height:100vh;background:#000;position:fixed;top:0;left:0;display:flex;align-items:flex-start;justify-content:center}
+  #playerBox{background:#000;padding:0;align-items:flex-start;justify-content:flex-start;overflow-y:auto}
+  #playerBox.player-container{width:100%;background:#000;position:relative}
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox.fullscreen-btn{position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
-  #playerBox iframe{width:100vw;height:56.25vw;max-height:100vh;border:none;display:block;object-fit:cover}
+  #playerBox iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
+  /* HII NDIO MPYA: SEHEMU YA CHINI YA PLAYER */
+ .player-related{padding:15px 0}
+ .player-related.section-title{font-size:16px;margin:10px 0}
 </style>
 </head>
 <body>
@@ -148,6 +151,12 @@
     <span class="close-btn" onclick="closePlayer()">×</span>
     <span class="fullscreen-btn" onclick="toggleFullscreen()">⛶</span>
     <iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>
+
+    <!-- HII NDIO MPYA: MOVIE NYINGINE ZITAONEKANA HAPA CHINI -->
+    <div class="player-related">
+      <h2 class="section-title">More Movies</h2>
+      <div class="grid" id="playerHomeGrid"></div>
+    </div>
   </div>
 </div>
 
@@ -258,6 +267,15 @@ function loadMovies(){
   trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
 }
 
+// HII NDIO MPYA: KUPANGA MOVIE ZAKE CHINI YA PLAYER
+function loadPlayerRelated(){
+  const playerGrid = document.getElementById("playerHomeGrid");
+  playerGrid.innerHTML = "";
+  // Ondoa movie inayo play sasa
+  let related = movies.filter(m => m.id!== currentMovie.id);
+  related.slice(0,6).forEach(m => playerGrid.appendChild(makeCard(m))); // onyesha 6 tu
+}
+
 function openMovie(m){
   currentMovie=m;
   if(m.type === 'series'){
@@ -312,6 +330,7 @@ function playMovie(link){
   }
   document.getElementById("videoFrame").src = finalLink;
   document.getElementById("playerBox").style.display="flex";
+  loadPlayerRelated(); // ITAJAZA MOVIE CHINI MARA MOJA
 }
 
 function showPayment(){
