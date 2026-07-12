@@ -82,7 +82,7 @@
 
 <div class="header">
   <div class="header-left">
-    <img id="logoBtn" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
+    <img id="logoBtn" onclick="openAdmin()" src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
     <h1>Chilagu Cinema</h1>
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
@@ -160,8 +160,6 @@
 let WEEKLY_KEY = "Chilagu-F1K";
 let ADMIN_PASS = "CHILAGU2026";
 let SETTINGS_DOC_ID = "main";
-let tapCount = 0; // HII NDIO YA KUHESABU MABONYEZO
-let tapTimer = null;
 
 let movies = [];
 let mainType='all', activeCat='all', currentMovie=null;
@@ -224,18 +222,6 @@ function closePlayer(){document.getElementById("playerBox").style.display="none"
 function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add('active');loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
-
-// HII NDIO SIRI YA LOGO
-document.getElementById('logoBtn').addEventListener('click', function(){
-  tapCount++;
-  clearTimeout(tapTimer);
-  tapTimer = setTimeout(() => { tapCount = 0; }, 2000); // Ikiwa zaidi ya sek 2 inareset
-  
-  if(tapCount >= 5){
-    tapCount = 0;
-    openAdmin();
-  }
-});
 
 async function openAdmin(){
   await loadSettings();
