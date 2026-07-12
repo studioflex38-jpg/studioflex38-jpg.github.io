@@ -10,23 +10,9 @@
   *{box-sizing:border-box}
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
 .header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
-.header-left{display:flex;align-items:center;gap:8px}
+.header-left{display:flex;align-items:center;gap:10px}
 .header img{width:32px;height:32px;}
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
-
-/* ICON YA SIRI YA ADMIN */
-.admin-icon{
-  width:18px;
-  height:18px;
-  background:var(--gradient);
-  border-radius:4px;
-  cursor:pointer;
-  opacity:0.4;
-  transition:0.3s;
-  -webkit-tap-highlight-color: transparent;
-}
-.admin-icon:active{opacity:1; transform:scale(1.2);} /* IKIWABONGEZA INANG'ARA ZAIDI */
-
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
 .search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
 .search-wrap.active{display:block}
@@ -89,6 +75,7 @@
 .episode-list{max-height:400px;overflow-y:auto;text-align:left}
 .episode-item{display:flex;justify-content:space-between;align-items:center;padding:8px;background:#222;margin-bottom:5px;border-radius:6px}
 .empty-state{color:#666;text-align:center;padding:20px;font-size:12px}
+.no-results{color:#A855F7;text-align:center;padding:40px 15px;font-size:14px;font-weight:600}
 </style>
 </head>
 <body>
@@ -97,12 +84,11 @@
   <div class="header-left">
     <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" alt="Logo">
     <h1>Chilagu Cinema</h1>
-    <div class="admin-icon" onclick="openAdmin()"></div> <!-- HAPA NDIO SIRI: NIMEWEKA ONCLICK MOJA KWA MOJA -->
   </div>
   <button class="search-icon-btn" onclick="toggleSearch()">🔍</button>
 </div>
 
-<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="loadMovies()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
+<div class="search-wrap" id="searchWrap"><div class="search"><input type="text" id="searchInput" placeholder="Search movie..." onkeyup="handleSearch()"><span class="search-close" onclick="toggleSearch()">×</span></div></div>
 <div class="main-tabs"><div class="main-tab active" onclick="filterMain('all',this)">All</div><div class="main-tab" onclick="filterMain('series',this)">Series</div><div class="main-tab" onclick="filterMain('singo',this)">Movies</div></div>
 
 <div class="banner-section">
@@ -209,10 +195,31 @@ function loadBanner(){
   });
 }
 
-function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");}
+function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active"); document.getElementById("searchInput").value = "";}
+
+function handleSearch(){
+  let val = document.getElementById("searchInput").value.trim();
+  
+  // HII NDIO SIRI YA ADMIN
+  if(val.toLowerCase() === "admin panel"){
+    toggleSearch(); // Funga search bar
+    openAdmin(); // Fungua admin
+    return;
+  }
+  
+  loadMovies(); // Kama si admin, fanya search kawaida
+}
+
 function loadMovies(){
   const homeGrid=document.getElementById("homeGrid");homeGrid.innerHTML="";
-  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat));
+  let searchVal = document.getElementById("searchInput").value.toLowerCase();
+  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
+  
+  if(filtered.length === 0 && searchVal !== ""){
+    homeGrid.innerHTML = `<div class="no-results">No Results Found<br><small>"${searchVal}"</small></div>`;
+    return;
+  }
+  
   filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
 }
 function makeCard(m){
