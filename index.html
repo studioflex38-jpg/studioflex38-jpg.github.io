@@ -159,13 +159,9 @@
 let WEEKLY_KEY = "Chilagu-F1K";
 let ADMIN_PASS = "CHILAGU2026";
 let SETTINGS_DOC_ID = "main";
-const WEEKLY_PRICE = 2000;
-const ADMIN_WHATSAPP = "255686436004";
-const ADMIN_NAME = "Moshi Idd";
-const PAYMENT_NUMBER = "0686436004";
 
 let movies = [];
-let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='', currentSeries=[];
+let mainType='all', activeCat='all', currentMovie=null;
 
 async function loadSettings(){
   const docSnap = await getDoc(doc(window.db, "settings", SETTINGS_DOC_ID));
@@ -188,10 +184,7 @@ function loadBanner(){
   const bannerSlider = document.getElementById("bannerSlider");
   bannerSlider.innerHTML = "";
   const bannerMovies = movies.filter(m => m.banner === true);
-  if(bannerMovies.length === 0){
-    bannerSlider.innerHTML = `<div class="empty-state">No Banner Set</div>`;
-    return;
-  }
+  if(bannerMovies.length === 0){ bannerSlider.innerHTML = `<div class="empty-state">No Banner Set</div>`; return; }
   bannerMovies.forEach(m => {
     const div = document.createElement("div");
     div.className = "banner-card";
@@ -201,63 +194,21 @@ function loadBanner(){
   });
 }
 
-function getSeriesName(title){ return title.replace(/ep(isode)?\.?\s*\d+/i, '').trim(); }
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");}
-
-function makeCard(m, isGroup=false, count=1, hasPaid=false, isTrending=false){
-  const div=document.createElement("div");div.className="card";
-  let star=hasPaid?'<div class="star-badge">★</div>':'';
-  let trend=isTrending?'<div class="trending-badge">TREND</div>':'';
-  let epBadge = isGroup? `<div class="episode-count">${count} Eps</div>` : '';
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}">${star}${trend}${epBadge}</div><div class="card-body"><p>${m.displayTitle}</p></div>`;
-  div.onclick=()=>isGroup? openEpisodeList(m.seriesName) : openMovie(m);
-  return div
-}
-
 function loadMovies(){
   const homeGrid=document.getElementById("homeGrid");homeGrid.innerHTML="";
-  const trendingGrid=document.getElementById("trendingGrid");trendingGrid.innerHTML="";
-  let searchVal = document.getElementById("searchInput").value.toLowerCase();
-
-  let seriesMap = {};
-  movies.forEach(m => {
-    if(m.type === 'series'){
-      let seriesName = getSeriesName(m.title);
-      if(!seriesMap[seriesName]) seriesMap[seriesName] = {episodes:[], thumbnail:m.thumbnail, cat:m.cat, trending:m.trending};
-      seriesMap[seriesName].episodes.push(m);
-      if(m.trending) seriesMap[seriesName].trending = true;
-    }
-  });
-
-  let displayList = [];
-  movies.filter(m => m.type!== 'series').forEach(m => displayList.push({...m, displayTitle: m.title}));
-  Object.keys(seriesMap).forEach(name => {
-    let s = seriesMap[name];
-    let hasPaid = s.episodes.some(e => e.price > 0);
-    displayList.push({type:'series',seriesName:name,displayTitle:name,thumbnail:s.thumbnail,cat:s.cat,count:s.episodes.length,hasPaid:hasPaid,trending:s.trending});
-  });
-
-  let filtered=displayList.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.displayTitle.toLowerCase().includes(searchVal));
-  filtered.filter(m=>m.trending).forEach(m=>trendingGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, true)));
-  filtered.forEach(m=>homeGrid.appendChild(makeCard(m, m.type==='series', m.count, m.hasPaid, m.trending)));
+  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat));
+  filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
 }
-
-function openEpisodeList(seriesName){
-  currentSeries = movies.filter(m => m.type==='series' && getSeriesName(m.title) === seriesName).sort((a,b) => a.title.localeCompare(b.title));
-  document.getElementById("episodeTitle").innerText = seriesName;
-  let html = '';
-  currentSeries.forEach(ep => { html += `<div class="episode-item"><span>${ep.title} ${ep.price>0?'★':''}</span><button class="btn-grad" style="width:auto;padding:6px 12px" onclick='playEpisode("${ep.id}")'>Play</button></div>` });
-  document.getElementById("episodeList").innerHTML = html;
-  document.getElementById("episodeBox").style.display="flex";
+function makeCard(m){
+  const div=document.createElement("div");div.className="card";
+  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}"></div><div class="card-body"><p>${m.title}</p></div>`;
+  div.onclick=()=>openMovie(m);
+  return div
 }
-
-function playEpisode(id){ currentMovie = movies.find(m => m.id === id); closeOverlay('episodeBox'); if(currentMovie.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(currentMovie.link)} }
 function openMovie(m){currentMovie=m;if(m.price>0){document.getElementById("keyBox").style.display="flex"}else{playMovie(m.link)}}
 function checkKey(){if(document.getElementById("keyInput").value.trim()===WEEKLY_KEY){closeOverlay('keyBox');playMovie(currentMovie.link)}else{document.getElementById("keyError").style.display="block"}}
 function playMovie(link){document.getElementById("videoFrame").src = link;document.getElementById("playerBox").style.display="flex";}
-function showPayment(){closeOverlay('keyBox');document.getElementById("payBox").style.display="flex"}
-function pay(network){selectedNetwork = network;document.getElementById("networkButtons").style.display="none";document.getElementById("whatsappStep").style.display="block";}
-function goToWhatsapp(){const msg=`HELLO ${ADMIN_NAME}. I PAID Tsh${WEEKLY_PRICE} VIA ${selectedNetwork.toUpperCase()} TO ${PAYMENT_NUMBER}. PLEASE SEND ME THIS WEEK'S KEY: ${WEEKLY_KEY}`;window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');closeOverlay('payBox');}
 function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";}
 function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
@@ -300,10 +251,9 @@ async function saveMovie(){
   const thumb = document.getElementById("mThumb").value.trim();
   const link = document.getElementById("mLink").value.trim();
   if(!title ||!thumb ||!link){ alert("❌ Jaza Title, Thumbnail na Video Link"); btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false; return; }
-  const newMovie = { title: title, type: document.getElementById("mType").value, cat: document.getElementById("mCat").value, price: parseInt(document.getElementById("mPrice").value), thumbnail: thumb, link: link, trending: document.getElementById("mTrending").checked, banner: document.getElementById("mBanner").checked };
-  await addDoc(collection(window.db, "movies"), newMovie);
+  await addDoc(collection(window.db, "movies"), { title: title, type: document.getElementById("mType").value, cat: document.getElementById("mCat").value, price: parseInt(document.getElementById("mPrice").value), thumbnail: thumb, link: link, trending: document.getElementById("mTrending").checked, banner: document.getElementById("mBanner").checked });
   alert("✅ Movie Uploaded Successfully!");
-  document.getElementById("mTitle").value = ""; document.getElementById("mThumb").value = ""; document.getElementById("mLink").value = ""; // HAPA NDIO NILIKOSE
+  document.getElementById("mTitle").value = ""; document.getElementById("mThumb").value = ""; document.getElementById("mLink").value = ""; // HAPA NDIO NILIREKEBISHA
   btn.innerText = "SAVE EPISODE/MOVIE"; btn.disabled = false;
 }
 
@@ -311,7 +261,7 @@ function loadManageList(){
   const list = document.getElementById("manageList");
   if(movies.length === 0){ list.innerHTML = `<div class="empty-state">No Movies Uploaded Yet</div>`; return; }
   list.innerHTML = "";
-  movies.forEach(m=>{ list.innerHTML += `<div class="admin-movie-item"><img src="${m.thumbnail}"><div class="admin-movie-info"><b>${m.title}</b><br><small>${m.type} | ${m.price==0?'Free':'Paid'} ${m.trending?'| TREND':''} ${m.banner?'| BANNER':''}</small></div><div class="admin-btns"><button class="btn-red" onclick='deleteMovie("${m.id}")'>Delete</button></div></div>`; });
+  movies.forEach(m=>{ list.innerHTML += `<div class="admin-movie-item"><img src="${m.thumbnail}"><div class="admin-movie-info"><b>${m.title}</b></div><div class="admin-btns"><button class="btn-red" onclick='deleteMovie("${m.id}")'>Delete</button></div></div>`; });
 }
 
 async function deleteMovie(id){if(confirm("Delete this movie?")){await deleteDoc(doc(window.db, "movies", id)); alert("✅ Deleted!");}}
@@ -319,21 +269,14 @@ async function deleteMovie(id){if(confirm("Delete this movie?")){await deleteDoc
 async function saveSettings(){
   const btn = document.getElementById("saveSettingsBtn");
   btn.innerText = "SAVING..."; btn.disabled = true;
-
   const newKey = document.getElementById("settingKey").value.trim();
   const newPass = document.getElementById("settingPass").value.trim();
   if(!newKey ||!newPass){ alert("❌ Jaza Key na Password zote mbili"); btn.innerText = "SAVE SETTINGS"; btn.disabled = false; return; }
-
-  try{
-    await setDoc(doc(window.db, "settings", SETTINGS_DOC_ID), { key: newKey, pass: newPass }, { merge: true });
-    WEEKLY_KEY = newKey;
-    ADMIN_PASS = newPass;
-    alert("✅ Settings Updated Successfully!");
-    closeOverlay('adminBox');
-
-  }catch(e){
-    alert("❌ Error: " + e.message);
-  }
+  await setDoc(doc(window.db, "settings", SETTINGS_DOC_ID), { key: newKey, pass: newPass }, { merge: true });
+  WEEKLY_KEY = newKey;
+  ADMIN_PASS = newPass;
+  alert("✅ Settings Updated Successfully!");
+  closeOverlay('adminBox');
   btn.innerText = "SAVE SETTINGS"; btn.disabled = false;
 }
 </script>
