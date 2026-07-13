@@ -81,12 +81,13 @@
   #playerBox.player-container{width:100%;background:#000;position:relative}
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox.fullscreen-btn{position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
-  #playerBox video{width:100%;aspect-ratio:16/9;border:none;display:block;background:#000}
+  #playerBox iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
 .player-related{padding:15px 0}
 .player-related.section-title{font-size:16px;margin:10px 0}
-.up-next{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.85);padding:8px 12px;border-radius:8px;z-index:1000;display:none;align-items:center;gap:8px;font-size:12px}
+.up-next{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.9);padding:10px 12px;border-radius:8px;z-index:1000;display:none;align-items:center;gap:10px;font-size:12px;border:1px solid #A855F7}
 .up-next.active{display:flex}
-.up-next-timer{color:#A855F7;font-weight:700}
+.up-next-timer{color:#A855F7;font-weight:900;font-size:14px}
+.up-next-cancel{background:#333;color:#fff;border:none;padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -162,8 +163,9 @@
       <span>Inayofuata kwa</span>
       <span class="up-next-timer" id="upNextTimer">5</span>
       <span>s</span>
+      <button class="up-next-cancel" onclick="cancelAutoPlay()">CANCEL</button>
     </div>
-    <video id="videoPlayer" controls autoplay playsinline></video>
+    <iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>
     <div class="player-related">
       <h2 class="section-title">More Movies</h2>
       <div class="grid" id="playerHomeGrid"></div>
@@ -177,6 +179,7 @@ const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
+const AUTO_NEXT_INTERVAL = 180000; // DAKIKA 3 = 180000ms
 
 const movies = [
   {id:1,title:"Mpanda Mnazi",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw",episodes:[]},
@@ -188,7 +191,7 @@ const movies = [
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
 let autoplayTimer = null;
-let videoPlayer = document.getElementById("videoPlayer");
+let autoNextInterval = null;
 
 // ========= FIREBASE =========
 var firebaseConfig = {
@@ -260,6 +263,7 @@ function loadPlayerRelated(){
 }
 
 function openMovie(m){
+  clearInterval(autoNextInterval);
   clearTimeout(autoplayTimer);
   document.getElementById("upNextBox").classList.remove("active");
   currentMovie=m;
@@ -298,7 +302,7 @@ function checkKey(){
   }else{ document.getElementById("keyError").style.display="block" }
 }
 
-function startAutoPlay(){
+function showAutoPlayPopup(){
   let nextMovies = movies.filter(m => m.id!== currentMovie.id && m.price === 0);
   if(nextMovies.length === 0) return;
   let nextMovie = nextMovies[0];
@@ -316,22 +320,35 @@ function startAutoPlay(){
   },1000);
 }
 
-function playMovie(link){
-  let finalLink = link;
-  // KAMA NI STREAMABLE TUBADILI KUWA MP4 DIRECT
-  if(link.includes("streamable.com/e/")){
-    finalLink = link.replace("/e/", "/") + ".mp4";
-  }
+function cancelAutoPlay(){
+  clearInterval(autoplayTimer);
+  document.getElementById("upNextBox").classList.remove("active");
+  // ANZA TENA KUESABU DAKIKA 3
+  startAutoNextTimer();
+}
 
-  videoPlayer.src = finalLink;
+function startAutoNextTimer(){
+  clearInterval(autoNextInterval);
+  autoNextInterval = setTimeout(showAutoPlayPopup, AUTO_NEXT_INTERVAL);
+}
+
+function playMovie(link){
+  clearInterval(autoNextInterval);
+  clearTimeout(autoplayTimer);
+  let finalLink = link;
+  if(link.includes("streamable.com/") &&!link.includes("/e/")){
+    finalLink = link.replace("streamable.com/", "streamable.com/e/");
+  }
+  if(!finalLink.includes("autoplay=1")){
+    finalLink += finalLink.includes("?")? "&autoplay=1" : "?autoplay=1";
+  }
+  document.getElementById("videoFrame").src = finalLink;
   document.getElementById("playerBox").style.display="flex";
   loadPlayerRelated();
   trackPlay(currentMovie);
 
-  // HAPA NDO SIRI: SUBIRI MOVIE IMALIZIKE + SEK 5
-  videoPlayer.onended = () => {
-    startAutoPlay();
-  }
+  // ANZA TIMER YA DAKIKA 3
+  startAutoNextTimer();
 }
 
 function showPayment(){
@@ -364,11 +381,11 @@ function goToWhatsapp(){
 }
 
 function closePlayer(){
+  clearInterval(autoNextInterval);
   clearTimeout(autoplayTimer);
   document.getElementById("upNextBox").classList.remove("active");
   document.getElementById("playerBox").style.display="none";
-  videoPlayer.pause();
-  videoPlayer.src="";
+  document.getElementById("videoFrame").src="";
   if(document.fullscreenElement){document.exitFullscreen();}
   loadMovies()
 }
