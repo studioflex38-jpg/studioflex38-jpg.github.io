@@ -83,7 +83,8 @@
   #playerBox.player-container{width:100%;background:#000;position:relative}
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox.fullscreen-btn{position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
-  #playerBox iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
+  #playerBox iframe{width:100%;aspect-ratio:16/9;border:none;display:block;background:#000}
+  #playerBox iframe:fullscreen{width:100vw;height:100vh;aspect-ratio:auto}
 .player-related{padding:15px 0}
 .player-related.section-title{font-size:16px;margin:10px 0}
 .up-next{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.9);padding:10px 12px;border-radius:8px;z-index:1000;display:none;align-items:center;gap:10px;font-size:12px;border:1px solid #A855F7}
@@ -181,7 +182,7 @@ const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
-const AUTO_NEXT_INTERVAL = 180000;
+const AUTO_NEXT_INTERVAL = 180000; // DAKIKA 3
 
 const movies = [
   {id:1,title:"Mpanda Mnazi",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw",episodes:[]},
@@ -222,7 +223,29 @@ function trackPlay(movie){
 }
 
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");if(document.getElementById("searchWrap").classList.contains("active")){document.getElementById("searchInput").focus();}}
-function toggleFullscreen(){const elem = document.getElementById("playerBox");if (!document.fullscreenElement) {elem.requestFullscreen().catch(err => console.log(err));} else {document.exitFullscreen();}}
+
+function toggleFullscreen(){
+  const iframe = document.getElementById("videoFrame");
+
+  if (!document.fullscreenElement) {
+    if (iframe.requestFullscreen) {
+      iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+      iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) {
+      iframe.msRequestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  }
+}
+
 function loadHeroBanner(){const banner = document.getElementById("heroBanner");const slideMovies = movies.filter(m => m.slide === true);if(slideMovies.length === 0){ banner.style.display = "none"; return; }banner.style.display = "block";let slidesHTML = ''; let dotsHTML = '';slideMovies.forEach((m, index)=>{slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Watching Now</button></div></div>`;dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="goToSlide(${index})"></span>`;});banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;startSlideAuto();}
 let slideIndex = 0; let slideInterval;
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
@@ -237,7 +260,6 @@ function makeCard(m){
   let star=m.price>0?'<div class="star-badge">★</div>':'';
   let epCount = '';
   if(m.type === 'series'){ let count = m.episodes.length; epCount = count > 0? `<div class="ep-badge">${count}</div>` : ''; }
-  // HAPA TUMETUMIA SVG ICON YA JICHO BADALA YA EMOJI
   div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p><div class="views-row"><svg class="views-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="views-count">0</span></div></div>`;
 
   db.collection("chilagu_events").where("movieId","==",m.id).get().then(snapshot=>{
@@ -389,7 +411,11 @@ function closePlayer(){
   document.getElementById("upNextBox").classList.remove("active");
   document.getElementById("playerBox").style.display="none";
   document.getElementById("videoFrame").src="";
-  if(document.fullscreenElement){document.exitFullscreen();}
+
+  if (document.fullscreenElement || document.webkitFullscreenElement) {
+    document.exitFullscreen();
+  }
+
   loadMovies()
 }
 function closeOverlay(id){document.getElementById(id).style.display="none"}
