@@ -67,6 +67,11 @@
 .payment-alert.mtandao{font-size:15px;font-weight:700;color:#fff}
 .payment-alert.namba{font-size:22px;letter-spacing:2px;font-weight:900;color:#fff;margin:4px 0}
 .payment-alert.jina{font-size:15px;font-weight:700;color:#fff}
+.package-select{display:grid;gap:10px;margin-bottom:15px}
+.package-btn{background:#222;border:2px solid #333;padding:12px;border-radius:10px;color:#fff;cursor:pointer;text-align:left}
+.package-btn.active{border-color:#A855F7;background:#2a2a2a}
+.package-btn h3{margin:0;font-size:16px;font-weight:700}
+.package-btn p{margin:4px 0 0;font-size:12px;color:#aaa}
 .networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .net-btn{background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-weight:600}
 .net-btn:hover{border-color:#A855F7}
@@ -126,23 +131,34 @@
 
 <div class="overlay" id="keyBox"><div class="box">
   <h2>Fungua kwa Access Key</h2>
-  <p style="font-size:12px;color:#aaa">Ingiza Key ya wiki ili ufungue movie</p>
-  <input type="text" id="keyInput" placeholder="Mf: CHILAGU-WK43">
+  <p style="font-size:12px;color:#aaa">Ingiza Key yako ili ufungue movie</p>
+  <input type="text" id="keyInput" placeholder="Mf: CHILAGU-MWEZI">
   <p class="error" id="keyError">❌ Key sio sahihi</p>
   <button class="btn-grad" onclick="checkKey()">FUNGUA MOVIE</button>
-  <button class="btn-green" onclick="showPayment()">NUNUA KEY Tsh 2000</button>
+  <button class="btn-green" onclick="showPayment()">NUNUA KEY</button>
   <button class="btn-gray" onclick="closeOverlay('keyBox')">Cancel</button>
 </div></div>
 
 <div class="overlay" id="payBox"><div class="box">
-  <h2>Chagua Mtandao wa Kulipia</h2>
+  <h2>Chagua Package</h2>
+  <div class="package-select">
+    <div class="package-btn active" onclick="selectPackage('mwezi', this)">
+      <h3>MWEZI MZIMA - Tsh 1500</h3>
+      <p>Angalia movies zote kwa siku 30</p>
+    </div>
+    <div class="package-btn" onclick="selectPackage('wiki2', this)">
+      <h3>WIKI 2 - Tsh 1000</h3>
+      <p>Angalia movies zote kwa siku 14</p>
+    </div>
+  </div>
+
   <div class="payment-alert">
-    <p class="top">Lipa Tsh 2000 kwenda</p>
+    <p class="top">Lipa kwenda</p>
     <p class="mtandao">Airtel Money</p>
     <p class="namba" id="payNumber">0686436004</p>
     <p class="jina" id="payName">Moshi Idd</p>
   </div>
-  <p style="font-size:12px;color:#aaa;margin-bottom:8px">Baada ya kulipa chagua mtandao uliotumia hapa chini</p>
+  <p style="font-size:12px;color:#aaa;margin-bottom:8px">Baada ya kulipa chagua mtandao uliotumia</p>
   <div class="networks" id="networkButtons">
     <div class="net-btn airtel" onclick="pay('airtel')">Airtel Money</div>
     <div class="net-btn mpesa" onclick="pay('mpesa')">M-Pesa</div>
@@ -177,22 +193,27 @@
 </div>
 
 <script>
-const WEEKLY_KEY = "Chilagu-F1K";
-const WEEKLY_PRICE = 2000;
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
-const AUTO_NEXT_INTERVAL = 180000; // DAKIKA 3
+const AUTO_NEXT_INTERVAL = 180000;
+
+// BEI MPYA ZA KUMCHAPA MWENZIO
+const PACKAGES = {
+  mwezi: {price: 1500, key: "Chilagu-MWEZI", days: 30},
+  wiki2: {price: 1000, key: "Chilagu-WIKI2", days: 14}
+}
 
 const movies = [
   {id:1,title:"Mpanda Mnazi",type:"singo",cat:"drama",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/HLJg2GPL/file-0001e471f481a5cc83ddc746bd.png",link:"https://streamable.com/e/8326lw",episodes:[]},
   {id:2,title:"Yellow RECKONING",type:"singo",cat:"action",price:0,trending:true,slide:false,thumbnail:"https://i.postimg.cc/YSnrwTCg/file-000007ed871f49b545ab627e53b0d.png",link:"https://streamable.com/e/02hbc4",episodes:[]},
   {id:3,title:"Pokemon I choose you",type:"singo",cat:"action",price:0,trending:false,slide:false,thumbnail:"https://i.postimg.cc/m2yMB0Vb/file-00000f21471f4b5b433c570a4e2f4.png",link:"https://files.catbox.moe/dodqzb.mp4",episodes:[]},
-  {id:4,title:"Love and Destiny",type:"series",cat:"love",price:WEEKLY_PRICE,trending:true,slide:true,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",link:"",episodes:[]},
-  {id:5,title:"Inevitable",type:"series",cat:"thriller",price:WEEKLY_PRICE,trending:false,slide:false,thumbnail:"https://i.postimg.cc/tTF2wQn1/file-00000416071f4bd5300709267e951-(1).jpg",link:"",episodes:[]}
+  {id:4,title:"Love and Destiny",type:"series",cat:"love",price:PACKAGES.mwezi.price,trending:true,slide:true,thumbnail:"https://i.postimg.cc/kG76vvXH/file-000003a3471f4a4cf845850d73ed4-(1).jpg",link:"",episodes:[]},
+  {id:5,title:"Inevitable",type:"series",cat:"thriller",price:PACKAGES.mwezi.price,trending:false,slide:false,thumbnail:"https://i.postimg.cc/tTF2wQn1/file-00000416071f4bd5300709267e951-(1).jpg",link:"",episodes:[]}
 ];
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
+let selectedPackage = 'mwezi'; // default
 let autoplayTimer = null;
 let autoNextInterval = null;
 
@@ -208,44 +229,10 @@ firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 var analytics = firebase.analytics();
 
-function trackPlay(movie){
-  let deviceId = localStorage.getItem('deviceId') || Math.random().toString(36).substring(2);
-  localStorage.setItem('deviceId', deviceId);
-  let spamKey = deviceId + "_" + movie.id;
-  let lastPlayed = localStorage.getItem(spamKey);
-  let now = new Date().getTime();
-  if(lastPlayed && (now - lastPlayed) < 600000){ return; }
-  localStorage.setItem(spamKey, now);
-  db.collection("chilagu_events").add({
-    event: "play_movie", title: movie.title, movieId: movie.id, type: movie.type, price: movie.price, deviceId: deviceId, time: firebase.firestore.FieldValue.serverTimestamp()
-  });
-  analytics.logEvent('play_movie', {movie_title: movie.title});
-}
+function trackPlay(movie){let deviceId = localStorage.getItem('deviceId') || Math.random().toString(36).substring(2);localStorage.setItem('deviceId', deviceId);let spamKey = deviceId + "_" + movie.id;let lastPlayed = localStorage.getItem(spamKey);let now = new Date().getTime();if(lastPlayed && (now - lastPlayed) < 600000){ return; }localStorage.setItem(spamKey, now);db.collection("chilagu_events").add({event: "play_movie", title: movie.title, movieId: movie.id, type: movie.type, price: movie.price, deviceId: deviceId, time: firebase.firestore.FieldValue.serverTimestamp()});analytics.logEvent('play_movie', {movie_title: movie.title});}
 
 function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");if(document.getElementById("searchWrap").classList.contains("active")){document.getElementById("searchInput").focus();}}
-
-function toggleFullscreen(){
-  const iframe = document.getElementById("videoFrame");
-
-  if (!document.fullscreenElement) {
-    if (iframe.requestFullscreen) {
-      iframe.requestFullscreen();
-    } else if (iframe.webkitRequestFullscreen) {
-      iframe.webkitRequestFullscreen();
-    } else if (iframe.msRequestFullscreen) {
-      iframe.msRequestFullscreen();
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-  }
-}
-
+function toggleFullscreen(){const iframe = document.getElementById("videoFrame");if (!document.fullscreenElement) {if (iframe.requestFullscreen) {iframe.requestFullscreen();} else if (iframe.webkitRequestFullscreen) {iframe.webkitRequestFullscreen();}} else {if (document.exitFullscreen) {document.exitFullscreen();} else if (document.webkitExitFullscreen) {document.webkitExitFullscreen();}}}
 function loadHeroBanner(){const banner = document.getElementById("heroBanner");const slideMovies = movies.filter(m => m.slide === true);if(slideMovies.length === 0){ banner.style.display = "none"; return; }banner.style.display = "block";let slidesHTML = ''; let dotsHTML = '';slideMovies.forEach((m, index)=>{slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Watching Now</button></div></div>`;dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="goToSlide(${index})"></span>`;});banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;startSlideAuto();}
 let slideIndex = 0; let slideInterval;
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
@@ -254,126 +241,24 @@ function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide'
 
 function formatViews(num){ if(num >= 1000000) return (num/1000000).toFixed(1) + "M"; if(num >= 1000) return (num/1000).toFixed(1) + "K"; return num; }
 
-function makeCard(m){
-  const div=document.createElement("div");
-  div.className="card";
-  let star=m.price>0?'<div class="star-badge">★</div>':'';
-  let epCount = '';
-  if(m.type === 'series'){ let count = m.episodes.length; epCount = count > 0? `<div class="ep-badge">${count}</div>` : ''; }
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p><div class="views-row"><svg class="views-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="views-count">0</span></div></div>`;
+function makeCard(m){const div=document.createElement("div");div.className="card";let star=m.price>0?'<div class="star-badge">★</div>':'';let epCount = '';if(m.type === 'series'){ let count = m.episodes.length; epCount = count > 0? `<div class="ep-badge">${count}</div>` : ''; }div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p><div class="views-row"><svg class="views-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="views-count">0</span></div></div>`;db.collection("chilagu_events").where("movieId","==",m.id).get().then(snapshot=>{let viewsCount = snapshot.size;div.querySelector(".views-count").innerText = formatViews(viewsCount);});div.onclick=()=>openMovie(m);return div}
 
-  db.collection("chilagu_events").where("movieId","==",m.id).get().then(snapshot=>{
-    let viewsCount = snapshot.size;
-    div.querySelector(".views-count").innerText = formatViews(viewsCount);
-  });
+function loadMovies(){const homeGrid=document.getElementById("homeGrid");const trendGrid=document.getElementById("trendGrid");homeGrid.innerHTML=""; trendGrid.innerHTML="";let searchVal = document.getElementById("searchInput").value.toLowerCase();let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));let trend=filtered.filter(m=>m.trending===true);trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';trend.forEach(m=>trendGrid.appendChild(makeCard(m)));}
 
-  div.onclick=()=>openMovie(m);
-  return div
-}
+function loadPlayerRelated(){const playerGrid = document.getElementById("playerHomeGrid");playerGrid.innerHTML = "";let related = movies.filter(m => m.id!== currentMovie.id);related.slice(0,6).forEach(m => playerGrid.appendChild(makeCard(m)));}
 
-function loadMovies(){
-  const homeGrid=document.getElementById("homeGrid");
-  const trendGrid=document.getElementById("trendGrid");
-  homeGrid.innerHTML=""; trendGrid.innerHTML="";
-  let searchVal = document.getElementById("searchInput").value.toLowerCase();
-  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
-  filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
-  let trend=filtered.filter(m=>m.trending===true);
-  trendGrid.innerHTML=trend.length?"":'<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';
-  trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
-}
+function openMovie(m){clearInterval(autoNextInterval);clearTimeout(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");currentMovie=m;if(m.type === 'series'){document.getElementById("episodeTitle").innerText = m.title;const list = document.getElementById("episodeList");list.innerHTML = '';if(m.episodes.length === 0){list.innerHTML = `<div class="episode-item coming"><span>Coming Soon...</span><small>Tafadhali subiri</small></div>`;} else {m.episodes.forEach(e=>{let item = document.createElement('div');item.className = 'episode-item';item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;item.onclick = () => { closeOverlay('episodeBox'); handlePlay(e.link, m.price); }list.appendChild(item);});}document.getElementById("episodeBox").style.display="flex";} else {handlePlay(m.link, m.price);}}
 
-function loadPlayerRelated(){
-  const playerGrid = document.getElementById("playerHomeGrid");
-  playerGrid.innerHTML = "";
-  let related = movies.filter(m => m.id!== currentMovie.id);
-  related.slice(0,6).forEach(m => playerGrid.appendChild(makeCard(m)));
-}
-
-function openMovie(m){
-  clearInterval(autoNextInterval);
-  clearTimeout(autoplayTimer);
-  document.getElementById("upNextBox").classList.remove("active");
-  currentMovie=m;
-  if(m.type === 'series'){
-    document.getElementById("episodeTitle").innerText = m.title;
-    const list = document.getElementById("episodeList");
-    list.innerHTML = '';
-    if(m.episodes.length === 0){
-      list.innerHTML = `<div class="episode-item coming"><span>Coming Soon...</span><small>Tafadhali subiri</small></div>`;
-    } else {
-      m.episodes.forEach(e=>{
-        let item = document.createElement('div');
-        item.className = 'episode-item';
-        item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;
-        item.onclick = () => { closeOverlay('episodeBox'); handlePlay(e.link, m.price); }
-        list.appendChild(item);
-      });
-    }
-    document.getElementById("episodeBox").style.display="flex";
-  } else {
-    handlePlay(m.link, m.price);
-  }
-}
-
-function handlePlay(link, price){
-  if(price===0){ playMovie(link) }
-  else { document.getElementById("keyBox").style.display="flex"; document.getElementById("keyError").style.display="none"; document.getElementById("keyInput").value="" }
-}
+function handlePlay(link, price){if(price===0){ playMovie(link) }else { document.getElementById("keyBox").style.display="flex"; document.getElementById("keyError").style.display="none"; document.getElementById("keyInput").value="" }}
 
 function checkKey(){
   const key=document.getElementById("keyInput").value.trim();
-  if(key===WEEKLY_KEY){
+  // Angalia kama key inalingana na package yoyote
+  if(key===PACKAGES.mwezi.key || key===PACKAGES.wiki2.key){
     closeOverlay('keyBox');
     let linkToPlay = currentMovie.link || currentMovie.episodes[0]?.link;
     playMovie(linkToPlay);
   }else{ document.getElementById("keyError").style.display="block" }
-}
-
-function showAutoPlayPopup(){
-  let nextMovies = movies.filter(m => m.id!== currentMovie.id && m.price === 0);
-  if(nextMovies.length === 0) return;
-  let nextMovie = nextMovies[0];
-  let count = 5;
-  document.getElementById("upNextBox").classList.add("active");
-  document.getElementById("upNextTimer").innerText = count;
-  autoplayTimer = setInterval(()=>{
-    count--;
-    document.getElementById("upNextTimer").innerText = count;
-    if(count <= 0){
-      clearInterval(autoplayTimer);
-      document.getElementById("upNextBox").classList.remove("active");
-      openMovie(nextMovie);
-    }
-  },1000);
-}
-
-function cancelAutoPlay(){
-  clearInterval(autoplayTimer);
-  document.getElementById("upNextBox").classList.remove("active");
-  startAutoNextTimer();
-}
-
-function startAutoNextTimer(){
-  clearInterval(autoNextInterval);
-  autoNextInterval = setTimeout(showAutoPlayPopup, AUTO_NEXT_INTERVAL);
-}
-
-function playMovie(link){
-  clearInterval(autoNextInterval);
-  clearTimeout(autoplayTimer);
-  let finalLink = link;
-  if(link.includes("streamable.com/") &&!link.includes("/e/")){
-    finalLink = link.replace("streamable.com/", "streamable.com/e/");
-  }
-  if(!finalLink.includes("autoplay=1")){
-    finalLink += finalLink.includes("?")? "&autoplay=1" : "?autoplay=1";
-  }
-  document.getElementById("videoFrame").src = finalLink;
-  document.getElementById("playerBox").style.display="flex";
-  loadPlayerRelated();
-  trackPlay(currentMovie);
-  startAutoNextTimer();
 }
 
 function showPayment(){
@@ -385,39 +270,38 @@ function showPayment(){
   document.getElementById("payBox").style.display="flex"
 }
 
+function selectPackage(pkg, el){
+  selectedPackage = pkg;
+  document.querySelectorAll('.package-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
 function pay(network){
   selectedNetwork = network.toUpperCase();
+  let pkg = PACKAGES[selectedPackage];
   let ussd="";
   if(network==='airtel') ussd="*150*60#";
   if(network==='mpesa') ussd="*150*00#";
   if(network==='tigo') ussd="*150*01#";
   if(network==='halo') ussd="*150*88#";
   window.location.href=`tel:${encodeURIComponent(ussd)}`;
-  setTimeout(()=>{
-    document.getElementById("networkButtons").style.display="none";
-    document.getElementById("whatsappStep").style.display="block";
-  },1000)
+  setTimeout(()=>{document.getElementById("networkButtons").style.display="none";document.getElementById("whatsappStep").style.display="block";},1000)
 }
 
 function goToWhatsapp(){
-  const msg=`SALAMU ${ADMIN_NAME}. NIMELIPA Tsh${WEEKLY_PRICE} KWA ${selectedNetwork} KWENDA ${PAYMENT_NUMBER}. TAFADHALI NITUMIE KEY YA WIKI HII: ${WEEKLY_KEY}`;
+  let pkg = PACKAGES[selectedPackage];
+  const msg=`SALAMU ${ADMIN_NAME}. NIMELIPA Tsh${pkg.price} KWA ${selectedNetwork} KWENDA ${PAYMENT_NUMBER}. TAFADHALI NITUMIE KEY YA PACKAGE YA ${selectedPackage.toUpperCase()}: ${pkg.key}`;
   window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');
   closeOverlay('payBox');
 }
 
-function closePlayer(){
-  clearInterval(autoNextInterval);
-  clearTimeout(autoplayTimer);
-  document.getElementById("upNextBox").classList.remove("active");
-  document.getElementById("playerBox").style.display="none";
-  document.getElementById("videoFrame").src="";
+function showAutoPlayPopup(){let nextMovies = movies.filter(m => m.id!== currentMovie.id && m.price === 0);if(nextMovies.length === 0) return;let nextMovie = nextMovies[0];let count = 5;document.getElementById("upNextBox").classList.add("active");document.getElementById("upNextTimer").innerText = count;autoplayTimer = setInterval(()=>{count--;document.getElementById("upNextTimer").innerText = count;if(count <= 0){clearInterval(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");openMovie(nextMovie);}},1000);}
+function cancelAutoPlay(){clearInterval(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");startAutoNextTimer();}
+function startAutoNextTimer(){clearInterval(autoNextInterval);autoNextInterval = setTimeout(showAutoPlayPopup, AUTO_NEXT_INTERVAL);}
 
-  if (document.fullscreenElement || document.webkitFullscreenElement) {
-    document.exitFullscreen();
-  }
+function playMovie(link){clearInterval(autoNextInterval);clearTimeout(autoplayTimer);let finalLink = link;if(link.includes("streamable.com/") &&!link.includes("/e/")){finalLink = link.replace("streamable.com/", "streamable.com/e/");}if(!finalLink.includes("autoplay=1")){finalLink += finalLink.includes("?")? "&autoplay=1" : "?autoplay=1";}document.getElementById("videoFrame").src = finalLink;document.getElementById("playerBox").style.display="flex";loadPlayerRelated();trackPlay(currentMovie);startAutoNextTimer();}
 
-  loadMovies()
-}
+function closePlayer(){clearInterval(autoNextInterval);clearTimeout(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";if (document.fullscreenElement || document.webkitFullscreenElement) {document.exitFullscreen();}loadMovies()}
 function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
