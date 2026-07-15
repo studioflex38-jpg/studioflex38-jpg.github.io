@@ -27,9 +27,6 @@
 .dot{width:8px;height:8px;border-radius:50%;background:#555;cursor:pointer}
 .dot.active{background:var(--gradient);width:20px;border-radius:10px}
 .section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
-.category-filter{display:flex;gap:8px;padding:0 15px 10px;overflow-x:auto}
-.cat-btn{padding:8px 14px;background:#1a1a1a;border:1px solid #333;border-radius:20px;color:#aaa;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
-.cat-btn.active{background:var(--gradient);color:#fff;border-color:transparent}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px}
 .card{cursor:pointer;position:relative}
 .thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#111;border-radius:6px;overflow:hidden}
@@ -78,7 +75,6 @@
 
 <div class="hero-banner" id="heroBanner"></div>
 <h2 class="section-title">Trending Now 🔥</h2><div class="grid" id="trendGrid"></div>
-<h2 class="section-title">Kategoria</h2><div class="category-filter" id="categoryFilter"></div>
 <h2 class="section-title">HOME</h2><div class="grid" id="homeGrid"></div>
 
 <!-- ADMIN STUDIO PRO -->
@@ -121,17 +117,7 @@
           <select id="quality"><option value="HD">HD 720p</option><option value="FHD">Full HD 1080p</option><option value="4K">4K HQ</option></select>
           <div style="display:flex;gap:10px">
             <select id="type"><option value="singo">Singo</option><option value="series">Series</option></select>
-            <select id="cat">
-              <option value="action">Action</option>
-              <option value="thriller">Thriller</option>
-              <option value="horror">Horror</option>
-              <option value="comedy">Comedy</option>
-              <option value="love">Love / Romance</option>
-              <option value="drama">Drama</option>
-              <option value="sci-fi">Sci-Fi</option>
-              <option value="bongo">Bongo Movie</option>
-              <option value="anime">Anime</option>
-            </select>
+            <select id="cat"><option value="action">Action</option><option value="love">Love</option><option value="drama">Drama</option></select>
             <select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option></select>
           </div>
           <label><input type="checkbox" id="trending"> Trending</label>
@@ -143,6 +129,7 @@
         <div id="adminMovieList">Loading...</div>
       </div>
 
+      <!-- TAB MPYA YA BRANDING -->
       <div id="brandingTab" class="admin-section">
         <div class="setting-group">
           <h3>🎨 App Branding</h3>
@@ -177,6 +164,7 @@
             <h3>🔑 API Keys za Payment Gateway</h3>
             <input type="text" id="apiKey" placeholder="Weka API Key yako ya Selcom/NMB">
             <input type="text" id="apiSecret" placeholder="Weka Secret Key">
+            <p style="font-size:12px;color:#aaa">Ukizipata hizi malipo yatakuwa automatic 100%</p>
           </div>
         </div>
         <button class="btn-blue" onclick="savePaymentSettings()">SAVE PAYMENT SETTINGS</button>
@@ -218,7 +206,6 @@ let logoClicks = 0;
 let editingDocId = null;
 let selectedPackage = 'mwezi';
 let selectedPayment = null;
-let currentCategory = 'all';
 
 var firebaseConfig = {apiKey: "AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",authDomain: "chilagu-update.firebaseapp.com",projectId: "chilagu-update",storageBucket: "chilagu-update.firebasestorage.app",messagingSenderId: "1007502056082",appId: "1:1007502056082:web:c20c43601cdae50059244b"};
 firebase.initializeApp(firebaseConfig);
@@ -309,35 +296,13 @@ function saveSettings(){
   db.collection("chilagu_settings").doc("main").set(appSettings).then(()=>{document.getElementById('settingsSuccess').style.display='block';setTimeout(()=>{document.getElementById('settingsSuccess').style.display='none'},2000);});
 }
 
-function loadCategoryFilter(){
-  const categories = ['all','action','thriller','horror','comedy','love','drama','sci-fi','bongo','anime'];
-  const names = {'all':'Zote','action':'Action','thriller':'Thriller','horror':'Horror','comedy':'Comedy','love':'Love','drama':'Drama','sci-fi':'Sci-Fi','bongo':'Bongo','anime':'Anime'};
-  let html = '';
-  categories.forEach(cat=>{
-    html += `<button class="cat-btn ${currentCategory==cat?'active':''}" onclick="filterByCategory('${cat}')">${names[cat]}</button>`;
-  });
-  document.getElementById('categoryFilter').innerHTML = html;
-}
-
-function filterByCategory(cat){
-  currentCategory = cat;
-  loadCategoryFilter();
-  renderMovies();
-}
-
+// ... KAZI NYINGINE ZOTE ZIPO HIVI HIVI ...
 function loadHeroBanner(){const banner = document.getElementById("heroBanner");const slideMovies = movies.filter(m => m.slide === true);if(slideMovies.length === 0){ banner.style.display = "none"; return; }banner.style.display = "block";let slidesHTML = '';let dotsHTML = '';slideMovies.forEach((m, index)=>{slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='handlePlay("${m.link}", ${m.price})'>Watching Now</button></div></div>`;dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="showSlide(${index})"></span>`;});banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;}
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));if(slides[n]) slides[n].classList.add('active');if(dots[n]) dots[n].classList.add('active');}
 function groupMovies(movies){let grouped = [];let seriesMap = {};movies.forEach(m=>{if(m.type === 'series'){if(!seriesMap[m.title]){seriesMap[m.title] = {...m, episodes:[]};}seriesMap[m.title].episodes.push(m);}else{grouped.push(m);}});Object.values(seriesMap).forEach(s=>{s.episodeCount = s.episodes.length;grouped.push(s);});return grouped;}
 function makeCard(m){let star = m.price>0?'<div class="star-badge">★</div>':'';let quality = `<div class="quality-badge">${m.quality||'HD'}</div>`;let epCount = m.type==='series'?`<div class="episode-count">${m.episodeCount}+</div>`:'';return `<div class="card" onclick='handlePlay("${m.episodes?m.episodes[0].link:m.link}", ${m.price})'><div class="thumb-wrap"><img src="${m.thumbnail}">${star}${quality}${epCount}</div><p>${m.title}</p></div>`}
-function renderMovies(){
-  let filtered = currentCategory=='all'? movies : movies.filter(m=>m.cat==currentCategory);
-  let groupedMovies = groupMovies(filtered);
-  let homeGrid = document.getElementById('homeGrid');
-  homeGrid.innerHTML = '';
-  groupedMovies.forEach(m=>homeGrid.innerHTML += makeCard(m));
-}
-function loadMoviesFromFirebase(){db.collection("chilagu_movies").get().then(snapshot=>{movies = [];snapshot.forEach(doc=>{let d=doc.data(); d.docId=doc.id; movies.push(d);});renderMovies();let trendGrid = document.getElementById('trendGrid');trendGrid.innerHTML = '';groupMovies(movies).filter(m=>m.trending).forEach(m=>trendGrid.innerHTML += makeCard(m));loadHeroBanner(); loadCategoryFilter();});}
-function loadAdminMovies(){let list = document.getElementById('adminMovieList');list.innerHTML = '';movies.forEach(m=>{list.innerHTML += `<div class="admin-movie-item"><img src="${m.thumbnail}"><div style="flex:1"><h4>${m.title}</h4><p>${m.quality} | ${m.cat} | ${m.price>0?'VIP Tsh'+m.price:'FREE'}</p></div><div><button class="btn-blue" onclick='editMovie("${m.docId}", ${JSON.stringify(m).replace(/"/g, '&quot;')})'>Edit</button><button class="btn-red" onclick='deleteMovie("${m.docId}")'>Delete</button></div></div>`;});}
+function loadMoviesFromFirebase(){db.collection("chilagu_movies").get().then(snapshot=>{movies = [];snapshot.forEach(doc=>{let d=doc.data(); d.docId=doc.id; movies.push(d);});let groupedMovies = groupMovies(movies);let homeGrid = document.getElementById('homeGrid');let trendGrid = document.getElementById('trendGrid');homeGrid.innerHTML = '';trendGrid.innerHTML = '';groupedMovies.forEach(m=>homeGrid.innerHTML += makeCard(m));groupedMovies.filter(m=>m.trending).forEach(m=>trendGrid.innerHTML += makeCard(m));loadHeroBanner();});}
+function loadAdminMovies(){let list = document.getElementById('adminMovieList');list.innerHTML = '';movies.forEach(m=>{list.innerHTML += `<div class="admin-movie-item"><img src="${m.thumbnail}"><div style="flex:1"><h4>${m.title}</h4><p>${m.quality} | ${m.price>0?'VIP Tsh'+m.price:'FREE'}</p></div><div><button class="btn-blue" onclick='editMovie("${m.docId}", ${JSON.stringify(m)})'>Edit</button><button class="btn-red" onclick='deleteMovie("${m.docId}")'>Delete</button></div></div>`;});}
 function editMovie(docId, movie){showAdminTab('movies',document.querySelectorAll('.admin-tab')[1]);editingDocId = docId;document.getElementById('title').value = movie.title;document.getElementById('thumbnail').value = movie.thumbnail;document.getElementById('link').value = movie.link;document.getElementById('quality').value = movie.quality||'HD';document.getElementById('type').value = movie.type;document.getElementById('cat').value = movie.cat;document.getElementById('price').value = movie.price;document.getElementById('trending').checked = movie.trending;document.getElementById('slide').checked = movie.slide;}
 function deleteMovie(docId){if(confirm("Futa movie hii?")){db.collection("chilagu_movies").doc(docId).delete().then(()=>{loadMoviesFromFirebase(); loadAdminMovies();});}}
 function saveMovie(){const movie = {id: editingDocId? editingDocId : Date.now(),title: document.getElementById('title').value,thumbnail: document.getElementById('thumbnail').value,link: document.getElementById('link').value,quality: document.getElementById('quality').value,type: document.getElementById('type').value,cat: document.getElementById('cat').value,price: parseInt(document.getElementById('price').value),trending: document.getElementById('trending').checked,slide: document.getElementById('slide').checked}let promise = editingDocId? db.collection("chilagu_movies").doc(editingDocId).update(movie) : db.collection("chilagu_movies").add(movie);promise.then(()=>{editingDocId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');loadMoviesFromFirebase(); loadAdminMovies(); loadStats();});}
