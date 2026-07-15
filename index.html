@@ -198,7 +198,7 @@ const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
 const AUTO_NEXT_INTERVAL = 180000;
 
-// BEI MPYA ZA KUMCHAPA MWENZIO
+// BEI MPYA
 const PACKAGES = {
   mwezi: {price: 1500, key: "Chilagu-MWEZI", days: 30},
   wiki2: {price: 1000, key: "Chilagu-WIKI2", days: 14}
@@ -213,7 +213,7 @@ const movies = [
 ];
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
-let selectedPackage = 'mwezi'; // default
+let selectedPackage = 'mwezi';
 let autoplayTimer = null;
 let autoNextInterval = null;
 
@@ -241,6 +241,14 @@ function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide'
 
 function formatViews(num){ if(num >= 1000000) return (num/1000000).toFixed(1) + "M"; if(num >= 1000) return (num/1000).toFixed(1) + "K"; return num; }
 
+function loadViewsForCard(div, movieId){
+  db.collection("chilagu_events").where("movieId","==",movieId).get().then(snapshot=>{
+    let viewsCount = snapshot.size;
+    let countEl = div.querySelector(".views-count");
+    if(countEl) countEl.innerText = formatViews(viewsCount);
+  }).catch(e=>{});
+}
+
 function makeCard(m){
   const div=document.createElement("div");
   div.className="card";
@@ -250,13 +258,8 @@ function makeCard(m){
 
   div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p><div class="views-row"><svg class="views-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="views-count">0</span></div></div>`;
 
-  // Firebase iwe optional - isiharibu kama ikifa
-  try{
-    db.collection("chilagu_events").where("movieId","==",m.id).get().then(snapshot=>{
-      let viewsCount = snapshot.size;
-      div.querySelector(".views-count").innerText = formatViews(viewsCount);
-    }).catch(e=>{});
-  }catch(e){}
+  // Load views baada ya card kupanda
+  setTimeout(()=>loadViewsForCard(div, m.id), 100);
 
   div.onclick=()=>openMovie(m);
   return div
