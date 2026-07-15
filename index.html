@@ -8,18 +8,17 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
 
 <style>
   :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; }
   *{box-sizing:border-box}
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:var(--bg);color:#fff;height:100%;overflow-y:auto;overflow-x:hidden}
-.header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:sticky;top:0;z-index:10}
+.header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 15px;background:#000;border-bottom:1px solid #111;position:relative;top:0;z-index:10} /* Nimeondoa sticky */
 .header-left{display:flex;align-items:center;gap:10px}
 .header img{width:32px;height:32px}
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
 .search-icon-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:5px}
-.search-wrap{display:none;padding:10px 15px;position:absolute;top:55px;left:0;right:0;background:#000;z-index:9}
+.search-wrap{display:none;padding:10px 15px;position:relative;background:#000;z-index:9} /* Nimeondoa absolute */
 .search-wrap.active{display:block}
 .search{position:relative}
 .search input{width:100%;padding:11px 40px 11px 14px;border-radius:25px;border:none;background:#1a1a1a;color:#fff;font-size:13px}
@@ -89,13 +88,9 @@
   #playerBox.close-btn{position:absolute;top:10px;right:60px;font-size:35px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox.fullscreen-btn{position:absolute;top:10px;right:10px;font-size:28px;cursor:pointer;z-index:1001;color:#fff;background:rgba(0,0,0,0.7);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
   #playerBox iframe{width:100%;aspect-ratio:16/9;border:none;display:block;background:#000}
-  #playerBox iframe:fullscreen{width:100vw;height:100vh;aspect-ratio:auto}
 .player-related{padding:15px 0}
 .player-related.section-title{font-size:16px;margin:10px 0}
-.up-next{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.9);padding:10px 12px;border-radius:8px;z-index:1000;display:none;align-items:center;gap:10px;font-size:12px;border:1px solid #A855F7}
-.up-next.active{display:flex}
-.up-next-timer{color:#A855F7;font-weight:900;font-size:14px}
-.up-next-cancel{background:#333;color:#fff;border:none;padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer}
+.up-next{display:none}
 </style>
 </head>
 <body>
@@ -178,12 +173,6 @@
   <div class="player-container">
     <span class="close-btn" onclick="closePlayer()">×</span>
     <span class="fullscreen-btn" onclick="toggleFullscreen()">⛶</span>
-    <div class="up-next" id="upNextBox">
-      <span>Inayofuata kwa</span>
-      <span class="up-next-timer" id="upNextTimer">5</span>
-      <span>s</span>
-      <button class="up-next-cancel" onclick="cancelAutoPlay()">CANCEL</button>
-    </div>
     <iframe id="videoFrame" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>
     <div class="player-related">
       <h2 class="section-title">More Movies</h2>
@@ -196,9 +185,7 @@
 const ADMIN_WHATSAPP = "255686436004";
 const ADMIN_NAME = "Moshi Idd";
 const PAYMENT_NUMBER = "0686436004";
-const AUTO_NEXT_INTERVAL = 180000;
 
-// BEI MPYA
 const PACKAGES = {
   mwezi: {price: 1500, key: "Chilagu-MWEZI", days: 30},
   wiki2: {price: 1000, key: "Chilagu-WIKI2", days: 14}
@@ -214,8 +201,6 @@ const movies = [
 
 let mainType='all', activeCat='all', currentMovie=null, selectedNetwork='';
 let selectedPackage = 'mwezi';
-let autoplayTimer = null;
-let autoNextInterval = null;
 
 var firebaseConfig = {
   apiKey: "AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",
@@ -227,39 +212,26 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
-var analytics = firebase.analytics();
 
-function trackPlay(movie){let deviceId = localStorage.getItem('deviceId') || Math.random().toString(36).substring(2);localStorage.setItem('deviceId', deviceId);let spamKey = deviceId + "_" + movie.id;let lastPlayed = localStorage.getItem(spamKey);let now = new Date().getTime();if(lastPlayed && (now - lastPlayed) < 600000){ return; }localStorage.setItem(spamKey, now);db.collection("chilagu_events").add({event: "play_movie", title: movie.title, movieId: movie.id, type: movie.type, price: movie.price, deviceId: deviceId, time: firebase.firestore.FieldValue.serverTimestamp()}).catch(e=>{});analytics.logEvent('play_movie', {movie_title: movie.title});}
+function trackPlay(movie){let deviceId = localStorage.getItem('deviceId') || Math.random().toString(36).substring(2);localStorage.setItem('deviceId', deviceId);db.collection("chilagu_events").add({event: "play_movie", title: movie.title, movieId: movie.id, time: firebase.firestore.FieldValue.serverTimestamp()}).catch(e=>{});}
 
-function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active");if(document.getElementById("searchWrap").classList.contains("active")){document.getElementById("searchInput").focus();}}
-function toggleFullscreen(){const iframe = document.getElementById("videoFrame");if (!document.fullscreenElement) {if (iframe.requestFullscreen) {iframe.requestFullscreen();} else if (iframe.webkitRequestFullscreen) {iframe.webkitRequestFullscreen();}} else {if (document.exitFullscreen) {document.exitFullscreen();} else if (document.webkitExitFullscreen) {document.webkitExitFullscreen();}}}
-function loadHeroBanner(){const banner = document.getElementById("heroBanner");const slideMovies = movies.filter(m => m.slide === true);if(slideMovies.length === 0){ banner.style.display = "none"; return; }banner.style.display = "block";let slidesHTML = ''; let dotsHTML = '';slideMovies.forEach((m, index)=>{slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}" alt="${m.title}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Watching Now</button></div></div>`;dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="goToSlide(${index})"></span>`;});banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;startSlideAuto();}
-let slideIndex = 0; let slideInterval;
-function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');slideIndex = n;}
-function goToSlide(n){clearInterval(slideInterval); showSlide(n); startSlideAuto()}
-function startSlideAuto(){const slides = document.querySelectorAll('.hero-slide');if(slides.length <= 1) return;clearInterval(slideInterval);slideInterval = setInterval(()=>{slideIndex=(slideIndex+1)%slides.length;showSlide(slideIndex)},5000);}
+function toggleSearch(){document.getElementById("searchWrap").classList.toggle("active")}
+function toggleFullscreen(){const iframe = document.getElementById("videoFrame");if (!document.fullscreenElement) {iframe.requestFullscreen();} else {document.exitFullscreen();}}
+function loadHeroBanner(){const banner = document.getElementById("heroBanner");const slideMovies = movies.filter(m => m.slide === true);if(slideMovies.length === 0){ banner.style.display = "none"; return; }banner.style.display = "block";let slidesHTML = '';let dotsHTML = '';slideMovies.forEach((m, index)=>{slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick='openMovie(${JSON.stringify(m)})'>Watching Now</button></div></div>`;dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="showSlide(${index})"></span>`;});banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;}
+let slideIndex = 0;
+function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));slides[n].classList.add('active');dots[n].classList.add('active');}
 
 function formatViews(num){ if(num >= 1000000) return (num/1000000).toFixed(1) + "M"; if(num >= 1000) return (num/1000).toFixed(1) + "K"; return num; }
-
-function loadViewsForCard(div, movieId){
-  db.collection("chilagu_events").where("movieId","==",movieId).get().then(snapshot=>{
-    let viewsCount = snapshot.size;
-    let countEl = div.querySelector(".views-count");
-    if(countEl) countEl.innerText = formatViews(viewsCount);
-  }).catch(e=>{});
-}
 
 function makeCard(m){
   const div=document.createElement("div");
   div.className="card";
   let star=m.price>0?'<div class="star-badge">★</div>':'';
-  let epCount = '';
-  if(m.type === 'series'){ let count = m.episodes.length; epCount = count > 0? `<div class="ep-badge">${count}</div>` : ''; }
+  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}">${star}</div><div class="card-body"><p>${m.title}</p><div class="views-row"><svg class="views-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="views-count" id="views-${m.id}">0</span></div></div>`;
 
-  div.innerHTML=`<div class="thumb-wrap"><img src="${m.thumbnail}" alt="${m.title}" loading="lazy">${star}${epCount}</div><div class="card-body"><p>${m.title}</p><div class="views-row"><svg class="views-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg><span class="views-count">0</span></div></div>`;
-
-  // Load views baada ya card kupanda
-  setTimeout(()=>loadViewsForCard(div, m.id), 100);
+  db.collection("chilagu_events").where("movieId","==",m.id).get().then(snapshot=>{
+    document.getElementById(`views-${m.id}`).innerText = formatViews(snapshot.size);
+  }).catch(e=>{});
 
   div.onclick=()=>openMovie(m);
   return div
@@ -268,34 +240,17 @@ function makeCard(m){
 function loadMovies(){
   const homeGrid=document.getElementById("homeGrid");
   const trendGrid=document.getElementById("trendGrid");
-  homeGrid.innerHTML="";
-  trendGrid.innerHTML="";
-
+  homeGrid.innerHTML=""; trendGrid.innerHTML="";
   let searchVal = document.getElementById("searchInput").value.toLowerCase();
-
-  let filtered=movies.filter(m=>
-    (mainType==='all'||m.type===mainType)&&
-    (activeCat==='all'||m.cat===activeCat)&&
-    m.title.toLowerCase().includes(searchVal)
-  );
-
-  if(filtered.length === 0){
-    homeGrid.innerHTML = '<p style="color:#666;padding:20px;grid-column:1/-1;text-align:center">Hakuna movies zilizopatikana</p>';
-  } else {
-    filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
-  }
-
+  let filtered=movies.filter(m=>(mainType==='all'||m.type===mainType)&&(activeCat==='all'||m.cat===activeCat)&&m.title.toLowerCase().includes(searchVal));
+  filtered.forEach(m=>homeGrid.appendChild(makeCard(m)));
   let trend=filtered.filter(m=>m.trending===true);
-  if(trend.length === 0){
-    trendGrid.innerHTML='<p style="color:#666;padding:10px 15px;grid-column:1/-1">Hakuna Trending</p>';
-  } else {
-    trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
-  }
+  trend.forEach(m=>trendGrid.appendChild(makeCard(m)));
 }
 
 function loadPlayerRelated(){const playerGrid = document.getElementById("playerHomeGrid");playerGrid.innerHTML = "";let related = movies.filter(m => m.id!== currentMovie.id);related.slice(0,6).forEach(m => playerGrid.appendChild(makeCard(m)));}
 
-function openMovie(m){clearInterval(autoNextInterval);clearTimeout(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");currentMovie=m;if(m.type === 'series'){document.getElementById("episodeTitle").innerText = m.title;const list = document.getElementById("episodeList");list.innerHTML = '';if(m.episodes.length === 0){list.innerHTML = `<div class="episode-item coming"><span>Coming Soon...</span><small>Tafadhali subiri</small></div>`;} else {m.episodes.forEach(e=>{let item = document.createElement('div');item.className = 'episode-item';item.innerHTML = `<span>${e.title}</span><small>Play ▶</small>`;item.onclick = () => { closeOverlay('episodeBox'); handlePlay(e.link, m.price); }list.appendChild(item);});}document.getElementById("episodeBox").style.display="flex";} else {handlePlay(m.link, m.price);}}
+function openMovie(m){currentMovie=m;if(m.type === 'series'){document.getElementById("episodeTitle").innerText = m.title;document.getElementById("episodeBox").style.display="flex";} else {handlePlay(m.link, m.price);}}
 
 function handlePlay(link, price){if(price===0){ playMovie(link) }else { document.getElementById("keyBox").style.display="flex"; document.getElementById("keyError").style.display="none"; document.getElementById("keyInput").value="" }}
 
@@ -303,55 +258,27 @@ function checkKey(){
   const key=document.getElementById("keyInput").value.trim();
   if(key===PACKAGES.mwezi.key || key===PACKAGES.wiki2.key){
     closeOverlay('keyBox');
-    let linkToPlay = currentMovie.link || currentMovie.episodes[0]?.link;
-    playMovie(linkToPlay);
+    playMovie(currentMovie.link);
   }else{ document.getElementById("keyError").style.display="block" }
 }
 
-function showPayment(){
-  closeOverlay('keyBox');
-  document.getElementById("payNumber").innerText = PAYMENT_NUMBER;
-  document.getElementById("payName").innerText = ADMIN_NAME;
-  document.getElementById("whatsappStep").style.display="none";
-  document.getElementById("networkButtons").style.display="grid";
-  document.getElementById("payBox").style.display="flex"
-}
-
-function selectPackage(pkg, el){
-  selectedPackage = pkg;
-  document.querySelectorAll('.package-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function pay(network){
-  selectedNetwork = network.toUpperCase();
-  let pkg = PACKAGES[selectedPackage];
-  let ussd="";
-  if(network==='airtel') ussd="*150*60#";
-  if(network==='mpesa') ussd="*150*00#";
-  if(network==='tigo') ussd="*150*01#";
-  if(network==='halo') ussd="*150*88#";
-  window.location.href=`tel:${encodeURIComponent(ussd)}`;
-  setTimeout(()=>{document.getElementById("networkButtons").style.display="none";document.getElementById("whatsappStep").style.display="block";},1000)
-}
-
+function showPayment(){closeOverlay('keyBox');document.getElementById("payBox").style.display="flex"}
+function selectPackage(pkg, el){selectedPackage = pkg;document.querySelectorAll('.package-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');}
+function pay(network){selectedNetwork = network.toUpperCase();document.getElementById("networkButtons").style.display="none";document.getElementById("whatsappStep").style.display="block"}
 function goToWhatsapp(){
   let pkg = PACKAGES[selectedPackage];
-  const msg=`SALAMU ${ADMIN_NAME}. NIMELIPA Tsh${pkg.price} KWA ${selectedNetwork} KWENDA ${PAYMENT_NUMBER}. TAFADHALI NITUMIE KEY YA PACKAGE YA ${selectedPackage.toUpperCase()}: ${pkg.key}`;
+  const msg=`SALAMU ${ADMIN_NAME}. NIMELIPA Tsh${pkg.price} KWA ${selectedNetwork} KWENDA ${PAYMENT_NUMBER}. TAFADHALI NITUMIE KEY YA ${pkg.key}`;
   window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');
   closeOverlay('payBox');
 }
 
-function showAutoPlayPopup(){let nextMovies = movies.filter(m => m.id!== currentMovie.id && m.price === 0);if(nextMovies.length === 0) return;let nextMovie = nextMovies[0];let count = 5;document.getElementById("upNextBox").classList.add("active");document.getElementById("upNextTimer").innerText = count;autoplayTimer = setInterval(()=>{count--;document.getElementById("upNextTimer").innerText = count;if(count <= 0){clearInterval(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");openMovie(nextMovie);}},1000);}
-function cancelAutoPlay(){clearInterval(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");startAutoNextTimer();}
-function startAutoNextTimer(){clearInterval(autoNextInterval);autoNextInterval = setTimeout(showAutoPlayPopup, AUTO_NEXT_INTERVAL);}
+function playMovie(link){let finalLink = link;if(!finalLink.includes("autoplay=1")){finalLink += finalLink.includes("?")? "&autoplay=1" : "?autoplay=1";}document.getElementById("videoFrame").src = finalLink;document.getElementById("playerBox").style.display="flex";loadPlayerRelated();trackPlay(currentMovie);}
 
-function playMovie(link){clearInterval(autoNextInterval);clearTimeout(autoplayTimer);let finalLink = link;if(link.includes("streamable.com/") &&!link.includes("/e/")){finalLink = link.replace("streamable.com/", "streamable.com/e/");}if(!finalLink.includes("autoplay=1")){finalLink += finalLink.includes("?")? "&autoplay=1" : "?autoplay=1";}document.getElementById("videoFrame").src = finalLink;document.getElementById("playerBox").style.display="flex";loadPlayerRelated();trackPlay(currentMovie);startAutoNextTimer();}
-
-function closePlayer(){clearInterval(autoNextInterval);clearTimeout(autoplayTimer);document.getElementById("upNextBox").classList.remove("active");document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";if (document.fullscreenElement || document.webkitFullscreenElement) {document.exitFullscreen();}loadMovies()}
+function closePlayer(){document.getElementById("playerBox").style.display="none";document.getElementById("videoFrame").src="";loadMovies()}
 function closeOverlay(id){document.getElementById(id).style.display="none"}
 function filterMain(type,el){mainType=type;document.querySelectorAll(".main-tab").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
 function filterCat(cat,el){activeCat=cat;document.querySelectorAll(".cat-box").forEach(c=>c.classList.remove("active"));el.classList.add("active");loadMovies()}
+
 loadHeroBanner();
 loadMovies();
 </script>
