@@ -34,8 +34,9 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .card{flex:0 0 32%; max-width:32%; background:var(--card); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--dark-purple); scroll-snap-align:start}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.badge-star{position:absolute;top:4px;right:4px;font-size:14px;color:var(--pink);text-shadow:0 0 6px var(--pink)}
+.badge-star{position:absolute;top:4px;right:4px;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 8px var(--pink)}
 .trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#EC4899,#F59E0B);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+.series-badge{position:absolute;top:4px;left:4px;background:#2563EB;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
 .sub-categories{display:flex;gap:8px;overflow-x:auto;padding:0 15px;margin-bottom:8px}
 .sub-cat-btn{padding:5px 12px;background:#111;border-radius:15px;border:1px solid var(--dark-purple);color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
 .sub-cat-btn.active{background:var(--gradient);border:none;color:#fff}
@@ -97,10 +98,8 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
   <div id="login">
     <h3 style="font-family:Orbitron;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Chilagu Legacy Admin</h3>
     <input type="password" id="pass" placeholder="Weka Admin Password">
-    <button onclick="login()">Login</button>
-    <button onclick="closeAdmin()" class="btn-gray">Cancel
-    
-    </button>
+    <button onclick="login()">INGIA</button>
+    <button onclick="closeAdmin()" class="btn-gray">FUNGA</button>
   </div>
   <div id="form" style="display:none">
     <div class="admin-tabs">
@@ -109,11 +108,11 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
       <button class="admin-tab" onclick="showTab('payment',this)">Malipo</button>
       <button class="admin-tab" onclick="showTab('settings',this)">Settings</button>
     </div>
-    <div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>VIP</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
-    <div id="moviesTab" style="display:none"><h3>➕ Upload / Edit Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
+    <div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>Za Kulipia</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
+    <div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">Tsh 1500</option><option value="1000">Tsh 1000</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii - Za Kulipia tu"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
     <div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><input id="payLogo" placeholder="Link ya Logo ya Mtandao"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
     <div id="settingsTab" style="display:none"><h3>⚙️ SETTINGS</h3><div class="setting-group"><h4>🔑 Subscription</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"></div><div class="setting-group"><h4>🔒 Security</h4><input type="password" id="newPass" placeholder="Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE</button></div>
-    <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">Close</button>
+    <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
   </div>
 </div></div>
 
@@ -123,35 +122,45 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
   <button onclick="closePay()" class="btn-gray">FUNGA</button>
 </div></div>
 
+<div class="overlay" id="keyBox"><div class="box" style="max-width:400px">
+  <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Weka Access Key</h3>
+  <p style="font-size:12px">Movie hii ni ya kulipia. Weka Access Key uliyopewa baada ya kulipa.</p>
+  <input id="keyInput" placeholder="Weka Access Key hapa">
+  <button class="btn-green" onclick="verifyKey()">FUNGUA MOVIE</button>
+  <button onclick="closeKey()" class="btn-gray">FUNGA</button>
+</div></div>
+
 <div class="player-overlay" id="player">
   <span class="close-player" onclick="closePlayer()">X</span>
   <iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe>
 </div>
 
 <script>
-let clicks=0, editingId=null, appSettings={}, allMovies=[], currentSubCat='all', searchQuery='', selectedPayment=null, currentPlayData={};
+let clicks=0, editingId=null, appSettings={}, allMovies=[], currentSubCat='all', searchQuery='', currentPlayData={};
 var firebaseConfig={apiKey:"AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",projectId:"chilagu-update"};
 firebase.initializeApp(firebaseConfig);var db=firebase.firestore();
 
-// KUINGIA ADMIN PEKEE
+db.collection("movies").onSnapshot(s=>{allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});renderTrendingRow();renderHomeRow();loadHeroBanner();});
+db.collection("settings").doc("main").onSnapshot(doc=>{if(doc.exists){appSettings=doc.data()}});
+
 function logoClick(){clicks++;if(clicks>=5){initAdmin();clicks=0;}setTimeout(()=>clicks=0,3000)}
-function initAdmin(){db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}else{appSettings={adminPassword:"ChilaguBoss2026",paymentMode:"manual",apiKey:"",apiSecret:"",vendorId:"",keyMwezi:"Chilagu-MWEZI",priceMwezi:1500,whatsapp:"255686436004",paymentMethods:[{id:1,name:"Airtel Money",number:"0686436004",owner:"Moshi Idd",ussd:"*150*01#",logo:"https://i.postimg.cc/7ZRwXwZg/airtel.png"},{id:2,name:"M-Pesa",number:"0686436004",owner:"Moshi Idd",ussd:"*150*00#",logo:"https://i.postimg.cc/4yLkP1gN/mpesa.png"}]};db.collection("settings").doc("main").set(appSettings)}document.getElementById('admin').style.display='flex';})}
+function initAdmin(){db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}else{appSettings={adminPassword:"ChilaguBoss2026",paymentMode:"manual",apiKey:"",apiSecret:"",vendorId:"",keyMwezi:"Chilagu-MWEZI",priceMwezi:1500,whatsapp:"255686436004",paymentMethods:[{id:1,name:"Airtel Money",number:"0686436004",owner:"Moshi Idd",ussd:"*150*01#",logo:"https://i.postimg.cc/wMH59KmD/Screenshot-20260717-003950-(1).jpg"},{id:2,name:"M-Pesa",number:"0686436004",owner:"Moshi Idd",ussd:"*150*00#",logo:"https://i.postimg.cc/Nj3Qm3kK/mpesa-logo.png"}]};db.collection("settings").doc("main").set(appSettings)}document.getElementById('admin').style.display='flex';})}
 function login(){if(document.getElementById('pass').value == appSettings.adminPassword){loadSettings();document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';}else{alert('Password mbaya')}}
 function closeAdmin(){document.getElementById('admin').style.display='none';document.getElementById('login').style.display='block';document.getElementById('form').style.display='none';document.getElementById('pass').value='';editingId=null}
 function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
 
-function loadSettings(){db.collection("settings").doc("main").onSnapshot(doc=>{if(doc.exists){appSettings=doc.data()}document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('whatsapp').value=appSettings.whatsapp;togglePaymentMode();loadMoviesAdmin();loadStats();loadPayments();})}
+function loadSettings(){document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('whatsapp').value=appSettings.whatsapp;togglePaymentMode();loadMoviesAdmin();loadStats();loadPayments();}
 function saveSettings(){appSettings.keyMwezi=document.getElementById('keyMwezi').value;appSettings.priceMwezi=parseInt(document.getElementById('priceMwezi').value);appSettings.whatsapp=document.getElementById('whatsapp').value;let newPass=document.getElementById('newPass').value; if(newPass) appSettings.adminPassword=newPass;db.collection("settings").doc("main").set(appSettings).then(()=>alert('✅ Imehifadhiwa'))}
 function togglePaymentMode(){let mode=document.getElementById('paymentMode').value;document.getElementById('manualMode').style.display=mode=='manual'?'block':'none';document.getElementById('automaticMode').style.display=mode=='automatic'?'block':'none'}
 function savePayment(){appSettings.paymentMode=document.getElementById('paymentMode').value;appSettings.apiKey=document.getElementById('apiKey').value;appSettings.apiSecret=document.getElementById('apiSecret').value;appSettings.vendorId=document.getElementById('vendorId').value;db.collection("settings").doc("main").set(appSettings).then(()=>alert('✅ Imehifadhiwa'))}
 function addPayment(){let p={id:Date.now(),name:document.getElementById('payName').value,number:document.getElementById('payNumber').value,owner:document.getElementById('payOwner').value,ussd:"*150*01#",logo:document.getElementById('payLogo').value};appSettings.paymentMethods.push(p);db.collection("settings").doc("main").set(appSettings).then(()=>{loadPayments();document.querySelectorAll('#paymentTab input').forEach(i=>i.value='')})}
-function loadPayments(){let h='';appSettings.paymentMethods.forEach(p=>{h+=`<div class="movie-item"><img src="${p.logo}" style="width:40px;height:40px"><div><b>${p.name}</b><br>${p.number}</div><button class="btn-red" onclick="delPay(${p.id})">Futa</button></div>`});document.getElementById('paymentList').innerHTML=h;}
+function loadPayments(){let h='';appSettings.paymentMethods.forEach(p=>{h+=`<div class="movie-item"><img src="${p.logo}" style="width:40px;height:40px;object-fit:cover"><div><b>${p.name}</b><br>${p.number}</div><button class="btn-red" onclick="delPay(${p.id})">Futa</button></div>`});document.getElementById('paymentList').innerHTML=h;}
 function delPay(id){appSettings.paymentMethods=appSettings.paymentMethods.filter(p=>p.id!=id);db.collection("settings").doc("main").set(appSettings).then(()=>loadPayments())}
 
-function save(){let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0};let promise = editingId? db.collection("movies").doc(editingId).update(data) : db.collection("movies").add(data);promise.then(()=>{alert('Imehifadhiwa');editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');})}
-function editMovie(id,data){editingId=id;showTab('movies',document.querySelectorAll('.admin-tab')[1]);document.getElementById('t').value=data.title;document.getElementById('img').value=data.thumbnail;document.getElementById('v').value=data.link;document.getElementById('type').value=data.type;document.getElementById('cat').value=data.cat;document.getElementById('price').value=data.price;document.getElementById('slide').checked=data.slide;document.getElementById('trending').checked=data.trending;}
+function save(){let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),accessKey:document.getElementById('accessKey').value,slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0};let promise = editingId? db.collection("movies").doc(editingId).update(data) : db.collection("movies").add(data);promise.then(()=>{alert('Imehifadhiwa');editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='';})}
+function editMovie(id,data){editingId=id;showTab('movies',document.querySelectorAll('.admin-tab')[1]);document.getElementById('t').value=data.title;document.getElementById('img').value=data.thumbnail;document.getElementById('v').value=data.link;document.getElementById('type').value=data.type;document.getElementById('cat').value=data.cat;document.getElementById('price').value=data.price;document.getElementById('accessKey').value=data.accessKey;document.getElementById('slide').checked=data.slide;document.getElementById('trending').checked=data.trending;}
 function deleteMovie(id){if(confirm('Futa movie hii?')){db.collection("movies").doc(id).delete()}}
-function loadMoviesAdmin(){let h='';allMovies.forEach(m=>{h+=`<div class="movie-item"><img src="${m.thumbnail}"><div><b>${m.title}</b><div class="views-text">Views: ${m.views||0} | ${m.cat} | Tsh ${m.price}</div></div><div><button class="btn-blue" onclick='editMovie("${m.docId}",${JSON.stringify(m)})'>Edit</button><br><button class="btn-red" onclick='deleteMovie("${m.docId}")'>Delete</button></div></div>`});document.getElementById('movieList').innerHTML=h;}
+function loadMoviesAdmin(){let h='';allMovies.forEach(m=>{h+=`<div class="movie-item"><img src="${m.thumbnail}"><div><b>${m.title}</b><div class="views-text">Views: ${m.views||0} | ${m.cat} | ${m.type} | Tsh ${m.price}</div></div><div><button class="btn-blue" onclick='editMovie("${m.docId}",${JSON.stringify(m)})'>Edit</button><br><button class="btn-red" onclick='deleteMovie("${m.docId}")'>Delete</button></div></div>`});document.getElementById('movieList').innerHTML=h;}
 function loadStats(){document.getElementById('statMovies').innerText=allMovies.length;document.getElementById('statVIP').innerText=allMovies.filter(m=>m.price>0).length;let totalViews = allMovies.reduce((sum,m)=>sum+(m.views||0),0);document.getElementById('statViews').innerText=totalViews;db.collection("sales").onSnapshot(s=>{document.getElementById('statSales').innerText=s.size;});}
 
 function chunkArray(arr, size){ let result=[]; for(let i=0;i<arr.length;i+=size){ result.push(arr.slice(i,i+size)); } return result; }
@@ -163,8 +172,9 @@ function renderRow(containerId, movies, showTrendBadge=true){
     h += `<div class="row">`;
     chunk.forEach(m=>{
       let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
-      let starBadge = m.price>0? `<div class="badge-star">★</div>` : '';
-      h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price})"><img src="${m.thumbnail}">${starBadge}${trendBadge}<p>${m.title}</p></div>`;
+      let seriesBadge = m.type=='series'? `<div class="series-badge">SERIES</div>` : '';
+      let starBadge = m.price>0? `<div class="badge-star">★</div>` : ''; // NYOTA YA RANGI YA APP
+      h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')"><img src="${m.thumbnail}">${starBadge}${trendBadge}${seriesBadge}<p>${m.title}</p></div>`;
     });
     h += `</div>`;
   });
@@ -183,96 +193,44 @@ function loadHeroBanner(){
   banner.style.display = "block";
   let slidesHTML = '';let dotsHTML = '';
   slideMovies.forEach((m, index)=>{
-    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="checkAccess('${m.docId}','${m.link}',${m.price})">Watching Now</button></div></div>`;
+    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')">Watching Now</button></div></div>`;
     dotsHTML += `<span class="dot ${index===0?'active':''}"></span>`;
   });
   banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
   let current=0; setInterval(()=>{current=(current+1)%slideMovies.length; document.querySelectorAll('.hero-slide').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.dot').forEach(d=>d.classList.remove('active'));document.querySelectorAll('.hero-slide')[current].classList.add('active');document.querySelectorAll('.dot')[current].classList.add('active')},5000);
 }
 
-function checkAccess(id,link,price){
-  currentPlayData = {id,link,price};
+function checkAccess(id,link,price,key){
+  currentPlayData = {id,link,price,key};
   addView(id);
   if(price > 0){
-    if(appSettings.paymentMode == 'automatic' && appSettings.apiKey){
-      payAutomatic(price);
-    }else{
-      showNetworkSelect(price);
-    }
+    document.getElementById('keyBox').style.display='flex';
   }else{
-    playMovie(link); // FREE INACHEZA MOJA KWA MOJA NDANI YA APP
+    playMovie(link);
   }
 }
 
-// MANUAL MODE
-function showNetworkSelect(price){
-  document.getElementById('payTitle').innerText = `Lipa Tsh ${price}`;
-  let h = `<p style="font-size:12px">Chagua mtandao wako wa kulipia:</p>`;
-  appSettings.paymentMethods.forEach(p=>{
-    h += `<div class="network-btn" onclick="startUSSD('${p.ussd}','${p.number}','${p.name}',${price})">
-      <img src="${p.logo}" class="network-logo">
-      <div><b>${p.name}</b><br><span style="font-size:10px">${p.number}</span></div>
-    </div>`;
-  });
-  document.getElementById('payBody').innerHTML = h;
-  document.getElementById('payBox').style.display = 'flex';
+function verifyKey(){
+  let inputKey = document.getElementById('keyInput').value;
+  if(inputKey == currentPlayData.key){
+    closeKey();
+    playMovie(currentPlayData.link);
+  }else{
+    alert('❌ Access Key ni mbaya. Nunua kwanza.')
+  }
 }
-
-function startUSSD(ussd,number,name,price){
-  window.location.href = `tel:${ussd}`;
-  setTimeout(()=>{
-    document.getElementById('payTitle').innerText = 'Thibitisha Malipo';
-    document.getElementById('payBody').innerHTML = `
-      <p style="font-size:12px">Umeshatuma Tsh ${price} kwenda ${number}?<br>Bonyeza hapa chini tuma uthibitisho WhatsApp</p>
-      <button class="btn-green" onclick="sendWA('${number}','${name}',${price})">Nimeshalipa - Tuma WhatsApp</button>
-    `;
-  },3000);
-}
-
-function sendWA(number,name,price){
-  let msg = `NIMELIPA Tsh${price} KWENDA ${number} - ${name}. NITUMIE KEY YA KUANGALIA MOVIE`;
-  window.open(`https://wa.me/${appSettings.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
-  closePay();
-}
-
-// AUTOMATIC MODE
-function payAutomatic(price){
-  document.getElementById('payTitle').innerText = 'Inachakata Malipo...';
-  document.getElementById('payBody').innerHTML = `<div class="loading-box"><div class="spinner"></div><p>Subiri kidogo...</p></div>`;
-  document.getElementById('payBox').style.display = 'flex';
-
-  setTimeout(()=>{
-    let transactionId = 'CLG' + Date.now();
-    db.collection("sales").add({amount:price,date:Date.now(),movie:currentPlayData.id,tx:transactionId});
-    playMovie(currentPlayData.link); // INACHEZA MOJA KWA MOJA NDANI YA APP BAADA YA KULIPA
-    closePay();
-    alert('✅ Malipo yamefanikiwa! Karibu kutazama');
-  },3000);
-}
+function closeKey(){document.getElementById('keyBox').style.display='none';document.getElementById('keyInput').value=''}
 
 function closePay(){document.getElementById('payBox').style.display='none'}
 
 function playMovie(link){
   document.getElementById('iframe').src=link;
-  document.getElementById('player').style.display='flex'; // INAFUNGUKA NDANI YA APP
+  document.getElementById('player').style.display='flex';
 }
 
 function closePlayer(){document.getElementById('player').style.display='none';document.getElementById('iframe').src=''}
 
-// HII NDIO ILIKUWA INASUMBUA - SASA INALOAD KWA WOTE
-function load(){
-  db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}}); // Load settings mara 1
-  db.collection("movies").onSnapshot(s=>{
-    allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
-    renderTrendingRow();
-    renderHomeRow();
-    loadHeroBanner();
-  })
-}
-
 function addView(docId){db.collection("movies").doc(docId).update({views: firebase.firestore.FieldValue.increment(1)});}
-
-load(); // INAPAKIA MOJA KWA MOJA MTUMIAJI AKIFUNGUA APP
 </script>
 </body>
 </html>
