@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <style>
 :root{
-  --purple:#7C3AED; /* RANGI YA LOGO YAKO */
+  --purple:#7C3AED;
   --pink:#EC4899;
   --dark-purple:#4C1D95;
   --gradient:linear-gradient(90deg,var(--purple),var(--pink));
@@ -20,12 +20,12 @@
 body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-serif;font-size:13px}
 .header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--dark-purple)}
 .header img{width:42px;height:42px;cursor:pointer}
-.header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.8px;text-shadow:0 0 10px rgba(124,58,237,0.3)} /* JINA FULL */
+.header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.8px;text-shadow:0 0 10px rgba(124,58,237,0.3)}
 .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px;border-bottom:2px solid var(--dark-purple)}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s}
 .hero-slide.active{opacity:1}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(124,58,237,0.3) 0%,transparent 60%)} /* OVERLAY YA PURPLE */
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(124,58,237,0.3) 0%,transparent 60%)}
 .hero-content{position:absolute;bottom:15px;left:15px;z-index:2;max-width:60%}
 .hero-content h2{margin:0 0 8px;font-size:16px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(0,0,0,0.8)}
 .hero-btn{padding:7px 16px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 15px rgba(124,58,237,0.5);display:inline-block;width:auto}
@@ -71,7 +71,7 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 
 <div class="header">
   <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" onclick="logoClick()">
-  <h1>Chilagu Legacy Cinema</h1> <!-- JINA KAMILI -->
+  <h1>Chilagu Legacy Cinema</h1>
 </div>
 
 <div class="hero-banner" id="heroBanner"></div>
@@ -150,11 +150,11 @@ function closeAdmin(){document.getElementById('admin').style.display='none';docu
 function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings','users'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
 
 function loadSettings(){
-  db.collection("settings").doc("main").get().then(doc=>{
+  db.collection("settings").doc("main").onSnapshot(doc=>{ // LIVE SYNC
     if(doc.exists){appSettings=doc.data()}
     document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;
     document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('keyWiki').value=appSettings.keyWiki;document.getElementById('priceWiki').value=appSettings.priceWiki;document.getElementById('whatsapp').value=appSettings.whatsapp;
-    togglePaymentMode();loadMoviesAdmin();loadStats();loadUsers();loadPayments();load();
+    togglePaymentMode();loadMoviesAdmin();loadStats();loadUsers();loadPayments();
   })
 }
 
@@ -175,10 +175,11 @@ function delPay(id){appSettings.paymentMethods=appSettings.paymentMethods.filter
 function save(){
   let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0};
   let promise = editingId? db.collection("movies").doc(editingId).update(data) : db.collection("movies").add(data);
-  promise.then(()=>{alert('Imehifadhiwa');editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');loadMoviesAdmin();load();loadStats()})
+  promise.then(()=>{alert('Imehifadhiwa');editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');})
 }
+
 function editMovie(id,data){editingId=id;showTab('movies',document.querySelectorAll('.admin-tab')[1]);document.getElementById('t').value=data.title;document.getElementById('img').value=data.thumbnail;document.getElementById('v').value=data.link;document.getElementById('type').value=data.type;document.getElementById('cat').value=data.cat;document.getElementById('price').value=data.price;document.getElementById('slide').checked=data.slide;document.getElementById('trending').checked=data.trending;}
-function deleteMovie(id){if(confirm('Futa movie hii?')){db.collection("movies").doc(id).delete().then(()=>{loadMoviesAdmin();load();loadStats()})}}
+function deleteMovie(id){if(confirm('Futa movie hii?')){db.collection("movies").doc(id).delete()}}
 
 function loadMoviesAdmin(){
   let h='';
@@ -192,8 +193,8 @@ function loadMoviesAdmin(){
   document.getElementById('movieList').innerHTML=h;
 }
 
-function loadStats(){document.getElementById('statMovies').innerText=allMovies.length;document.getElementById('statVIP').innerText=allMovies.filter(m=>m.price>0).length;let totalViews = allMovies.reduce((sum,m)=>sum+(m.views||0),0);document.getElementById('statViews').innerText=totalViews;db.collection("sales").get().then(s=>{document.getElementById('statSales').innerText=s.size;});}
-function loadUsers(){db.collection("users").get().then(s=>{let h='';s.forEach(d=>{let u=d.data();h+=`<div class="movie-item"><div><b>${u.phone||'Guest'}</b><br>Status: ${u.status||'Free'}</div></div>`});document.getElementById('userList').innerHTML=h||'Hakuna mtumiaji';})}
+function loadStats(){document.getElementById('statMovies').innerText=allMovies.length;document.getElementById('statVIP').innerText=allMovies.filter(m=>m.price>0).length;let totalViews = allMovies.reduce((sum,m)=>sum+(m.views||0),0);document.getElementById('statViews').innerText=totalViews;db.collection("sales").onSnapshot(s=>{document.getElementById('statSales').innerText=s.size;});}
+function loadUsers(){db.collection("users").onSnapshot(s=>{let h='';s.forEach(d=>{let u=d.data();h+=`<div class="movie-item"><div><b>${u.phone||'Guest'}</b><br>Status: ${u.status||'Free'}</div></div>`});document.getElementById('userList').innerHTML=h||'Hakuna mtumiaji';})}
 
 function groupMovies(movies){let grouped = []; let seriesMap = {};movies.forEach(m=>{if(m.type === 'series'){if(!seriesMap[m.title]){ seriesMap[m.title] = {...m, episodes:[], episodeCount:0}; }seriesMap[m.title].episodes.push(m);seriesMap[m.title].episodeCount++;}else{ grouped.push(m); }});Object.values(seriesMap).forEach(s=>grouped.push(s));return grouped;}
 
@@ -246,11 +247,14 @@ function loadHeroBanner(){
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));if(slides[n]) slides[n].classList.add('active');if(dots[n]) dots[n].classList.add('active');}
 
 function load(){
-  db.collection("movies").get().then(s=>{
+  // HII NDO SIRI YAKE MZEE - LIVE SYNC
+  db.collection("movies").onSnapshot(s=>{
     allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
     renderTrendingRow();
     renderHomeRow();
     loadHeroBanner();
+    loadMoviesAdmin();
+    loadStats();
   })
 }
 
@@ -269,6 +273,9 @@ function selectPay(id){selectedPayment=appSettings.paymentMethods.find(p=>p.id==
 function goWA(){let pkg={price:appSettings.priceMwezi,key:appSettings.keyMwezi};window.open(`https://wa.me/${appSettings.whatsapp}?text=NIMELIPA Tsh${pkg.price} KWENDA ${selectedPayment.number}. NITUMIE KEY YA ${pkg.key}`,'_blank');closePay()}
 function closePay(){document.getElementById('payBox').style.display='none'}
 function closePlayer(){document.getElementById('player').style.display='none';document.getElementById('iframe').src=''}
+
+// ANZA KUSIKILIZA DATABASE MARA MOJA APP INAFUNGUKA
+load();
 </script>
 </body>
 </html>
