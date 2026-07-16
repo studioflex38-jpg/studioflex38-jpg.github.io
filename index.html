@@ -35,8 +35,6 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .section-header{display:flex;justify-content:space-between;align-items:center;padding:0 15px;margin-bottom:8px}
 .section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:#fff}
 .section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#EC4899,#7C3AED);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 0 6px var(--pink))}
-
-/* SAFU ZA MOVIE */
 .row-wrap{display:flex; flex-direction:column; gap:12px; padding:0 15px}
 .row{display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; scroll-snap-type:x mandatory; padding-bottom:5px}
 .row::-webkit-scrollbar{display:none}
@@ -44,6 +42,8 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,0.3)}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-actions{display:flex; gap:5px; padding:0 6px 6px}
+.card-btn{flex:1; padding:4px; font-size:9px; border-radius:5px; background:var(--gradient); border:none; color:#fff; font-weight:700}
 .badge{position:absolute;top:4px;right:4px;background:var(--gradient);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold;box-shadow:0 0 6px rgba(236,72,153,0.4)}
 .trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#EC4899,#F59E0B);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
 .ep-badge{position:absolute;bottom:28px;right:4px;background:rgba(124,58,237,0.9);padding:2px 5px;border-radius:4px;font-size:9px;font-weight:700}
@@ -51,12 +51,9 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .sub-categories::-webkit-scrollbar{display:none}
 .sub-cat-btn{padding:5px 12px;background:#111;border-radius:15px;border:1px solid var(--dark-purple);color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
 .sub-cat-btn.active{background:var(--gradient);border:none;color:#fff;box-shadow:0 0 8px rgba(124,58,237,0.4)}
-
-/* SEARCH BAR MPYA */
 .search-box{padding:0 15px; margin-bottom:10px}
 .search-box input{width:100%; padding:10px 12px; background:#111; border:1px solid var(--dark-purple); border-radius:20px; color:#fff; font-size:12px; outline:none}
 .search-box input:focus{border-color:var(--purple); box-shadow:0 0 8px rgba(124,58,237,0.3)}
-
 .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);justify-content:center;align-items:center;z-index:99;overflow-y:auto}
 .box{background:var(--card);padding:18px;border-radius:12px;width:95%;max-width:700px;max-height:95vh;overflow-y:auto;border:1px solid var(--dark-purple)}
 input,select,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid var(--dark-purple);background:#0a0a0a;color:#fff;font-size:13px}
@@ -103,12 +100,9 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
     <button class="sub-cat-btn" onclick="filterSubCat('drama',this)">drama</button>
     <button class="sub-cat-btn" onclick="filterSubCat('thriller',this)">thriller</button>
   </div>
-
-  <!-- SEARCH BAR IMEONGWA HAPA -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Tafuta movie..." onkeyup="searchMovies()">
   </div>
-
   <div class="row-wrap" id="homeWrap"></div>
 </div>
 
@@ -128,7 +122,24 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
       <button class="admin-tab" onclick="showTab('users',this)">Watumiaji</button>
     </div>
     <div id="dashboardTab"><h3 style="font-size:15px">📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>VIP</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
-    <div id="moviesTab" style="display:none"><h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie/Series"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select><label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING NOW</label><button onclick="save()">HIFADHI</button><hr style="border-color:var(--dark-purple)"><h3 style="font-size:15px">🎬 Manage Movies</h3><div id="movieList">Loading...</div></div>
+
+    <!-- HAPA NDIO FORM IMEONGWA LINK YA DOWNLOAD -->
+    <div id="moviesTab" style="display:none"><h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3>
+      <input id="t" placeholder="Jina la Movie/Series">
+      <input id="img" placeholder="Link ya Picha">
+      <input id="v" placeholder="Link ya Video - Kutazama">
+      <input id="dl" placeholder="Link ya Download - Optional"> <!-- MPYA -->
+      <select id="type"><option value="singo">Singo</option><option value="series">Series</option></select>
+      <select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select>
+      <select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select>
+      <label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label>
+      <label><input type="checkbox" id="trending"> Weka kwenye TRENDING NOW</label>
+      <button onclick="save()">HIFADHI</button>
+      <hr style="border-color:var(--dark-purple)">
+      <h3 style="font-size:15px">🎬 Manage Movies</h3>
+      <div id="movieList">Loading...</div>
+    </div>
+
     <div id="paymentTab" style="display:none"><div class="setting-group"><h3 style="font-size:14px">⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3 style="font-size:14px">➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba: 0686436004"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3 style="font-size:14px">🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
     <div id="settingsTab" style="display:none"><h3 style="font-size:15px">⚙️ SETTINGS ZA APP</h3><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔑 Subscription Keys na Bei</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"><input id="keyWiki" placeholder="Key ya Wiki 2"><input id="priceWiki" type="number" placeholder="Bei ya Wiki 2 Tsh"></div><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔒 Security</h4><input type="password" id="newPass" placeholder="Weka Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE ALL SETTINGS</button><p id="settingsSuccess" style="color:#EC4899;display:none;font-size:12px">✅ Imehifadhiwa!</p></div>
     <div id="usersTab" style="display:none"><h3 style="font-size:15px">👥 Watumiaji</h3><div id="userList">Inapakia...</div></div>
@@ -188,12 +199,12 @@ function loadPayments(){let h='';appSettings.paymentMethods.forEach(p=>{h+=`<div
 function delPay(id){appSettings.paymentMethods=appSettings.paymentMethods.filter(p=>p.id!=id);db.collection("settings").doc("main").set(appSettings).then(()=>loadPayments())}
 
 function save(){
-  let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0};
+  let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,download:document.getElementById('dl').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0}; // DOWNLOAD IMEONGWA
   let promise = editingId? db.collection("movies").doc(editingId).update(data) : db.collection("movies").add(data);
   promise.then(()=>{alert('Imehifadhiwa');editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');})
 }
 
-function editMovie(id,data){editingId=id;showTab('movies',document.querySelectorAll('.admin-tab')[1]);document.getElementById('t').value=data.title;document.getElementById('img').value=data.thumbnail;document.getElementById('v').value=data.link;document.getElementById('type').value=data.type;document.getElementById('cat').value=data.cat;document.getElementById('price').value=data.price;document.getElementById('slide').checked=data.slide;document.getElementById('trending').checked=data.trending;}
+function editMovie(id,data){editingId=id;showTab('movies',document.querySelectorAll('.admin-tab')[1]);document.getElementById('t').value=data.title;document.getElementById('img').value=data.thumbnail;document.getElementById('v').value=data.link;document.getElementById('dl').value=data.download||'';document.getElementById('type').value=data.type;document.getElementById('cat').value=data.cat;document.getElementById('price').value=data.price;document.getElementById('slide').checked=data.slide;document.getElementById('trending').checked=data.trending;}
 function deleteMovie(id){if(confirm('Futa movie hii?')){db.collection("movies").doc(id).delete()}}
 
 function loadMoviesAdmin(){
@@ -201,7 +212,7 @@ function loadMoviesAdmin(){
   allMovies.forEach(m=>{
     h+=`<div class="movie-item">
       <img src="${m.thumbnail}">
-      <div><b>${m.title}</b><div class="views-text">Views: ${m.views||0} | ${m.cat} | Tsh ${m.price} ${m.slide?'| SLIDE':''} ${m.trending?'| TREND':''}</div></div>
+      <div><b>${m.title}</b><div class="views-text">Views: ${m.views||0} | ${m.cat} | Tsh ${m.price} ${m.download?'| DL':''}</div></div>
       <div><button class="btn-blue" onclick='editMovie("${m.docId}",${JSON.stringify(m)})'>Edit</button><br><button class="btn-red" onclick='deleteMovie("${m.docId}")'>Delete</button></div>
     </div>`
   });
@@ -212,26 +223,38 @@ function loadStats(){document.getElementById('statMovies').innerText=allMovies.l
 function loadUsers(){db.collection("users").onSnapshot(s=>{let h='';s.forEach(d=>{let u=d.data();h+=`<div class="movie-item"><div><b>${u.phone||'Guest'}</b><br>Status: ${u.status||'Free'}</div></div>`});document.getElementById('userList').innerHTML=h||'Hakuna mtumiaji';})}
 
 function groupMovies(movies){let grouped = []; let seriesMap = {};movies.forEach(m=>{if(m.type === 'series'){if(!seriesMap[m.title]){ seriesMap[m.title] = {...m, episodes:[], episodeCount:0}; }seriesMap[m.title].episodes.push(m);seriesMap[m.title].episodeCount++;}else{ grouped.push(m); }});Object.values(seriesMap).forEach(s=>grouped.push(s));return grouped;}
-
 function chunkArray(arr, size){ let result=[]; for(let i=0;i<arr.length;i+=size){ result.push(arr.slice(i,i+size)); } return result; }
+
+function downloadMovie(link){ if(link){ window.open(link, '_blank') } else { alert('Hii movie haina link ya download') } }
 
 function renderRow(containerId, movies, showTrendBadge=true){
   let grouped = groupMovies(movies);
-  let chunks = chunkArray(grouped, 5); // KILA SAFU MOVIE 5
+  let chunks = chunkArray(grouped, 5);
   let h='';
   chunks.forEach(chunk=>{
     h += `<div class="row">`;
     chunk.forEach(m=>{
-      let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : ''; // HAPA NDIO ILIKUWA NA ERROR
+      let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
       let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
       let link = m.type=='series'? m.episodes[0].link : m.link;
-      h+=`<div class="card" onclick="handlePlay('${m.docId}','${link}',${m.price})">
-        <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}<p>${m.title}</p>
+      h+=`<div class="card">
+        <img src="${m.thumbnail}" onclick="handlePlay('${m.docId}','${link}',${m.price})">
+        ${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}
+        <p onclick="handlePlay('${m.docId}','${link}',${m.price})">${m.title}</p>
+        <div class="card-actions">
+          <button class="card-btn" onclick="handlePlay('${m.docId}','${link}',${m.price})">Play</button>
+          <button class="card-btn" onclick="downloadMovie('${m.download}')">⬇️ DL</button>
+        </div>
       </div>`;
     });
     h += `</div>`;
   });
   document.getElementById(containerId).innerHTML=h||'<p style="padding:10px;font-size:11px">Hakuna movie</p>';
+}
+
+function searchMovies(){
+  searchQuery = document.getElementById('searchInput').value.toLowerCase();
+  renderHomeRow();
 }
 
 function renderTrendingRow(){
@@ -240,16 +263,10 @@ function renderTrendingRow(){
   renderRow('trendingWrap', trendingMovies, true);
 }
 
-// FUNCTION MPYA YA KUTAFUTA
-function searchMovies(){
-  searchQuery = document.getElementById('searchInput').value.toLowerCase();
-  renderHomeRow();
-}
-
 function renderHomeRow(){
   let filtered = allMovies;
   if(currentSubCat!='all'){filtered = filtered.filter(m=>m.cat==currentSubCat);}
-  if(searchQuery!=''){filtered = filtered.filter(m=>m.title.toLowerCase().includes(searchQuery));} // FILTER YA SEARCH
+  if(searchQuery!=''){filtered = filtered.filter(m=>m.title.toLowerCase().includes(searchQuery));}
   renderRow('homeWrap', filtered, false);
 }
 
