@@ -8,28 +8,26 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <style>
-:root{--purple:#A855F7;--pink:#EC4899;--gradient:linear-gradient(90deg,var(--purple),var(--pink));--bg:#0a0a0a;--card:#121212}
+:root{--purple:#A855F7;--pink:#EC4899;--gradient:linear-gradient(90deg,var(--purple),--pink));--bg:#0a0a0a;--card:#121212}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-serif;font-size:13px}
 .header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a1a1a}
 .header img{width:40px;height:40px;cursor:pointer}
 .header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px}
-
-/* BANNER IMEBIDILISHWA HAPA */
 .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s}
 .hero-slide.active{opacity:1}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.9) 0%,transparent 60%)} /* GRADIENT KUSHOTO */
-.hero-content{position:absolute;bottom:15px;left:15px;z-index:2;max-width:60%} /* KUSHOTO NA NDOGO */
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.9) 0%,transparent 60%)}
+.hero-content{position:absolute;bottom:15px;left:15px;z-index:2;max-width:60%}
 .hero-content h2{margin:0 0 8px;font-size:16px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(0,0,0,0.8)}
-.hero-btn{padding:7px 16px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 12px rgba(168,85,247,0.4);display:inline-block} /* BUTTON NDOGO */
-.hero-dots{position:absolute;bottom:8px;left:15px;transform:none;display:flex;gap:5px;z-index:2} /* DOTS KUSHOTO */
+.hero-btn{padding:7px 16px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 12px rgba(168,85,247,0.4);display:inline-block;width:auto}
+.hero-dots{position:absolute;bottom:8px;left:15px;transform:none;display:flex;gap:5px;z-index:2}
 .dot{width:6px;height:6px;border-radius:50%;background:#555}.dot.active{background:var(--gradient);width:18px;border-radius:8px}
-
 .section{margin-bottom:20px}
 .section-header{display:flex;justify-content:space-between;align-items:center;padding:0 15px;margin-bottom:8px}
-.section-title{font-size:15px;font-weight:700;text-transform:lowercase}
+.section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#FF3B30,#FF9500);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 0 4px #FF3B30)}
 .row{display:flex;gap:10px;overflow-x:auto;padding:0 15px 5px 15px;scrollbar-width:none}
 .row::-webkit-scrollbar{display:none}
 .card{flex:0 0 110px;background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid #1a1a1a}
@@ -71,14 +69,14 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 
 <div class="section" id="trendingSection">
   <div class="section-header">
-    <div class="section-title">trending now</div>
+    <div class="section-title"><span class="fire"></span>TRENDING NOW</div>
   </div>
   <div class="row" id="trendingRow"></div>
 </div>
 
 <div class="section">
   <div class="section-header">
-    <div class="section-title">home</div>
+    <div class="section-title">HOME</div>
   </div>
   <div class="sub-categories">
     <button class="sub-cat-btn active" onclick="filterSubCat('all',this)">all</button>
@@ -97,7 +95,6 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
     <button onclick="login()">INGIA</button>
     <button onclick="closeAdmin()" class="btn-gray">FUNGA</button>
   </div>
-
   <div id="form" style="display:none">
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="showTab('dashboard',this)">Dashboard</button>
@@ -198,12 +195,12 @@ function filterSubCat(cat,btn){
   renderHomeRow();
 }
 
-function renderRow(containerId, movies){
+function renderRow(containerId, movies, showTrendBadge=true){
   let grouped = groupMovies(movies);
   let h='';
   grouped.forEach(m=>{
     let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
-    let trendBadge = m.trending? `<div class="trend-badge">TREND</div>` : '';
+    let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : ''; // BADGE INAONEKANA TRENDING TU
     let link = m.type=='series'? m.episodes[0].link : m.link;
     h+=`<div class="card" onclick="handlePlay('${m.docId}','${link}',${m.price})">
       <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}<p>${m.title}</p>
@@ -215,13 +212,13 @@ function renderRow(containerId, movies){
 function renderTrendingRow(){
   let trendingMovies = allMovies.filter(m=>m.trending==true);
   document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';
-  renderRow('trendingRow', trendingMovies);
+  renderRow('trendingRow', trendingMovies, true); // TRENDING IONYESHE BADGE
 }
 
 function renderHomeRow(){
-  let filtered = allMovies;
+  let filtered = allMovies; // HOME INACHUKUA KILA KITU
   if(currentSubCat!='all'){filtered = allMovies.filter(m=>m.cat==currentSubCat);}
-  renderRow('homeRow', filtered);
+  renderRow('homeRow', filtered, false); // HOME ISIONYESHE BADGE YA TREND
 }
 
 function loadHeroBanner(){
@@ -231,7 +228,6 @@ function loadHeroBanner(){
   banner.style.display = "block";
   let slidesHTML = '';let dotsHTML = '';
   slideMovies.forEach((m, index)=>{
-    // IMEBADILISHWA: Watching Now + kushoto
     slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="handlePlay('${m.docId}','${m.link}',${m.price})">Watching Now</button></div></div>`;
     dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="showSlide(${index})"></span>`;
   });
@@ -250,7 +246,11 @@ function load(){
 }
 
 function addView(docId){db.collection("movies").doc(docId).update({views: firebase.firestore.FieldValue.increment(1)});}
-function handlePlay(id,link,price){addView(id);if(price==0){play(link)}else{showPay()}}
+function handlePlay(id,link,price){
+  addView(id);
+  document.getElementById('iframe').src=link;
+  document.getElementById('player').style.display='flex';
+}
 function showPay(){
   if(appSettings.paymentMode=='automatic'){document.getElementById('payBody').innerHTML=`<button class="btn-blue">Lipa Tsh ${appSettings.priceMwezi} - Automatic</button>`;}
   else{let h='';appSettings.paymentMethods.forEach(p=>{h+=`<button style="text-align:left" onclick="selectPay(${p.id})"><b>${p.name}</b><br>${p.number}</button>`});document.getElementById('payBody').innerHTML=h+`<button id="waBtn" style="background:#25D366;display:none" onclick="goWA()">TUMA WHATSAPP</button>`;}
@@ -259,7 +259,6 @@ function showPay(){
 function selectPay(id){selectedPayment=appSettings.paymentMethods.find(p=>p.id==id);document.getElementById('waBtn').style.display='block'}
 function goWA(){let pkg={price:appSettings.priceMwezi,key:appSettings.keyMwezi};window.open(`https://wa.me/${appSettings.whatsapp}?text=NIMELIPA Tsh${pkg.price} KWENDA ${selectedPayment.number}. NITUMIE KEY YA ${pkg.key}`,'_blank');closePay()}
 function closePay(){document.getElementById('payBox').style.display='none'}
-function play(l){document.getElementById('iframe').src=l;document.getElementById('player').style.display='flex'}
 function closePlayer(){document.getElementById('player').style.display='none';document.getElementById('iframe').src=''}
 </script>
 </body>
