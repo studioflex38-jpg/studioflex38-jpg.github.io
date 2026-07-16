@@ -11,9 +11,9 @@
   :root { --bg:#000; --gradient:linear-gradient(90deg,#A855F7,#EC4899); --green:#25D366; --red:#FF3B30; --blue:#007AFF; }
   *{box-sizing:border-box}
   html,body{margin:0;font-family:'Montserrat',sans-serif;background:#0a0a0a;color:#fff;height:100%;overflow-y:auto}
-.header{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#000;border-bottom:1px solid #111;position:relative;z-index:10}
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#000;border-bottom:1px solid #111}
 .header-left{display:flex;align-items:center;gap:10px}
-.header img{width:32px;height:32px;cursor:pointer;z-index:11}
+.header img{width:32px;height:32px;cursor:pointer}
 .header h1{margin:0;font-size:20px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s ease-in-out}
@@ -120,7 +120,6 @@ let appSettings = {};let movies = [];let logoClicks = 0;let editingDocId = null;
 var firebaseConfig = {apiKey: "AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",authDomain: "chilagu-update.firebaseapp.com",projectId: "chilagu-update",storageBucket: "chilagu-update.firebasestorage.app",messagingSenderId: "1007502056082",appId: "1:1007502056082:web:c20c43601cdae50059244b"};
 firebase.initializeApp(firebaseConfig);var db = firebase.firestore();
 
-// FUNCTION MPYA YA LOGO CLICK - IKO DIRECT KWENYE HTML
 function logoClick(){
   logoClicks++;
   if(logoClicks >= 5){
@@ -146,7 +145,7 @@ function loginAdmin(){
     document.getElementById('passSection').style.display='none';
     document.getElementById('adminForm').style.display='block';
     loadSettingsToForm();loadAdminMovies();loadPaymentMethods();loadStats();
-  }else{document.getElementById('adminError').style.display='block';}
+  }else{document.getElementById('adminError').style.display='block';setTimeout(()=>{document.getElementById('adminError').style.display='none'},2000);}
 }
 
 function loadSettingsToForm(){
@@ -190,7 +189,7 @@ function addPaymentMethod(){let method = {type: document.getElementById('payType
 function loadPaymentMethods(){let list = document.getElementById('paymentMethodsList');list.innerHTML = '';appSettings.paymentMethods.forEach(m=>{list.innerHTML += `<div class="payment-method-item"><div><h4>${m.name}</h4><p>${m.number} - ${m.owner}</p></div><button class="btn-red" style="padding:6px 10px" onclick="deletePayment(${m.id})">Futa</button></div>`;});}
 function deletePayment(id){appSettings.paymentMethods = appSettings.paymentMethods.filter(m=>m.id!=id);db.collection("chilagu_settings").doc("main").set(appSettings).then(()=>loadPaymentMethods());}
 function showPayment(){if(appSettings.paymentMode == 'automatic'){document.getElementById('payBoxBody').innerHTML = `<button class="btn-grad" style="width:100%" onclick="payAutomatic('mwezi')">Lipa Mwezi Tsh${appSettings.priceMwezi}</button><button class="btn-grad" style="width:100%;margin-top:10px" onclick="payAutomatic('wiki2')">Lipa Wiki2 Tsh${appSettings.priceWiki}</button><button class="btn-gray" style="width:100%;margin-top:10px" onclick="closeOverlay('payBox')">Funga</button>`;}else{let list = '';appSettings.paymentMethods.forEach(m=>{list += `<button style="width:100%;background:#222;border:1px solid #333;padding:12px;border-radius:8px;color:#fff;margin-bottom:8px;text-align:left" onclick="selectPayment(${m.id})"><b>${m.name}</b><br><span style="font-size:12px">${m.number}</span></button>`;});document.getElementById('payBoxBody').innerHTML = `<div style="margin-bottom:15px"><div onclick="selectPackage('mwezi', this)" style="background:#222;padding:12px;border-radius:8px;margin-bottom:8px;cursor:pointer;border:2px solid #A855F7"><h3>MWEZI - Tsh <span>${appSettings.priceMwezi}</span></h3></div><div onclick="selectPackage('wiki2', this)" style="background:#222;padding:12px;border-radius:8px;cursor:pointer;border:2px solid #333"><h3>WIKI 2 - Tsh <span>${appSettings.priceWiki}</span></h3></div></div><h3>Chagua Njia ya Kulipa</h3>${list}<div id="whatsappStep" style="display:none;margin-top:15px"><button style="width:100%;background:var(--green)" onclick="goToWhatsapp()">TUMA MUAMALA WHATSAPP</button></div><button class="btn-gray" style="width:100%;margin-top:10px" onclick="closeOverlay('payBox')">Funga</button>`;}document.getElementById("payBox").style.display="flex";}
-function payAutomatic(pkg){if(!appSettings.apiKey){alert("Weka API Key kwanza kwenye Admin");return;}alert("Malipo ya Automatic");}
+function payAutomatic(pkg){if(!appSettings.apiKey){alert("Weka API Key kwanza kwenye Admin > Payment Tab");return;}alert("Malipo ya Automatic yamewashwa. Tutaunganisha API baadae");}
 function selectPayment(id){selectedPayment = appSettings.paymentMethods.find(m=>m.id==id);document.getElementById("whatsappStep").style.display="block";}
 function goToWhatsapp(){let pkg = selectedPackage=='mwezi'? {price:appSettings.priceMwezi, key:appSettings.keyMwezi} : {price:appSettings.priceWiki, key:appSettings.keyWiki};const msg=`SALAMU. NIMELIPA Tsh${pkg.price} KWA ${selectedPayment.name} KWENDA ${selectedPayment.number}. TAFADHALI NITUMIE KEY YA ${pkg.key}`;window.open(`https://wa.me/${appSettings.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');closeOverlay('payBox');}
 function selectPackage(pkg, el){selectedPackage = pkg;document.querySelectorAll('#payBoxBody > div > div').forEach(b=>b.style.border='2px solid #333');el.style.border='2px solid #A855F7';}
