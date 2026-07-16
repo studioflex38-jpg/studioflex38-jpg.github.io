@@ -121,18 +121,21 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 </div></div>
 
 <div class="overlay" id="keyBox"><div class="box" style="max-width:400px">
-  <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Weka Access Key</h3>
-  <p style="font-size:12px">Movie hii ni ya kulipia Tsh <span id="priceTag">0</span>. Weka Access Key uliyopewa baada ya kulipa.</p>
-  <input id="keyInput" placeholder="Weka Access Key hapa">
-  <button class="btn-green" onclick="verifyKey()">FUNGUA MOVIE</button>
-  <button class="btn-blue" onclick="startBuyProcess()">NUNUA KEY</button>
-  <div id="afterPaySection" style="display:none">
-    <div class="payment-info">
-      <b>Umeshalipa?</b><br>
-      <span style="font-size:11px">Tuma uthibitisho WhatsApp ili upate Access Key yako</span>
-    </div>
+  <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Movie ya Kulipia</h3>
+  <p style="font-size:12px">Bei: Tsh <span id="priceTag">0</span></p>
+
+  <div id="beforePay">
+    <p style="font-size:12px">Lipa kwanza ili upate Access Key</p>
+    <button class="btn-blue" onclick="startBuyProcess()">NUNUA KEY</button>
+  </div>
+
+  <div id="afterPay" style="display:none">
+    <p style="font-size:12px">Weka Access Key uliyopewa baada ya kulipa</p>
+    <input id="keyInput" placeholder="Weka Access Key hapa">
+    <button class="btn-green" onclick="verifyKey()">FUNGUA MOVIE</button>
     <button class="btn-green" onclick="sendWA()">NIMELIPA - TUMA WHATSAPP</button>
   </div>
+
   <button onclick="closeKey()" class="btn-gray">FUNGA</button>
 </div></div>
 
@@ -268,12 +271,13 @@ function checkAccess(id,link,price,key){
 
   if(price > 0){
     if(appSettings.paymentMode == 'automatic' && appSettings.apiKey){
-      // AUTOMATIC MODE - INAFUNGUKA MOJA KWA MOJA BAADA YA KULIPA
+      // AUTOMATIC
       payAutomatic(price);
     }else{
-      // MANUAL MODE - LAZIMA KEY
+      // MANUAL - ONYESHA NUNUA KEY TU
       document.getElementById('priceTag').innerText = price;
-      document.getElementById('afterPaySection').style.display = 'none';
+      document.getElementById('beforePay').style.display = 'block';
+      document.getElementById('afterPay').style.display = 'none';
       paymentStarted = false;
       document.getElementById('keyBox').style.display='flex';
     }
@@ -285,11 +289,12 @@ function checkAccess(id,link,price,key){
 // MFUMO WA MANUAL
 function startBuyProcess(){
   paymentStarted = true;
-  let p = appSettings.paymentMethods[0]; // chukua ya kwanza
+  let p = appSettings.paymentMethods[0];
   window.location.href = `tel:${p.ussd}`;
 
   setTimeout(()=>{
-    document.getElementById('afterPaySection').style.display = 'block';
+    document.getElementById('beforePay').style.display = 'none';
+    document.getElementById('afterPay').style.display = 'block';
   },4000);
 }
 
@@ -305,7 +310,7 @@ function verifyKey(){
     closeKey();
     playMovie(currentPlayData.link);
   }else{
-    alert('❌ Access Key ni mbaya. Bonyeza NUNUA KEY kwanza.')
+    alert('❌ Access Key ni mbaya.')
   }
 }
 function closeKey(){document.getElementById('keyBox').style.display='none';document.getElementById('keyInput').value=''}
@@ -314,9 +319,7 @@ function closeKey(){document.getElementById('keyBox').style.display='none';docum
 function payAutomatic(price){
   document.getElementById('keyBox').style.display='flex';
   document.getElementById('priceTag').innerText = price;
-  document.querySelector('#keyBox.btn-green').style.display='none';
-  document.querySelector('#keyBox.btn-blue').innerText='INALIPIA...';
-  document.getElementById('afterPaySection').style.display='none';
+  document.getElementById('beforePay').innerHTML = '<p style="font-size:12px">Inachakata malipo...</p>';
 
   setTimeout(()=>{
     db.collection("sales").add({amount:price,date:Date.now(),movie:currentPlayData.id});
