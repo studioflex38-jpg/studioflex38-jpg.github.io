@@ -30,11 +30,15 @@
 .row{display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; scroll-snap-type:x mandatory; padding-bottom:5px}
 .row::-webkit-scrollbar{display:none}
 .card{flex:0 0 32%; max-width:32%; background:var(--card); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--dark-purple); transition:0.2s}
-.card:hover{border-color:var(--purple); transform:scale(1.02)} /* EFFECT NDOGO TU */
+.card:hover{border-color:var(--purple); transform:scale(1.02)}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:6px 8px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.badge{position:absolute;top:4px;right:4px;background:var(--gradient);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+
+/* BEGI ZOTE MBILI ZA RANGI YA APP */
+.badge{position:absolute;top:4px;right:4px;background:var(--gradient);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold;box-shadow:0 0 6px rgba(236,72,153,0.4)}
+.trend-badge{position:absolute;top:4px;left:4px;background:var(--gradient);padding:2px 6px;border-radius:4px;font-size:8px;font-weight:800;box-shadow:0 0 8px rgba(124,58,237,0.5); letter-spacing:0.5px} /* MPYA */
 .ep-badge{position:absolute;bottom:8px;right:4px;background:rgba(124,58,237,0.9);padding:2px 5px;border-radius:4px;font-size:9px;font-weight:700}
+
 .sub-categories{display:flex;gap:8px;overflow-x:auto;padding:0 15px;margin-bottom:8px;scrollbar-width:none}
 .sub-cat-btn{padding:5px 12px;background:#111;border-radius:15px;border:1px solid var(--dark-purple);color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
 .sub-cat-btn.active{background:var(--gradient);border:none;color:#fff}
@@ -54,8 +58,6 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 .episode-list{margin-top:10px}
 .episode-item{background:#111; padding:8px; border-radius:8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--dark-purple)}
 .ep-title{font-size:11px; font-weight:600}
-.ep-buttons{display:flex; gap:5px}
-.ep-btn{padding:4px 8px; font-size:9px; border-radius:5px}
 
 /* PLAYER BAR YA NDANI */
 .player-bar{position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.85); padding:10px 15px; display:flex; justify-content:space-between; align-items:center; backdrop-filter: blur(10px); border-top:1px solid var(--dark-purple)}
@@ -211,12 +213,15 @@ function renderRow(containerId, movies, episodes, showTrendBadge=true){
     h += `<div class="row">`;
     chunk.forEach(m=>{
       let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
+      
+      // HII NDO LOGIC YA BEGI: IKIWA TRENDING NA TUKO TRENDING SECTION
+      let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TRENDING</div>` : '';
+      
       let clickAction = m.type=='series'? `openEpisodes('${m.docId}','${m.title}')` : `handlePlay('${m.docId}','${m.link}',${m.price},'${m.download}','${m.title}')`;
 
-      // HAPA HAKUNA BUTTON TENA. CARD NZIMA INABONYEZEKA
       h+=`<div class="card" onclick="${clickAction}">
         <img src="${m.thumbnail}">
-        ${m.price>0?'<div class="badge">VIP</div>':''}${epBadge}
+        ${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge} <!-- BEGI ZOTE HAPA -->
         <p>${m.title}</p>
       </div>`;
     });
@@ -241,8 +246,8 @@ function openEpisodes(seriesId, seriesName){
 function closeEpisodeBox(){document.getElementById('episodeBox').style.display='none'}
 
 function searchMovies(){searchQuery = document.getElementById('searchInput').value.toLowerCase();renderHomeRow();}
-function renderTrendingRow(movies, episodes){let trendingMovies = movies.filter(m=>m.trending==true);document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';renderRow('trendingWrap', trendingMovies, episodes, true);}
-function renderHomeRow(movies, episodes){let filtered = movies;if(currentSubCat!='all'){filtered = filtered.filter(m=>m.cat==currentSubCat);}if(searchQuery!=''){filtered = filtered.filter(m=>m.title.toLowerCase().includes(searchQuery));}renderRow('homeWrap', filtered, episodes, false);}
+function renderTrendingRow(movies, episodes){let trendingMovies = movies.filter(m=>m.trending==true);document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';renderRow('trendingWrap', trendingMovies, episodes, true);} // TRUE = ONYESHA BEGI
+function renderHomeRow(movies, episodes){let filtered = movies;if(currentSubCat!='all'){filtered = filtered.filter(m=>m.cat==currentSubCat);}if(searchQuery!=''){filtered = filtered.filter(m=>m.title.toLowerCase().includes(searchQuery));}renderRow('homeWrap', filtered, episodes, false);} // FALSE = USIIONYESHE BEGI
 function filterSubCat(cat,btn){currentSubCat=cat;document.querySelectorAll('.sub-cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');load();}
 
 function load(){
