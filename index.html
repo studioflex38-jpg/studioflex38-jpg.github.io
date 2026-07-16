@@ -37,6 +37,7 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .badge-star{position:absolute;top:4px;right:4px;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 8px var(--pink)}
 .trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#EC4899,#F59E0B);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
 .series-badge{position:absolute;top:4px;left:4px;background:#2563EB;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+.ep-count{position:absolute;bottom:28px;right:4px;background:rgba(0,0,0,0.8);padding:2px 5px;border-radius:4px;font-size:9px}
 .sub-categories{display:flex;gap:8px;overflow-x:auto;padding:0 15px;margin-bottom:8px}
 .sub-cat-btn{padding:5px 12px;background:#111;border-radius:15px;border:1px solid var(--dark-purple);color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
 .sub-cat-btn.active{background:var(--gradient);border:none;color:#fff}
@@ -65,6 +66,8 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 .loading-box{text-align:center;padding:20px}
 .spinner{border:3px solid #333;border-top:3px solid var(--pink);border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:0 auto 10px}
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.episode-item{padding:10px;background:#111;margin-bottom:6px;border-radius:8px;cursor:pointer;border:1px solid var(--dark-purple)}
+.episode-item:hover{border-color:var(--purple)}
 </style>
 </head>
 <body>
@@ -127,7 +130,14 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
   <p style="font-size:12px">Movie hii ni ya kulipia. Weka Access Key uliyopewa baada ya kulipa.</p>
   <input id="keyInput" placeholder="Weka Access Key hapa">
   <button class="btn-green" onclick="verifyKey()">FUNGUA MOVIE</button>
+  <button class="btn-blue" onclick="buyKey()">NUNUA KEY</button>
   <button onclick="closeKey()" class="btn-gray">FUNGA</button>
+</div></div>
+
+<div class="overlay" id="episodeBox"><div class="box" style="max-width:500px">
+  <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="episodeTitle"></h3>
+  <div id="episodeList"></div>
+  <button onclick="closeEpisode()" class="btn-gray">FUNGA</button>
 </div></div>
 
 <div class="player-overlay" id="player">
@@ -172,21 +182,64 @@ function loadStats(){document.getElementById('statMovies').innerText=allMovies.l
 
 function chunkArray(arr, size){ let result=[]; for(let i=0;i<arr.length;i+=size){ result.push(arr.slice(i,i+size)); } return result; }
 
+function groupSeries(movies){
+  let grouped = {};
+  let singles = [];
+  movies.forEach(m=>{
+    if(m.type=='series'){
+      let baseName = m.title.replace(/ep\s*\d+/i,'').replace(/episode\s*\d+/i,'').trim();
+      if(!grouped[baseName]) grouped[baseName] = [];
+      grouped[baseName].push(m);
+    }else{
+      singles.push(m);
+    }
+  });
+  return {grouped, singles};
+}
+
 function renderRow(containerId, movies, showTrendBadge=true){
-  let chunks = chunkArray(movies, 5);
+  let {grouped, singles} = groupSeries(movies);
+  let allItems = [...singles];
+  Object.keys(grouped).forEach(key=>{
+    allItems.push({isGroup:true, title:key, episodes:grouped[key]});
+  });
+
+  let chunks = chunkArray(allItems, 5);
   let h='';
   chunks.forEach(chunk=>{
     h += `<div class="row">`;
-    chunk.forEach(m=>{
-      let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
-      let seriesBadge = m.type=='series'? `<div class="series-badge">SERIES</div>` : '';
-      let starBadge = m.price>0? `<div class="badge-star">★</div>` : '';
-      h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')"><img src="${m.thumbnail}">${starBadge}${trendBadge}${seriesBadge}<p>${m.title}</p></div>`;
+    chunk.forEach(item=>{
+      if(item.isGroup){
+        let firstEp = item.episodes[0];
+        let starBadge = firstEp.price>0? `<div class="badge-star">★</div>` : '';
+        let trendBadge = (showTrendBadge && firstEp.trending)? `<div class="trend-badge">TREND</div>` : '';
+        h+=`<div class="card" onclick="openEpisodes('${item.title}')"><img src="${firstEp.thumbnail}">${starBadge}${trendBadge}<div class="series-badge">SERIES</div><div class="ep-count">${item.episodes.length} Ep</div><p>${item.title}</p></div>`;
+      }else{
+        let m = item;
+        let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
+        let starBadge = m.price>0? `<div class="badge-star">★</div>` : '';
+        h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')"><img src="${m.thumbnail}">${starBadge}${trendBadge}<p>${m.title}</p></div>`;
+      }
     });
     h += `</div>`;
   });
   document.getElementById(containerId).innerHTML=h||'<p style="padding:10px;font-size:11px">Hakuna movie</p>';
 }
+
+function openEpisodes(seriesName){
+  let episodes = allMovies.filter(m=>m.type=='series' && m.title.includes(seriesName));
+  document.getElementById('episodeTitle').innerText = seriesName;
+  let h = '';
+  episodes.sort((a,b)=>a.title.localeCompare(b.title));
+  episodes.forEach(ep=>{
+    h += `<div class="episode-item" onclick="checkAccess('${ep.docId}','${ep.link}',${ep.price},'${ep.accessKey||''}');closeEpisode()">
+      <b>${ep.title}</b> ${ep.price>0?'<span style="color:var(--pink)">★</span>':''}
+    </div>`;
+  });
+  document.getElementById('episodeList').innerHTML = h;
+  document.getElementById('episodeBox').style.display = 'flex';
+}
+function closeEpisode(){document.getElementById('episodeBox').style.display='none'}
 
 function searchMovies(){searchQuery = document.getElementById('searchInput').value.toLowerCase();renderHomeRow();}
 function renderTrendingRow(){let trendingMovies = allMovies.filter(m=>m.trending==true);document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';renderRow('trendingWrap', trendingMovies, true);}
@@ -226,6 +279,10 @@ function verifyKey(){
     alert('❌ Access Key ni mbaya. Nunua kwanza.')
   }
 }
+function buyKey(){
+  let msg = `NATACA KUNUA KEY YA MOVIE. NIPE MAELEKEZO YA KULIPA Tsh${currentPlayData.price}`;
+  window.open(`https://wa.me/${appSettings.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
+}
 function closeKey(){document.getElementById('keyBox').style.display='none';document.getElementById('keyInput').value=''}
 
 function closePay(){document.getElementById('payBox').style.display='none'}
@@ -239,7 +296,7 @@ function closePlayer(){document.getElementById('player').style.display='none';do
 
 function addView(docId){db.collection("movies").doc(docId).update({views: firebase.firestore.FieldValue.increment(1)});}
 
-load(); // HII NDIO ILIKUWA IMEPOTEA
+load();
 </script>
 </body>
 </html>
