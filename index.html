@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Chilagu Cinema</title>
+<title>Chilagu Legacy Cinema</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -14,8 +14,6 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a1a1a}
 .header img{width:40px;height:40px;cursor:pointer}
 .header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px}
-
-/* SLIDE/BANNER */
 .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s}
 .hero-slide.active{opacity:1}
@@ -26,13 +24,10 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .hero-btn{padding:6px 14px;background:var(--gradient);border-radius:18px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 10px rgba(168,85,247,0.3)}
 .hero-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
 .dot{width:6px;height:6px;border-radius:50%;background:#444}.dot.active{background:var(--gradient);width:16px;border-radius:8px}
-
-/* CATEGORIES */
 .categories{display:flex;gap:8px;overflow-x:auto;padding:8px 15px;scrollbar-width:none}
 .categories::-webkit-scrollbar{display:none}
-.cat-btn{padding:6px 14px;background:#1a1a1a;border-radius:18px;border:1px solid #222;color:#ccc;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;transition:0.2s}
+.cat-btn{padding:6px 14px;background:#1a1a1a;border-radius:18px;border:1px solid #222;color:#ccc;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;transition:0.2s;text-transform:lowercase} /* HERUFI NDOGO */
 .cat-btn.active{background:var(--gradient);border:none;color:#fff;box-shadow:0 0 8px rgba(168,85,247,0.4)}
-
 .section-title{padding:0 15px;font-size:15px;font-weight:700;margin:12px 0 8px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px 80px 15px}
 @media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -66,26 +61,23 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 
 <div class="header">
   <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" onclick="logoClick()">
-  <h1>Chilagu Cinema</h1>
+  <h1>Chilagu Legacy Cinema</h1>
 </div>
 
-<!-- SLIDE -->
 <div class="hero-banner" id="heroBanner"></div>
 
-<!-- CATEGORIES -->
 <div class="categories" id="categories">
-  <button class="cat-btn active" onclick="filterCat('all',this)">HOME</button>
-  <button class="cat-btn" onclick="filterCat('trending',this)">TRENDING</button>
-  <button class="cat-btn" onclick="filterCat('action',this)">ACTION</button>
-  <button class="cat-btn" onclick="filterCat('love',this)">LOVE</button>
-  <button class="cat-btn" onclick="filterCat('drama',this)">DRAMA</button>
-  <button class="cat-btn" onclick="filterCat('thriller',this)">THRILLER</button>
+  <button class="cat-btn active" onclick="filterCat('all',this)">home</button>
+  <button class="cat-btn" onclick="filterCat('trending',this)">trending</button>
+  <button class="cat-btn" onclick="filterCat('action',this)">action</button>
+  <button class="cat-btn" onclick="filterCat('love',this)">love</button>
+  <button class="cat-btn" onclick="filterCat('drama',this)">drama</button>
+  <button class="cat-btn" onclick="filterCat('thriller',this)">thriller</button>
 </div>
 
-<h2 class="section-title" id="sectionTitle">HOME</h2>
+<h2 class="section-title" id="sectionTitle">home</h2>
 <div class="grid" id="movies">Inapakia...</div>
 
-<!-- ADMIN PANEL -->
 <div class="overlay" id="admin"><div class="box">
   <div id="login">
     <h3 style="font-family:Orbitron;font-size:16px">Admin Login</h3>
@@ -120,10 +112,10 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
       <input id="v" placeholder="Link ya Video">
       <select id="type"><option value="singo">Singo</option><option value="series">Series</option></select>
       <select id="cat">
-        <option value="action">Action</option>
-        <option value="love">Love</option>
-        <option value="drama">Drama</option>
-        <option value="thriller">Thriller</option>
+        <option value="action">action</option>
+        <option value="love">love</option>
+        <option value="drama">drama</option>
+        <option value="thriller">thriller</option>
       </select>
       <select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select>
       <label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label>
@@ -164,10 +156,7 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
   </div>
 </div></div>
 
-<!-- PAYMENT POPUP -->
 <div class="overlay" id="payBox"><div class="box" style="max-width:400px"><h3 style="font-family:Orbitron;font-size:15px">Lipa ili upate Key</h3><div id="payBody"></div><button onclick="closePay()" class="btn-gray">FUNGA</button></div></div>
-
-<!-- PLAYER -->
 <div class="overlay" id="player"><span onclick="closePlayer()" style="position:absolute;top:10px;right:15px;font-size:32px;cursor:pointer">X</span><iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
 
 <script>
@@ -175,17 +164,32 @@ let clicks=0, editingId=null, appSettings={}, selectedPayment=null, allMovies=[]
 var firebaseConfig={apiKey:"AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",projectId:"chilagu-update"};
 firebase.initializeApp(firebaseConfig);var db=firebase.firestore();
 
-function logoClick(){clicks++;if(clicks>=5){document.getElementById('admin').style.display='flex';clicks=0;}setTimeout(()=>clicks=0,3000)}
-function login(){if(document.getElementById('pass').value==appSettings.adminPassword){loadSettings();document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';}else{alert('Password mbaya')}}
-function closeAdmin(){document.getElementById('admin').style.display='none';document.getElementById('login').style.display='block';document.getElementById('form').style.display='none';document.getElementById('pass').value='';editingId=null}
-function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings','users'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
+function logoClick(){clicks++;if(clicks>=5){initAdmin();clicks=0;}setTimeout(()=>clicks=0,3000)}
 
-function loadSettings(){
+function initAdmin(){
   db.collection("settings").doc("main").get().then(doc=>{
     if(doc.exists){appSettings=doc.data()}else{
       appSettings={adminPassword:"ChilaguBoss2026",paymentMode:"manual",apiKey:"",apiSecret:"",vendorId:"",keyMwezi:"Chilagu-MWEZI",priceMwezi:1500,keyWiki:"Chilagu-WIKI2",priceWiki:1000,whatsapp:"255686436004",paymentMethods:[{id:1,name:"Airtel Money",number:"0686436004",owner:"Moshi Idd"}]};
       db.collection("settings").doc("main").set(appSettings)
     }
+    document.getElementById('admin').style.display='flex';
+  }).catch(()=>{appSettings={adminPassword:"ChilaguBoss2026"};document.getElementById('admin').style.display='flex';})
+}
+
+function login(){
+  let passInput = document.getElementById('pass').value;
+  let correctPass = appSettings.adminPassword || "ChilaguBoss2026";
+  if(passInput == correctPass){
+    loadSettings();document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';
+  }else{alert('Password mbaya')}
+}
+
+function closeAdmin(){document.getElementById('admin').style.display='none';document.getElementById('login').style.display='block';document.getElementById('form').style.display='none';document.getElementById('pass').value='';editingId=null}
+function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings','users'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
+
+function loadSettings(){
+  db.collection("settings").doc("main").get().then(doc=>{
+    if(doc.exists){appSettings=doc.data()}
     document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;
     document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('keyWiki').value=appSettings.keyWiki;document.getElementById('priceWiki').value=appSettings.priceWiki;document.getElementById('whatsapp').value=appSettings.whatsapp;
     togglePaymentMode();loadMoviesAdmin();loadStats();loadUsers();loadPayments();load();
@@ -235,7 +239,7 @@ function filterCat(cat,btn){
   currentFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  let title = cat=='all'?'HOME':cat=='trending'?'TRENDING':cat.toUpperCase();
+  let title = cat=='all'?'home':cat=='trending'?'trending':cat;
   document.getElementById('sectionTitle').innerText=title;
   renderMovies();
 }
@@ -258,7 +262,6 @@ function renderMovies(){
   document.getElementById('movies').innerHTML=h||'<p style="text-align:center;padding:20px;font-size:12px">Hakuna movie kwenye category hii</p>';
 }
 
-// SLIDE FUNCTION
 function loadHeroBanner(){
   const banner = document.getElementById("heroBanner");
   const slideMovies = allMovies.filter(m => m.slide === true);
