@@ -35,9 +35,11 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .section-header{display:flex;justify-content:space-between;align-items:center;padding:0 15px;margin-bottom:8px}
 .section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:#fff}
 .section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#EC4899,#7C3AED);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 0 6px var(--pink))}
-.row{display:flex;gap:10px;overflow-x:auto;padding:0 15px 5px 15px;scrollbar-width:none}
+
+/* HII NDO ILIYOBADILIKA - ROW INAONYESHA 3 NA NUSU */
+.row{display:flex; gap:8px; overflow-x:auto; padding:0 15px 5px 15px; scrollbar-width:none; scroll-snap-type:x mandatory}
 .row::-webkit-scrollbar{display:none}
-.card{flex:0 0 110px;background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid var(--dark-purple);transition:0.3s}
+.card{flex:0 0 32%; /* 3 zinaingia kamili */ max-width:32%; background:var(--card); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--dark-purple); transition:0.3s; scroll-snap-align:start}
 .card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,0.3)}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -150,7 +152,7 @@ function closeAdmin(){document.getElementById('admin').style.display='none';docu
 function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings','users'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
 
 function loadSettings(){
-  db.collection("settings").doc("main").onSnapshot(doc=>{ // LIVE SYNC
+  db.collection("settings").doc("main").onSnapshot(doc=>{
     if(doc.exists){appSettings=doc.data()}
     document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;
     document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('keyWiki').value=appSettings.keyWiki;document.getElementById('priceWiki').value=appSettings.priceWiki;document.getElementById('whatsapp').value=appSettings.whatsapp;
@@ -247,7 +249,6 @@ function loadHeroBanner(){
 function showSlide(n){const slides = document.querySelectorAll('.hero-slide');const dots = document.querySelectorAll('.dot');slides.forEach(s=>s.classList.remove('active'));dots.forEach(d=>d.classList.remove('active'));if(slides[n]) slides[n].classList.add('active');if(dots[n]) dots[n].classList.add('active');}
 
 function load(){
-  // HII NDO SIRI YAKE MZEE - LIVE SYNC
   db.collection("movies").onSnapshot(s=>{
     allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
     renderTrendingRow();
@@ -274,7 +275,6 @@ function goWA(){let pkg={price:appSettings.priceMwezi,key:appSettings.keyMwezi};
 function closePay(){document.getElementById('payBox').style.display='none'}
 function closePlayer(){document.getElementById('player').style.display='none';document.getElementById('iframe').src=''}
 
-// ANZA KUSIKILIZA DATABASE MARA MOJA APP INAFUNGUKA
 load();
 </script>
 </body>
