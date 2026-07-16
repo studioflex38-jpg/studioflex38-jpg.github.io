@@ -3,58 +3,67 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>ChiLagu Legacy Cinema</title>
+<title>Chilagu Legacy Cinema</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <style>
-:root{--purple:#A855F7;--pink:#EC4899;--gradient:linear-gradient(90deg,var(--purple),--pink));--bg:#0a0a0a;--card:#121212}
+:root{
+  --purple:#7C3AED; /* RANGI YA LOGO YAKO */
+  --pink:#EC4899;
+  --dark-purple:#4C1D95;
+  --gradient:linear-gradient(90deg,var(--purple),var(--pink));
+  --bg:#050505;
+  --card:#0F0F0F
+}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-serif;font-size:13px}
-.header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a1a1a}
-.header img{width:40px;height:40px;cursor:pointer}
-.header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px}
-.hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px}
+.header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid var(--dark-purple)}
+.header img{width:42px;height:42px;cursor:pointer}
+.header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.8px;text-shadow:0 0 10px rgba(124,58,237,0.3)} /* JINA FULL */
+.hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px;border-bottom:2px solid var(--dark-purple)}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s}
 .hero-slide.active{opacity:1}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.9) 0%,transparent 60%)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(124,58,237,0.3) 0%,transparent 60%)} /* OVERLAY YA PURPLE */
 .hero-content{position:absolute;bottom:15px;left:15px;z-index:2;max-width:60%}
 .hero-content h2{margin:0 0 8px;font-size:16px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(0,0,0,0.8)}
-.hero-btn{padding:7px 16px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 12px rgba(168,85,247,0.4);display:inline-block;width:auto}
+.hero-btn{padding:7px 16px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 15px rgba(124,58,237,0.5);display:inline-block;width:auto}
 .hero-dots{position:absolute;bottom:8px;left:15px;transform:none;display:flex;gap:5px;z-index:2}
-.dot{width:6px;height:6px;border-radius:50%;background:#555}.dot.active{background:var(--gradient);width:18px;border-radius:8px}
+.dot{width:6px;height:6px;border-radius:50%;background:#333}.dot.active{background:var(--gradient);width:18px;border-radius:8px;box-shadow:0 0 8px var(--purple)}
 .section{margin-bottom:20px}
 .section-header{display:flex;justify-content:space-between;align-items:center;padding:0 15px;margin-bottom:8px}
-.section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px}
-.section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#FF3B30,#FF9500);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 0 4px #FF3B30)}
+.section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:#fff}
+.section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#EC4899,#7C3AED);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 0 6px var(--pink))}
 .row{display:flex;gap:10px;overflow-x:auto;padding:0 15px 5px 15px;scrollbar-width:none}
 .row::-webkit-scrollbar{display:none}
-.card{flex:0 0 110px;background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid #1a1a1a}
+.card{flex:0 0 110px;background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid var(--dark-purple);transition:0.3s}
+.card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,0.3)}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.badge{position:absolute;top:4px;right:4px;background:var(--gradient);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
-.trend-badge{position:absolute;top:4px;left:4px;background:#FF3B30;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
-.ep-badge{position:absolute;bottom:28px;right:4px;background:rgba(0,0,0,0.9);padding:2px 5px;border-radius:4px;font-size:9px;font-weight:700}
+.badge{position:absolute;top:4px;right:4px;background:var(--gradient);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold;box-shadow:0 0 6px rgba(236,72,153,0.4)}
+.trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#EC4899,#F59E0B);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+.ep-badge{position:absolute;bottom:28px;right:4px;background:rgba(124,58,237,0.9);padding:2px 5px;border-radius:4px;font-size:9px;font-weight:700}
 .sub-categories{display:flex;gap:8px;overflow-x:auto;padding:0 15px;margin-bottom:10px;scrollbar-width:none}
 .sub-categories::-webkit-scrollbar{display:none}
-.sub-cat-btn{padding:5px 12px;background:#1a1a1a;border-radius:15px;border:1px solid #222;color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
-.sub-cat-btn.active{background:var(--gradient);border:none;color:#fff}
+.sub-cat-btn{padding:5px 12px;background:#111;border-radius:15px;border:1px solid var(--dark-purple);color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
+.sub-cat-btn.active{background:var(--gradient);border:none;color:#fff;box-shadow:0 0 8px rgba(124,58,237,0.4)}
 .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);justify-content:center;align-items:center;z-index:99;overflow-y:auto}
-.box{background:var(--card);padding:18px;border-radius:12px;width:95%;max-width:700px;max-height:95vh;overflow-y:auto;border:1px solid #222}
-input,select,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid #2a2a2a;background:#1a1a1a;color:#fff;font-size:13px}
+.box{background:var(--card);padding:18px;border-radius:12px;width:95%;max-width:700px;max-height:95vh;overflow-y:auto;border:1px solid var(--dark-purple)}
+input,select,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid var(--dark-purple);background:#0a0a0a;color:#fff;font-size:13px}
 button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:13px}
-.btn-red{background:#FF3B30}.btn-blue{background:#007AFF}.btn-gray{background:#2a2a2a}
+button:hover{box-shadow:0 0 12px rgba(124,58,237,0.4)}
+.btn-red{background:#DC2626}.btn-blue{background:#2563EB}.btn-gray{background:#1f1f1f}
 .admin-tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto}
-.admin-tab{flex:1;padding:10px;background:#1a1a1a;border:none;font-weight:600;font-size:12px;border-radius:8px}
-.admin-tab.active{background:var(--gradient)}
+.admin-tab{flex:1;padding:10px;background:#111;border:none;font-weight:600;font-size:12px;border-radius:8px;color:#ccc}
+.admin-tab.active{background:var(--gradient);color:#fff}
 .stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.stat{background:var(--gradient);padding:14px;border-radius:10px;text-align:center}
+.stat{background:var(--gradient);padding:14px;border-radius:10px;text-align:center;box-shadow:0 0 10px rgba(124,58,237,0.2)}
 .stat h4{margin:0;font-size:11px;opacity:0.9}.stat p{margin:6px 0 0;font-size:22px;font-weight:800;font-family:'Orbitron',sans-serif}
-.movie-item,.pay-item{background:#1a1a1a;padding:10px;border-radius:10px;margin-bottom:8px;display:flex;gap:10px;align-items:center;border:1px solid #222}
+.movie-item,.pay-item{background:#111;padding:10px;border-radius:10px;margin-bottom:8px;display:flex;gap:10px;align-items:center;border:1px solid var(--dark-purple)}
 .movie-item img{width:100px;height:56px;object-fit:cover;border-radius:6px}
 .views-text{font-size:10px;color:#888;margin-top:2px}
-.setting-group{background:#1a1a1a;padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #222}
+.setting-group{background:#111;padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid var(--dark-purple)}
 label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 </style>
 </head>
@@ -62,7 +71,7 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 
 <div class="header">
   <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" onclick="logoClick()">
-  <h1>Chilagu Legacy Cinema</h1>
+  <h1>Chilagu Legacy Cinema</h1> <!-- JINA KAMILI -->
 </div>
 
 <div class="hero-banner" id="heroBanner"></div>
@@ -90,7 +99,7 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 
 <div class="overlay" id="admin"><div class="box">
   <div id="login">
-    <h3 style="font-family:Orbitron;font-size:16px">Admin Login</h3>
+    <h3 style="font-family:Orbitron;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Chilagu Legacy Admin</h3>
     <input type="password" id="pass" placeholder="Weka Admin Password">
     <button onclick="login()">INGIA</button>
     <button onclick="closeAdmin()" class="btn-gray">FUNGA</button>
@@ -104,16 +113,16 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
       <button class="admin-tab" onclick="showTab('users',this)">Watumiaji</button>
     </div>
     <div id="dashboardTab"><h3 style="font-size:15px">📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>VIP</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
-    <div id="moviesTab" style="display:none"><h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie/Series"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select><label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING NOW</label><button onclick="save()">HIFADHI</button><hr style="border-color:#222"><h3 style="font-size:15px">🎬 Manage Movies</h3><div id="movieList">Loading...</div></div>
+    <div id="moviesTab" style="display:none"><h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie/Series"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select><label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING NOW</label><button onclick="save()">HIFADHI</button><hr style="border-color:var(--dark-purple)"><h3 style="font-size:15px">🎬 Manage Movies</h3><div id="movieList">Loading...</div></div>
     <div id="paymentTab" style="display:none"><div class="setting-group"><h3 style="font-size:14px">⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3 style="font-size:14px">➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba: 0686436004"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3 style="font-size:14px">🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
-    <div id="settingsTab" style="display:none"><h3 style="font-size:15px">⚙️ SETTINGS ZA APP</h3><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔑 Subscription Keys na Bei</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"><input id="keyWiki" placeholder="Key ya Wiki 2"><input id="priceWiki" type="number" placeholder="Bei ya Wiki 2 Tsh"></div><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔒 Security</h4><input type="password" id="newPass" placeholder="Weka Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE ALL SETTINGS</button><p id="settingsSuccess" style="color:#25D366;display:none;font-size:12px">✅ Imehifadhiwa!</p></div>
+    <div id="settingsTab" style="display:none"><h3 style="font-size:15px">⚙️ SETTINGS ZA APP</h3><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔑 Subscription Keys na Bei</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"><input id="keyWiki" placeholder="Key ya Wiki 2"><input id="priceWiki" type="number" placeholder="Bei ya Wiki 2 Tsh"></div><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔒 Security</h4><input type="password" id="newPass" placeholder="Weka Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE ALL SETTINGS</button><p id="settingsSuccess" style="color:#EC4899;display:none;font-size:12px">✅ Imehifadhiwa!</p></div>
     <div id="usersTab" style="display:none"><h3 style="font-size:15px">👥 Watumiaji</h3><div id="userList">Inapakia...</div></div>
     <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
   </div>
 </div></div>
 
-<div class="overlay" id="payBox"><div class="box" style="max-width:400px"><h3 style="font-family:Orbitron;font-size:15px">Lipa ili upate Key</h3><div id="payBody"></div><button onclick="closePay()" class="btn-gray">FUNGA</button></div></div>
-<div class="overlay" id="player"><span onclick="closePlayer()" style="position:absolute;top:10px;right:15px;font-size:32px;cursor:pointer">X</span><iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
+<div class="overlay" id="payBox"><div class="box" style="max-width:400px"><h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Lipa ili upate Key</h3><div id="payBody"></div><button onclick="closePay()" class="btn-gray">FUNGA</button></div></div>
+<div class="overlay" id="player"><span onclick="closePlayer()" style="position:absolute;top:10px;right:15px;font-size:32px;cursor:pointer;color:var(--pink)">X</span><iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
 
 <script>
 let clicks=0, editingId=null, appSettings={}, selectedPayment=null, allMovies=[], currentSubCat='all';
@@ -200,7 +209,7 @@ function renderRow(containerId, movies, showTrendBadge=true){
   let h='';
   grouped.forEach(m=>{
     let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
-    let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : ''; // BADGE INAONEKANA TRENDING TU
+    let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
     let link = m.type=='series'? m.episodes[0].link : m.link;
     h+=`<div class="card" onclick="handlePlay('${m.docId}','${link}',${m.price})">
       <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}<p>${m.title}</p>
@@ -212,13 +221,13 @@ function renderRow(containerId, movies, showTrendBadge=true){
 function renderTrendingRow(){
   let trendingMovies = allMovies.filter(m=>m.trending==true);
   document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';
-  renderRow('trendingRow', trendingMovies, true); // TRENDING IONYESHE BADGE
+  renderRow('trendingRow', trendingMovies, true);
 }
 
 function renderHomeRow(){
-  let filtered = allMovies; // HOME INACHUKUA KILA KITU
+  let filtered = allMovies;
   if(currentSubCat!='all'){filtered = allMovies.filter(m=>m.cat==currentSubCat);}
-  renderRow('homeRow', filtered, false); // HOME ISIONYESHE BADGE YA TREND
+  renderRow('homeRow', filtered, false);
 }
 
 function loadHeroBanner(){
