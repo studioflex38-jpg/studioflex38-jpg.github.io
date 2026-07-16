@@ -4,59 +4,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Chilagu Cinema</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <style>
-:root{--purple:#A855F7;--pink:#EC4899;--gradient:linear-gradient(90deg,var(--purple),var(--pink));--bg:#000}
+:root{--purple:#A855F7;--pink:#EC4899;--gradient:linear-gradient(90deg,var(--purple),var(--pink));--bg:#0a0a0a;--card:#121212}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#fff;font-family:'Montserrat',sans-serif}
-.header{padding:16px;background:#000;display:flex;gap:12px;align-items:center;position:sticky;top:0;z-index:10}
-.header img{width:45px;height:45px;cursor:pointer}
-.header h1{margin:0;font-size:22px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-serif;font-size:13px}
+.header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a1a1a}
+.header img{width:40px;height:40px;cursor:pointer}
+.header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px}
 
 /* SLIDE/BANNER */
-.hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:15px}
+.hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s}
 .hero-slide.active{opacity:1}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.8) 0%,transparent 60%)}
-.hero-content{position:absolute;bottom:15px;left:15px;right:15px;z-index:2}
-.hero-content h2{margin:0 0 8px;font-size:18px;font-weight:900;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-btn{padding:8px 18px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:12px;border:none}
-.hero-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
-.dot{width:8px;height:8px;border-radius:50%;background:#555}.dot.active{background:var(--gradient);width:20px;border-radius:10px}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,transparent 50%)}
+.hero-content{position:absolute;bottom:12px;left:12px;right:12px;z-index:2}
+.hero-content h2{margin:0 0 6px;font-size:15px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-btn{padding:6px 14px;background:var(--gradient);border-radius:18px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 10px rgba(168,85,247,0.3)}
+.hero-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+.dot{width:6px;height:6px;border-radius:50%;background:#444}.dot.active{background:var(--gradient);width:16px;border-radius:8px}
 
 /* CATEGORIES */
-.categories{display:flex;gap:10px;overflow-x:auto;padding:10px 15px;scrollbar-width:none}
+.categories{display:flex;gap:8px;overflow-x:auto;padding:8px 15px;scrollbar-width:none}
 .categories::-webkit-scrollbar{display:none}
-.cat-btn{padding:8px 16px;background:#1a1a1a;border-radius:20px;border:none;color:#fff;font-weight:600;white-space:nowrap;cursor:pointer}
-.cat-btn.active{background:var(--gradient)}
+.cat-btn{padding:6px 14px;background:#1a1a1a;border-radius:18px;border:1px solid #222;color:#ccc;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;transition:0.2s}
+.cat-btn.active{background:var(--gradient);border:none;color:#fff;box-shadow:0 0 8px rgba(168,85,247,0.4)}
 
-.section-title{padding:0 15px;font-size:18px;font-weight:700;margin:15px 0 10px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 15px 80px 15px}
+.section-title{padding:0 15px;font-size:15px;font-weight:700;margin:12px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px 80px 15px}
 @media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
-.card{background:#111;border-radius:12px;overflow:hidden;cursor:pointer;position:relative}
+.card{background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid #1a1a1a;transition:0.2s}
+.card:hover{transform:scale(1.02);border-color:#A855F7}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.card p{padding:8px;margin:0;font-size:14px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.badge{position:absolute;top:6px;right:6px;background:var(--gradient);padding:3px 8px;border-radius:6px;font-size:11px;font-weight:bold}
-.trend-badge{position:absolute;top:6px;left:6px;background:#FF3B30;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:bold}
-.ep-badge{position:absolute;bottom:40px;right:6px;background:rgba(0,0,0,0.85);padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700}
+.card p{padding:6px 8px;margin:0;font-size:12px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge{position:absolute;top:5px;right:5px;background:var(--gradient);padding:2px 6px;border-radius:5px;font-size:9px;font-weight:bold}
+.trend-badge{position:absolute;top:5px;left:5px;background:#FF3B30;padding:2px 6px;border-radius:5px;font-size:9px;font-weight:bold}
+.ep-badge{position:absolute;bottom:35px;right:5px;background:rgba(0,0,0,0.9);padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700}
 .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);justify-content:center;align-items:center;z-index:99;overflow-y:auto}
-.box{background:#111;padding:20px;border-radius:12px;width:95%;max-width:700px;max-height:95vh;overflow-y:auto;border:1px solid #222}
-input,select,button{width:100%;padding:14px;margin-top:10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:15px}
-button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:pointer;font-family:'Montserrat',sans-serif}
-.btn-red{background:#FF3B30}.btn-blue{background:#007AFF}.btn-gray{background:#333}
-.admin-tabs{display:flex;gap:5px;margin-bottom:15px;overflow-x:auto}
-.admin-tab{flex:1;padding:12px;background:#1a1a1a;border:none;font-weight:600}
+.box{background:var(--card);padding:18px;border-radius:12px;width:95%;max-width:700px;max-height:95vh;overflow-y:auto;border:1px solid #222}
+input,select,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid #2a2a2a;background:#1a1a1a;color:#fff;font-size:13px}
+button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:13px;box-shadow:0 0 12px rgba(168,85,247,0.2)}
+button:active{transform:scale(0.98)}
+.btn-red{background:#FF3B30;box-shadow:none}.btn-blue{background:#007AFF;box-shadow:none}.btn-gray{background:#2a2a2a;box-shadow:none}
+.admin-tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto}
+.admin-tab{flex:1;padding:10px;background:#1a1a1a;border:none;font-weight:600;font-size:12px;border-radius:8px}
 .admin-tab.active{background:var(--gradient)}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:15px}
-.stat{background:var(--gradient);padding:18px;border-radius:10px;text-align:center}
-.stat h4{margin:0;font-size:13px;opacity:0.9}.stat p{margin:8px 0 0;font-size:26px;font-weight:900;font-family:'Orbitron',sans-serif}
-.movie-item,.pay-item{background:#1a1a1a;padding:12px;border-radius:10px;margin-bottom:10px;display:flex;gap:12px;align-items:center}
-.movie-item img{width:120px;height:68px;object-fit:cover;border-radius:6px}
-.views-text{font-size:11px;color:#aaa;margin-top:3px}
-.setting-group{background:#1a1a1a;padding:15px;border-radius:10px;margin-bottom:15px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.stat{background:var(--gradient);padding:14px;border-radius:10px;text-align:center}
+.stat h4{margin:0;font-size:11px;opacity:0.9}.stat p{margin:6px 0 0;font-size:22px;font-weight:800;font-family:'Orbitron',sans-serif}
+.movie-item,.pay-item{background:#1a1a1a;padding:10px;border-radius:10px;margin-bottom:8px;display:flex;gap:10px;align-items:center;border:1px solid #222}
+.movie-item img{width:100px;height:56px;object-fit:cover;border-radius:6px}
+.views-text{font-size:10px;color:#888;margin-top:2px}
+.setting-group{background:#1a1a1a;padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #222}
+label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -72,11 +75,11 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 <!-- CATEGORIES -->
 <div class="categories" id="categories">
   <button class="cat-btn active" onclick="filterCat('all',this)">HOME</button>
-  <button class="cat-btn" onclick="filterCat('trending',this)">TRENDING NOW</button>
+  <button class="cat-btn" onclick="filterCat('trending',this)">TRENDING</button>
   <button class="cat-btn" onclick="filterCat('action',this)">ACTION</button>
   <button class="cat-btn" onclick="filterCat('love',this)">LOVE</button>
   <button class="cat-btn" onclick="filterCat('drama',this)">DRAMA</button>
-  <button class="cat-btn" onclick="filterCat('thriller',this)">THRILLER</button> <!-- COMEDY IMEONDOLEWA -->
+  <button class="cat-btn" onclick="filterCat('thriller',this)">THRILLER</button>
 </div>
 
 <h2 class="section-title" id="sectionTitle">HOME</h2>
@@ -85,8 +88,8 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 <!-- ADMIN PANEL -->
 <div class="overlay" id="admin"><div class="box">
   <div id="login">
-    <h3 style="font-family:Orbitron">Admin Login</h3>
-    <input type="password" id="pass" placeholder="Password: ChilaguBoss2026">
+    <h3 style="font-family:Orbitron;font-size:16px">Admin Login</h3>
+    <input type="password" id="pass" placeholder="Weka Admin Password">
     <button onclick="login()">INGIA</button>
     <button onclick="closeAdmin()" class="btn-gray">FUNGA</button>
   </div>
@@ -101,7 +104,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
     </div>
 
     <div id="dashboardTab">
-      <h3>📊 Dashboard</h3>
+      <h3 style="font-size:15px">📊 Dashboard</h3>
       <div class="stats">
         <div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div>
         <div class="stat"><h4>VIP</h4><p id="statVIP">0</p></div>
@@ -111,7 +114,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
     </div>
 
     <div id="moviesTab" style="display:none">
-      <h3>➕ Ongeza / Hariri Movie</h3>
+      <h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3>
       <input id="t" placeholder="Jina la Movie/Series">
       <input id="img" placeholder="Link ya Picha">
       <input id="v" placeholder="Link ya Video">
@@ -120,52 +123,52 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
         <option value="action">Action</option>
         <option value="love">Love</option>
         <option value="drama">Drama</option>
-        <option value="thriller">Thriller</option> <!-- COMEDY IMEONDOLEWA -->
+        <option value="thriller">Thriller</option>
       </select>
       <select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select>
       <label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label>
-      <label><input type="checkbox" id="trending"> Weka kwenye TRENDING NOW</label>
+      <label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label>
       <button onclick="save()">HIFADHI</button>
-      <hr>
-      <h3>🎬 Manage Movies</h3>
+      <hr style="border-color:#222">
+      <h3 style="font-size:15px">🎬 Manage Movies</h3>
       <div id="movieList">Loading...</div>
     </div>
 
     <div id="paymentTab" style="display:none">
-      <div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div>
-      <div id="manualMode"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba: 0686436004"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div>
-      <div id="automaticMode" style="display:none"><div class="setting-group"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div>
+      <div class="setting-group"><h3 style="font-size:14px">⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div>
+      <div id="manualMode"><div class="setting-group"><h3 style="font-size:14px">➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba: 0686436004"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div>
+      <div id="automaticMode" style="display:none"><div class="setting-group"><h3 style="font-size:14px">🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div>
       <button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button>
     </div>
 
     <div id="settingsTab" style="display:none">
-      <h3>⚙️ SETTINGS ZA APP</h3>
+      <h3 style="font-size:15px">⚙️ SETTINGS ZA APP</h3>
       <div class="setting-group">
-        <h4>🔑 Subscription Keys na Bei</h4>
+        <h4 style="font-size:13px;margin:0 0 8px">🔑 Subscription Keys na Bei</h4>
         <input id="keyMwezi" placeholder="Key ya Mwezi">
         <input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh">
         <input id="keyWiki" placeholder="Key ya Wiki 2">
         <input id="priceWiki" type="number" placeholder="Bei ya Wiki 2 Tsh">
       </div>
       <div class="setting-group">
-        <h4>🔒 Security</h4>
-        <input type="password" id="newPass" placeholder="Badili Admin Password">
+        <h4 style="font-size:13px;margin:0 0 8px">🔒 Security</h4>
+        <input type="password" id="newPass" placeholder="Weka Password Mpya">
         <input id="whatsapp" placeholder="Namba ya WhatsApp 255...">
       </div>
       <button class="btn-blue" onclick="saveSettings()">SAVE ALL SETTINGS</button>
-      <p id="settingsSuccess" style="color:#25D366;display:none">✅ Imehifadhiwa!</p>
+      <p id="settingsSuccess" style="color:#25D366;display:none;font-size:12px">✅ Imehifadhiwa!</p>
     </div>
 
-    <div id="usersTab" style="display:none"><h3>👥 Watumiaji</h3><div id="userList">Inapakia...</div></div>
-    <button onclick="closeAdmin()" class="btn-gray" style="margin-top:15px">FUNGA</button>
+    <div id="usersTab" style="display:none"><h3 style="font-size:15px">👥 Watumiaji</h3><div id="userList">Inapakia...</div></div>
+    <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
   </div>
 </div></div>
 
 <!-- PAYMENT POPUP -->
-<div class="overlay" id="payBox"><div class="box" style="max-width:400px"><h3 style="font-family:Orbitron">Lipa ili upate Key</h3><div id="payBody"></div><button onclick="closePay()" class="btn-gray">FUNGA</button></div></div>
+<div class="overlay" id="payBox"><div class="box" style="max-width:400px"><h3 style="font-family:Orbitron;font-size:15px">Lipa ili upate Key</h3><div id="payBody"></div><button onclick="closePay()" class="btn-gray">FUNGA</button></div></div>
 
 <!-- PLAYER -->
-<div class="overlay" id="player"><span onclick="closePlayer()" style="position:absolute;top:10px;right:20px;font-size:40px;cursor:pointer">X</span><iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
+<div class="overlay" id="player"><span onclick="closePlayer()" style="position:absolute;top:10px;right:15px;font-size:32px;cursor:pointer">X</span><iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
 
 <script>
 let clicks=0, editingId=null, appSettings={}, selectedPayment=null, allMovies=[], currentFilter='all';
@@ -232,7 +235,7 @@ function filterCat(cat,btn){
   currentFilter=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  let title = cat=='all'?'HOME':cat=='trending'?'TRENDING NOW':cat.toUpperCase();
+  let title = cat=='all'?'HOME':cat=='trending'?'TRENDING':cat.toUpperCase();
   document.getElementById('sectionTitle').innerText=title;
   renderMovies();
 }
@@ -246,13 +249,13 @@ function renderMovies(){
   let h='';
   grouped.forEach(m=>{
     let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
-    let trendBadge = m.trending? `<div class="trend-badge">TRENDING</div>` : '';
+    let trendBadge = m.trending? `<div class="trend-badge">TREND</div>` : '';
     let link = m.type=='series'? m.episodes[0].link : m.link;
     h+=`<div class="card" onclick="handlePlay('${m.docId}','${link}',${m.price})">
       <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}<p>${m.title}</p>
     </div>`;
   });
-  document.getElementById('movies').innerHTML=h||'<p style="text-align:center;padding:20px">Hakuna movie kwenye category hii</p>';
+  document.getElementById('movies').innerHTML=h||'<p style="text-align:center;padding:20px;font-size:12px">Hakuna movie kwenye category hii</p>';
 }
 
 // SLIDE FUNCTION
@@ -263,7 +266,7 @@ function loadHeroBanner(){
   banner.style.display = "block";
   let slidesHTML = '';let dotsHTML = '';
   slideMovies.forEach((m, index)=>{
-    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="handlePlay('${m.docId}','${m.link}',${m.price})">Tazama Sasa</button></div></div>`;
+    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="handlePlay('${m.docId}','${m.link}',${m.price})">Tazama</button></div></div>`;
     dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="showSlide(${index})"></span>`;
   });
   banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
