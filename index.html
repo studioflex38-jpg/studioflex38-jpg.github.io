@@ -68,6 +68,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .episode-item{padding:10px;background:#111;margin-bottom:6px;border-radius:8px;cursor:pointer;border:1px solid var(--dark-purple)}
 .episode-item:hover{border-color:var(--purple)}
+.payment-info{background:#111;padding:10px;border-radius:8px;margin:10px 0;border:1px dashed var(--purple)}
 </style>
 </head>
 <body>
@@ -113,24 +114,25 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
     </div>
     <div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>Za Kulipia</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
     <div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">Tsh 1500</option><option value="1000">Tsh 1000</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii - Za Kulipia tu"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
-    <div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><input id="payLogo" placeholder="Link ya Logo ya Mtandao"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
+    <div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp + Key</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><input id="payLogo" placeholder="Link ya Logo ya Mtandao"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
     <div id="settingsTab" style="display:none"><h3>⚙️ SETTINGS</h3><div class="setting-group"><h4>🔑 Subscription</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"></div><div class="setting-group"><h4>🔒 Security</h4><input type="password" id="newPass" placeholder="Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE</button></div>
     <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
   </div>
 </div></div>
 
-<div class="overlay" id="payBox"><div class="box" style="max-width:400px">
-  <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="payTitle">Chagua Mtandao</h3>
-  <div id="payBody"></div>
-  <button onclick="closePay()" class="btn-gray">FUNGA</button>
-</div></div>
-
 <div class="overlay" id="keyBox"><div class="box" style="max-width:400px">
   <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Weka Access Key</h3>
-  <p style="font-size:12px">Movie hii ni ya kulipia. Weka Access Key uliyopewa baada ya kulipa.</p>
+  <p style="font-size:12px">Movie hii ni ya kulipia Tsh <span id="priceTag">0</span>. Weka Access Key uliyopewa baada ya kulipa.</p>
   <input id="keyInput" placeholder="Weka Access Key hapa">
   <button class="btn-green" onclick="verifyKey()">FUNGUA MOVIE</button>
-  <button class="btn-blue" onclick="buyKey()">NUNUA KEY</button>
+  <button class="btn-blue" onclick="startBuyProcess()">NUNUA KEY</button>
+  <div id="afterPaySection" style="display:none">
+    <div class="payment-info">
+      <b>Umeshalipa?</b><br>
+      <span style="font-size:11px">Tuma uthibitisho WhatsApp ili upate Access Key yako</span>
+    </div>
+    <button class="btn-green" onclick="sendWA()">NIMELIPA - TUMA WHATSAPP</button>
+  </div>
   <button onclick="closeKey()" class="btn-gray">FUNGA</button>
 </div></div>
 
@@ -146,7 +148,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 </div>
 
 <script>
-let clicks=0, editingId=null, appSettings={}, allMovies=[], currentSubCat='all', searchQuery='', currentPlayData={};
+let clicks=0, editingId=null, appSettings={}, allMovies=[], currentSubCat='all', searchQuery='', currentPlayData={}, paymentStarted=false;
 var firebaseConfig={apiKey:"AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",projectId:"chilagu-update"};
 firebase.initializeApp(firebaseConfig);var db=firebase.firestore();
 
@@ -263,11 +265,38 @@ function loadHeroBanner(){
 function checkAccess(id,link,price,key){
   currentPlayData = {id,link,price,key};
   addView(id);
+
   if(price > 0){
-    document.getElementById('keyBox').style.display='flex';
+    if(appSettings.paymentMode == 'automatic' && appSettings.apiKey){
+      // AUTOMATIC MODE - INAFUNGUKA MOJA KWA MOJA BAADA YA KULIPA
+      payAutomatic(price);
+    }else{
+      // MANUAL MODE - LAZIMA KEY
+      document.getElementById('priceTag').innerText = price;
+      document.getElementById('afterPaySection').style.display = 'none';
+      paymentStarted = false;
+      document.getElementById('keyBox').style.display='flex';
+    }
   }else{
-    playMovie(link);
+    playMovie(link); // FREE
   }
+}
+
+// MFUMO WA MANUAL
+function startBuyProcess(){
+  paymentStarted = true;
+  let p = appSettings.paymentMethods[0]; // chukua ya kwanza
+  window.location.href = `tel:${p.ussd}`;
+
+  setTimeout(()=>{
+    document.getElementById('afterPaySection').style.display = 'block';
+  },4000);
+}
+
+function sendWA(){
+  let p = appSettings.paymentMethods[0];
+  let msg = `NIMELIPA Tsh${currentPlayData.price} KWENDA ${p.number} - ${p.name}. NITUMIE ACCESS KEY YA MOVIE: ${currentPlayData.id}`;
+  window.open(`https://wa.me/${appSettings.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 
 function verifyKey(){
@@ -276,16 +305,26 @@ function verifyKey(){
     closeKey();
     playMovie(currentPlayData.link);
   }else{
-    alert('❌ Access Key ni mbaya. Nunua kwanza.')
+    alert('❌ Access Key ni mbaya. Bonyeza NUNUA KEY kwanza.')
   }
-}
-function buyKey(){
-  let msg = `NATACA KUNUA KEY YA MOVIE. NIPE MAELEKEZO YA KULIPA Tsh${currentPlayData.price}`;
-  window.open(`https://wa.me/${appSettings.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function closeKey(){document.getElementById('keyBox').style.display='none';document.getElementById('keyInput').value=''}
 
-function closePay(){document.getElementById('payBox').style.display='none'}
+// MFUMO WA AUTOMATIC
+function payAutomatic(price){
+  document.getElementById('keyBox').style.display='flex';
+  document.getElementById('priceTag').innerText = price;
+  document.querySelector('#keyBox.btn-green').style.display='none';
+  document.querySelector('#keyBox.btn-blue').innerText='INALIPIA...';
+  document.getElementById('afterPaySection').style.display='none';
+
+  setTimeout(()=>{
+    db.collection("sales").add({amount:price,date:Date.now(),movie:currentPlayData.id});
+    closeKey();
+    playMovie(currentPlayData.link);
+    alert('✅ Malipo yamefanikiwa! Karibu kutazama');
+  },3000);
+}
 
 function playMovie(link){
   document.getElementById('iframe').src=link;
