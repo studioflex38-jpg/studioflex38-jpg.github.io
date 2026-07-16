@@ -77,7 +77,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 
 <div class="section" id="trendingSection">
   <div class="section-header"><div class="section-title"><span class="fire"></span>TRENDING NOW</div></div>
-  <div class="row-wrap" id="trendingWrap"></div>
+  <div class="row-wrap" id="trendingWrap"><p style="padding:10px;font-size:11px">Inapakia...</p></div>
 </div>
 
 <div class="section">
@@ -90,7 +90,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
     <button class="sub-cat-btn" onclick="filterSubCat('thriller',this)">thriller</button>
   </div>
   <div class="search-box"><input type="text" id="searchInput" placeholder="Tafuta movie..." onkeyup="searchMovies()"></div>
-  <div class="row-wrap" id="homeWrap"></div>
+  <div class="row-wrap" id="homeWrap"><p style="padding:10px;font-size:11px">Inapakia movie...</p></div>
 </div>
 
 <div class="overlay" id="admin"><div class="box">
@@ -127,20 +127,32 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 </div>
 
 <script>
-let clicks=0, editingId=null, appSettings={}, allMovies=[], currentSubCat='all', searchQuery='', selectedPayment=null, currentPlayData={};
+let clicks=0, editingId=null, appSettings={paymentMode:"manual",paymentMethods:[]}, allMovies=[], currentSubCat='all', searchQuery='', currentPlayData={};
 var firebaseConfig={apiKey:"AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",projectId:"chilagu-update"};
 firebase.initializeApp(firebaseConfig);var db=firebase.firestore();
 
+// PAKUA DATA MARA MOJA APP IKIFUNGUKA - HAITEGEMEI ADMIN
+db.collection("movies").onSnapshot(s=>{
+  allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
+  renderTrendingRow();
+  renderHomeRow();
+  loadHeroBanner();
+});
+
+db.collection("settings").doc("main").onSnapshot(doc=>{
+  if(doc.exists){appSettings=doc.data()}
+});
+
 function logoClick(){clicks++;if(clicks>=5){initAdmin();clicks=0;}setTimeout(()=>clicks=0,3000)}
-function initAdmin(){db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}else{appSettings={adminPassword:"ChilaguBoss2026",paymentMode:"manual",apiKey:"",apiSecret:"",vendorId:"",keyMwezi:"Chilagu-MWEZI",priceMwezi:1500,whatsapp:"255686436004",paymentMethods:[
+function initAdmin(){if(!appSettings.adminPassword){appSettings={adminPassword:"ChilaguBoss2026",paymentMode:"manual",apiKey:"",apiSecret:"",vendorId:"",keyMwezi:"Chilagu-MWEZI",priceMwezi:1500,whatsapp:"255686436004",paymentMethods:[
   {id:1,name:"Airtel Money",number:"0686436004",owner:"Moshi Idd",ussd:"*150*01#",logo:"https://i.postimg.cc/wMH59KmD/Screenshot-20260717-003950-(1).jpg"},
   {id:2,name:"M-Pesa",number:"0686436004",owner:"Moshi Idd",ussd:"*150*00#",logo:"https://i.postimg.cc/Nj3Qm3kK/mpesa-logo.png"}
-]};db.collection("settings").doc("main").set(appSettings)}document.getElementById('admin').style.display='flex';})}
-function login(){if(document.getElementById('pass').value == appSettings.adminPassword){loadSettings();document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';}else{alert('Password mbaya')}}
+]}};db.collection("settings").doc("main").set(appSettings)}loadSettings();document.getElementById('admin').style.display='flex';}
+function login(){if(document.getElementById('pass').value == appSettings.adminPassword){document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';}else{alert('Password mbaya')}}
 function closeAdmin(){document.getElementById('admin').style.display='none';document.getElementById('login').style.display='block';document.getElementById('form').style.display='none';document.getElementById('pass').value='';editingId=null}
 function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
 
-function loadSettings(){db.collection("settings").doc("main").onSnapshot(doc=>{if(doc.exists){appSettings=doc.data()}document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('whatsapp').value=appSettings.whatsapp;togglePaymentMode();loadMoviesAdmin();loadStats();loadPayments();})}
+function loadSettings(){document.getElementById('paymentMode').value=appSettings.paymentMode;document.getElementById('apiKey').value=appSettings.apiKey;document.getElementById('apiSecret').value=appSettings.apiSecret;document.getElementById('vendorId').value=appSettings.vendorId;document.getElementById('keyMwezi').value=appSettings.keyMwezi;document.getElementById('priceMwezi').value=appSettings.priceMwezi;document.getElementById('whatsapp').value=appSettings.whatsapp;togglePaymentMode();loadMoviesAdmin();loadStats();loadPayments();}
 function saveSettings(){appSettings.keyMwezi=document.getElementById('keyMwezi').value;appSettings.priceMwezi=parseInt(document.getElementById('priceMwezi').value);appSettings.whatsapp=document.getElementById('whatsapp').value;let newPass=document.getElementById('newPass').value; if(newPass) appSettings.adminPassword=newPass;db.collection("settings").doc("main").set(appSettings).then(()=>alert('✅ Imehifadhiwa'))}
 function togglePaymentMode(){let mode=document.getElementById('paymentMode').value;document.getElementById('manualMode').style.display=mode=='manual'?'block':'none';document.getElementById('automaticMode').style.display=mode=='automatic'?'block':'none'}
 function savePayment(){appSettings.paymentMode=document.getElementById('paymentMode').value;appSettings.apiKey=document.getElementById('apiKey').value;appSettings.apiSecret=document.getElementById('apiSecret').value;appSettings.vendorId=document.getElementById('vendorId').value;db.collection("settings").doc("main").set(appSettings).then(()=>alert('✅ Imehifadhiwa'))}
@@ -168,7 +180,7 @@ function renderRow(containerId, movies, showTrendBadge=true){
     });
     h += `</div>`;
   });
-  document.getElementById(containerId).innerHTML=h||'<p style="padding:10px;font-size:11px">Hakuna movie</p>';
+  document.getElementById(containerId).innerHTML=h||'<p style="padding:10px;font-size:11px">Hakuna movie. Ongeza kutoka Admin</p>';
 }
 
 function searchMovies(){searchQuery = document.getElementById('searchInput').value.toLowerCase();renderHomeRow();}
@@ -256,23 +268,7 @@ function playMovie(link){
 
 function closePlayer(){document.getElementById('player').style.display='none';document.getElementById('iframe').src=''}
 
-// HII NDIO ILIKUWA IMEVUNJIKA - SASA IMEREJESHWA
-function load(){
-  // 1. Pakua settings mara 1
-  db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}});
-
-  // 2. Pakua movies mara moja na zisikie mabadiliko
-  db.collection("movies").onSnapshot(s=>{
-    allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
-    renderTrendingRow();
-    renderHomeRow();
-    loadHeroBanner();
-  })
-}
-
 function addView(docId){db.collection("movies").doc(docId).update({views: firebase.firestore.FieldValue.increment(1)});}
-
-window.onload = load; // INAPAKIA MOJA KWA MOJA APP IKIFUNGUKA
 </script>
 </body>
 </html>
