@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Chilagu Legacy Cinema</title>
+<title>Chilagu Cinema</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -14,36 +14,39 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .header{padding:14px 15px;background:#000;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a1a1a}
 .header img{width:40px;height:40px;cursor:pointer}
 .header h1{margin:0;font-size:18px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px}
+
+/* BANNER IMEBIDILISHWA HAPA */
 .hero-banner{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;margin-bottom:12px}
 .hero-slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 0.8s}
 .hero-slide.active{opacity:1}
 .hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,transparent 50%)}
-.hero-content{position:absolute;bottom:12px;left:12px;right:12px;z-index:2}
-.hero-content h2{margin:0 0 6px;font-size:15px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-btn{padding:6px 14px;background:var(--gradient);border-radius:18px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 10px rgba(168,85,247,0.3)}
-.hero-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
-.dot{width:6px;height:6px;border-radius:50%;background:#444}.dot.active{background:var(--gradient);width:16px;border-radius:8px}
-.categories{display:flex;gap:8px;overflow-x:auto;padding:8px 15px;scrollbar-width:none}
-.categories::-webkit-scrollbar{display:none}
-.cat-btn{padding:6px 14px;background:#1a1a1a;border-radius:18px;border:1px solid #222;color:#ccc;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;transition:0.2s;text-transform:lowercase} /* HERUFI NDOGO */
-.cat-btn.active{background:var(--gradient);border:none;color:#fff;box-shadow:0 0 8px rgba(168,85,247,0.4)}
-.section-title{padding:0 15px;font-size:15px;font-weight:700;margin:12px 0 8px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 15px 80px 15px}
-@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}}
-.card{background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid #1a1a1a;transition:0.2s}
-.card:hover{transform:scale(1.02);border-color:#A855F7}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.9) 0%,transparent 60%)} /* GRADIENT KUSHOTO */
+.hero-content{position:absolute;bottom:15px;left:15px;z-index:2;max-width:60%} /* KUSHOTO NA NDOGO */
+.hero-content h2{margin:0 0 8px;font-size:16px;font-weight:800;font-family:'Orbitron',sans-serif;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 2px 8px rgba(0,0,0,0.8)}
+.hero-btn{padding:7px 16px;background:var(--gradient);border-radius:20px;color:#fff;font-weight:700;font-size:11px;border:none;box-shadow:0 0 12px rgba(168,85,247,0.4);display:inline-block} /* BUTTON NDOGO */
+.hero-dots{position:absolute;bottom:8px;left:15px;transform:none;display:flex;gap:5px;z-index:2} /* DOTS KUSHOTO */
+.dot{width:6px;height:6px;border-radius:50%;background:#555}.dot.active{background:var(--gradient);width:18px;border-radius:8px}
+
+.section{margin-bottom:20px}
+.section-header{display:flex;justify-content:space-between;align-items:center;padding:0 15px;margin-bottom:8px}
+.section-title{font-size:15px;font-weight:700;text-transform:lowercase}
+.row{display:flex;gap:10px;overflow-x:auto;padding:0 15px 5px 15px;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.card{flex:0 0 110px;background:var(--card);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;border:1px solid #1a1a1a}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
-.card p{padding:6px 8px;margin:0;font-size:12px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.badge{position:absolute;top:5px;right:5px;background:var(--gradient);padding:2px 6px;border-radius:5px;font-size:9px;font-weight:bold}
-.trend-badge{position:absolute;top:5px;left:5px;background:#FF3B30;padding:2px 6px;border-radius:5px;font-size:9px;font-weight:bold}
-.ep-badge{position:absolute;bottom:35px;right:5px;background:rgba(0,0,0,0.9);padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700}
+.card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge{position:absolute;top:4px;right:4px;background:var(--gradient);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+.trend-badge{position:absolute;top:4px;left:4px;background:#FF3B30;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+.ep-badge{position:absolute;bottom:28px;right:4px;background:rgba(0,0,0,0.9);padding:2px 5px;border-radius:4px;font-size:9px;font-weight:700}
+.sub-categories{display:flex;gap:8px;overflow-x:auto;padding:0 15px;margin-bottom:10px;scrollbar-width:none}
+.sub-categories::-webkit-scrollbar{display:none}
+.sub-cat-btn{padding:5px 12px;background:#1a1a1a;border-radius:15px;border:1px solid #222;color:#ccc;font-weight:600;font-size:11px;white-space:nowrap;cursor:pointer;text-transform:lowercase}
+.sub-cat-btn.active{background:var(--gradient);border:none;color:#fff}
 .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.98);justify-content:center;align-items:center;z-index:99;overflow-y:auto}
 .box{background:var(--card);padding:18px;border-radius:12px;width:95%;max-width:700px;max-height:95vh;overflow-y:auto;border:1px solid #222}
 input,select,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:1px solid #2a2a2a;background:#1a1a1a;color:#fff;font-size:13px}
-button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:13px;box-shadow:0 0 12px rgba(168,85,247,0.2)}
-button:active{transform:scale(0.98)}
-.btn-red{background:#FF3B30;box-shadow:none}.btn-blue{background:#007AFF;box-shadow:none}.btn-gray{background:#2a2a2a;box-shadow:none}
+button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:13px}
+.btn-red{background:#FF3B30}.btn-blue{background:#007AFF}.btn-gray{background:#2a2a2a}
 .admin-tabs{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto}
 .admin-tab{flex:1;padding:10px;background:#1a1a1a;border:none;font-weight:600;font-size:12px;border-radius:8px}
 .admin-tab.active{background:var(--gradient)}
@@ -61,22 +64,31 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 
 <div class="header">
   <img src="https://i.postimg.cc/LXYGQT8w/In-Shot-20260523-092931092-removebg-preview.png" onclick="logoClick()">
-  <h1>Chilagu Legacy Cinema</h1>
+  <h1>Chilagu Cinema</h1>
 </div>
 
 <div class="hero-banner" id="heroBanner"></div>
 
-<div class="categories" id="categories">
-  <button class="cat-btn active" onclick="filterCat('all',this)">home</button>
-  <button class="cat-btn" onclick="filterCat('trending',this)">trending</button>
-  <button class="cat-btn" onclick="filterCat('action',this)">action</button>
-  <button class="cat-btn" onclick="filterCat('love',this)">love</button>
-  <button class="cat-btn" onclick="filterCat('drama',this)">drama</button>
-  <button class="cat-btn" onclick="filterCat('thriller',this)">thriller</button>
+<div class="section" id="trendingSection">
+  <div class="section-header">
+    <div class="section-title">trending now</div>
+  </div>
+  <div class="row" id="trendingRow"></div>
 </div>
 
-<h2 class="section-title" id="sectionTitle">home</h2>
-<div class="grid" id="movies">Inapakia...</div>
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">home</div>
+  </div>
+  <div class="sub-categories">
+    <button class="sub-cat-btn active" onclick="filterSubCat('all',this)">all</button>
+    <button class="sub-cat-btn" onclick="filterSubCat('action',this)">action</button>
+    <button class="sub-cat-btn" onclick="filterSubCat('love',this)">love</button>
+    <button class="sub-cat-btn" onclick="filterSubCat('drama',this)">drama</button>
+    <button class="sub-cat-btn" onclick="filterSubCat('thriller',this)">thriller</button>
+  </div>
+  <div class="row" id="homeRow"></div>
+</div>
 
 <div class="overlay" id="admin"><div class="box">
   <div id="login">
@@ -94,63 +106,10 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
       <button class="admin-tab" onclick="showTab('settings',this)">Settings</button>
       <button class="admin-tab" onclick="showTab('users',this)">Watumiaji</button>
     </div>
-
-    <div id="dashboardTab">
-      <h3 style="font-size:15px">📊 Dashboard</h3>
-      <div class="stats">
-        <div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div>
-        <div class="stat"><h4>VIP</h4><p id="statVIP">0</p></div>
-        <div class="stat"><h4>Views</h4><p id="statViews">0</p></div>
-        <div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div>
-      </div>
-    </div>
-
-    <div id="moviesTab" style="display:none">
-      <h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3>
-      <input id="t" placeholder="Jina la Movie/Series">
-      <input id="img" placeholder="Link ya Picha">
-      <input id="v" placeholder="Link ya Video">
-      <select id="type"><option value="singo">Singo</option><option value="series">Series</option></select>
-      <select id="cat">
-        <option value="action">action</option>
-        <option value="love">love</option>
-        <option value="drama">drama</option>
-        <option value="thriller">thriller</option>
-      </select>
-      <select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select>
-      <label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label>
-      <label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label>
-      <button onclick="save()">HIFADHI</button>
-      <hr style="border-color:#222">
-      <h3 style="font-size:15px">🎬 Manage Movies</h3>
-      <div id="movieList">Loading...</div>
-    </div>
-
-    <div id="paymentTab" style="display:none">
-      <div class="setting-group"><h3 style="font-size:14px">⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div>
-      <div id="manualMode"><div class="setting-group"><h3 style="font-size:14px">➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba: 0686436004"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div>
-      <div id="automaticMode" style="display:none"><div class="setting-group"><h3 style="font-size:14px">🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div>
-      <button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button>
-    </div>
-
-    <div id="settingsTab" style="display:none">
-      <h3 style="font-size:15px">⚙️ SETTINGS ZA APP</h3>
-      <div class="setting-group">
-        <h4 style="font-size:13px;margin:0 0 8px">🔑 Subscription Keys na Bei</h4>
-        <input id="keyMwezi" placeholder="Key ya Mwezi">
-        <input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh">
-        <input id="keyWiki" placeholder="Key ya Wiki 2">
-        <input id="priceWiki" type="number" placeholder="Bei ya Wiki 2 Tsh">
-      </div>
-      <div class="setting-group">
-        <h4 style="font-size:13px;margin:0 0 8px">🔒 Security</h4>
-        <input type="password" id="newPass" placeholder="Weka Password Mpya">
-        <input id="whatsapp" placeholder="Namba ya WhatsApp 255...">
-      </div>
-      <button class="btn-blue" onclick="saveSettings()">SAVE ALL SETTINGS</button>
-      <p id="settingsSuccess" style="color:#25D366;display:none;font-size:12px">✅ Imehifadhiwa!</p>
-    </div>
-
+    <div id="dashboardTab"><h3 style="font-size:15px">📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>VIP</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
+    <div id="moviesTab" style="display:none"><h3 style="font-size:15px">➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie/Series"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">VIP - Tsh 1500</option><option value="1000">VIP - Tsh 1000</option></select><label><input type="checkbox" id="slide"> Weka kwenye SLIDE/BANNER</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING NOW</label><button onclick="save()">HIFADHI</button><hr style="border-color:#222"><h3 style="font-size:15px">🎬 Manage Movies</h3><div id="movieList">Loading...</div></div>
+    <div id="paymentTab" style="display:none"><div class="setting-group"><h3 style="font-size:14px">⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3 style="font-size:14px">➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba: 0686436004"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3 style="font-size:14px">🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
+    <div id="settingsTab" style="display:none"><h3 style="font-size:15px">⚙️ SETTINGS ZA APP</h3><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔑 Subscription Keys na Bei</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"><input id="keyWiki" placeholder="Key ya Wiki 2"><input id="priceWiki" type="number" placeholder="Bei ya Wiki 2 Tsh"></div><div class="setting-group"><h4 style="font-size:13px;margin:0 0 8px">🔒 Security</h4><input type="password" id="newPass" placeholder="Weka Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE ALL SETTINGS</button><p id="settingsSuccess" style="color:#25D366;display:none;font-size:12px">✅ Imehifadhiwa!</p></div>
     <div id="usersTab" style="display:none"><h3 style="font-size:15px">👥 Watumiaji</h3><div id="userList">Inapakia...</div></div>
     <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
   </div>
@@ -160,12 +119,11 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
 <div class="overlay" id="player"><span onclick="closePlayer()" style="position:absolute;top:10px;right:15px;font-size:32px;cursor:pointer">X</span><iframe id="iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div>
 
 <script>
-let clicks=0, editingId=null, appSettings={}, selectedPayment=null, allMovies=[], currentFilter='all';
+let clicks=0, editingId=null, appSettings={}, selectedPayment=null, allMovies=[], currentSubCat='all';
 var firebaseConfig={apiKey:"AIzaSyCVDXKkOYlhr5ez_dfA-jOQ8Ve_UXw5qWk",projectId:"chilagu-update"};
 firebase.initializeApp(firebaseConfig);var db=firebase.firestore();
 
 function logoClick(){clicks++;if(clicks>=5){initAdmin();clicks=0;}setTimeout(()=>clicks=0,3000)}
-
 function initAdmin(){
   db.collection("settings").doc("main").get().then(doc=>{
     if(doc.exists){appSettings=doc.data()}else{
@@ -175,7 +133,6 @@ function initAdmin(){
     document.getElementById('admin').style.display='flex';
   }).catch(()=>{appSettings={adminPassword:"ChilaguBoss2026"};document.getElementById('admin').style.display='flex';})
 }
-
 function login(){
   let passInput = document.getElementById('pass').value;
   let correctPass = appSettings.adminPassword || "ChilaguBoss2026";
@@ -183,7 +140,6 @@ function login(){
     loadSettings();document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';
   }else{alert('Password mbaya')}
 }
-
 function closeAdmin(){document.getElementById('admin').style.display='none';document.getElementById('login').style.display='block';document.getElementById('form').style.display='none';document.getElementById('pass').value='';editingId=null}
 function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','settings','users'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'}
 
@@ -235,21 +191,15 @@ function loadUsers(){db.collection("users").get().then(s=>{let h='';s.forEach(d=
 
 function groupMovies(movies){let grouped = []; let seriesMap = {};movies.forEach(m=>{if(m.type === 'series'){if(!seriesMap[m.title]){ seriesMap[m.title] = {...m, episodes:[], episodeCount:0}; }seriesMap[m.title].episodes.push(m);seriesMap[m.title].episodeCount++;}else{ grouped.push(m); }});Object.values(seriesMap).forEach(s=>grouped.push(s));return grouped;}
 
-function filterCat(cat,btn){
-  currentFilter=cat;
-  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+function filterSubCat(cat,btn){
+  currentSubCat=cat;
+  document.querySelectorAll('.sub-cat-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  let title = cat=='all'?'home':cat=='trending'?'trending':cat;
-  document.getElementById('sectionTitle').innerText=title;
-  renderMovies();
+  renderHomeRow();
 }
 
-function renderMovies(){
-  let filtered = allMovies;
-  if(currentFilter=='trending'){filtered = allMovies.filter(m=>m.trending==true);}
-  else if(currentFilter!='all'){filtered = allMovies.filter(m=>m.cat==currentFilter);}
-
-  let grouped = groupMovies(filtered);
+function renderRow(containerId, movies){
+  let grouped = groupMovies(movies);
   let h='';
   grouped.forEach(m=>{
     let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
@@ -259,7 +209,19 @@ function renderMovies(){
       <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}<p>${m.title}</p>
     </div>`;
   });
-  document.getElementById('movies').innerHTML=h||'<p style="text-align:center;padding:20px;font-size:12px">Hakuna movie kwenye category hii</p>';
+  document.getElementById(containerId).innerHTML=h||'<p style="padding:10px;font-size:11px">Hakuna</p>';
+}
+
+function renderTrendingRow(){
+  let trendingMovies = allMovies.filter(m=>m.trending==true);
+  document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';
+  renderRow('trendingRow', trendingMovies);
+}
+
+function renderHomeRow(){
+  let filtered = allMovies;
+  if(currentSubCat!='all'){filtered = allMovies.filter(m=>m.cat==currentSubCat);}
+  renderRow('homeRow', filtered);
 }
 
 function loadHeroBanner(){
@@ -269,7 +231,8 @@ function loadHeroBanner(){
   banner.style.display = "block";
   let slidesHTML = '';let dotsHTML = '';
   slideMovies.forEach((m, index)=>{
-    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="handlePlay('${m.docId}','${m.link}',${m.price})">Tazama</button></div></div>`;
+    // IMEBADILISHWA: Watching Now + kushoto
+    slidesHTML += `<div class="hero-slide ${index===0?'active':''}"><img src="${m.thumbnail}"><div class="hero-overlay"></div><div class="hero-content"><h2>${m.title}</h2><button class="hero-btn" onclick="handlePlay('${m.docId}','${m.link}',${m.price})">Watching Now</button></div></div>`;
     dotsHTML += `<span class="dot ${index===0?'active':''}" onclick="showSlide(${index})"></span>`;
   });
   banner.innerHTML = slidesHTML + `<div class="hero-dots">${dotsHTML}</div>`;
@@ -280,7 +243,8 @@ function showSlide(n){const slides = document.querySelectorAll('.hero-slide');co
 function load(){
   db.collection("movies").get().then(s=>{
     allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
-    renderMovies();
+    renderTrendingRow();
+    renderHomeRow();
     loadHeroBanner();
   })
 }
