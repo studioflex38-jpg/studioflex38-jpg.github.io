@@ -36,10 +36,11 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:#fff}
 .section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#EC4899,#7C3AED);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);filter:drop-shadow(0 0 6px var(--pink))}
 
-/* HII NDO ILIYOBADILIKA - ROW INAONYESHA 3 NA NUSU */
-.row{display:flex; gap:8px; overflow-x:auto; padding:0 15px 5px 15px; scrollbar-width:none; scroll-snap-type:x mandatory}
+/* HII NDO SAFU MPYA */
+.row-wrap{display:flex; flex-direction:column; gap:12px; padding:0 15px}
+.row{display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; scroll-snap-type:x mandatory; padding-bottom:5px}
 .row::-webkit-scrollbar{display:none}
-.card{flex:0 0 32%; /* 3 zinaingia kamili */ max-width:32%; background:var(--card); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--dark-purple); transition:0.3s; scroll-snap-align:start}
+.card{flex:0 0 32%; max-width:32%; background:var(--card); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--dark-purple); transition:0.3s; scroll-snap-align:start}
 .card:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 4px 12px rgba(124,58,237,0.3)}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -82,7 +83,7 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
   <div class="section-header">
     <div class="section-title"><span class="fire"></span>TRENDING NOW</div>
   </div>
-  <div class="row" id="trendingRow"></div>
+  <div class="row-wrap" id="trendingWrap"></div> <!-- IMEBADILIKA -->
 </div>
 
 <div class="section">
@@ -96,7 +97,7 @@ label{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px}
     <button class="sub-cat-btn" onclick="filterSubCat('drama',this)">drama</button>
     <button class="sub-cat-btn" onclick="filterSubCat('thriller',this)">thriller</button>
   </div>
-  <div class="row" id="homeRow"></div>
+  <div class="row-wrap" id="homeWrap"></div> <!-- IMEBADILIKA -->
 </div>
 
 <div class="overlay" id="admin"><div class="box">
@@ -200,23 +201,24 @@ function loadUsers(){db.collection("users").onSnapshot(s=>{let h='';s.forEach(d=
 
 function groupMovies(movies){let grouped = []; let seriesMap = {};movies.forEach(m=>{if(m.type === 'series'){if(!seriesMap[m.title]){ seriesMap[m.title] = {...m, episodes:[], episodeCount:0}; }seriesMap[m.title].episodes.push(m);seriesMap[m.title].episodeCount++;}else{ grouped.push(m); }});Object.values(seriesMap).forEach(s=>grouped.push(s));return grouped;}
 
-function filterSubCat(cat,btn){
-  currentSubCat=cat;
-  document.querySelectorAll('.sub-cat-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderHomeRow();
-}
+// HII NDO FUNCTION MPYA YA KUGANYA KWA SAFU 5
+function chunkArray(arr, size){ let result=[]; for(let i=0;i<arr.length;i+=size){ result.push(arr.slice(i,i+size)); } return result; }
 
 function renderRow(containerId, movies, showTrendBadge=true){
   let grouped = groupMovies(movies);
+  let chunks = chunkArray(grouped, 5); // KILA SAFU MOVIE 5
   let h='';
-  grouped.forEach(m=>{
-    let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
-    let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
-    let link = m.type=='series'? m.episodes[0].link : m.link;
-    h+=`<div class="card" onclick="handlePlay('${m.docId}','${link}',${m.price})">
-      <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${epBadge}<p>${m.title}</p>
-    </div>`;
+  chunks.forEach(chunk=>{
+    h += `<div class="row">`;
+    chunk.forEach(m=>{
+      let epBadge = m.type=='series'? `<div class="ep-badge">${m.episodeCount}+</div>` : '';
+      let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
+      let link = m.type=='series'? m.episodes[0].link : m.link;
+      h+=`<div class="card" onclick="handlePlay('${m.docId}','${link}',${m.price})">
+        <img src="${m.thumbnail}">${m.price>0?'<div class="badge">VIP</div>':''}${trendBadge}${ep-badge}<p>${m.title}</p>
+      </div>`;
+    });
+    h += `</div>`;
   });
   document.getElementById(containerId).innerHTML=h||'<p style="padding:10px;font-size:11px">Hakuna</p>';
 }
@@ -224,13 +226,13 @@ function renderRow(containerId, movies, showTrendBadge=true){
 function renderTrendingRow(){
   let trendingMovies = allMovies.filter(m=>m.trending==true);
   document.getElementById('trendingSection').style.display = trendingMovies.length>0? 'block' : 'none';
-  renderRow('trendingRow', trendingMovies, true);
+  renderRow('trendingWrap', trendingMovies, true);
 }
 
 function renderHomeRow(){
   let filtered = allMovies;
   if(currentSubCat!='all'){filtered = allMovies.filter(m=>m.cat==currentSubCat);}
-  renderRow('homeRow', filtered, false);
+  renderRow('homeWrap', filtered, false);
 }
 
 function loadHeroBanner(){
