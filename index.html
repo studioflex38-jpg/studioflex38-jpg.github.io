@@ -256,8 +256,12 @@ function playMovie(link){
 
 function closePlayer(){document.getElementById('player').style.display='none';document.getElementById('iframe').src=''}
 
+// HII NDIO ILIKUWA IMEVUNJIKA - SASA IMEREJESHWA
 function load(){
+  // 1. Pakua settings mara 1
   db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}});
+
+  // 2. Pakua movies mara moja na zisikie mabadiliko
   db.collection("movies").onSnapshot(s=>{
     allMovies = []; s.forEach(d=>{let m=d.data(); m.docId=d.id; allMovies.push(m);});
     renderTrendingRow();
@@ -268,7 +272,7 @@ function load(){
 
 function addView(docId){db.collection("movies").doc(docId).update({views: firebase.firestore.FieldValue.increment(1)});}
 
-load();
+window.onload = load; // INAPAKIA MOJA KWA MOJA APP IKIFUNGUKA
 </script>
 </body>
 </html>
