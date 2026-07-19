@@ -27,7 +27,7 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .section{margin-bottom:20px}
 .section-header{padding:0 15px;margin-bottom:8px}
 .section-title{font-size:15px;font-weight:800;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:#fff}
-.section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#EC4899,#7C3AED);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.section-title.fire::before{content:"";display:inline-block;width:14px;height:14px;background:linear-gradient(45deg,#FF4500,#FF0000);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
 .row-wrap{display:flex; flex-direction:column; gap:12px; padding:0 15px}
 .row{display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; scroll-snap-type:x mandatory; padding-bottom:5px}
 .row::-webkit-scrollbar{display:none}
@@ -42,7 +42,7 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .eye-icon::after{content:"";position:absolute;top:50%;left:50%;width:3px;height:3px;background:#050505;border-radius:50%;transform:translate(-50%,-50%)}
 
 .badge-star{position:absolute;top:4px;right:4px;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 8px var(--pink)}
-.trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#EC4899,#F59E0B);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
+.trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#FF4500,#FF0000);padding:2px 6px;border-radius:4px;font-size:8px;font-weight:800;box-shadow:0 0 8px #FF4500;text-transform:uppercase}
 .series-badge{position:absolute;top:4px;left:4px;background:#2563EB;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
 .ep-count{position:absolute;bottom:28px;right:4px;background:rgba(0,0,0,0.8);padding:2px 5px;border-radius:4px;font-size:9px}
 .sub-categories{display:flex;gap:8px;overflow-x:auto;padding:0 15px;margin-bottom:8px}
@@ -88,7 +88,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 <div class="hero-banner" id="heroBanner"></div>
 
 <div class="section" id="trendingSection">
-  <div class="section-header"><div class="section-title"><span class="fire"></span>TRENDING NOW</div></div>
+  <div class="section-header"><div class="section-title"><span class="fire"></span>HOT</div></div>
   <div class="row-wrap" id="trendingWrap"></div>
 </div>
 
@@ -120,7 +120,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
       <button class="admin-tab" onclick="showTab('settings',this)">Settings</button>
     </div>
     <div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>Za Kulipia</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
-    <div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">Tsh 1500</option><option value="1000">Tsh 1000</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii - Za Kulipia tu"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
+    <div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">Tsh 1500</option><option value="1000">Tsh 1000</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii - Za Kulipia tu"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye HOT</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
     <div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp + Key</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><input id="payLogo" placeholder="Link ya Logo ya Mtandao"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
     <div id="settingsTab" style="display:none"><h3>⚙️ SETTINGS</h3><div class="setting-group"><h4>🔑 Subscription</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"></div><div class="setting-group"><h4>🔒 Security</h4><input type="password" id="newPass" placeholder="Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE</button></div>
     <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
@@ -222,11 +222,11 @@ function renderRow(containerId, movies, showTrendBadge=true){
         let firstEp = item.episodes[0];
         let totalViews = item.episodes.reduce((sum,ep)=>sum+(ep.views||0),0);
         let starBadge = firstEp.price>0? `<div class="badge-star">★</div>` : '';
-        let trendBadge = (showTrendBadge && firstEp.trending)? `<div class="trend-badge">TREND</div>` : '';
+        let trendBadge = (showTrendBadge && firstEp.trending)? `<div class="trend-badge">HOT</div>` : '';
         h+=`<div class="card" onclick="openEpisodes('${item.title}')"><img src="${firstEp.thumbnail}">${starBadge}${trendBadge}<div class="series-badge">SERIES</div><div class="ep-count">${item.episodes.length} Ep</div><p>${item.title}</p><div class="card-views"><div class="eye-icon"></div>${totalViews}</div></div>`;
       }else{
         let m = item;
-        let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
+        let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">HOT</div>` : '';
         let starBadge = m.price>0? `<div class="badge-star">★</div>` : '';
         h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')"><img src="${m.thumbnail}">${starBadge}${trendBadge}<p>${m.title}</p><div class="card-views"><div class="eye-icon"></div>${m.views||0}</div></div>`;
       }
