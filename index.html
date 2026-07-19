@@ -34,6 +34,13 @@ body{margin:0;background:var(--bg);color:#e5e5e5;font-family:'Montserrat',sans-s
 .card{flex:0 0 32%; max-width:32%; background:var(--card); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--dark-purple); scroll-snap-align:start}
 .card img{width:100%;aspect-ratio:16/9;object-fit:cover}
 .card p{padding:5px 6px;margin:0;font-size:11px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* JICHO LA INSTAGRAM */
+.card-views{display:flex;align-items:center;gap:5px;padding:4px 6px 6px;font-size:10px;color:#aaa}
+.eye-icon{width:14px;height:14px;border:1.5px solid #aaa;border-radius:75% 15%;position:relative;transform:rotate(45deg)}
+.eye-icon::before{content:"";position:absolute;top:50%;left:50%;width:6px;height:6px;background:#aaa;border-radius:50%;transform:translate(-50%,-50%)}
+.eye-icon::after{content:"";position:absolute;top:50%;left:50%;width:3px;height:3px;background:#050505;border-radius:50%;transform:translate(-50%,-50%)}
+
 .badge-star{position:absolute;top:4px;right:4px;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 8px var(--pink)}
 .trend-badge{position:absolute;top:4px;left:4px;background:linear-gradient(45deg,#EC4899,#F59E0B);padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
 .series-badge{position:absolute;top:4px;left:4px;background:#2563EB;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:bold}
@@ -102,7 +109,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
   <div id="login">
     <h3 style="font-family:Orbitron;font-size:16px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Chilagu Legacy Admin</h3>
     <input type="password" id="pass" placeholder="Weka Admin Password">
-    <button onclick="login()">Login</button>
+    <button onclick="login()">INGIA</button>
     <button onclick="closeAdmin()" class="btn-gray">FUNGA</button>
   </div>
   <div id="form" style="display:none">
@@ -113,7 +120,7 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
       <button class="admin-tab" onclick="showTab('settings',this)">Settings</button>
     </div>
     <div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>Za Kulipia</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div>
-    <div id="moviesTab" style="display:none"><h3>➕ Upload / Edit Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">Tsh 1500</option><option value="1000">Tsh 1000</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii - Za Kulipia tu"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
+    <div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><select id="price"><option value="0">FREE</option><option value="1500">Tsh 1500</option><option value="1000">Tsh 1000</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii - Za Kulipia tu"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye TRENDING</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div>
     <div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="manual">1. MANUAL - WhatsApp + Key</option><option value="automatic">2. AUTOMATIC - API</option></select></div><div id="manualMode"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><input id="payLogo" placeholder="Link ya Logo ya Mtandao"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode" style="display:none"><div class="setting-group"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div>
     <div id="settingsTab" style="display:none"><h3>⚙️ SETTINGS</h3><div class="setting-group"><h4>🔑 Subscription</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"></div><div class="setting-group"><h4>🔒 Security</h4><input type="password" id="newPass" placeholder="Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE</button></div>
     <button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button>
@@ -123,19 +130,16 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 <div class="overlay" id="keyBox"><div class="box" style="max-width:400px">
   <h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Movie ya Kulipia</h3>
   <p style="font-size:12px">Bei: Tsh <span id="priceTag">0</span></p>
-
   <div id="beforePay">
-    <p style="font-size:12px">Lipa Airtel money 0686436004 kwanza ili upate Access Key</p>
+    <p style="font-size:12px">Lipa kwanza ili upate Access Key</p>
     <button class="btn-blue" onclick="startBuyProcess()">NUNUA KEY</button>
   </div>
-
   <div id="afterPay" style="display:none">
     <p style="font-size:12px">Weka Access Key uliyopewa baada ya kulipa</p>
     <input id="keyInput" placeholder="Weka Access Key hapa">
-    <button class="btn-green" onclick="verifyKey()">Play Movie</button>
+    <button class="btn-green" onclick="verifyKey()">FUNGUA MOVIE</button>
     <button class="btn-green" onclick="sendWA()">NIMELIPA - TUMA WHATSAPP</button>
   </div>
-
   <button onclick="closeKey()" class="btn-gray">FUNGA</button>
 </div></div>
 
@@ -216,14 +220,15 @@ function renderRow(containerId, movies, showTrendBadge=true){
     chunk.forEach(item=>{
       if(item.isGroup){
         let firstEp = item.episodes[0];
+        let totalViews = item.episodes.reduce((sum,ep)=>sum+(ep.views||0),0);
         let starBadge = firstEp.price>0? `<div class="badge-star">★</div>` : '';
         let trendBadge = (showTrendBadge && firstEp.trending)? `<div class="trend-badge">TREND</div>` : '';
-        h+=`<div class="card" onclick="openEpisodes('${item.title}')"><img src="${firstEp.thumbnail}">${starBadge}${trendBadge}<div class="series-badge">SERIES</div><div class="ep-count">${item.episodes.length} Ep</div><p>${item.title}</p></div>`;
+        h+=`<div class="card" onclick="openEpisodes('${item.title}')"><img src="${firstEp.thumbnail}">${starBadge}${trendBadge}<div class="series-badge">SERIES</div><div class="ep-count">${item.episodes.length} Ep</div><p>${item.title}</p><div class="card-views"><div class="eye-icon"></div>${totalViews}</div></div>`;
       }else{
         let m = item;
         let trendBadge = (showTrendBadge && m.trending)? `<div class="trend-badge">TREND</div>` : '';
         let starBadge = m.price>0? `<div class="badge-star">★</div>` : '';
-        h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')"><img src="${m.thumbnail}">${starBadge}${trendBadge}<p>${m.title}</p></div>`;
+        h+=`<div class="card" onclick="checkAccess('${m.docId}','${m.link}',${m.price},'${m.accessKey||''}')"><img src="${m.thumbnail}">${starBadge}${trendBadge}<p>${m.title}</p><div class="card-views"><div class="eye-icon"></div>${m.views||0}</div></div>`;
       }
     });
     h += `</div>`;
@@ -268,13 +273,10 @@ function loadHeroBanner(){
 function checkAccess(id,link,price,key){
   currentPlayData = {id,link,price,key};
   addView(id);
-
   if(price > 0){
     if(appSettings.paymentMode == 'automatic' && appSettings.apiKey){
-      // AUTOMATIC
       payAutomatic(price);
     }else{
-      // MANUAL - ONYESHA NUNUA KEY TU
       document.getElementById('priceTag').innerText = price;
       document.getElementById('beforePay').style.display = 'block';
       document.getElementById('afterPay').style.display = 'none';
@@ -282,16 +284,14 @@ function checkAccess(id,link,price,key){
       document.getElementById('keyBox').style.display='flex';
     }
   }else{
-    playMovie(link); // FREE
+    playMovie(link);
   }
 }
 
-// MFUMO WA MANUAL
 function startBuyProcess(){
   paymentStarted = true;
   let p = appSettings.paymentMethods[0];
   window.location.href = `tel:${p.ussd}`;
-
   setTimeout(()=>{
     document.getElementById('beforePay').style.display = 'none';
     document.getElementById('afterPay').style.display = 'block';
@@ -315,12 +315,10 @@ function verifyKey(){
 }
 function closeKey(){document.getElementById('keyBox').style.display='none';document.getElementById('keyInput').value=''}
 
-// MFUMO WA AUTOMATIC
 function payAutomatic(price){
   document.getElementById('keyBox').style.display='flex';
   document.getElementById('priceTag').innerText = price;
   document.getElementById('beforePay').innerHTML = '<p style="font-size:12px">Inachakata malipo...</p>';
-
   setTimeout(()=>{
     db.collection("sales").add({amount:price,date:Date.now(),movie:currentPlayData.id});
     closeKey();
