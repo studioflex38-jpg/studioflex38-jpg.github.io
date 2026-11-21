@@ -98,18 +98,14 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 <div class="section"><div class="section-header"><div class="section-title">HOME</div></div><div class="sub-categories"><button class="sub-cat-btn active" onclick="filterSubCat('all',this)">all</button><button class="sub-cat-btn" onclick="filterSubCat('action',this)">action</button><button class="sub-cat-btn" onclick="filterSubCat('love',this)">love</button><button class="sub-cat-btn" onclick="filterSubCat('drama',this)">drama</button><button class="sub-cat-btn" onclick="filterSubCat('thriller',this)">thriller</button></div><div class="search-box"><input type="text" id="searchInput" placeholder="Tafuta movie..." onkeyup="searchMovies()"></div><div class="row-wrap" id="homeWrap"></div></div>
 <div id="toast" class="toast"></div>
 
-<!-- WALLET - KAMA GOOGLE: EMAIL + PASSWORD YA MTEJA MWENYEWE -->
 <div class="overlay" id="walletBox"><div class="box" style="max-width:440px">
 <h3 style="font-family:Orbitron;font-size:14px">🪙 Wallet Yangu</h3>
 <div style="background:var(--gradient);padding:14px;border-radius:12px;text-align:center"><p style="margin:0;font-size:10px">TOKEN ZAKO</p><p style="margin:4px 0 0;font-size:30px;font-weight:900" id="walletBig">0</p><p style="font-size:11px" id="walletEmailShow">Hujafungua Wallet</p></div>
-
-<!-- KAMA HUJANGIA - INGIA AU JISAJILI -->
 <div id="walletNotOpen">
   <div class="auth-tabs">
     <button class="auth-tab active" id="tabLogin" onclick="showAuth('login',this)">INGIA</button>
     <button class="auth-tab" id="tabRegister" onclick="showAuth('register',this)">JISAJILI MPYA</button>
   </div>
-  <!-- INGIA -->
   <div id="authLogin">
     <p style="font-size:12px;color:#aaa">Umeshajisajili? Ingia na Email na Password yako.</p>
     <label>Email Yako:</label><input id="walletEmail" type="email" placeholder="Email yako">
@@ -117,7 +113,6 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
     <button class="btn-green" onclick="loginWallet()">🔓 INGIA KWENYE WALLET</button>
     <p style="font-size:11px;color:#888;text-align:center">Umesahau Password? Tuma Msaada hapa chini.</p>
   </div>
-  <!-- JISAJILI -->
   <div id="authRegister" style="display:none">
     <p style="font-size:12px;color:#aaa">Huna Wallet? Tengeneza hapa. Ni mara moja tu.</p>
     <label>Email Yako - Hapa ndipo tutakutumia risiti:</label><input id="regEmail" type="email" placeholder="Weka Email yako">
@@ -127,15 +122,12 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
   </div>
   <button onclick="openBuyToken()" class="btn-blue">💰 NUNUA TOKEN</button>
 </div>
-
 <div id="walletOpened" style="display:none">
   <p style="font-size:12px">Karibu! Hii ni Wallet yako.</p>
-  <p style="font-size:11px;color:#aaa">Ukinunua Token tena, zitaongezeka hapa. Ukiondoka na kurudi, ingia na Email na Password yako, utakuta Token zako ziko.</p>
   <button onclick="openBuyToken()" class="btn-blue">➕ ONGEZA TOKEN</button>
   <button onclick="logoutWallet()" class="btn-dark">🚪 TOKA KWENYE WALLET</button>
   <button onclick="closeWallet()" class="btn-gray">FUNGA</button>
 </div>
-
 <div class="help-box">
 <h4 style="margin:0 0 6px;font-size:12px">❓ MSAADA</h4>
 <p>• Tsh 250 = 50 Token</p>
@@ -171,15 +163,15 @@ button{background:var(--gradient);color:#fff;font-weight:700;border:none;cursor:
 <button onclick="closeBuyToken()" class="btn-gray">FUNGA</button>
 </div></div>
 
-<div class="overlay" id="admin"><div class="box"><div id="login"><h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Chilagu Legacy Admin</h3><input type="password" id="pass" placeholder="Weka Admin Password"><button onclick="login()">INGIA</button><button onclick="closeAdmin()" class="btn-gray">FUNGA</button></div><div id="form" style="display:none"><div class="admin-tabs"><button class="admin-tab active" onclick="showTab('dashboard',this)">Dashboard</button><button class="admin-tab" onclick="showTab('movies',this)">Movies</button><button class="admin-tab" onclick="showTab('payment',this)">Malipo</button><button class="admin-tab" onclick="showTab('support',this)">Msaada</button><button class="admin-tab" onclick="showTab('settings',this)">Settings</button></div><div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>Za Kulipia</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div><div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><label style="font-size:11px;color:#aaa">Kiwango cha Kuingia</label><select id="price"><option value="0">FREE - Anaingia bila Token</option><option value="50">STANDARD - 50 Token za kuingia</option><option value="150">GOLD - 150 Token za kuingia</option><option value="250">PREMIUM 👑 - 250 Token za kuingia</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye HOT</label><button onclick="save()">HIFADHI</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div><div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="automatic">AUTOMATIC - Email Auto Key</option><option value="manual">MANUAL - WhatsApp + Key</option></select></div><div id="manualMode" style="display:none"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode"><div class="setting-group"><h3>🔑 Google Script URL</h3><input id="googleScriptUrl" placeholder="Weka Google Script URL"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div><div id="supportTab" style="display:none"><h3>🆘 Msaada wa Wateja - Jibu Hapa</h3><div id="supportList">Loading...</div></div><div id="settingsTab" style="display:none"><h3>⚙️ SETTINGS</h3><div class="setting-group"><h4>🔑 Subscription</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"></div><div class="setting-group"><h4>🔒 Security</h4><input type="password" id="newPass" placeholder="Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE</button></div><button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button></div></div></div>
+<div class="overlay" id="admin"><div class="box"><div id="login"><h3 style="font-family:Orbitron;font-size:15px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Chilagu Legacy Admin</h3><input type="password" id="pass" placeholder="Weka Admin Password"><button onclick="login()">INGIA</button><button onclick="closeAdmin()" class="btn-gray">FUNGA</button></div><div id="form" style="display:none"><div class="admin-tabs"><button class="admin-tab active" onclick="showTab('dashboard',this)">Dashboard</button><button class="admin-tab" onclick="showTab('movies',this)">Movies</button><button class="admin-tab" onclick="showTab('payment',this)">Malipo</button><button class="admin-tab" onclick="showTab('support',this)">Msaada</button><button class="admin-tab" onclick="showTab('tangazo',this)">📢 Tangazo</button><button class="admin-tab" onclick="showTab('settings',this)">Settings</button></div><div id="dashboardTab"><h3>📊 Dashboard</h3><div class="stats"><div class="stat"><h4>Movies</h4><p id="statMovies">0</p></div><div class="stat"><h4>Za Kulipia</h4><p id="statVIP">0</p></div><div class="stat"><h4>Views</h4><p id="statViews">0</p></div><div class="stat"><h4>Mauzo</h4><p id="statSales">0</p></div></div></div><div id="moviesTab" style="display:none"><h3>➕ Ongeza / Hariri Movie</h3><input id="t" placeholder="Jina la Movie"><input id="img" placeholder="Link ya Picha"><input id="v" placeholder="Link ya Video"><select id="type"><option value="singo">Singo</option><option value="series">Series</option></select><select id="cat"><option value="action">action</option><option value="love">love</option><option value="drama">drama</option><option value="thriller">thriller</option></select><label style="font-size:11px;color:#aaa">Kiwango cha Kuingia</label><select id="price"><option value="0">FREE - Anaingia bila Token</option><option value="50">STANDARD - 50 Token za kuingia</option><option value="150">GOLD - 150 Token za kuingia</option><option value="250">PREMIUM 👑 - 250 Token za kuingia</option></select><input id="accessKey" placeholder="Weka Access Key ya Movie hii"><label><input type="checkbox" id="slide"> Weka kwenye SLIDE</label><label><input type="checkbox" id="trending"> Weka kwenye HOT</label><label><input type="checkbox" id="notifyUsers" checked> 📧 Tuma Notification kwa wateja wote kuhusu Movie hii mpya</label><button onclick="save()">HIFADHI NA TUMA NOTIFICATION</button><hr><h3>🎬 Manage</h3><div id="movieList">Loading...</div></div><div id="paymentTab" style="display:none"><div class="setting-group"><h3>⚙️ CHAGUA MFUMO WA MALIPO</h3><select id="paymentMode" onchange="togglePaymentMode()"><option value="automatic">AUTOMATIC - Email Auto Key</option><option value="manual">MANUAL - WhatsApp + Key</option></select></div><div id="manualMode" style="display:none"><div class="setting-group"><h3>➕ Ongeza Namba</h3><input id="payName" placeholder="Jina: Airtel Money"><input id="payNumber" placeholder="Namba"><input id="payOwner" placeholder="Jina la Mmiliki"><button class="btn-blue" onclick="addPayment()">ONGEZA</button></div><div id="paymentList"></div></div><div id="automaticMode"><div class="setting-group"><h3>🔑 Google Script URL</h3><input id="googleScriptUrl" placeholder="Weka Google Script URL"><h3>🔑 API Keys</h3><input id="apiKey" placeholder="API Key"><input id="apiSecret" placeholder="Secret"><input id="vendorId" placeholder="Vendor ID"></div></div><button class="btn-blue" onclick="savePayment()">SAVE PAYMENT</button></div><div id="supportTab" style="display:none"><h3>🆘 Msaada wa Wateja - Jibu Hapa</h3><div id="supportList">Loading...</div></div><div id="tangazoTab" style="display:none"><h3>📢 Tuma Tangazo kwa Wateja Wote</h3><p style="font-size:11px;color:#aaa">Ujumbe utatumwa kwenye Email za wateja wote waliojisajili. Kama notification.</p><label>Kichwa cha Tangazo:</label><input id="broadcastTitle" placeholder="Mfano: Ofa Mpya!"><label>Ujumbe:</label><input id="broadcastMsg" placeholder="Andika ujumbe wako hapa..."><button class="btn-green" onclick="sendBroadcast()">📢 TUMA KWA WOTE</button><p id="broadcastStatus" style="font-size:11px;color:#4ade80;text-align:center"></p></div><div id="settingsTab" style="display:none"><h3>⚙️ SETTINGS</h3><div class="setting-group"><h4>🔑 Subscription</h4><input id="keyMwezi" placeholder="Key ya Mwezi"><input id="priceMwezi" type="number" placeholder="Bei ya Mwezi Tsh"></div><div class="setting-group"><h4>🔒 Security</h4><input type="password" id="newPass" placeholder="Password Mpya"><input id="whatsapp" placeholder="Namba ya WhatsApp 255..."></div><button class="btn-blue" onclick="saveSettings()">SAVE</button></div><button onclick="closeAdmin()" class="btn-gray" style="margin-top:12px">FUNGA</button></div></div></div>
 
 <div class="overlay" id="keyBox"><div class="box" style="max-width:420px">
 <div class="step-dots" id="stepDots"><span class="step-dot active" id="dot1">1</span><div class="step-line"></div><span class="step-dot" id="dot2">2</span><div class="step-line"></div><span class="step-dot" id="dot3">3</span><div class="step-line"></div><span class="step-dot" id="dot4">4</span><div class="step-line"></div><span class="step-dot" id="dot5">5</span></div>
 <div id="step1"><h3 style="font-family:Orbitron;font-size:14px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🪙 Nunua Token</h3><p style="font-size:12px">Kifurushi: <b id="stepMovieName"></b></p><p style="font-size:12px">Bei: <b style="color:var(--pink)">Tsh <span id="priceTag">0</span></b> - Utapata <b id="tokenGetShow">0 Token</b></p><div id="buyNeedLogin" style="display:none;background:#3a0a0a;border:1px solid #ff4444;border-radius:10px;padding:10px;font-size:12px">⚠️ Kwanza Jisajili / Ingia kwenye Wallet ili Token ziingie kwenye akaunti yako.</div><div style="background:#111;border:1px dashed var(--pink);border-radius:10px;padding:10px;text-align:center;margin-top:10px"><p style="font-size:10px;color:#aaa">LIPA KWENDA</p><b style="font-size:18px;letter-spacing:1px">0686436004</b><p style="font-size:11px;color:#aaa">Jina: Moshi Idd</p></div><button onclick="goToStep2()">➡️ NEXT - CHAGUA MTANDAO</button><button onclick="closeKey()" class="btn-gray">FUNGA</button></div>
 <div id="step2" style="display:none"><h3 style="font-family:Orbitron;font-size:14px">📱 Chagua Mtandao</h3><div id="networkList"></div><button onclick="goBackToStep1()" class="btn-dark">⬅️ RUDI NYUMA</button></div>
 <div id="step3" style="display:none"><div id="ussdMain"><h3 style="font-family:Orbitron;font-size:14px">💳 Lipa kwa USSD</h3><p style="font-size:11px;color:#aaa">Umechagua: <b id="chosenNetworkName" style="color:#fff"></b></p><div class="ussd-box"><p style="font-size:10px;color:#aaa">PIGA USSD HII:</p><div class="ussd-code" id="chosenUSSD">*150*01#</div><p style="font-size:12px">Tuma Kwenda: <b style="font-size:15px">0686436004</b></p><p style="font-size:12px">Jina: <b>Moshi Idd</b></p><p style="font-size:12px">Kiasi: <b style="color:var(--pink)">Tsh <span class="priceTag2">0</span></b></p></div><button class="btn-blue" onclick="dialUSSD()">📞 BONFYA HAPA KUPIGA USSD</button><button onclick="copyUSSD()" class="btn-dark">📋 COPY USSD</button><button onclick="goBackToStep2()" class="btn-dark">⬅️ BADILISHA MTANDAO</button></div><div id="returnOnlyBox" style="display:none"><h3 style="font-family:Orbitron;font-size:14px">✅ Umemaliza Kulipa?</h3><div style="background:#111;border:1px solid #16A34A;border-radius:12px;padding:16px;text-align:center;margin-top:10px"><p style="font-size:24px">✅</p><p style="font-size:13px;font-weight:700">Umerudi kutoka kulipa</p><p id="waitMsg" style="font-size:11px;color:#aaa"></p></div><button id="continueBtn" onclick="goToStep4()" class="btn-green" style="font-size:14px;padding:14px">✅ NIMESHALIPA - ENDELEA ➡️</button><button onclick="showUSSDagain()" class="btn-dark">↩️ SIKUMALIZA - RUDI KWENYE USSD</button></div></div>
-<div id="step4" style="display:none"><h3 style="font-family:Orbitron;font-size:14px">✅ Thibitisha Muamala</h3><p style="font-size:12px">Wallet: <b id="confirmEmailShow" style="color:#fff"></b></p><p style="font-size:11px;color:#aaa">Token zitaingia kwenye Wallet hii moja kwa moja. Hutakiwi kuweka Email tena.</p><label>Namba ya Muamala (kama ilivyo kwenye SMS):</label><input id="customerTransId" placeholder="Kama ilivyo kwenye SMS" autocomplete="off"><button class="btn-blue" id="sendEmailBtn" onclick="confirmPayment()">📧 THIBITISHA MUAMALA NA ONGEZA TOKEN</button><p id="emailStatus" style="font-size:11px;color:#4ade80;text-align:center;line-height:1.5"></p><button onclick="goBackToStep3Return()" class="btn-dark">⬅️ RUDI NYUMA</button></div>
-<div id="step5" style="display:none"><h3 style="font-family:Orbitron;font-size:14px">✅ Token Zimeongezeka!</h3><div style="background:#111;border:1px solid #16A34A;border-radius:10px;padding:14px;text-align:center"><p style="font-size:24px">✅</p><p style="font-size:13px">Umeongeza <b id="addedTokensShow">0</b> Token</p><p style="font-size:13px">Jumla sasa: <b id="totalTokensShow" style="color:var(--pink)">0</b> Token</p><p style="font-size:11px;color:#aaa">Wallet: <b id="showEmailSent"></b></p></div><button class="btn-green" onclick="finishBuy()">🎬 ENDELEA KUTAZAMA</button></div>
+<div id="step4" style="display:none"><h3 style="font-family:Orbitron;font-size:14px">✅ Thibitisha Muamala</h3><p style="font-size:12px">Wallet: <b id="confirmEmailShow" style="color:#fff"></b></p><p style="font-size:11px;color:#aaa">Token zitaingia kwenye Wallet hii moja kwa moja. Risiti itatumwa kwenye Email hii.</p><label>Namba ya Muamala (kama ilivyo kwenye SMS):</label><input id="customerTransId" placeholder="Kama ilivyo kwenye SMS" autocomplete="off"><button class="btn-blue" id="sendEmailBtn" onclick="confirmPayment()">📧 THIBITISHA MUAMALA NA ONGEZA TOKEN</button><p id="emailStatus" style="font-size:11px;color:#4ade80;text-align:center;line-height:1.5"></p><button onclick="goBackToStep3Return()" class="btn-dark">⬅️ RUDI NYUMA</button></div>
+<div id="step5" style="display:none"><h3 style="font-family:Orbitron;font-size:14px">✅ Token Zimeongezeka!</h3><div style="background:#111;border:1px solid #16A34A;border-radius:10px;padding:14px;text-align:center"><p style="font-size:24px">✅</p><p style="font-size:13px">Umeongeza <b id="addedTokensShow">0</b> Token</p><p style="font-size:13px">Jumla sasa: <b id="totalTokensShow" style="color:var(--pink)">0</b> Token</p><p style="font-size:11px;color:#aaa">Wallet: <b id="showEmailSent"></b></p><p style="font-size:11px;color:#4ade80">🧾 Risiti imetumwa kwenye Email yako!</p></div><button class="btn-green" onclick="finishBuy()">🎬 ENDELEA KUTAZAMA</button></div>
 </div></div>
 
 <div class="overlay" id="episodeBox"><div class="box" style="max-width:500px"><h3 style="font-family:Orbitron;font-size:14px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="episodeTitle"></h3><div id="episodeList"></div><button onclick="closeEpisode()" class="btn-gray">FUNGA</button></div></div>
@@ -216,7 +208,7 @@ function logoClick(){clicks++;if(clicks>=5){initAdmin();clicks=0;}setTimeout(()=
 function initAdmin(){db.collection("settings").doc("main").get().then(doc=>{if(doc.exists){appSettings=doc.data()}else{appSettings={adminPassword:"ChilaguBoss2026",paymentMode:"automatic",googleScriptUrl:GOOGLE_SCRIPT_URL,apiKey:"",apiSecret:"",vendorId:"",keyMwezi:"Chilagu-MWEZI",priceMwezi:1500,whatsapp:"255686436004",paymentMethods:DEFAULT_NETWORKS};db.collection("settings").doc("main").set(appSettings)}document.getElementById('admin').style.display='flex';})}
 function login(){if(document.getElementById('pass').value == appSettings.adminPassword){loadSettings();document.getElementById('login').style.display='none';document.getElementById('form').style.display='block';}else{alert('Password mbaya')}}
 function closeAdmin(){document.getElementById('admin').style.display='none';document.getElementById('login').style.display='block';document.getElementById('form').style.display='none';document.getElementById('pass').value='';editingId=null}
-function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','support','settings'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'; if(tab=='support') loadSupport();}
+function showTab(tab,btn){document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['dashboard','movies','payment','support','tangazo','settings'].forEach(t=>document.getElementById(t+'Tab').style.display='none');document.getElementById(tab+'Tab').style.display='block'; if(tab=='support') loadSupport();}
 function loadSettings(){document.getElementById('paymentMode').value=appSettings.paymentMode||"automatic";if(document.getElementById('googleScriptUrl')) document.getElementById('googleScriptUrl').value=appSettings.googleScriptUrl||GOOGLE_SCRIPT_URL;document.getElementById('apiKey').value=appSettings.apiKey||"";document.getElementById('apiSecret').value=appSettings.apiSecret||"";document.getElementById('vendorId').value=appSettings.vendorId||"";document.getElementById('keyMwezi').value=appSettings.keyMwezi||"";document.getElementById('priceMwezi').value=appSettings.priceMwezi||"";document.getElementById('whatsapp').value=appSettings.whatsapp||"255686436004";togglePaymentMode();loadMoviesAdmin();loadStats();loadPayments();loadSupport();}
 function loadSupport(){ db.collection("support").orderBy("date","desc").onSnapshot(s=>{ let h=''; s.forEach(d=>{let m=d.data(); let replyHtml = m.reply ? `<div class="reply-box">✅ <b>Jibu lako:</b> ${m.reply}</div>` : `<div style="font-size:11px;color:#888;margin-top:6px">Bado hujajibu</div>`; h+=`<div class="support-item"><b>${m.type} - ${m.name||""}</b><br><span style="font-size:12px">${m.msg}</span><br><span style="font-size:10px;color:#888">${m.email||""}</span>${replyHtml}<input id="reply-${d.id}" placeholder="Andika jibu lako hapa..." value="${m.reply||""}"><button class="btn-green" onclick="sendReply('${d.id}')">💬 JIBU MTEJA</button><button class="btn-red" onclick="delSupport('${d.id}')">Futa</button></div>`}); document.getElementById('supportList').innerHTML=h||'Hakuna msaada'; }); }
 function sendReply(id){ let txt = document.getElementById('reply-'+id).value.trim(); if(!txt){ alert("Andika jibu kwanza"); return; } db.collection("support").doc(id).update({reply:txt, status:"answered", replyDate:Date.now()}).then(()=>alert("✅ Jibu limetumwa!")); }
@@ -228,7 +220,46 @@ function savePayment(){appSettings.paymentMode=document.getElementById('paymentM
 function addPayment(){let p={id:Date.now(),name:document.getElementById('payName').value,number:document.getElementById('payNumber').value||BUSINESS_NUMBER,owner:document.getElementById('payOwner').value||BUSINESS_NAME,ussd:"*150*01#",color:"#7C3AED",initial:"N"};appSettings.paymentMethods.push(p);db.collection("settings").doc("main").set(appSettings).then(()=>{loadPayments();document.querySelectorAll('#paymentTab input').forEach(i=>i.value='')})}
 function loadPayments(){let h='';(appSettings.paymentMethods||[]).forEach(p=>{h+=`<div class="movie-item"><div class="network-initial" style="background:${p.color||"#7C3AED"}">${p.initial||p.name.charAt(0)}</div><div><b>${p.name}</b><br>${p.number}</div><button class="btn-red" onclick="delPay(${p.id})">Futa</button></div>`});document.getElementById('paymentList').innerHTML=h;}
 function delPay(id){appSettings.paymentMethods=appSettings.paymentMethods.filter(p=>p.id!=id);db.collection("settings").doc("main").set(appSettings).then(()=>loadPayments())}
-function save(){let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),accessKey:document.getElementById('accessKey').value,slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0};let promise = editingId? db.collection("movies").doc(editingId).update(data) : db.collection("movies").add(data);promise.then(()=>{alert('Imehifadhiwa');editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');});}
+
+// ===== EMAIL NOTIFICATION - UJANJA =====
+function sendEmailToOne(email, payload){
+  let url = (appSettings.googleScriptUrl || GOOGLE_SCRIPT_URL);
+  return fetch(url, {method:"POST", mode:"no-cors", headers:{"Content-Type":"application/json"}, body: JSON.stringify(Object.assign({email:email}, payload))});
+}
+async function sendEmailToAll(payload){
+  let snap = await db.collection("wallets").get();
+  let promises = [];
+  snap.forEach(doc=>{
+    let w = doc.data();
+    if(w.email) promises.push(sendEmailToOne(w.email, payload));
+  });
+  await Promise.all(promises);
+  return promises.length;
+}
+async function sendBroadcast(){
+  let title = document.getElementById('broadcastTitle').value.trim();
+  let msg = document.getElementById('broadcastMsg').value.trim();
+  if(!title || !msg){ alert("Weka kichwa na ujumbe"); return; }
+  document.getElementById('broadcastStatus').innerText = "Inatuma kwa wateja wote...";
+  let count = await sendEmailToAll({type:"broadcast", title:title, message:msg});
+  document.getElementById('broadcastStatus').innerText = "✅ Tangazo limetumwa kwa wateja " + count + "!";
+  document.getElementById('broadcastTitle').value=''; document.getElementById('broadcastMsg').value='';
+}
+async function notifyNewMovie(movieData){
+  if(!document.getElementById('notifyUsers').checked) return;
+  await sendEmailToAll({type:"new_movie", movieTitle:movieData.title, category:movieData.cat, price:movieData.price});
+}
+
+function save(){
+  let data={title:document.getElementById('t').value,thumbnail:document.getElementById('img').value,link:document.getElementById('v').value,type:document.getElementById('type').value,cat:document.getElementById('cat').value,price:parseInt(document.getElementById('price').value),accessKey:document.getElementById('accessKey').value,slide:document.getElementById('slide').checked,trending:document.getElementById('trending').checked,views:0};
+  let isNew = !editingId;
+  let promise = editingId? db.collection("movies").doc(editingId).update(data) : db.collection("movies").add(data);
+  promise.then(async ()=>{
+    alert('Imehifadhiwa');
+    if(isNew){ await notifyNewMovie(data); alert('📧 Notification ya Movie Mpya imetumwa kwa wateja wote!'); }
+    editingId=null;document.querySelectorAll('#moviesTab input[type=text]').forEach(i=>i.value='');
+  });
+}
 function editMovie(id,data){editingId=id;showTab('movies',document.querySelectorAll('.admin-tab')[1]);document.getElementById('t').value=data.title;document.getElementById('img').value=data.thumbnail;document.getElementById('v').value=data.link;document.getElementById('type').value=data.type;document.getElementById('cat').value=data.cat;document.getElementById('price').value=data.price;document.getElementById('accessKey').value=data.accessKey;document.getElementById('slide').checked=data.slide;document.getElementById('trending').checked=data.trending;}
 function deleteMovie(id){if(confirm('Futa movie hii?')){db.collection("movies").doc(id).delete()}}
 function loadMoviesAdmin(){let h='';allMovies.forEach(m=>{h+=`<div class="movie-item"><img src="${m.thumbnail}"><div><b>${m.title}</b><div class="views-text">Views: ${m.views||0} | ${m.cat} | ${m.type} | Kuingia: ${m.price||0} Token</div></div><div><button class="btn-blue" onclick='editMovie("${m.docId}",${JSON.stringify(m)})'>Edit</button><br><button class="btn-red" onclick='deleteMovie("${m.docId}")'>Delete</button></div></div>`});document.getElementById('movieList').innerHTML=h;}
@@ -250,21 +281,21 @@ function saveWalletLocal(){ localStorage.setItem('chilagu_wallet', JSON.stringif
 function openWallet(){updateWalletUI(); document.getElementById('walletBox').style.display='flex';}
 function closeWallet(){document.getElementById('walletBox').style.display='none';}
 function showAuth(mode,btn){ document.querySelectorAll('.auth-tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('authLogin').style.display = mode=='login'?'block':'none'; document.getElementById('authRegister').style.display = mode=='register'?'block':'none'; }
-
-// ===== WALLET KAMA GOOGLE - EMAIL + PASSWORD YA MTEJA =====
 async function registerWallet(){
   let email = document.getElementById('regEmail').value.trim().toLowerCase();
   let p1 = document.getElementById('regPass').value;
   let p2 = document.getElementById('regPass2').value;
   if(!email || !email.includes('@') || !email.includes('.')){ alert("Weka Email sahihi."); return; }
   if(!p1 || p1.length < 6){ alert("Password lazima iwe na angalau herufi 6."); return; }
-  if(p1 !== p2){ alert("Password hazifanani. Rudia vizuri."); return; }
+  if(p1 !== p2){ alert("Password hazifanani."); return; }
   let ex = await db.collection("wallets").where("email","==",email).get();
   if(!ex.empty){ alert("Hii Email imeshatumika. Ingia badala ya kujisajili."); showAuth('login', document.getElementById('tabLogin')); return; }
   let doc = await db.collection("wallets").add({email:email, pass:p1, tokens:0, date:Date.now(), deviceId:getDeviceId()});
   walletEmail = email; walletPassStored = p1; walletTokens = 0; walletDocId = doc.id;
   localStorage.setItem('chilagu_wallet', JSON.stringify({tokens:0,email:email,pass:p1,docId:doc.id}));
   updateWalletUI();
+  // Karibu Email
+  sendEmailToOne(email, {type:"welcome"});
   alert("✅ Wallet imetengenezwa! Sasa nunua Token.");
   openBuyToken();
 }
@@ -281,7 +312,6 @@ async function loginWallet(){
   alert("✅ Karibu! Token zako: " + walletTokens);
 }
 function logoutWallet(){ walletEmail=''; walletPassStored=''; walletTokens=0; walletDocId=null; localStorage.removeItem('chilagu_wallet'); updateWalletUI(); }
-
 function openBuyToken(){closeWallet(); let h=TOKEN_PACKS.map((p,i)=>`<div class="token-pack ${i==1?'selected':''}" onclick="selectPack(${i},this)"><b>${p.label}</b><br><span style="font-size:11px;color:#aaa">Lipa Tsh ${p.amount} - Pata ${p.tokens} Token</span></div>`).join(""); document.getElementById('tokenPacks').innerHTML=h; document.getElementById('buyTokenBox').style.display='flex';}
 function closeBuyToken(){document.getElementById('buyTokenBox').style.display='none';}
 function selectPack(i,el){selectedPack=TOKEN_PACKS[i]; document.querySelectorAll('.token-pack').forEach(b=>b.classList.remove('selected')); el.classList.add('selected');}
@@ -296,7 +326,6 @@ function startBuyToken(){
   document.getElementById('emailStatus').innerText='';
   document.getElementById('customerTransId').value='';
   document.getElementById('ussdMain').style.display='block'; document.getElementById('returnOnlyBox').style.display='none';
-  // Kama hajangia, mzuie asilipe bila Wallet
   if(!walletEmail){ document.getElementById('buyNeedLogin').style.display='block'; } else { document.getElementById('buyNeedLogin').style.display='none'; }
   updateDots(1); document.getElementById('keyBox').style.display='flex';
 }
@@ -304,7 +333,6 @@ function openSupport(){ document.getElementById('supportBox').style.display='fle
 function closeSupport(){ document.getElementById('supportBox').style.display='none'; }
 function copySupportEmail(){ navigator.clipboard.writeText(SUPPORT_EMAIL).then(()=>alert("✅ Email imecopyiwa: " + SUPPORT_EMAIL)); }
 async function sendSupport(){ let name = document.getElementById('supportName').value.trim(); let type = document.getElementById('supportType').value; let msg = document.getElementById('supportMsg').value.trim(); if(!msg){ alert("Andika shida yako kwanza"); return; } await db.collection("support").add({name:name, type:type, msg:msg, email:walletEmail||name, date:Date.now(), status:"new"}); document.getElementById('supportStatus').innerText = "✅ Ujumbe umetumwa!"; document.getElementById('supportMsg').value=''; }
-
 function checkAccess(id,link,price,key){
   currentPlayData = {id,link,price:price||0,key, title:(allMovies.find(m=>m.docId==id)||{}).title || id};
   if(!price || price==0){ playMovie(link, true); return; }
@@ -330,10 +358,8 @@ function startTokenTimer(){
   }, 1000);
 }
 function stopTokenTimer(){ if(tokenTimer){ clearInterval(tokenTimer); tokenTimer=null; } isPlaying=false; }
-
 function goToStep2(){
-  // Lazima awe na Wallet kabla ya kulipa - kama Google, lazima uwe na akaunti
-  if(!walletEmail){ alert("Kwanza Jisajili / Ingia kwenye Wallet. Token ziingie kwenye akaunti yako."); closeKey(); openWallet(); return; }
+  if(!walletEmail){ alert("Kwanza Jisajili / Ingia kwenye Wallet."); closeKey(); openWallet(); return; }
   let methods = (appSettings.paymentMethods && appSettings.paymentMethods.length>=3) ? appSettings.paymentMethods : DEFAULT_NETWORKS;
   let h = methods.map(p=>` <div class="network-btn" onclick="selectNetwork(${p.id}, this)"> <div class="network-initial" style="background:${p.color||"#7C3AED"}">${p.initial||p.name.charAt(0)}</div> <div style="flex:1"><b>${p.name}</b><br><span style="font-size:11px;color:#aaa">${p.number} • ${p.owner||"Moshi Idd"}</span><br><span style="font-size:11px;color:var(--pink)">USSD: ${p.ussd}</span></div> <span style="font-size:18px">›</span> </div>`).join("");
   document.getElementById('networkList').innerHTML = h; window._methods = methods; updateDots(2);
@@ -357,26 +383,25 @@ function goBackToStep1(){ updateDots(1); }
 function goBackToStep2(){ goToStep2(); }
 function goBackToStep3Return(){ updateDots(3); showReturnOnly(); }
 function goBackToStep4(){ updateDots(4); }
-function validateTransId(transId, networkName){ transId = transId.trim().toUpperCase(); if(transId.length < 8){ return "Muamala mfupi sana. Weka Muamala kamili kama ilivyo kwenye SMS."; } if(transId.length > 20){ return "Muamala mrefu sana."; } if(/^\d+$/.test(transId)){ return "Muamala huu sio wa kweli. Angalia SMS."; } if(/^[A-Z]+$/.test(transId)){ return "Muamala huu sio wa kweli."; } if(transId === "12345678" || transId === "123456789" || transId === "AAAAAAAA" || transId === "00000000" || transId === "11111111"){ return "Muamala huu umekataliwa."; } if(!/^[A-Z]/.test(transId)){ return "Muamala lazima uanze na herufi, kama ilivyo kwenye SMS."; } if(!/^[A-Z0-9]+$/.test(transId)){ return "Muamala una herufi zisizokubalika."; } if(networkName && networkName.includes("M-Pesa")){ if(!(transId.startsWith("PP") || transId.startsWith("Q") || transId.startsWith("P"))){ return "Muamala wa M-Pesa unaanza na PP au Q."; } } if(networkName && networkName.includes("Airtel")){ if(transId.length < 10){ return "Muamala wa Airtel ni mrefu. Weka kamili."; } } return null; }
+function validateTransId(transId, networkName){ transId = transId.trim().toUpperCase(); if(transId.length < 8){ return "Muamala mfupi sana."; } if(transId.length > 20){ return "Muamala mrefu sana."; } if(/^\d+$/.test(transId)){ return "Muamala huu sio wa kweli."; } if(/^[A-Z]+$/.test(transId)){ return "Muamala huu sio wa kweli."; } if(transId === "12345678" || transId === "123456789" || transId === "AAAAAAAA" || transId === "00000000" || transId === "11111111"){ return "Muamala huu umekataliwa."; } if(!/^[A-Z]/.test(transId)){ return "Muamala lazima uanze na herufi."; } if(!/^[A-Z0-9]+$/.test(transId)){ return "Muamala una herufi zisizokubalika."; } if(networkName && networkName.includes("M-Pesa")){ if(!(transId.startsWith("PP") || transId.startsWith("Q") || transId.startsWith("P"))){ return "Muamala wa M-Pesa unaanza na PP au Q."; } } if(networkName && networkName.includes("Airtel")){ if(transId.length < 10){ return "Muamala wa Airtel ni mrefu."; } } return null; }
 async function confirmPayment(){
   if(!walletEmail || !walletDocId){ alert("Kwanza Ingia kwenye Wallet."); closeKey(); openWallet(); return; }
-  if(Date.now() < lockedUntil){ let left = Math.ceil((lockedUntil - Date.now())/60000); alert(`Umefungwa kwa dakika ${left}. Jaribu tena baadaye.`); return; }
+  if(Date.now() < lockedUntil){ let left = Math.ceil((lockedUntil - Date.now())/60000); alert(`Umefungwa kwa dakika ${left}.`); return; }
   let transId = document.getElementById('customerTransId').value.trim();
   let btn = document.getElementById('sendEmailBtn');
   let status = document.getElementById('emailStatus');
   if(!transId){ alert("Weka Namba ya Muamala"); return; }
   if(!ussdDialed){ alert("Lipa kwanza kupitia USSD."); updateDots(3); return; }
   let err = validateTransId(transId, chosenNetwork ? chosenNetwork.name : "");
-  if(err){ failedAttempts++; localStorage.setItem('chilagu_fail', failedAttempts); if(failedAttempts >= 3){ lockedUntil = Date.now() + 10*60*1000; localStorage.setItem('chilagu_lock', lockedUntil); alert("⛔ Umejaribu Muamala wa uongo mara 3. Umefungwa dakika 10."); return; } alert("❌ " + err); return; }
+  if(err){ failedAttempts++; localStorage.setItem('chilagu_fail', failedAttempts); if(failedAttempts >= 3){ lockedUntil = Date.now() + 10*60*1000; localStorage.setItem('chilagu_lock', lockedUntil); alert("⛔ Umejaribu Muamala wa uongo mara 3."); return; } alert("❌ " + err); return; }
   let check = await db.collection("sales").where("transId","==",transId.toUpperCase()).get();
   if(!check.empty){ alert("⛔ Huu Muamala umeshatumika."); return; }
   let tokensToGive = currentPlayData.tokens || 0;
   btn.disabled=true; btn.innerText="⏳ Inathibitisha Muamala..."; status.innerText="Subiri, tunathibitisha Muamala wako...";
   try{
-    // Token zinaongezeka kwenye Wallet yake ile ile - sio Wallet mpya
     let newTotal = walletTokens + tokensToGive;
-    let url = (appSettings.googleScriptUrl || GOOGLE_SCRIPT_URL);
-    await fetch(url, {method:"POST", mode:"no-cors", headers:{"Content-Type":"application/json"}, body: JSON.stringify({email:walletEmail, movie:currentPlayData.title, transId:transId.toUpperCase(), tokens:newTotal, addedTokens:tokensToGive})});
+    // RISITI - Tuma kwa Email yake aliyofungulia account
+    await sendEmailToOne(walletEmail, {type:"receipt", movie:currentPlayData.title, amount:currentPlayData.price, addedTokens:tokensToGive, tokens:newTotal, transId:transId.toUpperCase(), network:chosenNetwork?chosenNetwork.name:""});
     await db.collection("wallets").doc(walletDocId).update({tokens:newTotal, date:Date.now()});
     await db.collection("sales").add({amount:currentPlayData.price, date:Date.now(), movie:currentPlayData.id, email:walletEmail, transId:transId.toUpperCase(), tokens:tokensToGive, totalAfter:newTotal, deviceId:getDeviceId(), network:chosenNetwork?chosenNetwork.name:""});
     walletTokens = newTotal;
